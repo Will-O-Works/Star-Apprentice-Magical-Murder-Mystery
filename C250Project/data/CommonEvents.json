@@ -1,7 +1,7 @@
 [
 null,
-{"id":1,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
+{"id":1,"list":[{"code":108,"indent":0,"parameters":["<QEvent>"]},{"code":108,"indent":0,"parameters":["<trigger:playerMove>"]},{"code":355,"indent":0,"parameters":["if (this.q.chara._diagonal) {"]},{"code":655,"indent":0,"parameters":["   if (!this.q.chara._dashing) {"]},{"code":655,"indent":0,"parameters":["      this.q.chara._realMoveSpeed = 3.25;"]},{"code":655,"indent":0,"parameters":["   } else {"]},{"code":655,"indent":0,"parameters":["      this.q.chara._realMoveSpeed = 4.25;"]},{"code":655,"indent":0,"parameters":["   }"]},{"code":655,"indent":0,"parameters":["}"]},{"code":655,"indent":0,"parameters":["console.log(this.q.chara._realMoveSpeed);"]},{"code":0,"indent":0,"parameters":[]}],"name":"Diagonal Movement","switchId":1,"trigger":1},
 {"id":2,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
-{"id":3,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0},
+{"id":3,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":2},
 {"id":4,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0}
 ]
