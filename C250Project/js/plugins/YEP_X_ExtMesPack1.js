@@ -105,6 +105,13 @@ Yanfly.EMP1.version = 1.11;
  * top     center     bottom
  * @default bottom
  *
+ * @param Default Y Pos
+ * @parent ---Message Anchor---
+ * @type number
+ * @min 0
+ * @desc What Y position the message box defaults to
+ * @default 0
+ *
  * @param Auto Row Full Face
  * @parent ---Message Anchor---
  * @type boolean
@@ -789,6 +796,7 @@ Yanfly.Param.EMP1LetterReset = eval(String(Yanfly.Parameters['Reset Sounds']));
 
 Yanfly.Param.EMP1DefaultX = String(Yanfly.Parameters['Default X']);
 Yanfly.Param.EMP1DefaultY = String(Yanfly.Parameters['Default Y']);
+Yanfly.Param.EMP1DefaultYPos = eval(String(Yanfly.Parameters['Default Y Pos']));
 Yanfly.Param.EMP1FullFace = 
   eval(String(Yanfly.Parameters['Auto Row Full Face']));
 
@@ -1411,7 +1419,7 @@ Window_Message.prototype.initialize = function() {
     $gameSystem.initChoiceEnable();
     this._needsMessageReset = false;
     Yanfly.EMP1.Window_Message_initialize.call(this);
-    $gameSystem.setMessagePositionY(472);
+    $gameSystem.setMessagePositionY(Yanfly.Param.EMP1DefaultYPos);
 };
 
 Yanfly.EMP1.Window_Message_update = Window_Message.prototype.update;
