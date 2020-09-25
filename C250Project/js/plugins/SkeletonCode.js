@@ -20,9 +20,9 @@ var BHell = (function (my) {
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_SkeletonCode.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 10000;
-        params.speed = 0.3;
-        params.hitbox_w = 399;
-        params.hitbox_h = 350;
+        params.speed = 1;
+        params.hitbox_w = 280;
+        params.hitbox_h = 140;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 

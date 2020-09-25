@@ -1621,6 +1621,291 @@ var BHell = (function (my) {
     };
 
 
+	/** 
+	 * Circle emitter by V.L.
+	 */ 
+	var BHell_Emitter_Circle = my.BHell_Emitter_Circle = function () {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Emitter_Circle.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Circle.prototype.constructor = BHell_Emitter_Circle;
+
+
+    BHell_Emitter_Circle.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+        this.n = 360;
+        this.dutyCycle = 0.25;
+        this.pulses = 16;
+        this.invert = false;
+
+        this.aim = true;
+        this.alwaysAim = true;
+        this.aimX = 0;
+        this.aimY = 0;
+		this.after_period = 40; 
+
+        this.aimingAngle = 0;
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+		this.round = 0; 
+
+        if (params != null) {
+            this.n = params.n || this.n;
+            this.dutyCycle = params.duty_cycle || this.dutyCycle;
+            this.pulses = params.pulses || this.pulses;
+            this.invert = params.invert || this.invert;
+            this.aim = params.aim || this.aim;
+            this.alwaysAim = params.always_aim || this.alwaysAim;
+            this.aimX = params.aim_x || this.aimX;
+            this.aimY = params.aim_y || this.aimY;
+			this.after_period = params.after_period || this.after_period;
+        }
+    };
+
+    BHell_Emitter_Circle.prototype.shoot = function () {
+        var pulseWidth = Math.round(this.n / this.pulses);
+        var dutyCount = Math.round(this.dutyCycle * pulseWidth);
+
+        for (var k = 0; k < this.n; k++) {
+
+            if (((k % pulseWidth) < dutyCount) ^ this.invert) {
+                var bullet;
+                if (this.aim) {
+                    if (this.alwaysAim || this.oldShooting === false) {
+                        var dx = my.player.x - this.x + this.aimX;
+                        var dy = my.player.y - this.y + this.aimY;
+                        this.aimingAngle = Math.atan2(dy, dx);
+                    }
+
+                    bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - Math.PI + 2 * Math.PI / this.n * (k - dutyCount / 2), this.bulletParams, this.bulletList);
+                }
+                else {
+                    bullet = new my.BHell_Bullet(this.x, this.y, 2 * Math.PI / this.n * (k - dutyCount / 2), this.bulletParams, this.bulletList);
+                }
+
+                this.parent.addChild(bullet);
+                this.bulletList.push(bullet);
+            }
+        }
+		
+		this.round ++; 
+		
+		if (this.round == 2) {
+			this.period = this.after_period; 
+		}
+		
+    };
+	
+	
+	/** 
+	 * Spinning emitter by V.L.
+	 */ 
+	var BHell_Emitter_Spin = my.BHell_Emitter_Spin = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Spin.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Spin.prototype.constructor = BHell_Emitter_Spin;
+	
+    BHell_Emitter_Spin.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Spin.prototype.shoot = function () {
+		this.i++;
+		for (var j = 0; j < 1; j++) {
+			var bullet = new my.BHell_Bullet(this.x, this.y, Math.PI / 180 * (j + this.i * 16), this.bulletParams, this.bulletList);
+			//var bullet = new my.BHell_Bullet(this.x, this.y, j + this.i * 13, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+        }
+    };
+	
+	/** 
+	 * Speed Change emitter by V.L.
+	 */ 
+	var BHell_Emitter_Flower = my.BHell_Emitter_Flower = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Flower.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Flower.prototype.constructor = BHell_Emitter_Flower;
+	
+    BHell_Emitter_Flower.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		
+		this.num_waves = 12; // number of waves in a line
+		this.num_bullet = 15; // number of bullets in a line
+		this.attack_between = 50; // time between two major attacks
+		
+		if (params != null) {
+            this.num_waves = params.num_waves || this.num_waves;
+			this.num_bullet = params.num_bullet || this.num_bullet;
+			this.attack_between = params.attack_between || this.attack_between;
+        }
+		
+		this.baseSpeed = 1; 
+		this.angle = 0; 
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Flower.prototype.shoot = function () {
+		for (var j = 0; j < this.num_waves; j++) {
+			this.bulletParams.speed = this.baseSpeed + this.i/5; 
+			var bullet = new my.BHell_Bullet(this.x, this.y, this.angle + this.i * Math.PI / 180 + j * 2 * Math.PI / 12, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+        }
+		this.repeat(); 
+    };
+	
+	BHell_Emitter_Flower.prototype.repeat = function () {
+		if (this.i < this.num_bullet) {
+			this.i += 1; 
+			this.period = 5; 
+		} else {
+			this.i = 0; 
+			this.angle += 1; 
+			this.period = this.attack_between; 
+		}
+	}; 
+
+	/** 
+	 * Shape emitter (unfinished) by V.L.
+	 */ 
+	var BHell_Emitter_Shape = my.BHell_Emitter_Shape = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Shape.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Shape.prototype.constructor = BHell_Emitter_Shape;
+
+	BHell_Emitter_Shape.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		
+		this.dir = 90; //initial direction
+		this.speed = 5; //speed 
+		this.n = 8; //bullets per side
+		this.s = 4; //shape (3-triangle, 4-square, etc.)
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Shape.prototype.shoot = function () {
+		var dir = 90; //this.dir; 
+		var n = 8; //this.n - 1; 
+
+		for(var j=1; j <= this.s; j++){
+
+			var v = 5; //this.speed; 
+			var ddd =  (Math.PI/180) * (180-(360/this.n))/2; 
+			var k = 2 * v * Math.cos(ddd); 
+			
+			this.bulletParams.speed = v; 
+			var bullet = new my.BHell_Bullet(this.x, this.y, dir, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+
+			for(var i=1; i < n; i++){
+				this.bulletParams.speed = Math.abs(Math.sqrt(Math.pow(v, 2) + Math.pow((k*i/n)-2*v*(k*i/n)*Math.cos(ddd), 2))); 
+				var vv = this.bulletParams.speed; 
+				
+				var bullet = new my.BHell_Bullet(this.x, this.y, dir + (180/Math.PI) * (Math.acos((Math.pow(v, 2)+Math.pow(vv, 2)-Math.pow(k*i/n, 2))/(2*v*(vv)))), this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+				
+				if(i == n-1){
+					dir += 360/n; 
+				}
+			}
+		}
+    };
+
+	/** 
+	 * Emitter Sample by V.L.
+	 */ 
+	var BHell_Emitter_Sample = my.BHell_Emitter_Sample = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Sample.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Sample.prototype.constructor = BHell_Emitter_Sample;
+	
+    BHell_Emitter_Sample.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		//this.bulletParams.speed = this.params.speed; 
+		
+		// initialize your own variables 
+		this.angle = 0; 
+		// or inherit prameters from the enemy class
+		 if (params != null) {
+            this.angle = params.angle || this.angle;
+        }
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Sample.prototype.shoot = function () {
+		this.bulletParams.speed = 5; //give the bullet a speed. you can do this in sample.js as well 
+		// create bullet by new my.BHell_Bullet(x, y, direction(0 is to the right), this.bulletParams(this includes speed, see sample.js), this.bulletList);
+		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+		this.parent.addChild(bullet);
+		this.bulletList.push(bullet);
+		
+		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
+    };
+
+
     /**
      * Rotating emitter. It spawns a single bullet moving upwards, while moving in a circular pattern.
      * @constructor
@@ -1633,6 +1918,8 @@ var BHell = (function (my) {
 
     BHell_Emitter_Rotate.prototype = Object.create(BHell_Emitter_Base.prototype);
     BHell_Emitter_Rotate.prototype.constructor = BHell_Emitter_Rotate;
+	
+	
 
     /**
      * Constructor.
@@ -3634,6 +3921,74 @@ var BHell = (function (my) {
         return ret;
     };
 
+	/**
+     * Moves to a position and stay still.
+     * @param oldX Old x coordinate.
+     * @param oldY Old y coordinate.
+     * @param speed Movement speed (in thousandths of distance between P1 and P2 per frame).
+     * @returns {Array}
+     */
+	var BHell_Mover_Still = my.BHell_Mover_Still = function () {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Mover_Still.prototype = Object.create(BHell_Mover_Base.prototype);
+    BHell_Mover_Still.prototype.constructor = BHell_Mover_Still;
+
+    /**
+     * Constructor
+     * @param x X coordinate of the initial position.
+     * @param y Y coordinate of the initial position.
+     * @param angle Initial angle.
+     * @param w Width of the object to move.
+     * @param h Height of the object to move.
+     */
+    BHell_Mover_Still.prototype.initialize = function (x, y, angle, w, h) {
+        BHell_Mover_Base.prototype.initialize.call(this);
+
+        this.inPosition = false;
+        this.initX = x;
+        this.initY = y;
+        this.signX = +1;
+        this.signY = +1;
+        this.angle = angle;
+        this.w = w;
+        this.h = h;
+    };
+
+    /**
+     * Moves to the starting position, then moves at this.angle, bouncing on the screen's borders.
+     * @param oldX Old x coordinate.
+     * @param oldY Old y coordinate.
+     * @param speed Movement speed. In pixels per frame.
+     * @returns {Array}
+     */
+    BHell_Mover_Still.prototype.move = function (oldX, oldY, speed) {
+        var ret = [];
+
+        if (this.inPosition == false) {
+            var dx = this.initX - oldX;
+            var dy = this.initY - oldY;
+            if (Math.abs(dx) <= 2 && Math.abs(dy) <= 2) { // If the error is less than two pixels
+                this.inPosition = true;
+                ret.push(this.initX);
+                ret.push(this.initY);
+            }
+            else {
+                var angle = Math.atan2(dy, dx);
+                ret.push(oldX + Math.cos(angle) * speed);
+                ret.push(oldY + Math.sin(angle) * speed);
+            }
+        } else {
+			this.x = oldX; 
+			this.y = oldY; 
+			ret.push(oldX);
+            ret.push(oldY);
+		}
+		return ret;
+    };
+
+
     /**
      * Bounce movement class. Moves to the starting position, then moves in a straight line at a given angle,
      * bouncing on the screen's borders.
@@ -3859,6 +4214,7 @@ var BHell = (function (my) {
                     playerParams[p] = 1;
                     break;
             }
+			
         });
 
         my.BHell_Sprite.prototype.initialize.call(this, playerData.sprite, playerData.index, playerData.direction, playerData.frame, playerData.animated, playerData.animation_speed);
