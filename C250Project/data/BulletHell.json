@@ -2,7 +2,7 @@
   "players": [
     {
       "name": "Straight",
-      "sprite": "Evil",
+      "sprite": "PlayerSprite",
       "unlocked": true,
       "can_be_bought": false,
       "price": 0,
@@ -13,11 +13,11 @@
       "hitbox_w": "5",
       "hitbox_h": "5",
       "grazing_radius": "w/2",
-      "index": 2,
-      "direction": 8,
-      "frame": 1,
+      "index": 0,
+      "direction": 2,
+      "frame": 0,
       "animation_speed": 30,
-      "animated": true,
+      "animated": false,
       "select_se": {
         "name": "Sound1",
         "volume": 100,
@@ -852,13 +852,6 @@
         "boss": true
       }
     },
-	{
-	  "name": "SkeletonCode",
-	  "class": "BHell_Enemy_SkeletonCode",
-	  "params": {
-        "boss": true
-      }
-	},
     {
       "name": "rammer",
       "class": "BHell_Enemy_Rammer",
@@ -877,6 +870,27 @@
       "name": "telefragger",
       "class": "BHell_Enemy_Telefragger",
       "params": null
+    },
+    {
+      "name": "SkeletonCode",
+      "class": "BHell_Enemy_SkeletonCode",
+      "params": {
+          "boss": true
+        }
+    },
+    {
+      "name": "VagrantLine1",
+      "class": "BHell_Enemy_VagrantLine1",
+      "params": {
+          "boss": true
+        }
+    },
+    {
+      "name": "VagrantLine2",
+      "class": "BHell_Enemy_VagrantLine2",
+      "params": {
+          "boss": true
+        }
     }
   ]
 }

@@ -465,8 +465,10 @@ var BHell = (function (my) {
     });
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -503,6 +505,7 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
     this.animationAscending = true;
     this.frame = frame;
     this.i = 0;
+    this.curSprite = sprite;
     if (sprite != null) {
         this._bitmap = ImageManager.loadCharacter(sprite);
         this._isBigCharacter = ImageManager.isBigCharacter(sprite);
@@ -515,13 +518,31 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
 /**
  * Updates the sprite on screen. Changes the displayed frame every this.animationSpeed calls.
  */
+
+ ///Addition: Movement Based Sprite animation Rayvn.
 BHell_Sprite.prototype.update = function () {
     Sprite_Base.prototype.update.call(this);
 
     if (ImageManager.isReady()) {
         this.visible = true;
     }
-
+    if (this.curSprite === "PlayerSprite"){
+        var oldIndex =  this.characterIndex
+        if(my.player.dx <-9){
+            this.characterIndex = 1;
+        }
+        else if(my.player.dx >9){
+            this.characterIndex = 2;
+        }
+        else{
+            this.characterIndex = 0;
+        }
+        if(this.characterIndex !== oldIndex)
+        {
+            this.updateCharacterFrame();
+        }
+        
+    }
     if (this.animationSpeed > 0) {
         this.i = (this.i + 1) % this.animationSpeed;
         if (this.i === 0 && this.animated === true) {
@@ -535,7 +556,9 @@ BHell_Sprite.prototype.update = function () {
             }
             this.updateCharacterFrame();
         }
+
     }
+    
 };
 
 /**
@@ -590,8 +613,10 @@ BHell_Sprite.prototype.patternHeight = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -896,8 +921,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -997,8 +1024,10 @@ BHell_Bullet.prototype.destroy = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -1372,8 +1401,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -2437,8 +2468,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3350,8 +3383,10 @@ BHell_Enemy_Swirler.prototype.update = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3434,8 +3469,10 @@ BHell_Explosion.prototype.destroy = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3570,8 +3607,10 @@ BHell_Generator.prototype.update = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4077,8 +4116,10 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -4137,8 +4178,10 @@ var BHell = (function (my) {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4216,7 +4259,6 @@ var BHell = (function (my) {
             }
 			
         });
-
         my.BHell_Sprite.prototype.initialize.call(this, playerData.sprite, playerData.index, playerData.direction, playerData.frame, playerData.animated, playerData.animation_speed);
 
         this.parent = parent;
@@ -4374,10 +4416,12 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.move = function () {
         // If the player has just been spawned (outside the screen), move to the starting position.
+        this.index =0;
         if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
             if (my.enemyBullets.length === 0) {
                 var dy = Graphics.height * 0.9 - this.y;
+                
 
                 if (Math.abs(dy) <= this.speed * 0.3) {
                     this.y = Math.round(Graphics.height * 0.9);
@@ -4542,8 +4586,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -4746,8 +4792,10 @@ Scene_BHell_Init.prototype.selectPlayer = function(i) {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4967,6 +5015,7 @@ var BHell = (function (my) {
      * "Escape" button: toggle pause.
      */
     Scene_BHell.prototype.updateInput = function () {
+        
         if (!my.controller.paused && !$gameMessage.isBusy()) {
             if (Input.isTriggered('escape')) {
                 this.pause();
@@ -5233,8 +5282,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -5594,8 +5645,10 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -5700,8 +5753,10 @@ BHell_Spriteset.prototype.updateTilemap = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -5819,8 +5874,10 @@ var BHell = (function (my) {
     };
 
     return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -6589,5 +6646,50 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //////Yalmaz's Additions
+// /**
+//  * Suicide enemy class. Chases the player until they crash, it never shoots.
+//  *
+//  * No additional parameters are defined.
+//  * @constructor
+//  * @memberOf BHell
+//  * @extends BHell.BHell_Enemy_Base
+//  */
+// var BHell_Enemy_Suicide = my.BHell_Enemy_Suicide = function() {
+//     this.initialize.apply(this, arguments);
+// };
+
+// BHell_Enemy_Suicide.prototype = Object.create(BHell_Enemy_Base.prototype);
+// BHell_Enemy_Suicide.prototype.constructor = BHell_Enemy_Suicide;
+
+// BHell_Enemy_Suicide.prototype.initialize = function (x, y, image, params, parent, enemyList) {
+//     BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+//     this.mover = new my.BHell_Mover_Chase();
+// };

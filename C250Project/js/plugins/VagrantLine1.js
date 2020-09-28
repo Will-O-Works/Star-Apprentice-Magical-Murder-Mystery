@@ -1,5 +1,5 @@
 //=============================================================================
-// SkeletonCode.js
+// VagrantLine1.js
 //=============================================================================
 
 /*:
@@ -9,16 +9,15 @@ link to predifined stuff u can use or extend: https://hashakgik.github.io/Bullet
 
 var BHell = (function (my) {
 
-    
-    var BHell_Enemy_SkeletonCode = my.BHell_Enemy_SkeletonCode = function() {
+    var BHell_Enemy_VagrantLine1 = my.BHell_Enemy_VagrantLine1 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_SkeletonCode.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_SkeletonCode.prototype.constructor = BHell_Enemy_SkeletonCode;
+    BHell_Enemy_VagrantLine1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine1.prototype.constructor = BHell_Enemy_VagrantLine1;
 
     //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_SkeletonCode.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+    BHell_Enemy_VagrantLine1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 10000;
         params.speed = 1;
         params.hitbox_w = 280;
@@ -27,7 +26,7 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
         //for multiple emitters initalize them here:
-        this.initializeHands(parent);
+        this.initializeFlask(parent);
 
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.j = 0;
@@ -43,51 +42,44 @@ var BHell = (function (my) {
 //Def custom functions and class extensions here:
 
     //##this a generic audio and score display function that will  be modified at a later date
-    BHell_Enemy_SkeletonCode.prototype.die = function() {
+    BHell_Enemy_VagrantLine1.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
-        AudioManager.playSe({name:"Collapse4", volume:50, pitch:50, pan:0});
+        AudioManager.playSe({name:"Collapse4", volume:2, pitch:2, pan:0});
         this.changeState("dying");
 
         my.controller.destroyEnemyBullets();
     };
 
     //Def the emitters here:
-    BHell_Enemy_SkeletonCode.prototype.initializeHands = function (parent) {
+    BHell_Enemy_VagrantLine1.prototype.initializeFlask = function (parent) {
         //this is left in as a sample it shows how to implement an existing emitter, 
         //to make a new emitter from scratch reffer to : https://hashakgik.github.io/BulletHell-RMMV/tutorial-emitter_js.html
-        var handsParams = {};
-        handsParams.bullet = {};
-        handsParams.bullet.speed = 0.5;
-        handsParams.bullet.index = 0;
-        handsParams.bullet.frame = 0;
-        handsParams.bullet.direction = 2;
-        handsParams.period = 300;
-        handsParams.a = 0;
-        handsParams.b = 2 * Math.PI;
-        handsParams.n = 45;
-        this.handsEmitters = [];
-        this.handsEmitters.push(new my.BHell_Emitter_Spray(0, 0, handsParams, parent, my.enemyBullets));
-        this.handsEmitters.push(new my.BHell_Emitter_Spray(0, 0, handsParams, parent, my.enemyBullets));
-        this.handsEmitters[0].offsetX = -46;
-        this.handsEmitters[0].offsetY = -68;
-        this.handsEmitters[1].offsetX = 100;
-        this.handsEmitters[1].offsetY = -60;
+        var flaskParams = {};
+        flaskParams.bullet = {};
+        flaskParams.bullet.speed = 1;
+        flaskParams.bullet.index = 0;
+        flaskParams.bullet.frame = 0;
+        flaskParams.bullet.direction = 2;
+        flaskParams.period = 5;
+        flaskParams.a = Math.PI;
+        flaskParams.b = 3 * Math.PI;
+        flaskParams.n = 5;
+        this.flaskCounter = 0;
+        this.flaskEmitters = [];
+        this.flaskEmitters.push(new my.BHell_Emitter_Spray(200, 200, flaskParams, parent, my.enemyBullets));
     };
 
-    //function that moves the emitters relative to the sprite
-    BHell_Enemy_SkeletonCode.prototype.move = function () {
+    //function that moves the sprite
+    BHell_Enemy_VagrantLine1.prototype.move = function () {
         if (this.mover != null) {
             var p = this.mover.move(this.x, this.y, this.speed);
             this.x = p[0];
             this.y = p[1];
         }
-        this.handsEmitters.forEach(e => {
-            e.move(this.x, this.y);
-        });
     };
 
     //setter that switches on/off  emitters takes in boolean example use on line 106
-    BHell_Enemy_SkeletonCode.prototype.shoot = function(emitters, t) {
+    BHell_Enemy_VagrantLine1.prototype.shoot = function(emitters, t) {
         // Replaces BHell_Enemy_Base.shoot(t). It enables only SOME emitters at the time (not all of them).
         emitters.forEach(e => {
             e.shooting = t && !my.player.justSpawned;//also stops fire for a few secs after player respawn
@@ -95,7 +87,7 @@ var BHell = (function (my) {
     };
 
     //setter that changes state of boss and turns off fire between state changes
-    BHell_Enemy_SkeletonCode.prototype.changeState = function(s) {
+    BHell_Enemy_VagrantLine1.prototype.changeState = function(s) {
         if (this.state === "changing") {
             this.state = s;
         }
@@ -103,12 +95,12 @@ var BHell = (function (my) {
             this.scheduledState = s;
             this.state = "changing";
         }
-        this.shoot(this.handsEmitters, false);
+        this.shoot(this.flaskEmitters, false);
         this.j = 0;
     };
 
     //function calls inherited method used for dealing with player dagmae and if "stunned" increments the damage by 1
-    BHell_Enemy_SkeletonCode.prototype.hit = function () {
+    BHell_Enemy_VagrantLine1.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
 
@@ -119,14 +111,25 @@ var BHell = (function (my) {
     };
 
     //update function that makes the hand shoot
-    BHell_Enemy_SkeletonCode.prototype.updateHands = function() {
-        this.shoot(this.handsEmitters, true);
+    BHell_Enemy_VagrantLine1.prototype.updateFlask = function() {
+    if (this.flaskCounter == 0) {
+        console.log("counter = 0");
+        this.flaskEmitters[0].a = Math.PI;
+        this.flaskEmitters[0].b = 3 * Math.PI;
+    }
+    console.log("counter != 0")
+    this.shoot(this.flaskEmitters, this.flaskCounter < 180);
+
+    this.flaskEmitters[0].a += 0.004;
+    this.flaskEmitters[0].b += 0.004;
+
+    this.flaskCounter = (this.flaskCounter + 1) % 300;
     };
 //
 //
 //  
 //Def core update function here it also serves as a finite state machine for the boss behaviours:
-    BHell_Enemy_SkeletonCode.prototype.update = function () {
+    BHell_Enemy_VagrantLine1.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 
         if (this.state !== "dying" && this.state !== "stunned") {
@@ -150,7 +153,7 @@ var BHell = (function (my) {
                 if (this.j > 600) {
                     this.changeState("pattern 1");
                 } else {
-                    this.updateHands();
+                    this.updateFlask();
                 }
                 break;
 
@@ -173,7 +176,7 @@ var BHell = (function (my) {
                 }
                 break;
         }
-        this.handsEmitters.forEach(e => {
+        this.flaskEmitters.forEach(e => {
             e.update();
         });
 
