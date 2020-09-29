@@ -25,7 +25,7 @@
 @param speed_multiplier
 @desc Speed multiplier string for analog sticks.
 @default Analog scale
-
+homing and sin patterns (unfinished)
 @param quit
 @desc Quit string.
 @default Quit
@@ -465,8 +465,10 @@ var BHell = (function (my) {
     });
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -503,6 +505,10 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
     this.animationAscending = true;
     this.frame = frame;
     this.i = 0;
+<<<<<<< HEAD
+=======
+    this.curSprite = sprite;
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
     if (sprite != null) {
         this._bitmap = ImageManager.loadCharacter(sprite);
         this._isBigCharacter = ImageManager.isBigCharacter(sprite);
@@ -515,13 +521,38 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
 /**
  * Updates the sprite on screen. Changes the displayed frame every this.animationSpeed calls.
  */
+<<<<<<< HEAD
+=======
+
+ ///Addition: Movement Based Sprite animation Rayvn.
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 BHell_Sprite.prototype.update = function () {
     Sprite_Base.prototype.update.call(this);
 
     if (ImageManager.isReady()) {
         this.visible = true;
     }
+<<<<<<< HEAD
 
+=======
+    if (this.curSprite === "PlayerSprite"){
+        var oldIndex =  this.characterIndex
+        if(my.player.dx <-9){
+            this.characterIndex = 1;
+        }
+        else if(my.player.dx >9){
+            this.characterIndex = 2;
+        }
+        else{
+            this.characterIndex = 0;
+        }
+        if(this.characterIndex !== oldIndex)
+        {
+            this.updateCharacterFrame();
+        }
+        
+    }
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
     if (this.animationSpeed > 0) {
         this.i = (this.i + 1) % this.animationSpeed;
         if (this.i === 0 && this.animated === true) {
@@ -535,7 +566,13 @@ BHell_Sprite.prototype.update = function () {
             }
             this.updateCharacterFrame();
         }
+<<<<<<< HEAD
     }
+=======
+
+    }
+    
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 };
 
 /**
@@ -590,8 +627,10 @@ BHell_Sprite.prototype.patternHeight = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -896,8 +935,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -997,8 +1038,10 @@ BHell_Bullet.prototype.destroy = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -1372,8 +1415,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -1862,7 +1907,11 @@ var BHell = (function (my) {
 
 	/** 
 	 * Emitter Sample by V.L.
+<<<<<<< HEAD
+	 */
+=======
 	 */ 
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 	var BHell_Emitter_Sample = my.BHell_Emitter_Sample = function () {
         this.initialize.apply(this, arguments);
     };
@@ -1901,10 +1950,141 @@ var BHell = (function (my) {
 		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
 		this.parent.addChild(bullet);
 		this.bulletList.push(bullet);
+<<<<<<< HEAD
+
+		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
+    }; 
+	
+	
+	/** 
+	 * Sin-moves bullet emitter by V.L.
+	 */ 
+	var BHell_Emitter_Sine = my.BHell_Emitter_Sine = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Sine.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Sine.prototype.constructor = BHell_Emitter_Sine;
+	
+    BHell_Emitter_Sine.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		//this.bulletParams.speed = this.params.speed; 
+		
+		// initialize your own variables 
+		this.angle = 0; 
+		this.change = 0; 
+		// or inherit prameters from the enemy class
+		 if (params != null) {
+            this.angle = params.angle || this.angle;
+        }
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Sine.prototype.shoot = function () {
+		this.bulletParams.speed = 2; //give the bullet a speed. you can do this in sample.js as well 
+		// create bullet by new my.BHell_Bullet(x, y, direction(0 is to the right), this.bulletParams(this includes speed, see sample.js), this.bulletList);
+		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+		this.parent.addChild(bullet);
+		this.bulletList.push(bullet);
+		
+		for (i = 0; i < this.bulletList.length; i ++ ) {
+			this.bulletList[i].angle += Math.sin(this.change) * Math.PI / 4;
+		}
+		
+		this.change += Math.PI / 2; 
+		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
+    };
+	
+	/** 
+	 * Homing bullet emitter by V.L.
+	 */ 
+	var BHell_Emitter_Home = my.BHell_Emitter_Home = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Home.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Home.prototype.constructor = BHell_Emitter_Sine;
+	
+    BHell_Emitter_Home.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		//this.bulletParams.speed = this.params.speed; 
+		
+		// initialize your own variables 
+		this.angle = 0; 
+		this.change = 0; 
+		this.center_x = this.x; 
+		this.center_y = this.y; 
+		// or inherit prameters from the enemy class
+		 if (params != null) {
+            this.angle = params.angle || this.angle;
+			this.center_x = params.center_x || this.x; 
+			this.center_y = params.center_y || this.y; 
+        }
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+		
+		var num;
+        for (num = 0; num < 50; num++) {
+            var bullet = new my.BHell_Bullet((400 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x, (400 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y, 2 * Math.PI / 50 * num, this.bulletParams, this.bulletList);
+            this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+        }
+    };
+
+    BHell_Emitter_Home.prototype.shoot = function () {
+
+		this.center_x = this.x; 
+		this.center_y = this.y; 
+
+		var num;
+        for (num = 0; num < 50; num++) {
+			//this.parent.removeChild(this.bulletList.shift());
+            var bullet = new my.BHell_Bullet((400 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x, (400 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y, 2 * Math.PI / 50 * num, this.bulletParams, this.bulletList);
+            this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+        }
+		/*
+		for (num = 0; num < 50; num++) {
+			this.bulletList[i].x = (200 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x; 
+			this.bulletList[i].y = (200 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y; 
+			this.bulletList[i].angle = 2 * Math.PI / 50 * num; 
+		}*/
+		
+		this.angle += 0.1;
+         if (this.angle >= Math.PI * 2) {
+			this.angle -= Math.PI * 2;
+		}
+		this.change += 3; 
+    };
+=======
 		
 		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
     };
 
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
     /**
      * Rotating emitter. It spawns a single bullet moving upwards, while moving in a circular pattern.
@@ -2437,8 +2617,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3350,8 +3532,10 @@ BHell_Enemy_Swirler.prototype.update = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3434,8 +3618,10 @@ BHell_Explosion.prototype.destroy = function() {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -3570,8 +3756,10 @@ BHell_Generator.prototype.update = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4077,8 +4265,10 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -4137,8 +4327,10 @@ var BHell = (function (my) {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4216,7 +4408,10 @@ var BHell = (function (my) {
             }
 			
         });
+<<<<<<< HEAD
 
+=======
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         my.BHell_Sprite.prototype.initialize.call(this, playerData.sprite, playerData.index, playerData.direction, playerData.frame, playerData.animated, playerData.animation_speed);
 
         this.parent = parent;
@@ -4245,7 +4440,13 @@ var BHell = (function (my) {
         this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 
+<<<<<<< HEAD
+		// Added player_speed prameter by V.L.
+        this.player_speed = playerParams.speed; 
+		this.speed = playerParams.speed * 2;
+=======
         this.speed = playerParams.speed * 2;
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4363,6 +4564,21 @@ var BHell = (function (my) {
         this.dx += h * this.speed;
         this.dy += v * this.speed;
     };
+<<<<<<< HEAD
+	
+	/**
+	Slow function in player by V.L.
+	*/
+	BHell_Player.prototype.slow = function (t) {
+        if (t) {
+			this.speed = this.player_speed/2; 
+		} else {
+			this.speed = this.player_speed*2; 
+		}
+    };
+	
+=======
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
     /**
      * Moves the player and all its emitters.
@@ -4374,10 +4590,18 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.move = function () {
         // If the player has just been spawned (outside the screen), move to the starting position.
+<<<<<<< HEAD
+=======
+        this.index =0;
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
             if (my.enemyBullets.length === 0) {
                 var dy = Graphics.height * 0.9 - this.y;
+<<<<<<< HEAD
+=======
+                
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
                 if (Math.abs(dy) <= this.speed * 0.3) {
                     this.y = Math.round(Graphics.height * 0.9);
@@ -4542,8 +4766,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -4746,8 +4972,10 @@ Scene_BHell_Init.prototype.selectPlayer = function(i) {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -4967,6 +5195,10 @@ var BHell = (function (my) {
      * "Escape" button: toggle pause.
      */
     Scene_BHell.prototype.updateInput = function () {
+<<<<<<< HEAD
+=======
+        
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         if (!my.controller.paused && !$gameMessage.isBusy()) {
             if (Input.isTriggered('escape')) {
                 this.pause();
@@ -5028,9 +5260,25 @@ var BHell = (function (my) {
                         my.player.shoot(false);
                     }
 
+<<<<<<< HEAD
+                    if (TouchInput.isCancelled() || Input.isPressed(18)) {
+                        my.player.launchBomb();
+                    }
+					
+					/**
+					Slow motion mode by V.L.
+					*/
+					if (Input.isPressed('shift')) {
+						my.player.slow(true);
+						
+                    } else {
+						my.player.slow(false);
+					}
+=======
                     if (TouchInput.isCancelled() || Input.isPressed('shift')) {
                         my.player.launchBomb();
                     }
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707
                 }
             }
         }
@@ -5233,8 +5481,10 @@ var BHell = (function (my) {
     };
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -5594,8 +5844,10 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
 var BHell = (function (my) {
 
 /**
@@ -5700,8 +5952,10 @@ BHell_Spriteset.prototype.updateTilemap = function () {
 };
 
 return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -5819,8 +6073,10 @@ var BHell = (function (my) {
     };
 
     return my;
-} (BHell || {}));
-
+} (BHell || {}));
+
+
+
 var BHell = (function (my) {
 
     /**
@@ -6589,5 +6845,53 @@ var BHell = (function (my) {
 
 
     return my;
-}(BHell || {}));
-
+}(BHell || {}));
+
+
+
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //////Yalmaz's Additions
+// /**
+//  * Suicide enemy class. Chases the player until they crash, it never shoots.
+//  *
+//  * No additional parameters are defined.
+//  * @constructor
+//  * @memberOf BHell
+//  * @extends BHell.BHell_Enemy_Base
+//  */
+// var BHell_Enemy_Suicide = my.BHell_Enemy_Suicide = function() {
+//     this.initialize.apply(this, arguments);
+// };
+
+// BHell_Enemy_Suicide.prototype = Object.create(BHell_Enemy_Base.prototype);
+// BHell_Enemy_Suicide.prototype.constructor = BHell_Enemy_Suicide;
+
+// BHell_Enemy_Suicide.prototype.initialize = function (x, y, image, params, parent, enemyList) {
+//     BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+//     this.mover = new my.BHell_Mover_Chase();
+// };
+>>>>>>> f999868a0d905607d518107215b52c6a4abbc707

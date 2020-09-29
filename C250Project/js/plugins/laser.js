@@ -16,7 +16,7 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
 		var emitterParams = {};
-		emitterParams.period = 15; // period for the emitter to activate
+		emitterParams.period = 50; // period for the emitter to activate
 		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
         emitterParams.alwaysAim = true;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
