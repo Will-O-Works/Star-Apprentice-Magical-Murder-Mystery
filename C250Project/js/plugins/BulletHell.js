@@ -505,10 +505,7 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
     this.animationAscending = true;
     this.frame = frame;
     this.i = 0;
-<<<<<<< HEAD
-=======
     this.curSprite = sprite;
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
     if (sprite != null) {
         this._bitmap = ImageManager.loadCharacter(sprite);
         this._isBigCharacter = ImageManager.isBigCharacter(sprite);
@@ -521,20 +518,15 @@ BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, a
 /**
  * Updates the sprite on screen. Changes the displayed frame every this.animationSpeed calls.
  */
-<<<<<<< HEAD
-=======
 
  ///Addition: Movement Based Sprite animation Rayvn.
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 BHell_Sprite.prototype.update = function () {
     Sprite_Base.prototype.update.call(this);
 
     if (ImageManager.isReady()) {
         this.visible = true;
     }
-<<<<<<< HEAD
 
-=======
     if (this.curSprite === "PlayerSprite"){
         var oldIndex =  this.characterIndex
         if(my.player.dx <-9){
@@ -552,7 +544,6 @@ BHell_Sprite.prototype.update = function () {
         }
         
     }
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
     if (this.animationSpeed > 0) {
         this.i = (this.i + 1) % this.animationSpeed;
         if (this.i === 0 && this.animated === true) {
@@ -566,13 +557,7 @@ BHell_Sprite.prototype.update = function () {
             }
             this.updateCharacterFrame();
         }
-<<<<<<< HEAD
     }
-=======
-
-    }
-    
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 };
 
 /**
@@ -1907,11 +1892,8 @@ var BHell = (function (my) {
 
 	/** 
 	 * Emitter Sample by V.L.
-<<<<<<< HEAD
 	 */
-=======
-	 */ 
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
+
 	var BHell_Emitter_Sample = my.BHell_Emitter_Sample = function () {
         this.initialize.apply(this, arguments);
     };
@@ -1950,7 +1932,6 @@ var BHell = (function (my) {
 		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
 		this.parent.addChild(bullet);
 		this.bulletList.push(bullet);
-<<<<<<< HEAD
 
 		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
     }; 
@@ -2079,12 +2060,6 @@ var BHell = (function (my) {
 		}
 		this.change += 3; 
     };
-=======
-		
-		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
-    };
-
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
     /**
      * Rotating emitter. It spawns a single bullet moving upwards, while moving in a circular pattern.
@@ -4408,10 +4383,7 @@ var BHell = (function (my) {
             }
 			
         });
-<<<<<<< HEAD
 
-=======
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         my.BHell_Sprite.prototype.initialize.call(this, playerData.sprite, playerData.index, playerData.direction, playerData.frame, playerData.animated, playerData.animation_speed);
 
         this.parent = parent;
@@ -4439,14 +4411,9 @@ var BHell = (function (my) {
         this.hitboxW = my.parse(playerData.hitbox_w, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
-
-<<<<<<< HEAD
 		// Added player_speed prameter by V.L.
         this.player_speed = playerParams.speed; 
 		this.speed = playerParams.speed * 2;
-=======
-        this.speed = playerParams.speed * 2;
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4564,7 +4531,6 @@ var BHell = (function (my) {
         this.dx += h * this.speed;
         this.dy += v * this.speed;
     };
-<<<<<<< HEAD
 	
 	/**
 	Slow function in player by V.L.
@@ -4576,9 +4542,6 @@ var BHell = (function (my) {
 			this.speed = this.player_speed*2; 
 		}
     };
-	
-=======
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
     /**
      * Moves the player and all its emitters.
@@ -4590,18 +4553,11 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.move = function () {
         // If the player has just been spawned (outside the screen), move to the starting position.
-<<<<<<< HEAD
-=======
         this.index =0;
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
             if (my.enemyBullets.length === 0) {
                 var dy = Graphics.height * 0.9 - this.y;
-<<<<<<< HEAD
-=======
-                
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
 
                 if (Math.abs(dy) <= this.speed * 0.3) {
                     this.y = Math.round(Graphics.height * 0.9);
@@ -5195,10 +5151,6 @@ var BHell = (function (my) {
      * "Escape" button: toggle pause.
      */
     Scene_BHell.prototype.updateInput = function () {
-<<<<<<< HEAD
-=======
-        
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
         if (!my.controller.paused && !$gameMessage.isBusy()) {
             if (Input.isTriggered('escape')) {
                 this.pause();
@@ -5260,7 +5212,6 @@ var BHell = (function (my) {
                         my.player.shoot(false);
                     }
 
-<<<<<<< HEAD
                     if (TouchInput.isCancelled() || Input.isPressed(18)) {
                         my.player.launchBomb();
                     }
@@ -5274,11 +5225,6 @@ var BHell = (function (my) {
                     } else {
 						my.player.slow(false);
 					}
-=======
-                    if (TouchInput.isCancelled() || Input.isPressed('shift')) {
-                        my.player.launchBomb();
-                    }
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
                 }
             }
         }
@@ -6849,10 +6795,6 @@ var BHell = (function (my) {
 
 
 
-<<<<<<< HEAD
-=======
-
-
 
 
 
@@ -6894,4 +6836,3 @@ var BHell = (function (my) {
 //     BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 //     this.mover = new my.BHell_Mover_Chase();
 // };
->>>>>>> f999868a0d905607d518107215b52c6a4abbc707
