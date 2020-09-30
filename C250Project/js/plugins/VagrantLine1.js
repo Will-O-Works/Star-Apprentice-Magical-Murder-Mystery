@@ -44,7 +44,6 @@ var BHell = (function (my) {
     //##this a generic audio and score display function that will  be modified at a later date
     BHell_Enemy_VagrantLine1.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
-        AudioManager.playSe({name:"Collapse4", volume:2, pitch:2, pan:0});
         this.changeState("dying");
 
         my.controller.destroyEnemyBullets();
@@ -145,7 +144,6 @@ var BHell = (function (my) {
         switch (this.state) {
             case "started":
                 if (this.mover.inPosition === true) {
-                    AudioManager.playSe({name: "Monster5", volume: 100, pitch: 100, pan: 0});
                     this.changeState("pattern 1");
                 }
                 break;

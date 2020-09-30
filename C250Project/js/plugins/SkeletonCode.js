@@ -9,7 +9,7 @@ link to predifined stuff u can use or extend: https://hashakgik.github.io/Bullet
 
 var BHell = (function (my) {
 
-    console.log("Test is being called correctly");
+    
     var BHell_Enemy_SkeletonCode = my.BHell_Enemy_SkeletonCode = function() {
         this.initialize.apply(this, arguments);
     };
