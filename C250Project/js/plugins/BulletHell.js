@@ -966,6 +966,8 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var animated = false;
     var animationSpeed = 15;
     var grazed = false;
+	var shoot_x = my.player.x;  // restore variable for sine shaped bullets by V.L.
+	var count = 0;  // restore variable for sine shaped bullets by V.L.
 
     if (params != null) {
         speed = params.speed || speed;
@@ -977,6 +979,8 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
             animated = true;
         }
         animationSpeed = params.animation_speed || animationSpeed;
+		shoot_x = params.shoot_x || my.player.x;   // restore variable for sine shaped bullets by V.L.
+		count = params.count || count;   // restore variable for sine shaped bullets by V.L.
     }
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
@@ -992,6 +996,8 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     this.speed = speed;
     this.bulletList = bulletList;
     this.outsideMap = false;
+	this.count = count; 
+	this.shoot_x = shoot_x; 
 };
 
 /**
@@ -1019,7 +1025,7 @@ BHell_Bullet.prototype.destroy = function() {
     if (this.parent != null) {
         this.parent.removeChild(this);
     }
-    this.bulletList.splice(this.bulletList.indexOf(this), 1);
+    this.bulletList.splice(this.bulletList.indexOf(this), 1); 
 };
 
 return my;
@@ -1663,7 +1669,8 @@ var BHell = (function (my) {
 
 
     BHell_Emitter_Circle.prototype.initialize = function (x, y, params, parent, bulletList) {
-        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList); 
+		
         this.n = 360;
         this.dutyCycle = 0.25;
         this.pulses = 16;
@@ -1963,9 +1970,17 @@ var BHell = (function (my) {
 		// initialize your own variables 
 		this.angle = 0; 
 		this.change = 0; 
+		this.shoot_x = Math.random() * Graphics.width / 4; 
+		this.count = 0; 
+		this.bullet_x = 0; 
+		this.variation = 1; 
+		
+		this.waves = []; 
+		
 		// or inherit prameters from the enemy class
 		 if (params != null) {
             this.angle = params.angle || this.angle;
+			this.shoot_x = params.shoot_x || this.shoot_x; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
@@ -1974,19 +1989,76 @@ var BHell = (function (my) {
     };
 
     BHell_Emitter_Sine.prototype.shoot = function () {
-		this.bulletParams.speed = 2; //give the bullet a speed. you can do this in sample.js as well 
-		// create bullet by new my.BHell_Bullet(x, y, direction(0 is to the right), this.bulletParams(this includes speed, see sample.js), this.bulletList);
-		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
-		this.parent.addChild(bullet);
-		this.bulletList.push(bullet);
 		
-		for (i = 0; i < this.bulletList.length; i ++ ) {
-			this.bulletList[i].angle += Math.sin(this.change) * Math.PI / 4;
+		if (this.count % 100 < 90 && this.count % 100 % 5 == 0) {
+			for (i = 0; i < 4; i ++) {
+				this.bulletParams.speed = 2 + Math.random() / 2; 
+				this.bulletParams.count = this.count; 
+				this.bulletParams.shoot_x = this.shoot_x + i * Graphics.width / 4; 
+				var bullet = new my.BHell_Bullet(this.shoot_x, 0, Math.PI/2, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);				
+			}
+
+		} else if (this.count % 100 == 90) {
+			this.shoot_x = Math.random() * Graphics.width / 4; // this.shoot_x = my.player.x; 
 		}
 		
-		this.change += Math.PI / 2; 
-		this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
+		for (i = 0; i < this.bulletList.length; i ++ ) {
+			this.bulletList[i].x = this.bulletList[i].shoot_x + 100 * Math.sin((this.bulletList[i].count) / 20 + this.change); 
+		}
+		
+		this.change += 0.01; 
+		this.count += 1; 
+		
+		
+		/*
+		if (this.count % 100 == 0) {
+			this.waves.push(this.shoot_x); 
+			this.shoot_x = my.player.x; 
+		} else if (this.count % 100 < 90) {
+			this.bulletParams.speed = 1; //give the bullet a speed. you can do this in sample.js as well 
+			this.bulletParams.shoot_x = this.shoot_x; 
+			// create bullet by new my.BHell_Bullet(x, y, direction(0 is to the right), this.bulletParams(this includes speed, see sample.js), this.bulletList);
+			var bullet = new my.BHell_Bullet(this.shoot_x, 0, Math.PI/2, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+			
+			for (i = 0; i < this.bulletList.length; i ++ ) {
+				this.bulletList[i].angle += Math.sin(this.change) * Math.PI / 4;
+			}
+			
+			this.change += Math.PI / 2; 
+			this.angle += Math.PI / 6; // change the angle by 30 degrees every time 
+		} 
+		
+		if (true) {
+			for (i = 0; i < this.bulletList.length; i ++ ) {
+				this.bulletList[i].x = this.shoot_x + 50 * Math.sin(i / 20 + this.change); 
+			}
+		} else {
+			
+			for (var a = 0; a < this.waves.length; a ++ ) {
+				for (i = 0; i < 90; i ++ ) {
+					//console.log(this.bulletList[i].shoot_x);
+					//this.bullet_x = this.bulletList[i].shoot_x; 
+					this.bulletList[a * 90 + i].x = this.waves[a] + 50 * Math.sin(i / 20 + this.change); 
+					//this.bulletList[i].x += 20 * Math. random() * Math.sin((Math. random()+1)/2 * this.change); 
+				}
+			}
+			
+			for (i = 0; i < this.bulletList.length; i ++ ) {
+				this.bulletList[i].x = this.waves[Math.floor(i/90)] + 50 * Math.sin(i / 20 + this.change); 
+			}
+
+		}
+			
+		this.change += 0.1; 
+		this.count += 1; 
+		*/
+
     };
+
 	
 	/** 
 	 * Homing bullet emitter by V.L.
@@ -2014,8 +2086,12 @@ var BHell = (function (my) {
 		// initialize your own variables 
 		this.angle = 0; 
 		this.change = 0; 
+		this.count = 20; 
+		this.range = 200; 
+		this.swap = 0; 
 		this.center_x = this.x; 
 		this.center_y = this.y; 
+		this.timer = 0; 
 		// or inherit prameters from the enemy class
 		 if (params != null) {
             this.angle = params.angle || this.angle;
@@ -2028,8 +2104,8 @@ var BHell = (function (my) {
         this.j = 0; // Frame counter. Used for state switching.
 		
 		var num;
-        for (num = 0; num < 50; num++) {
-            var bullet = new my.BHell_Bullet((400 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x, (400 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y, 2 * Math.PI / 50 * num, this.bulletParams, this.bulletList);
+        for (num = 0; num < this.count; num++) {
+            var bullet = new my.BHell_Bullet((this.change) * Math.cos(this.angle + 2 * Math.PI / this.count * num) + this.center_x, (this.change) * Math.sin(this.angle + 2 * Math.PI / this.count * num) + this.center_y, 2 * Math.PI / this.count * num, this.bulletParams, this.bulletList);
             this.parent.addChild(bullet);
 			this.bulletList.push(bullet);
         }
@@ -2037,28 +2113,45 @@ var BHell = (function (my) {
 
     BHell_Emitter_Home.prototype.shoot = function () {
 
-		this.center_x = this.x; 
-		this.center_y = this.y; 
-
-		var num;
-        for (num = 0; num < 50; num++) {
-			//this.parent.removeChild(this.bulletList.shift());
-            var bullet = new my.BHell_Bullet((400 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x, (400 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y, 2 * Math.PI / 50 * num, this.bulletParams, this.bulletList);
-            this.parent.addChild(bullet);
-			this.bulletList.push(bullet);
-        }
-		/*
-		for (num = 0; num < 50; num++) {
-			this.bulletList[i].x = (200 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x; 
-			this.bulletList[i].y = (200 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y; 
-			this.bulletList[i].angle = 2 * Math.PI / 50 * num; 
-		}*/
+		this.timer += 1; 
 		
-		this.angle += 0.1;
-         if (this.angle >= Math.PI * 2) {
-			this.angle -= Math.PI * 2;
+		if (this.timer > 10) {
+			this.center_x = this.x; 
+			this.center_y = this.y; 
+
+			var num;
+			for (num = 0; num < this.count; num++) {
+				//this.parent.removeChild(this.bulletList.shift());
+				var bullet = new my.BHell_Bullet((this.change) * Math.cos(this.angle + 2 * Math.PI / this.count * num) + this.center_x, (this.change) * Math.sin(this.angle + 2 * Math.PI / this.count * num) + this.center_y, 2 * Math.PI / this.count * num, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+			}
+			/*
+			for (num = 0; num < 50; num++) {
+				this.bulletList[i].x = (200 - this.change) * Math.cos(this.angle + 2 * Math.PI / 50 * num) + this.center_x; 
+				this.bulletList[i].y = (200 - this.change) * Math.sin(this.angle + 2 * Math.PI / 50 * num) + this.center_y; 
+				this.bulletList[i].angle = 2 * Math.PI / 50 * num; 
+			}*/
+			
+			this.angle += 1;
+			 if (this.angle >= Math.PI * 2) {
+				this.angle -= Math.PI * 2;
+			}
+			if (this.change >= this.range) {
+				this.swap = 1; 
+			}
+			
+			if (this.change <= 0) {
+				this.swap = 0; 
+			}
+			
+			if (this.swap == 1) {
+				this.change -= 3; 
+			} else {
+				this.change += 3; 
+			}
 		}
-		this.change += 3; 
+		
     };
 
     /**
@@ -4392,6 +4485,10 @@ var BHell = (function (my) {
         this.immortal = true;
         this.justSpawned = true;
         this.lives = lives;
+		
+		// Determine if the player should use bomb or not 
+		this.can_bomb = false; 
+		
         if (unlimitedBombs) {
             this.startingBombs = -1;
         }
@@ -4662,6 +4759,16 @@ var BHell = (function (my) {
     BHell_Player.prototype.launchBomb = function () {
         if (!this.justSpawned && this.bombs !== 0 && !this.bomb.isActive()) {
             this.bombs--;
+			
+			// Reset the game if the player used the bomb when not supposed to by V.L.
+			//$gameVariables.setValue(0008, 1); //Change variable 0008 Bomb Used to 1 by V.L.	
+			if (this.can_bomb == false) {
+				$gameMessage.add("Oh crap! I shouldn't be using my bomb here. "); 
+				$gameMessage.newPage(); 
+				$gameMessage.add("I should try again. "); 
+				SceneManager.goto(my.Scene_BHell_Init); 
+			}
+			
             $gameBHellResult.bombsUsed++;
             this.bomb.activate(this.x, this.y);
         }
@@ -4673,11 +4780,11 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.die = function (t) {
         if (this.immortal === false) {
-            if (t && this.bombs > 0) { // If a bullet hits the player and there are bombs available, launch one, but waste all of them.
+            /* if (t && this.bombs > 0) { // If a bullet hits the player and there are bombs available, launch one, but waste all of them.
                 this.launchBomb();
                 this.bombs = 0;
-            }
-            else {
+            }*/ // V.L.
+             if (true) {
                 this.lives--;
                 $gameBHellResult.livesLost++;
                 my.controller.stopShooting = true;
@@ -4818,6 +4925,18 @@ Scene_BHell_Init.prototype.update = function() {
         SceneManager.goto(my.Scene_BHell);
     }
 
+	//Remove the select player window? by V.L.
+	
+	this.i = 0;
+	
+	my.playerId = this.i;
+    if ($dataBulletHell.players[this.i].select_se != null) {
+        AudioManager.playSe($dataBulletHell.players[this.i].select_se);
+    }
+    SceneManager.goto(my.Scene_BHell);
+	
+	/*
+
     if (!this.isBusy()) {
         this.playersWindow.open();
 
@@ -4825,15 +4944,17 @@ Scene_BHell_Init.prototype.update = function() {
             this.removeChildren();
             my.friendlyBullets = [];
             my.enemyBullets = [];
+			
             this.addChild(this.playersWindow);
             this.addChild(this.statusWindow);
             this.statusWindow.open();
 
+			 
             var index = $gamePlayer.bhellPlayers.filter(p => {
                 return p.unlocked === true;
             })[this.playersWindow.index()].index;
 
-            this.statusWindow.selectPlayer(index);
+            this.statusWindow.selectPlayer(index);  
 
             my.player = new my.BHell_Player(index, 0, true, this);
             my.player.justSpawned = false;
@@ -4867,6 +4988,8 @@ Scene_BHell_Init.prototype.update = function() {
         }
     }
     Scene_Base.prototype.update.call(this);
+	
+	*/
 };
 
 /**
@@ -4888,7 +5011,7 @@ Scene_BHell_Init.prototype.updateChildren = function () {
 };
 
 Scene_BHell_Init.prototype.isBusy = function() {
-    return this.playersWindow.isClosing() || Scene_Base.prototype.isBusy.call(this);
+    //return this.playersWindow.isClosing() || Scene_Base.prototype.isBusy.call(this); //V.L.
 };
 
 Scene_BHell_Init.prototype.terminate = function() {
@@ -4900,10 +5023,13 @@ Scene_BHell_Init.prototype.terminate = function() {
  * Creates the players' window and adds an entry for each of the available players.
  */
 Scene_BHell_Init.prototype.createPlayersWindow = function() {
-    this.playersWindow = new my.BHell_Window_Players();
+    /*
+	
+	this.playersWindow = new my.BHell_Window_Players();
 
     this.statusWindow = new my.BHell_Window_Status();
 
+	
     for (var i = 0; i < $dataBulletHell.players.length; i++) {
         if ($gamePlayer.bhellPlayers[i].unlocked === true) {
             this.playersWindow.setHandler(String(i),  this.selectPlayer.bind(this, i));
@@ -4911,6 +5037,8 @@ Scene_BHell_Init.prototype.createPlayersWindow = function() {
     }
     this.addWindow(this.playersWindow);
     this.addWindow(this.statusWindow);
+	
+	*/ // V.L.
 };
 
 /**

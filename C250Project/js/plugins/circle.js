@@ -8,9 +8,9 @@ var BHell = (function (my) {
     BHell_Enemy_Circle.prototype.constructor = BHell_Enemy_Circle;
 
 	BHell_Enemy_Circle.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 300;
+        params.hp = 100;
         params.speed = 2;
-        params.hitbox_w = 100;
+        params.hitbox_w = 300;
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -21,6 +21,10 @@ var BHell = (function (my) {
 		emitterParams.after_period = 50; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
+		
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = true; 
+		
 		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
