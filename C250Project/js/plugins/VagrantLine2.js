@@ -198,6 +198,7 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.spotted = false
+        seeks = 0
     };
     
     /**
@@ -206,14 +207,24 @@ var BHell = (function (my) {
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
         this.counter = this.counter +1;
-        if (this.counter%120 === 0){
+        if (seeks === 3)////change to adjust bullet lifespan
+        {
+            console.debug("destroying");
+            this.destroy();
+        }
+        if (this.counter%120 === 0){////////change to adjust tracking
             var dx = my.player.x - this.x + this.aimX;
             var dy = my.player.y - this.y + this.aimY;
             this.angle = Math.atan2(dy, dx);
             this.spotted = true;
         }
-        if (this.spotted === true){
-            if(this.counter>150){this.counter = 0;this.spotted=false;}
+        if (this.spotted === true){////change to adjust pause
+            if(this.counter>150)
+            {
+                seeks = seeks+1;
+                this.counter = 0;
+                this.spotted=false;
+            }
         }
         else{
             this.x += Math.cos(this.angle) * this.speed;
@@ -243,6 +254,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
+/////////////////custom bullet class and emitter
 var BHell = (function (my) {
     /**
      * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
