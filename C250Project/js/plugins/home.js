@@ -8,7 +8,7 @@ var BHell = (function (my) {
     BHell_Enemy_Home.prototype.constructor = BHell_Enemy_Home;
 
 	BHell_Enemy_Home.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 150;
+        params.hp = 50;
         params.speed = 250; // speed of boss moving 
         params.hitbox_w = 300; // hitbox width
         params.hitbox_h = 100; // hitbox height
@@ -21,6 +21,9 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = true;
 		emitterParams.center_x = this.x; 
 		emitterParams.center_y = this.y; 
+		
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
 		
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
 		this.emitters.push(new my.BHell_Emitter_Home(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 

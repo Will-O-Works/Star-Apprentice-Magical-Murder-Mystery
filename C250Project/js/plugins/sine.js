@@ -8,12 +8,15 @@ var BHell = (function (my) {
     BHell_Enemy_Sine.prototype.constructor = BHell_Enemy_Sine;
 
 	BHell_Enemy_Sine.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 100;
+        params.hp = 50;
         params.speed = 2; // speed of boss moving 
         params.hitbox_w = 300; // hitbox width
         params.hitbox_h = 100; // hitbox height
         params.animated = false; // if true, you need 3 frames of animation for the boss
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
 
 		var emitterParams = {};
 		emitterParams.period = 1; // period for the emitter to activate

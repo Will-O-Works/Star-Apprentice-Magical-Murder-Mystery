@@ -1166,13 +1166,27 @@ var BHell = (function (my) {
 
         if (this.generators.length === 0 && this.activeGenerators.length === 0 && this.enemies.length === 0) {
             // Victory.
-            $gameBHellResult.won = true;
-            my.player.win();
+			// V.L.
+			// if (my.player.bombed == true) {
+				$gameBHellResult.won = true;
+				my.player.win();
+			// }
         }
         else if (my.player.lives === 0) {
             // Defeat.
-            $gameBHellResult.won = false;
+			// Loop the bullet hell game instead of quit when defeat by V.L.
+			$gameMessage.add("So close...! "); 
+			$gameMessage.newPage(); 
+			$gameMessage.add("I must find the contradtiction in her words. "); 
+			$gameMessage.newPage(); 
+			$gameMessage.add("Try again! "); 
+			SceneManager.goto(my.Scene_BHell_Init); 
+			
+			$gameBHellResult.won = false;
             my.playing = false;
+            /* 
+			$gameBHellResult.won = false;
+            my.playing = false; */ 
         }
         else if (my.playing && !this.paused && !$gameMessage.isBusy()) { // Main update loop.
             // Scroll the stage if there are no stopping generators.
@@ -2876,6 +2890,9 @@ BHell_Enemy_Base.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
     this.move();
     this.shoot(true);
+	if (my.player.bombed == true) {
+		this.destroy(); 
+	}
 
     this.emitters.forEach(e => { // If not shooting, change the angle
         if (this.aim === false && this.rnd === true) {
@@ -4486,8 +4503,9 @@ var BHell = (function (my) {
         this.justSpawned = true;
         this.lives = lives;
 		
-		// Determine if the player should use bomb or not 
+		// Determine if the player should use bomb or not by V.L.
 		this.can_bomb = false; 
+		this.bombed = false; 
 		
         if (unlimitedBombs) {
             this.startingBombs = -1;
@@ -4496,6 +4514,8 @@ var BHell = (function (my) {
             this.startingBombs = playerParams.bombs;
         }
 
+		// Set bomb number to 1 by V.L.
+		this.startingBombs = 1; 
         this.bombs = this.startingBombs;
 
         this.spawn_se = playerData.spawn_se;
@@ -4680,6 +4700,8 @@ var BHell = (function (my) {
             }
         }
         else if (this.won === true) {
+			
+			
             var dx = Graphics.width / 2 - this.x;
             this.y -= this.speed;
             if (dx > 0) {
@@ -4690,16 +4712,29 @@ var BHell = (function (my) {
             }
 
             if (this.y < -this.height) {
-                my.playing = false;
-                if (this.victory_se != null) {
-                 my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
-                     return audio.isPlaying();
-                 }).length !== 0;
-                }
-                if (my.victoryMe != null) {
-                    my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
-                }
-            }
+				
+				// Victory. 
+				// V.L.
+				if (this.bombed == false) {
+					$gameMessage.add("I must have missed something... "); 
+					$gameMessage.newPage(); 
+					$gameMessage.add("I should try again. "); 
+					SceneManager.goto(my.Scene_BHell_Init); 
+				} else {
+					my.playing = false;
+					
+					if (this.victory_se != null) {
+					 my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
+						 return audio.isPlaying();
+					 }).length !== 0;
+					}
+					if (my.victoryMe != null) {
+						my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
+					}
+					
+				}
+
+            } 
         }
         else { // Otherwise move towards the destination.
             var angle = Math.atan2(this.dy, this.dx);
@@ -4771,6 +4806,7 @@ var BHell = (function (my) {
 			
             $gameBHellResult.bombsUsed++;
             this.bomb.activate(this.x, this.y);
+			this.bombed = true; 
         }
     };
 
@@ -4788,7 +4824,8 @@ var BHell = (function (my) {
                 this.lives--;
                 $gameBHellResult.livesLost++;
                 my.controller.stopShooting = true;
-                this.bombs = this.startingBombs;
+				// When player dies, the number of bombs doesn't change by V.L.
+                //this.bombs = this.startingBombs;
                 this.bomb.deactivate();
                 my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
                 if (this.death_se != null) {
@@ -4806,11 +4843,11 @@ var BHell = (function (my) {
         if (this.won === false) {
             this.won = true;
             if (this.victory_se != null) {
-                AudioManager.playSe(this.victory_se);
+                //AudioManager.playSe(this.victory_se);
             }
 
             if (my.victoryMe != null) {
-                AudioManager.playMe(my.victoryMe);
+                //AudioManager.playMe(my.victoryMe);
             }
         }
     };
@@ -4925,7 +4962,7 @@ Scene_BHell_Init.prototype.update = function() {
         SceneManager.goto(my.Scene_BHell);
     }
 
-	//Remove the select player window? by V.L.
+	//Remove the select player window by V.L.
 	
 	this.i = 0;
 	
