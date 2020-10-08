@@ -42,5 +42,6 @@ var $plugins =
 {"name":"sample","status":true,"description":"","parameters":{}},
 {"name":"ParticleEmitter","status":true,"description":"ParticleEmitter","parameters":{"configName":"[\"angle\",\"bubble\",\"emitter\",\"stars\"]","staticToPlayer":"true"}},
 {"name":"home","status":true,"description":"","parameters":{}},
-{"name":"sine","status":true,"description":"","parameters":{}}
+{"name":"sine","status":true,"description":"","parameters":{}},
+{"name":"Jay_VariableMix","status":true,"description":"Allows for variable mixes to be played.","parameters":{}}
 ];
