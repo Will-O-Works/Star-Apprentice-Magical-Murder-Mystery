@@ -1583,6 +1583,7 @@ Window_MenuCommand.prototype.numVisibleRows = function() {
     return this.maxItems();
 };
 
+
 Window_MenuCommand.prototype.makeCommandList = function() {
     this.addMainCommands();
     this.addFormationCommand();

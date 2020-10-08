@@ -9,7 +9,7 @@ var BHell = (function (my) {
 
 	BHell_Enemy_Circle.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 50;
-        params.speed = 2;
+        params.speed = 4;
         params.hitbox_w = 300;
         params.hitbox_h = 100;
         params.animated = false;
@@ -17,11 +17,13 @@ var BHell = (function (my) {
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 150; 
+		emitterParams.period = 75; 
 		emitterParams.after_period = 50; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
-		
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 6;
+
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
 		

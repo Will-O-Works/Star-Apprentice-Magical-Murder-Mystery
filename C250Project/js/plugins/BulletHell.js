@@ -211,6 +211,9 @@ var $gameBHellResult;
 /**
  * @namespace BHell
  */
+var messageStarted = false;
+var windowStartupTime = 20;
+
 var BHell = (function (my) {
 
 
@@ -1166,26 +1169,25 @@ var BHell = (function (my) {
 
         if (this.generators.length === 0 && this.activeGenerators.length === 0 && this.enemies.length === 0) {
             // Victory.
-			// V.L.
-			// if (my.player.bombed == true) {
-				$gameBHellResult.won = true;
-				my.player.win();
-			// }
+            $gameBHellResult.won = true;
+            my.player.win();
         }
         else if (my.player.lives === 0) {
             // Defeat.
-			// Loop the bullet hell game instead of quit when defeat by V.L.
-			$gameMessage.add("So close...! "); 
-			$gameMessage.newPage(); 
-			$gameMessage.add("I must find the contradtiction in her words. "); 
-			$gameMessage.newPage(); 
-			$gameMessage.add("Try again! "); 
-			SceneManager.goto(my.Scene_BHell_Init); 
-			
-			$gameBHellResult.won = false;
+            // Loop the bullet hell game instead of quit when defeat by V.L.
+            messageStarted = true;
+            messageTimer = 0;
+            $gameMessage.add("\\w[" + String(windowStartupTime) + "]So close...! "); 
+            $gameMessage.newPage(); 
+            $gameMessage.add("I must find the contradtiction in her words. "); 
+            $gameMessage.newPage(); 
+            $gameMessage.add("Try again! "); 
+            SceneManager.goto(my.Scene_BHell_Init); 
+            
+            $gameBHellResult.won = false;
             my.playing = false;
             /* 
-			$gameBHellResult.won = false;
+            $gameBHellResult.won = false;
             my.playing = false; */ 
         }
         else if (my.playing && !this.paused && !$gameMessage.isBusy()) { // Main update loop.
@@ -1974,12 +1976,6 @@ var BHell = (function (my) {
 		this.i = 0;
         this.parent = parent;
         this.params = params;
-		
-        this.bulletParams = {};
-        this.bulletParams.sprite = this.params.sprite;
-        this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = this.params.direction;
-		//this.bulletParams.speed = this.params.speed; 
 		
 		// initialize your own variables 
 		this.angle = 0; 
@@ -2890,9 +2886,9 @@ BHell_Enemy_Base.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
     this.move();
     this.shoot(true);
-	if (my.player.bombed == true) {
-		this.destroy(); 
-	}
+    if (my.player.bombed == true) {
+        this.destroy(); 
+    }
 
     this.emitters.forEach(e => { // If not shooting, change the angle
         if (this.aim === false && this.rnd === true) {
@@ -4504,8 +4500,8 @@ var BHell = (function (my) {
         this.lives = lives;
 		
 		// Determine if the player should use bomb or not by V.L.
-		this.can_bomb = false; 
-		this.bombed = false; 
+        this.can_bomb = false; 
+        this.bombed = false;
 		
         if (unlimitedBombs) {
             this.startingBombs = -1;
@@ -4514,8 +4510,7 @@ var BHell = (function (my) {
             this.startingBombs = playerParams.bombs;
         }
 
-		// Set bomb number to 1 by V.L.
-		this.startingBombs = 1; 
+        this.startingBombs = 1;
         this.bombs = this.startingBombs;
 
         this.spawn_se = playerData.spawn_se;
@@ -4700,8 +4695,6 @@ var BHell = (function (my) {
             }
         }
         else if (this.won === true) {
-			
-			
             var dx = Graphics.width / 2 - this.x;
             this.y -= this.speed;
             if (dx > 0) {
@@ -4712,27 +4705,29 @@ var BHell = (function (my) {
             }
 
             if (this.y < -this.height) {
-				
-				// Victory. 
-				// V.L.
-				if (this.bombed == false) {
-					$gameMessage.add("I must have missed something... "); 
-					$gameMessage.newPage(); 
-					$gameMessage.add("I should try again. "); 
-					SceneManager.goto(my.Scene_BHell_Init); 
-				} else {
-					my.playing = false;
-					
-					if (this.victory_se != null) {
-					 my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
-						 return audio.isPlaying();
-					 }).length !== 0;
-					}
-					if (my.victoryMe != null) {
-						my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
-					}
-					
-				}
+                
+                // Victory. 
+                // V.L.
+                if (this.bombed == false) {
+                    messageStarted = true;
+                    messageTimer = 0;
+                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I must have missed something... "); 
+                    $gameMessage.newPage(); 
+                    $gameMessage.add("I should try again. "); 
+                    SceneManager.goto(my.Scene_BHell_Init); 
+                } else {
+                    my.playing = false;
+                    
+                    if (this.victory_se != null) {
+                     my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
+                         return audio.isPlaying();
+                     }).length !== 0;
+                    }
+                    if (my.victoryMe != null) {
+                        my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
+                    }
+                    
+                }
 
             } 
         }
@@ -4798,7 +4793,9 @@ var BHell = (function (my) {
 			// Reset the game if the player used the bomb when not supposed to by V.L.
 			//$gameVariables.setValue(0008, 1); //Change variable 0008 Bomb Used to 1 by V.L.	
 			if (this.can_bomb == false) {
-				$gameMessage.add("Oh crap! I shouldn't be using my bomb here. "); 
+                messageStarted = true;
+                messageTimer = 0;
+				$gameMessage.add("\\w[" + String(windowStartupTime) + "]Oh crap! I shouldn't be using my bomb here. "); 
 				$gameMessage.newPage(); 
 				$gameMessage.add("I should try again. "); 
 				SceneManager.goto(my.Scene_BHell_Init); 
@@ -4806,7 +4803,7 @@ var BHell = (function (my) {
 			
             $gameBHellResult.bombsUsed++;
             this.bomb.activate(this.x, this.y);
-			this.bombed = true; 
+            this.bombed = true;
         }
     };
 
@@ -4824,7 +4821,7 @@ var BHell = (function (my) {
                 this.lives--;
                 $gameBHellResult.livesLost++;
                 my.controller.stopShooting = true;
-				// When player dies, the number of bombs doesn't change by V.L.
+                // When player dies, the number of bombs doesn't change by V.L.
                 //this.bombs = this.startingBombs;
                 this.bomb.deactivate();
                 my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
@@ -5224,6 +5221,19 @@ var BHell = (function (my) {
      * otherwise it terminates the minigame, returning to Scene_Map.
      */
     Scene_BHell.prototype.update = function () {
+
+        if ($gameMessage.isBusy() && typeof this.messageWindow == "object") {
+            if (messageStarted) {
+                
+                this.messageWindow.hide();
+                messageTimer++;
+                if (messageTimer >= windowStartupTime) {
+                    messageStarted = false;
+                }
+            } else {
+                this.messageWindow.show();
+            }
+        }
         if (!this.isBusy()) {
             if (my.playing) {
                 this.updateInput();
@@ -5244,6 +5254,9 @@ var BHell = (function (my) {
                     AudioManager.replayBgs(my.prevBgs);
                 }
                 TouchInput.clear();
+                $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
+                $gamePlayer.requestMapReload();
+                $gameSelfSwitches.clear();
                 SceneManager.goto(Scene_Map);
             }
         }
@@ -5436,7 +5449,7 @@ var BHell = (function (my) {
         }
 
 
-        this.hud.bitmap.drawText(Number(Math.round(my.scoreAccumulator)), 10, 10, Graphics.width - 20, 36, "right");
+        //this.hud.bitmap.drawText(Number(Math.round(my.scoreAccumulator)), 10, 10, Graphics.width - 20, 36, "right");
 
         if (my.bossOnScreen === true) {
             this.hud.bitmap._context.lineWidth = 1;

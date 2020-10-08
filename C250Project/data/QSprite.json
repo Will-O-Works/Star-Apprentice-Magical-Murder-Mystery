@@ -94,5 +94,273 @@
         ]
       }
     }
+  },
+  "Vagrant": {
+    "name": "Vagrant",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QVagrant.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Fan": {
+    "name": "Fan",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QFan-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "right": {
+        "name": "right",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "left": {
+        "name": "left",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Door": {
+    "name": "Door",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.2125,
+    "anchorY": 0.9625,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\Door_OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Curtains": {
+    "name": "Curtains",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.9,
+    "anchorY": 0.98,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QCurtains-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "ChairRight": {
+    "name": "ChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.8,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "ChairLeft": {
+    "name": "ChairLeft",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.2,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QChairLeft-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BigTable": {
+    "name": "BigTable",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBigTable-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Plant": {
+    "name": "Plant",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 2.72,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QPlant-OW.png",
+    "poses": {
+      "defaukt": {
+        "name": "defaukt",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "InnerDoor": {
+    "name": "InnerDoor",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.75,
+    "anchorY": 0.88,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QInnerDoor-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedChairLeft": {
+    "name": "RedChairLeft",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.2,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedChairLeft-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Bed": {
+    "name": "Bed",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.895,
+    "anchorY": 0.97,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBed-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "SmallTable": {
+    "name": "SmallTable",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.38,
+    "anchorY": 0.86,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSmallTable-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Lamp": {
+    "name": "Lamp",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.85,
+    "anchorY": 2.23,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QLamp-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Bed2": {
+    "name": "Bed2",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.895,
+    "anchorY": 0.97,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBed2-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
   }
 }

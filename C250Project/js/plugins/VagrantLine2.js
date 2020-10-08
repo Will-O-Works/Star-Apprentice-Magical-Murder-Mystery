@@ -19,8 +19,8 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantLine2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 10000;
-        params.speed = 1;
+        params.hp = 50;
+        params.speed = 4;
         params.hitbox_w = 280;
         params.hitbox_h = 100;
         params.animated = false;
@@ -58,7 +58,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantLine2.prototype.updateCoat = function() {
-        if (this.j % 60 == 0){
+        if (this.j % 20 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
         }
         
@@ -90,7 +90,7 @@ var BHell = (function (my) {
                 this.updateCoat();
                 break;
             case "dying": // Spawns explosions for 5 seconds, then dies.
-                if (this.j > 300) {
+                if (this.j > 30) {
                     this.destroy();
                 }
                 break;
@@ -207,11 +207,11 @@ var BHell = (function (my) {
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
         this.counter = this.counter +1;
-        if (seeks === 3)////change to adjust bullet lifespan
+        /*if (seeks === 3)////change to adjust bullet lifespan
         {
             console.debug("destroying");
             this.destroy();
-        }
+        }*/
         if (this.counter%120 === 0){////////change to adjust tracking
             var dx = my.player.x - this.x + this.aimX;
             var dy = my.player.y - this.y + this.aimY;

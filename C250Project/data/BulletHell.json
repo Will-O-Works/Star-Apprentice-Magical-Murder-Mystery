@@ -823,7 +823,11 @@
 	{
 	  "name": "circle",
 	  "class": "BHell_Enemy_Circle",
-	  "params": null
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
 	}, 
 	{
 	  "name": "spin",
@@ -848,7 +852,11 @@
 	{
 	  "name": "sine",
 	  "class": "BHell_Enemy_Sine",
-	  "params": null
+	  "params": {
+        "bullet": {
+          "direction": 4
+        }
+    }
 	}, 
 	{
 	  "name": "home",
@@ -892,14 +900,14 @@
       "name": "VagrantLine1",
       "class": "BHell_Enemy_VagrantLine1",
       "params": {
-          "boss": true
+          "boss": false
         }
     },
     {
       "name": "VagrantLine2",
       "class": "BHell_Enemy_VagrantLine2",
       "params": {
-          "boss": true
+          "boss": false
         }
     }
   ]

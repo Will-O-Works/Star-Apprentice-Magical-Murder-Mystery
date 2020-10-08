@@ -18,8 +18,8 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantLine1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 10000;
-        params.speed = 1;
+        params.hp = 100;
+        params.speed = 4;
         params.hitbox_w = 280;
         params.hitbox_h = 140;
         params.animated = false;
@@ -55,14 +55,14 @@ var BHell = (function (my) {
         //to make a new emitter from scratch reffer to : https://hashakgik.github.io/BulletHell-RMMV/tutorial-emitter_js.html
         var flaskParams = {};
         flaskParams.bullet = {};
-        flaskParams.bullet.speed = 1;
+        flaskParams.bullet.speed = 3;
         flaskParams.bullet.index = 0;
         flaskParams.bullet.frame = 0;
         flaskParams.bullet.direction = 2;
         flaskParams.period = 5;
         flaskParams.a = Math.PI;
         flaskParams.b = 3 * Math.PI;
-        flaskParams.n = 5;
+        flaskParams.n = 3;
         this.flaskCounter = 0;
         this.flaskEmitters = [];
         this.flaskEmitters.push(new my.BHell_Emitter_Spray(200, 200, flaskParams, parent, my.enemyBullets));
@@ -117,12 +117,12 @@ var BHell = (function (my) {
         this.flaskEmitters[0].b = 3 * Math.PI;
     }
     console.log("counter != 0")
-    this.shoot(this.flaskEmitters, this.flaskCounter < 180);
+    this.shoot(this.flaskEmitters, this.flaskCounter < 99999);
 
     this.flaskEmitters[0].a += 0.004;
     this.flaskEmitters[0].b += 0.004;
 
-    this.flaskCounter = (this.flaskCounter + 1) % 300;
+    this.flaskCounter = (this.flaskCounter + 1) % 100;
     };
 //
 //
@@ -161,7 +161,7 @@ var BHell = (function (my) {
                 }
                 break;
             case "dying": // Spawns explosions for 5 seconds, then dies.
-                if (this.j > 300) {
+                if (this.j > 30) {
                     this.destroy();
                 }
                 else if (this.j % 10 === 0) {
@@ -169,7 +169,7 @@ var BHell = (function (my) {
                 }
                 break;
             case "changing": // Wait 3 seconds without shooting before actually changing to the scheduled state.
-                if (this.j > 180) {
+                if (this.j > 30) {
                     this.changeState(this.scheduledState);
                 }
                 break;
