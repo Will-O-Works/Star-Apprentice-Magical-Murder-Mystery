@@ -19,9 +19,9 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantLine2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 50;
+        params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 280;
+        params.hitbox_w = 500;
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);

@@ -211,8 +211,15 @@ var $gameBHellResult;
 /**
  * @namespace BHell
  */
+var messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
+var messageBGSprite = new Sprite(messageBGBitmap);
 var messageStarted = false;
 var windowStartupTime = 20;
+var windowBGAnimFrames = 7;
+var timerInterval = (windowBGAnimFrames - 1)/(windowStartupTime);
+var destructionStarted = false;
+var destructionTimer = 0;
+var gameScreenDestroyed = true;
 
 var BHell = (function (my) {
 
@@ -1177,11 +1184,9 @@ var BHell = (function (my) {
             // Loop the bullet hell game instead of quit when defeat by V.L.
             messageStarted = true;
             messageTimer = 0;
-            $gameMessage.add("\\w[" + String(windowStartupTime) + "]So close...! "); 
+            $gameMessage.add("\\w[" + String(windowStartupTime) + "]So close! ..."); 
             $gameMessage.newPage(); 
-            $gameMessage.add("I must find the contradtiction in her words. "); 
-            $gameMessage.newPage(); 
-            $gameMessage.add("Try again! "); 
+            $gameMessage.add("I must find the contradiction in her words. "); 
             SceneManager.goto(my.Scene_BHell_Init); 
             
             $gameBHellResult.won = false;
@@ -1767,14 +1772,7 @@ var BHell = (function (my) {
         my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
 		
 		this.i = 0;
-        this.parent = parent;
-        this.params = params;
-		
-        this.bulletParams = {};
-        this.bulletParams.sprite = this.params.sprite;
-        this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = this.params.direction;
-		
+
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
@@ -4839,6 +4837,7 @@ var BHell = (function (my) {
     BHell_Player.prototype.win = function () {
         if (this.won === false) {
             this.won = true;
+            $gameSwitches.setValue(23, true);
             if (this.victory_se != null) {
                 //AudioManager.playSe(this.victory_se);
             }
@@ -5224,14 +5223,34 @@ var BHell = (function (my) {
 
         if ($gameMessage.isBusy() && typeof this.messageWindow == "object") {
             if (messageStarted) {
-                
-                this.messageWindow.hide();
+                if (messageTimer === 0) {
+                    destructionStarted = false;
+                    destructionTimer = 0;
+                    gameScreenDestroyed = false;
+                    this.messageWindow.hide();
+                }
+                messageBGSpriteImage.setTransform(0, -540 * Math.floor(messageTimer * timerInterval));
                 messageTimer++;
                 if (messageTimer >= windowStartupTime) {
+                    $gameScreen.showPicture(1, "TextBGExit[1x7]", 0, 50, 376, 100, 100, 255, 0);
                     messageStarted = false;
                 }
             } else {
                 this.messageWindow.show();
+            }
+        } else {
+            if (!destructionStarted && typeof messageBGSpriteImage === "object") {
+                messageBGSpriteImage.setTransform(0, -9999);
+                destructionStarted = true;
+            } else {
+                if (destructionTimer <= windowStartupTime + (windowStartupTime)/(windowBGAnimFrames - 1)) {
+                    destructionTimer++;
+                } else {
+                    if (!gameScreenDestroyed) {
+                        $gameScreen.erasePicture(1);
+                        gameScreenDestroyed = true;
+                    }
+                }
             }
         }
         if (!this.isBusy()) {
@@ -5480,6 +5499,7 @@ var BHell = (function (my) {
      * Creates the windows displayed on pause.
      */
     Scene_BHell.prototype.createWindows = function () {
+        messageBGSpriteImage = this.addChild(messageBGSprite);
         this.messageWindow = new Window_Message();
         this.addWindow(this.messageWindow);
         this.messageWindow.subWindows().forEach(function (window) {

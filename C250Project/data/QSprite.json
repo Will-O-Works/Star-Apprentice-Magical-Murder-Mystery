@@ -5,7 +5,7 @@
     "rows": 5,
     "anchorX": 0.5,
     "anchorY": 1,
-    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QStarApprentice.png",
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QStarApprentice-OW.png",
     "poses": {
       "idle4": {
         "name": "idle4",
@@ -95,16 +95,66 @@
       }
     }
   },
-  "Vagrant": {
-    "name": "Vagrant",
-    "cols": 1,
+  "Detective": {
+    "name": "Detective",
+    "cols": 2,
     "rows": 1,
     "anchorX": 0.5,
     "anchorY": 1,
-    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QVagrant.png",
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDetective-OW.png",
     "poses": {
       "default": {
         "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Vagrant": {
+    "name": "Vagrant",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QVagrant-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
         "speed": 10,
         "adjust": false,
         "pattern": [
@@ -129,16 +179,118 @@
           0
         ]
       },
-      "right": {
-        "name": "right",
+      "idle4": {
+        "name": "idle4",
         "speed": 10,
         "adjust": false,
         "pattern": [
           1
         ]
       },
-      "left": {
-        "name": "left",
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Black": {
+    "name": "Black",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlack-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "White": {
+    "name": "White",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWhite-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Tycoon": {
+    "name": "Tycoon",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTycoon.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
         "speed": 10,
         "adjust": false,
         "pattern": [

@@ -8,10 +8,10 @@ var BHell = (function (my) {
     BHell_Enemy_Spin.prototype.constructor = BHell_Enemy_Spin;
 
 	BHell_Enemy_Spin.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 300;
+        params.hp = 75;
         params.speed = 3;
-		params.hitbox_w = 300;
-        params.hitbox_h = 150;
+		params.hitbox_w = 700;
+        params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 

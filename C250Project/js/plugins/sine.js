@@ -8,9 +8,9 @@ var BHell = (function (my) {
     BHell_Enemy_Sine.prototype.constructor = BHell_Enemy_Sine;
 
 	BHell_Enemy_Sine.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 50;
+        params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 300; // hitbox width
+        params.hitbox_w = 320; // hitbox width
         params.hitbox_h = 100; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
