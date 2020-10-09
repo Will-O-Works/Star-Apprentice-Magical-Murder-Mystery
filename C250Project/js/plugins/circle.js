@@ -30,6 +30,14 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
+
+    BHell_Enemy_Circle.prototype.destroy = function() {
+        my.player.can_bomb = false; 
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.enemyList.splice(this.enemyList.indexOf(this), 1);
+    };
 	
 	
     return my;
