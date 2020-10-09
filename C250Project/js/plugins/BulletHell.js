@@ -220,6 +220,9 @@ var timerInterval = (windowBGAnimFrames - 1)/(windowStartupTime);
 var destructionStarted = false;
 var destructionTimer = 0;
 var gameScreenDestroyed = true;
+var textLengths = [];
+var currentTextSoundDelay = 0;
+var maxTextSoundDelay = 20;
 
 var BHell = (function (my) {
 
@@ -5222,11 +5225,23 @@ var BHell = (function (my) {
     Scene_BHell.prototype.update = function () {
 
         if ($gameMessage.isBusy() && typeof this.messageWindow == "object") {
+            //
+            // Does all message sprite and audio handling, by Ravyn
+
             if (messageStarted) {
                 if (messageTimer === 0) {
                     destructionStarted = false;
                     destructionTimer = 0;
                     gameScreenDestroyed = false;
+                    maxTextDelay = 0;
+                    textFinishedDelay = 0;
+                    var globalLength = 0;
+                    textLengths = [];
+                    for (i = 0; i < $gameMessage._texts.length; i++) {
+                        var curLength = $gameMessage._texts[i].length;
+                        textLengths.push(globalLength + curLength);
+                        globalLength += curLength;
+                    }
                     this.messageWindow.hide();
                 }
                 messageBGSpriteImage.setTransform(0, -540 * Math.floor(messageTimer * timerInterval));
@@ -5236,6 +5251,24 @@ var BHell = (function (my) {
                     messageStarted = false;
                 }
             } else {
+                var textState = this.messageWindow._textState
+                if (textState != null) {
+                    var currentTextIndex = 0;
+                    for (i = 0; i < textLengths.length; i++) {
+                        if (textState.index > textLengths[i] + 1) {
+                            currentTextIndex = i + 1;
+                        }
+                    }
+                    if (textState.index > textLengths[currentTextIndex] && !this.messageWindow.pause) {
+                        if ((TouchInput.isPressed() || Input.isPressed('ok')) && currentTextSoundDelay <= 0) {
+                            currentTextSoundDelay = maxTextSoundDelay;
+                            AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
+                        }
+                    }
+                    if (currentTextSoundDelay > 0) {
+                        currentTextSoundDelay--;
+                    }
+                }
                 this.messageWindow.show();
             }
         } else {
