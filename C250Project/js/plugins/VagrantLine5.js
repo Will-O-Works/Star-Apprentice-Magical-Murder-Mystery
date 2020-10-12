@@ -38,6 +38,8 @@ var BHell = (function (my) {
             this.parent.removeChild(this);
         }
         this.enemyList.splice(this.enemyList.indexOf(this), 1);
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(3);
     };
 	
 	

@@ -267,6 +267,7 @@ var BHell = (function (my) {
     my.warningImg = String(parameters['warning_img'] || "");
     my.warningDuration = Number(parameters['warning_duration'] || 120);
     my.warningSE = String(parameters['warning_se'] || "");
+    
 
 
     // Override Scene_Boot.create()
@@ -364,7 +365,7 @@ var BHell = (function (my) {
                             my.map = Number(args[0]);
                             my.canRetry = true;
                             my.canQuit = true;
-
+                            
                             if (args[1] != null) {
                                 my.canRetry = args[1] !== "false";
                             }
@@ -4546,7 +4547,9 @@ var BHell = (function (my) {
         this.immortal = true;
         this.justSpawned = true;
         this.lives = lives;
-		
+        //YA some variables to allow phases
+        this.PhaseOver;
+        this.nextMap;
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -5372,10 +5375,27 @@ var BHell = (function (my) {
                     AudioManager.replayBgs(my.prevBgs);
                 }
                 TouchInput.clear();
-                $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
-                $gamePlayer.requestMapReload();
-                $gameSelfSwitches.clear();
-                SceneManager.goto(Scene_Map);
+                //YA extra if condition to allow phases
+                console.log(my.player.PhaseOver);
+                console.log(my.map);
+                if (my.player.PhaseOver === true)
+                {
+                    my.player.PhaseOver = false;
+                    console.log("phase Over");
+                    console.log(my.map);
+                    console.log(my.player.nextMap);
+                    my.map = my.player.nextMap;
+                    $gameSelfSwitches.clear();
+                    SceneManager.goto(my.Scene_BHell)
+                }
+                else
+                {
+                    $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
+                    $gamePlayer.requestMapReload();
+                    $gameSelfSwitches.clear();
+                    SceneManager.goto(Scene_Map);
+                }
+                
             }
         }
         Scene_Base.prototype.update.call(this);
@@ -7089,47 +7109,3 @@ var BHell = (function (my) {
 
     return my;
 }(BHell || {}));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// //////Yalmaz's Additions
-// /**
-//  * Suicide enemy class. Chases the player until they crash, it never shoots.
-//  *
-//  * No additional parameters are defined.
-//  * @constructor
-//  * @memberOf BHell
-//  * @extends BHell.BHell_Enemy_Base
-//  */
-// var BHell_Enemy_Suicide = my.BHell_Enemy_Suicide = function() {
-//     this.initialize.apply(this, arguments);
-// };
-
-// BHell_Enemy_Suicide.prototype = Object.create(BHell_Enemy_Base.prototype);
-// BHell_Enemy_Suicide.prototype.constructor = BHell_Enemy_Suicide;
-
-// BHell_Enemy_Suicide.prototype.initialize = function (x, y, image, params, parent, enemyList) {
-//     BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-//     this.mover = new my.BHell_Mover_Chase();
-// };
