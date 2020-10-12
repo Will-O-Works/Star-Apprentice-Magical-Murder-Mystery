@@ -255,8 +255,8 @@ var BHell = (function (my) {
     my.buyUpgrades = String(parameters['buy_upgrades'] || "Upgrades");
 
     my.grazingScore = Number(parameters['grazing_score'] || 50);
-    my.bulletTimeout = Number(parameters['bullet_timeout'] || 300);
-    my.immortalTimeout = Number(parameters['immortal_timeout'] || 300);
+    my.bulletTimeout = Number(parameters['bullet_timeout'] || 300); 
+    my.immortalTimeout = Number(parameters['immortal_timeout'] || 300); 
     my.lifeBonusFirst = Number(parameters['life_bonus_first'] || 30000);
     my.lifeBonusNext = Number(parameters['life_bonus_next'] || 80000);
     my.dcPrice = Number(parameters['DCprice'] || 5000);
@@ -1982,7 +1982,7 @@ var BHell = (function (my) {
 		this.angle = 0; 
 		this.change = 0; 
 		this.shoot_x = Math.random() * Graphics.width / 4; 
-		this.count = 0; 
+		this.count = 91; 
 		this.bullet_x = 0; 
 		this.variation = 1; 
 		
@@ -2760,6 +2760,8 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
     this.hasAppeared = false;
 
     // Set default parameters.
+	this.timer = 0; // Add a time for boss to die by V.L. 10/11/2020
+	this.dying = false; // Determine if the boss is dying by V.L. 10/11/2020
     this.hp = 1;
     this.speed = 3;
     this.period = 60;
@@ -2885,11 +2887,29 @@ BHell_Enemy_Base.prototype.checkCollision = function (x, y) {
  */
 BHell_Enemy_Base.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
-    this.move();
-    this.shoot(true);
+    // Modified Update function by V.L. 10/11/2020
+	
+	if (this.dying == false) {  
+		this.move();
+		this.shoot(true);
+	}
+	
     if (my.player.bombed == true) {
         this.destroy(); 
     }
+
+	if (this.dying == true) {  // Increase timer if the boss is dying by V.L. 10/11/2020
+		this.timer = (this.timer + 1) % 1200;
+		this.shoot(false);
+		
+		if (this.timer > 50) {
+			this.destroy();
+		}
+		else if (this.timer % 10 === 0) {  // Explosion on the enemy effect, if people want it by V.L. 10/11/2020
+			my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+		}
+	} 
+	
 
     this.emitters.forEach(e => { // If not shooting, change the angle
         if (this.aim === false && this.rnd === true) {
@@ -2979,23 +2999,25 @@ BHell_Enemy_Base.prototype.hasCrashed = function(player) {
  * @returns {boolean} True if the crash has succeded (e.g. bosses immune to crashing will return false).
  */
 BHell_Enemy_Base.prototype.crash = function() {
-    if (this.boss !== true) {
+	// The enemy no longer crashes when player collide with it by V.L. 10/11/2020
+    /*if (this.boss !== true) {
         my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
         this.destroy();
     }
-    $gameBHellResult.enemiesCrashed++;
+    $gameBHellResult.enemiesCrashed++;*/ 
 
-    return true;
+    return false; //return true;
 };
 
 /**
  * Awards the killing score and destroys the enemy.
  */
 BHell_Enemy_Base.prototype.die = function() {
-    $gameBHellResult.score += this.killScore;
-    my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
-
-    this.destroy();
+    //$gameBHellResult.score += this.killScore;
+    //my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
+	this.dying = true; 
+	my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
+    // this.destroy();
 };
 
 /**
@@ -3027,6 +3049,28 @@ BHell_Enemy_Suicide.prototype.constructor = BHell_Enemy_Suicide;
 BHell_Enemy_Suicide.prototype.initialize = function (x, y, image, params, parent, enemyList) {
     BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
     this.mover = new my.BHell_Mover_Chase();
+}; 
+
+BHell_Enemy_Base.prototype.crash = function() {
+    if (this.boss !== true) {
+        my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
+        this.destroy();
+    }
+    $gameBHellResult.enemiesCrashed++;
+
+    return true;
+};
+
+BHell_Enemy_Suicide.prototype.die = function() {
+	this.dying = true; 
+};
+
+BHell_Enemy_Suicide.prototype.destroy = function() {  // The cat dies quietly without destroying the bullets on screen by V.L. 10/11/2020
+
+    if (this.parent != null) {
+        this.parent.removeChild(this);
+    }
+    this.enemyList.splice(this.enemyList.indexOf(this), 1);
 };
 
     /**
@@ -4054,13 +4098,22 @@ var BHell = (function (my) {
      * @param radius Orbit distance from the player.
      * @param counterclockwise If true orbits in the counterclockwise direction.
      */
-    BHell_Mover_Orbit.prototype.initialize = function (radius, counterclockwise) {
+	 
+	 // Modified the entire BHell_Mover_Orbit class for the finisher by V.L. 10/11/2020 (see sample.js)
+	 
+    BHell_Mover_Orbit.prototype.initialize = function (direction, radius, counterclockwise) {
         BHell_Mover_Base.prototype.initialize.call(this);
-
-        this.inPosition = false;
+		
+		this.order = direction; 
+		this.t = direction * Math.PI / 2
         this.radius = radius;
         this.counterclockwise = counterclockwise;
-        this.t = 3 * Math.PI / 2;
+		
+		this.center_x = Graphics.width / 2; 
+		this.center_y = Graphics.height / 2; 
+		this.rotate_speed = 0; 
+        
+		// this.t = 3 * Math.PI / 2;
     };
 
     /**
@@ -4074,43 +4127,37 @@ var BHell = (function (my) {
     BHell_Mover_Orbit.prototype.move = function (oldX, oldY, speed) {
         var ret = [];
 
-        if (my.player.justSpawned) {
-            this.inPosition = false;
-            this.t = 3 * Math.PI / 2;
+		if (my.player.justSpawned) {
             ret.push(oldX);
             ret.push(oldY);
-        }
-        else {
-            if (this.inPosition) {
-                ret.push(my.player.x + this.radius * Math.cos(this.t));
-                ret.push(my.player.y + this.radius * Math.sin(this.t));
+        } else {
+			ret.push(this.center_x + this.radius * Math.cos(this.t));
+			ret.push(this.center_y + this.radius * Math.sin(this.t));
+			
+			//ret.push(my.player.x + this.radius * Math.cos(this.t));
+			//ret.push(my.player.y + this.radius * Math.sin(this.t));
 
-                if (this.counterclockwise) {
-                    this.t -= speed * Math.PI / 360;
-                }
-                else {
-                    this.t += speed * Math.PI / 360;
-                }
-                if (this.t > 2 * Math.PI) {
-                    this.t -= 2 * Math.PI;
-                }
-            }
-            else {
-                var dx = my.player.x - oldX;
-                var dy = my.player.y - oldY - this.radius;
-                if (Math.abs(dx) <= 2 && Math.abs(dy) <= 2) { // If the error is less than two pixels
-                    this.inPosition = true;
-                    ret.push(dx + oldX);
-                    ret.push(dy + oldY);
-                }
-                else {
-                    var angle = Math.atan2(dy, dx);
-                    ret.push(oldX + Math.cos(angle) * speed);
-                    ret.push(oldY + Math.sin(angle) * speed);
-                }
-            }
-        }
-
+			if (this.counterclockwise) {
+				this.t -= speed * Math.PI / (360 + this.rotate_speed);
+			}
+			else {
+				this.t += speed * Math.PI / (360 + this.rotate_speed);
+			}
+			if (this.t > 2 * Math.PI) {
+				this.t -= 2 * Math.PI;
+			}
+			if (this.radius > 300) {
+				this.radius -= 1; 
+			} else {
+				this.radius -= 0.25; 
+				this.rotate_speed = 360
+			}
+			
+			/*if (this.rotate_speed < 360) 
+			{
+				this.rotate_speed += 1; 
+			}*/
+		}
         return ret;
     };
 
@@ -4524,9 +4571,15 @@ var BHell = (function (my) {
         this.hitboxW = my.parse(playerData.hitbox_w, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
+		
 		// Added player_speed prameter by V.L.
-        this.player_speed = playerParams.speed; 
-		this.speed = playerParams.speed * 2;
+        this.speed = playerParams.speed; 
+		this.player_speed = playerParams.speed / 3;
+		
+		// Added finisher move by V.L.
+		this.finisher_count = 0; 
+		this.finisher_start = false; 
+		this.finisher_correct = true; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4585,11 +4638,11 @@ var BHell = (function (my) {
             this.bomb.update();
         }
 
-        // Make the immortality last 5 seconds.
+        // Make the immortality last 5 seconds, jk, only 1 seconds by V.L. 10/11/2020
         if (this.immortal && this.immortalTimeout >= 0) {
             this.immortalTimeout++;
 
-            if (this.immortalTimeout > my.immortalTimeout) {
+            if (this.immortalTimeout > 60) {
                 this.immortal = false;
                 this.immortalTimeout = -1;
                 this.opacity = 255;
@@ -4650,9 +4703,9 @@ var BHell = (function (my) {
 	*/
 	BHell_Player.prototype.slow = function (t) {
         if (t) {
-			this.speed = this.player_speed/2; 
+			this.speed = this.player_speed; 
 		} else {
-			this.speed = this.player_speed*2; 
+			this.speed = this.player_speed * 3; 
 		}
     };
 
@@ -4666,10 +4719,11 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.move = function () {
         // If the player has just been spawned (outside the screen), move to the starting position.
-        this.index =0;
+        this.index = 0;
         if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
-            if (my.enemyBullets.length === 0) {
+			// Nope that's a lie. Don't clear the bullets on screen. by V.L. 10/11/2020
+            if (true) { // (my.enemyBullets.length === 0) {
                 var dy = Graphics.height * 0.9 - this.y;
 
                 if (Math.abs(dy) <= this.speed * 0.3) {
@@ -4709,7 +4763,19 @@ var BHell = (function (my) {
                 
                 // Victory. 
                 // V.L.
-                if (this.bombed == false) {
+				if (this.finisher_start == true) {  // 10/11/2020
+					if (this.finisher_correct == false && this.finisher_start == true) {
+						messageStarted = true;
+						messageTimer = 0;
+						$gameMessage.add("\\w[" + String(windowStartupTime) + "]Hmm that doesn't sound right. "); 
+						$gameMessage.newPage(); 
+						$gameMessage.add("I should try again. "); 
+						SceneManager.goto(my.Scene_BHell_Init); 
+					} else {
+						my.playing = false;
+					}
+				}
+				else if (this.bombed == false) {
                     messageStarted = true;
                     messageTimer = 0;
                     $gameMessage.add("\\w[" + String(windowStartupTime) + "]I must have missed something... "); 
@@ -4719,14 +4785,14 @@ var BHell = (function (my) {
                 } else {
                     my.playing = false;
                     
-                    if (this.victory_se != null) {
+                    /*if (this.victory_se != null) {
                      my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
                          return audio.isPlaying();
                      }).length !== 0;
                     }
                     if (my.victoryMe != null) {
                         my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
-                    }
+                    }*/ 
                     
                 }
 
@@ -5442,7 +5508,7 @@ var BHell = (function (my) {
                         my.player.shoot(false);
                     }
 
-                    if (TouchInput.isCancelled() || Input.isPressed(18)) {
+                    if (TouchInput.isCancelled() || Input.isPressed('tab')) {
                         my.player.launchBomb();
                     }
 					

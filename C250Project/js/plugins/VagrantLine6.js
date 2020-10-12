@@ -1,13 +1,13 @@
 var BHell = (function (my) {
 
-    var BHell_Enemy_Home = my.BHell_Enemy_Home = function() {
+    var BHell_Enemy_VagrantLine6 = my.BHell_Enemy_VagrantLine6 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_Home.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_Home.prototype.constructor = BHell_Enemy_Home;
+    BHell_Enemy_VagrantLine6.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine6.prototype.constructor = BHell_Enemy_VagrantLine6;
 
-	BHell_Enemy_Home.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantLine6.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 50;
         params.speed = 250; // speed of boss moving 
         params.hitbox_w = 300; // hitbox width
@@ -17,7 +17,7 @@ var BHell = (function (my) {
 
 		var emitterParams = {};
 		emitterParams.period = 10; // period for the emitter to activate
-		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Home for it to work 
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_VagrantLine6 for it to work 
         emitterParams.alwaysAim = true;
 		emitterParams.center_x = this.x; 
 		emitterParams.center_y = this.y; 

@@ -1,13 +1,13 @@
 var BHell = (function (my) {
 
-    var BHell_Enemy_Circle = my.BHell_Enemy_Circle = function() {
+    var BHell_Enemy_VagrantLine5 = my.BHell_Enemy_VagrantLine5 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_Circle.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_Circle.prototype.constructor = BHell_Enemy_Circle;
+    BHell_Enemy_VagrantLine5.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine5.prototype.constructor = BHell_Enemy_VagrantLine5;
 
-	BHell_Enemy_Circle.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantLine5.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
         params.hitbox_w = 550;
@@ -31,7 +31,8 @@ var BHell = (function (my) {
 
     };
 
-    BHell_Enemy_Circle.prototype.destroy = function() {
+    BHell_Enemy_VagrantLine5.prototype.destroy = function() {
+
         my.player.can_bomb = false; 
         if (this.parent != null) {
             this.parent.removeChild(this);

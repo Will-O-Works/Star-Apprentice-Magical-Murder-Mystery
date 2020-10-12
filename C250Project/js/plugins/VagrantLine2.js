@@ -74,7 +74,13 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantLine2.prototype.update = function () {
+		
         my.BHell_Sprite.prototype.update.call(this);
+		
+		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
+		if (my.player.bombed == true) {
+			this.destroy(); 
+		}
 
         if (this.state !== "dying" && this.state !== "stunned") {
             this.move();

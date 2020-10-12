@@ -694,7 +694,7 @@
     }
   ],
   "enemies": [
-    {
+  {
       "name": "suicide",
       "class": "BHell_Enemy_Suicide",
       "params": {
@@ -702,193 +702,11 @@
         "speed": 5
       }
     },
-    {
-      "name": "smallfry",
-      "class": "BHell_Enemy_Smallfry",
-      "params": {
-        "hp": 5,
-        "speed": 4,
-        "period": 120,
-        "aim": true,
-        "bullet": {
-          "speed": 5
-        }
-      }
-    },
-    {
-      "name": "blocker",
-      "class": "BHell_Enemy_Blocker",
-      "params": {
-        "hp": 50,
-        "speed": 1,
-        "period": 70,
-        "vspeed": 0.3
-      }
-    },
-    {
-      "name": "gunner",
-      "class": "BHell_Enemy_Gunner",
-      "params": {
-        "hp": 10,
-        "speed": 3,
-        "period": 4,
-        "cooldown": 60,
-        "shooting": 30,
-        "stop_on_shooting": true,
-        "bullet": {
-          "speed": 5
-        }
-      }
-    },
-    {
-      "name": "star",
-      "class": "BHell_Enemy_Starshooter",
-      "params": {
-        "hp": 10,
-        "speed": 3,
-        "period": 4,
-        "cooldown": 120,
-        "shooting": 60,
-        "aim": true,
-        "stop_on_shooting": false,
-        "n": 10,
-        "bullet": {
-          "speed": 2.5
-        }
-      }
-    },
-    {
-      "name": "swirler",
-      "class": "BHell_Enemy_Swirler",
-      "params": {
-        "hp": 10,
-        "speed": 3,
-        "period": 5,
-        "cooldown": 30,
-        "shooting": 60,
-        "aim": false,
-        "stop_on_shooting": true,
-        "n": 10,
-        "rotation_angle": -0.005,
-        "bullet": {
-          "speed": 3
-        }
-      }
-    },
-    {
-      "name": "sprayer",
-      "class": "BHell_Enemy_Sprayer",
-      "params": {
-        "period": 60
-      }
-    },
-    {
-      "name": "burst",
-      "class": "BHell_Enemy_Burster",
-      "params": {
-        "hp": 50,
-        "period": 120,
-        "cooldown": 60,
-        "shooting": 60,
-        "speed": 2,
-        "aim": true,
-        "rnd": false
-      }
-    },
-    {
-      "name": "orbiter",
-      "class": "BHell_Enemy_Orbiter",
-      "params": {
-        "hp": 50,
-        "speed": 3,
-        "radius": 250,
-        "period": 120,
-        "aim": true
-      }
-    },
-    {
-      "name": "probe",
-      "class": "BHell_Enemy_Probe",
-      "params": {
-        "hp": 1,
-        "speed": 6,
-        "shooting": 180,
-        "period": 120,
-        "aim": true,
-        "bullet": {
-          "speed": 1
-        }
-      }
-    },
 	{
-	  "name": "circle",
-	  "class": "BHell_Enemy_Circle",
-	  "params": {
-        "bullet": {
-          "direction": 6
-        }
-    }
-	}, 
-	{
-	  "name": "spin",
-	  "class": "BHell_Enemy_Spin",
+	  "name": "Finisher",
+	  "class": "BHell_Enemy_Finisher",
 	  "params": null
 	}, 
-	{
-	  "name": "flower",
-	  "class": "BHell_Enemy_Flower",
-	  "params": null
-	}, 
-	{
-	  "name": "shape",
-	  "class": "BHell_Enemy_Shape",
-	  "params": null
-	}, 
-	{
-	  "name": "sample",
-	  "class": "BHell_Enemy_Sample",
-	  "params": null
-	}, 
-	{
-	  "name": "sine",
-	  "class": "BHell_Enemy_Sine",
-	  "params": {
-        "bullet": {
-          "direction": 4
-        }
-    }
-	}, 
-	{
-	  "name": "home",
-	  "class": "BHell_Enemy_Home",
-	  "params": null
-	}, 
-    {
-      "name": "darklord",
-      "class": "BHell_Enemy_Darklord",
-      "params": {
-        "boss": true
-      }
-    },
-    {
-      "name": "rammer",
-      "class": "BHell_Enemy_Rammer",
-      "params": {
-        "dispersion": 20,
-        "shots": 50,
-        "bullet": {
-          "speed": 6
-        },
-        "period": 30,
-        "speed": 5,
-        "dying_se": "Cow"
-      }
-    },
-    {
-      "name": "telefragger",
-      "class": "BHell_Enemy_Telefragger",
-      "params": null
-    },
     {
       "name": "SkeletonCode",
       "class": "BHell_Enemy_SkeletonCode",
@@ -909,6 +727,29 @@
       "params": {
           "boss": false
         }
+    }, 
+	{
+	  "name": "VagrantLine4",
+	  "class": "BHell_Enemy_VagrantLine4",
+	  "params": {
+        "bullet": {
+          "direction": 4
+        }
     }
+	}, 
+		{
+	  "name": "VagrantLine5",
+	  "class": "BHell_Enemy_VagrantLine5",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+	}, 
+	{
+	  "name": "VagrantLine6",
+	  "class": "BHell_Enemy_VagrantLine6",
+	  "params": null
+	}
   ]
 }
