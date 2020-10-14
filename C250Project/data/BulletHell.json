@@ -715,8 +715,22 @@
         }
     },
     {
-      "name": "VagrantLine1",
-      "class": "BHell_Enemy_VagrantLine1",
+      "name": "VagrantLine1_p1",
+      "class": "BHell_Enemy_VagrantLine1_p1",
+      "params": {
+          "boss": false
+        }
+    },
+    {
+      "name": "VagrantLine1_p2",
+      "class": "BHell_Enemy_VagrantLine1_p2",
+      "params": {
+          "boss": false
+        }
+    },
+    {
+      "name": "VagrantLine1_p3",
+      "class": "BHell_Enemy_VagrantLine1_p3",
       "params": {
           "boss": false
         }

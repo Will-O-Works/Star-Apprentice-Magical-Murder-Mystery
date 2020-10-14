@@ -1,198 +1,220 @@
 //=============================================================================
-// VagrantLine1.js
+// VagrantLine1 Phase 1.js
 //=============================================================================
-
-/*:
-duplicate and edit this code to make a new boss. edit bullethell JSON file when done so the main plugin recognizes it.
-link to predifined stuff u can use or extend: https://hashakgik.github.io/BulletHell-RMMV/BHell.html
-*/ 
-
 var BHell = (function (my) {
-
-    var BHell_Enemy_VagrantLine1 = my.BHell_Enemy_VagrantLine1 = function() {
+    var BHell_Enemy_VagrantLine1_p1 = my.BHell_Enemy_VagrantLine1_p1 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_VagrantLine1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine1.prototype.constructor = BHell_Enemy_VagrantLine1;
+    BHell_Enemy_VagrantLine1_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine1_p1.prototype.constructor = BHell_Enemy_VagrantLine1_p1;
 
-    //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_VagrantLine1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantLine1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
-        params.speed = 4;
-        params.hitbox_w = 500;
-        params.hitbox_h = 100;
+        params.speed = 4; // speed of boss moving 
+        params.hitbox_w = 320; // hitbox width
+        params.hitbox_h = 100; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
-        //for multiple emitters initalize them here:
-        this.initializeFlask(parent);
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
 
-        //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
-        this.j = 0;
-        this.state = "started";
-        this.receivedDamage = 0;
+		var emitterParams = {};
+		emitterParams.period = 10; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player 
+        emitterParams.alwaysAim = false;
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 6;
 
-        //initalize the mover function which dictaes the movement pattern here:
-        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);
-    };
-//
-//
-//
-//Def custom functions and class extensions here:
-
-    //##this a generic audio and score display function that will  be modified at a later date
-    BHell_Enemy_VagrantLine1.prototype.die = function() {
-        $gameBHellResult.score += this.killScore;
-        this.changeState("dying");
-
-        my.controller.destroyEnemyBullets();
-    };
-
-    //Def the emitters here:
-    BHell_Enemy_VagrantLine1.prototype.initializeFlask = function (parent) {
-        //this is left in as a sample it shows how to implement an existing emitter, 
-        //to make a new emitter from scratch reffer to : https://hashakgik.github.io/BulletHell-RMMV/tutorial-emitter_js.html
-        var flaskParams = {};
-        flaskParams.bullet = {};
-        flaskParams.bullet.speed = 3;
-        flaskParams.bullet.index = 0;
-        flaskParams.bullet.frame = 0;
-        flaskParams.bullet.direction = 2;
-        flaskParams.period = 5;
-        flaskParams.a = Math.PI;
-        flaskParams.b = 3 * Math.PI;
-        flaskParams.n = 3;
-        this.flaskCounter = 0;
-        this.flaskEmitters = [];
-        this.flaskEmitters.push(new my.BHell_Emitter_Spray(200, 200, flaskParams, parent, my.enemyBullets));
-    };
-
-    //function that moves the sprite
-    BHell_Enemy_VagrantLine1.prototype.move = function () {
-        if (this.mover != null) {
-            var p = this.mover.move(this.x, this.y, this.speed);
-            this.x = p[0];
-            this.y = p[1];
-        }
-    };
-
-    //setter that switches on/off  emitters takes in boolean example use on line 106
-    BHell_Enemy_VagrantLine1.prototype.shoot = function(emitters, t) {
-        // Replaces BHell_Enemy_Base.shoot(t). It enables only SOME emitters at the time (not all of them).
-        emitters.forEach(e => {
-            e.shooting = t && !my.player.justSpawned;//also stops fire for a few secs after player respawn
-        });
-    };
-
-    //setter that changes state of boss and turns off fire between state changes
-    BHell_Enemy_VagrantLine1.prototype.changeState = function(s) {
-        if (this.state === "changing") {
-            this.state = s;
-        }
-        else {
-            this.scheduledState = s;
-            this.state = "changing";
-        }
-        this.shoot(this.flaskEmitters, false);
-        this.j = 0;
-    };
-
-    //function calls inherited method used for dealing with player dagmae and if "stunned" increments the damage by 1
-    BHell_Enemy_VagrantLine1.prototype.hit = function () {
-        if (this.state !== "dying") {
-            my.BHell_Enemy_Base.prototype.hit.call(this);
-
-            if (this.state != "stunned") {
-                this.receivedDamage++;
-            }
-        }
-    };
-
-    //update function that makes the hand shoot
-    BHell_Enemy_VagrantLine1.prototype.updateFlask = function() {
-    if (this.flaskCounter == 0) {
-        console.log("counter = 0");
-        this.flaskEmitters[0].a = Math.PI;
-        this.flaskEmitters[0].b = 3 * Math.PI;
-    }
-    console.log("counter != 0")
-    this.shoot(this.flaskEmitters, this.flaskCounter < 99999);
-
-    this.flaskEmitters[0].a += 0.004;
-    this.flaskEmitters[0].b += 0.004;
-
-    this.flaskCounter = (this.flaskCounter + 1) % 100;
-    };
-//
-//
-//  
-//Def core update function here it also serves as a finite state machine for the boss behaviours:
-    BHell_Enemy_VagrantLine1.prototype.update = function () {
-        my.BHell_Sprite.prototype.update.call(this);
-		
-		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
-		if (my.player.bombed == true) {
-			this.destroy(); 
-		}
-
-        if (this.state !== "dying" && this.state !== "stunned") {
-            this.move();
-        }
-
-        if (this.receivedDamage > 100 && this.mover.inPosition === true) {
-            my.explosions.push(new my.BHell_Explosion(this.lastX, this.lastY, this.parent, my.explosions));
-            this.changeState("stunned");
-            my.controller.destroyEnemyBullets();
-        }
-
-        switch (this.state) {
-            case "started":
-                if (this.mover.inPosition === true) {
-                    this.changeState("pattern 1");
-                }
-                break;
-            case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
-                if (this.j > 600) {
-                    this.changeState("pattern 1");
-                } else {
-                    this.updateFlask();
-                }
-                break;
-
-            case "stunned": // Does nothing for 10 seconds.
-                if (this.j > 600) {
-                    this.changeState("pattern 1");
-                }
-                break;
-            case "dying": // Spawns explosions for 5 seconds, then dies.
-                if (this.j > 30) {
-                    this.destroy();
-                }
-                else if (this.j % 10 === 0) {
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
-                break;
-            case "changing": // Wait 3 seconds without shooting before actually changing to the scheduled state.
-                if (this.j > 30) {
-                    this.changeState(this.scheduledState);
-                }
-                break;
-        }
-        this.flaskEmitters.forEach(e => {
-            e.update();
-        });
-
-        // Update the received damage counter for the stunned state.
-        if (this.j % 60 == 0) {
-            this.receivedDamage = 0;
-        }
-
-        // Update the time counter and reset it every 20 seconds.
-        this.j = (this.j + 1) % 1200;
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        emitterParams.bullet.speed = 6;
+        emitterParams.period = 150;
+        emitterParams.a = 0;
+        emitterParams.b = 2 * Math.PI;
+        emitterParams.n = 20;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters[0].alwaysAim=true;
+        this.emitters[1].alwaysAim=true;
+        this.emitters[2].alwaysAim=true;
+        this.emitters[0].offsetX = 180;
+        this.emitters[1].offsetX = -180;
+        this.emitters[3].offsetX = 180;
+        this.emitters[4].offsetX = -180;        
     };
     return my;
-//
-//
-//
+} (BHell || {}));
+//=============================================================================
+// VagrantLine1_p2.js
+//=============================================================================
+var BHell = (function (my) {
+    console.log("vagrant Lin 1 is being called")
+
+    var BHell_Enemy_VagrantLine1_p2 = my.BHell_Enemy_VagrantLine1_p2 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_VagrantLine1_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine1_p2.prototype.constructor = BHell_Enemy_VagrantLine1_p2;
+
+	BHell_Enemy_VagrantLine1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;
+        params.speed = 4; // speed of boss moving 
+        params.hitbox_w = 320; // hitbox width
+        params.hitbox_h = 100; // hitbox height
+        params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = true; 
+
+		var emitterParams = {};
+		emitterParams.period = 10; // period for the emitter to activate
+		emitterParams.aim = false; // if aims at player 
+        emitterParams.alwaysAim = false;
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 6;
+
+        this.mover = new my.BHell_Mover_Orbit(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        emitterParams.bullet.speed = 6;
+        emitterParams.period = 150;
+        emitterParams.a = 0;
+        emitterParams.b = 2 * Math.PI;
+        emitterParams.n = 20;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters[0].angle= (Math.PI/4)+0.3;
+        this.emitters[0].offsetX = 180;
+        this.emitters[1].angle= (3*Math.PI/4)-0.3;
+        this.emitters[1].offsetX = -180;
+        this.emitters[2].angle= Math.PI/2;
+    };
+
+    BHell_Enemy_VagrantLine1_p2.prototype.destroy = function() {
+
+        my.player.can_bomb = false; 
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.enemyList.splice(this.enemyList.indexOf(this), 1);
+        //adding these to the correct line allow it to transition to a different phase
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(3);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+    };
+
+    return my;
+} (BHell || {}));
+//=============================================================================
+// VagrantLine1_p3.js
+//=============================================================================
+var BHell = (function (my) {
+    console.log("vagrant Lin 1 is being called")
+
+    var BHell_Enemy_VagrantLine1_p3 = my.BHell_Enemy_VagrantLine1_p3 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_VagrantLine1_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine1_p3.prototype.constructor = BHell_Enemy_VagrantLine1_p3;
+
+	BHell_Enemy_VagrantLine1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;
+        params.speed = 4; // speed of boss moving 
+        params.hitbox_w = 320; // hitbox width
+        params.hitbox_h = 100; // hitbox height
+        params.animated = false;
+        this.frameCounter =0;
+        this.state = "started";
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        //this one uses the custom emitter below for the rotation
+        this.initializeVL1P3Emitter(parent);
+
+		// set player.can_bomb to true by V.L.
+        my.player.can_bomb = false; 
+        
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 250, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+    };
+        BHell_Enemy_VagrantLine1_p3.prototype.initializeVL1P3Emitter = function (parent) {
+		var emitterParams = {};
+		emitterParams.period = 10; // period for the emitter to activate
+		emitterParams.aim = false; // if aims at player 
+        emitterParams.alwaysAim = false;
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 6;
+
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        emitterParams.bullet.speed = 6;
+        emitterParams.period = 150;
+        emitterParams.a = 0;
+        emitterParams.b = 2 * Math.PI;
+        emitterParams.n = 20;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters[0].angle= (Math.PI/4)+0.3;
+        this.emitters[0].offsetX = -180;
+        this.emitters[1].angle= (3*Math.PI/4)-0.3;
+        this.emitters[1].offsetX = 180;
+        this.emitters[2].angle= Math.PI/2;
+        this.emitters[3].offsetX = 180;
+        this.emitters[4].offsetX = -180;
+        BHell_Enemy_VagrantLine1_p3.prototype.updateVL1P3Emitter = function () { 
+            console.log("calling update")
+            this.emitters[0].angle += (Math.PI/30);//change the denominator to adjust rotaion
+            this.emitters[1].angle += -(Math.PI/30);//change the denominator to adjust rotaion
+            this.emitters[0].shoot(this.emitters,true);
+            this.emitters[1].shoot(this.emitters,true);
+            this.emitters[2].shoot(this.emitters,true);    
+        };
+        BHell_Enemy_VagrantLine1_p3.prototype.die = function() {
+            $gameBHellResult.score += this.killScore;
+            this.state = "dying";
+            this.j = 0;
+            my.controller.destroyEnemyBullets();
+        };
+        BHell_Enemy_VagrantLine1_p3.prototype.update = function () {
+            my.BHell_Sprite.prototype.update.call(this);
+            if (this.state !== "dying" && this.state !== "stunned") {
+                this.move();
+            }
+            switch (this.state) {
+                case "started":
+                    if (this.mover.inPosition === true) {
+                        this.state = "pattern 1";
+                        this.frameCounter = 0;
+                    }
+                    break;
+                case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
+                    if (this.frameCounter%5 === 0) {
+                        this.updateVL1P3Emitter();
+                    }
+                    if(this.frameCounter%150 === 0){
+                        this.shoot(this.emitters, true);
+                    }   
+                    break;
+                case "dying": // Spawns explosions for 5 seconds, then dies.
+                    if (this.frameCounter > 30) {
+                        this.destroy();
+                    }
+                    break;
+            }; 
+            // Update the received damage counter for the stunned state.
+            this.emitters.forEach(e => {e.update()});
+            // Update the time counter and reset it every 20 seconds.
+            this.frameCounter = (this.frameCounter + 1) % 1200;
+        }
+    };
 } (BHell || {}));

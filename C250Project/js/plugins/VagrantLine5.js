@@ -6,7 +6,7 @@ var BHell = (function (my) {
 
     BHell_Enemy_VagrantLine5.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VagrantLine5.prototype.constructor = BHell_Enemy_VagrantLine5;
-
+//cat
 	BHell_Enemy_VagrantLine5.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
@@ -38,8 +38,9 @@ var BHell = (function (my) {
             this.parent.removeChild(this);
         }
         this.enemyList.splice(this.enemyList.indexOf(this), 1);
+        //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(3);
+        my.player.nextMap = Number(3);//the 3 here is the map number change this to whatever map number u want to transition there on victory
     };
 	
 	

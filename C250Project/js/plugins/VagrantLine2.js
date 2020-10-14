@@ -1,5 +1,5 @@
 //=============================================================================
-// VagrantLine2.js
+// VagrantLine2.js coat
 //=============================================================================
 
 /*:
@@ -51,8 +51,7 @@ var BHell = (function (my) {
         coatParams.aim = true;
         this.coatEmitters = [];
         this.coatEmitters.push(new my.BHell_Emitter_Homing(0, 0, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[0].offsetX = 152;
-        this.coatEmitters[0].offsetY = -134;
+        //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
     };
@@ -132,6 +131,9 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
+
+
+/////////////////custom bullet class and emitter
 var BHell = (function (my) {
 
     /**
@@ -260,7 +262,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-/////////////////custom bullet class and emitter
 var BHell = (function (my) {
     /**
      * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
