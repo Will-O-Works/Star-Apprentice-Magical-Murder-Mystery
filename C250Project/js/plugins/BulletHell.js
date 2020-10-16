@@ -213,6 +213,8 @@ var $gameBHellResult;
 /**
  * @namespace BHell
  */
+var messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
+var messageBGSprite = new Sprite(messageBGBitmap);
 var messageStarted = false;
 var windowStartupTime = 20;
 var windowBGAnimFrames = 7;
@@ -507,8 +509,6 @@ BHell_Sprite.prototype.constructor = BHell_Sprite;
  */
 BHell_Sprite.prototype.initialize = function (sprite, index, direction, frame, animated, animationSpeed) {
     Sprite_Base.prototype.initialize.call(this);
-    messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
-    messageBGSprite = new Sprite(messageBGBitmap);
     this.anchor.x = 0.5;
     this.anchor.y = 0.5;
     this.z = 10;

@@ -7,30 +7,33 @@
  * @requiredAssets img/pictures/BG.png
  */ 
 
+var menuBGBitmap = Bitmap.load("/img/pictures/Menu_BG.png");
+var menuBGSprite = new Sprite(menuBGBitmap);
+var evidenceBGBitmap = Bitmap.load("/img/pictures/Evidence_BG.png");
+var evidenceBGSprite = new Sprite(evidenceBGBitmap);
+var itemBGBitmap = Bitmap.load("/img/pictures/BG.png");
+var itemBGSprite = new Sprite(itemBGBitmap);
+var unravelled_timer_length = 15;
+var menuBGAnimFrames = 5;
+var timerInterval = (menuBGAnimFrames - 1)/(unravelled_timer_length);
+var e_unravelled_timer_length = 24;
+var e_menuBGAnimFrames = 8;
+var e_timerInterval = (e_menuBGAnimFrames - 1)/(e_unravelled_timer_length);
+var evidenceWidth = 270
+var evidenceItemSize = 64;
+var evidenceOffset = 56;
+var itemReadX = 100;
+var itemReadY = 144;
+var textDescX = 400;
+var textDescY = 153;
+var itemBG = null;
+var unravelled = false;
+var unravelled_timer = 0;
 var itemImageInit = true;
 
 // Initialize the scene menu itself
 Scene_Menu.prototype.create = function() {
-    menuBGBitmap = Bitmap.load("/img/pictures/Menu_BG.png");
-    menuBGSprite = new Sprite(menuBGBitmap);
-    evidenceBGBitmap = Bitmap.load("/img/pictures/Evidence_BG.png");
-    evidenceBGSprite = new Sprite(evidenceBGBitmap);
-    itemBGBitmap = Bitmap.load("/img/pictures/BG.png");
-    itemBGSprite = new Sprite(itemBGBitmap);
-    unravelled_timer_length = 15;
-    menuBGAnimFrames = 5;
-    timerInterval = (menuBGAnimFrames - 1)/(unravelled_timer_length);
-    e_unravelled_timer_length = 24;
-    e_menuBGAnimFrames = 8;
-    e_timerInterval = (e_menuBGAnimFrames - 1)/(e_unravelled_timer_length);
-    evidenceWidth = 270
-    evidenceItemSize = 64;
-    evidenceOffset = 56;
-    itemReadX = 100;
-    itemReadY = 144;
-    textDescX = 400;
-    textDescY = 153;
-    itemBG = null;
+
     unravelled = false;
     unravelled_timer = 0;
     Scene_MenuBase.prototype.create.call(this);
@@ -221,6 +224,8 @@ Window_ItemList.prototype.processOk = function () {
     if (e_unravelled && this.index() != this._data.length - 1) {
         Window_Selectable.prototype.processOk.call(this);
         itemImageInit = false;
+    } else if (e_unravelled) {
+        this.callCancelHandler();
     }
 }
 
