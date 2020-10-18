@@ -25,7 +25,7 @@
         "pan": 0
       },
       "spawn_se": {
-        "name": "Cat",
+        "name": "Wolf",
         "volume": 100,
         "pitch": 100,
         "pan": 0
@@ -292,7 +292,7 @@
         "pan": 0
       },
       "spawn_se": {
-        "name": "Cat",
+        "name": "Wolf",
         "volume": 100,
         "pitch": 100,
         "pan": 0
@@ -464,7 +464,7 @@
         "pan": 0
       },
       "spawn_se": {
-        "name": "Cat",
+        "name": "Wolf",
         "volume": 100,
         "pitch": 100,
         "pan": 0
