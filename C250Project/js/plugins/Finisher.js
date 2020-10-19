@@ -14,6 +14,8 @@ var BHell = (function (my) {
     BHell_Emitter_Sample.prototype.initialize = function (x, y, params, parent, bulletList) {
         my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
 		
+		my.player.bombs = 0; // Set player bomb number to 0 for finisher stage by V.L. 10/18/2020
+		
 		this.i = 0;
         this.parent = parent;
         this.params = params;
