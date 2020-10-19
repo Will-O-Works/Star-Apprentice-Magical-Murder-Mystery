@@ -131,8 +131,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
-
 /////////////////custom bullet class and emitter
 var BHell = (function (my) {
 
@@ -334,16 +332,6 @@ var BHell = (function (my) {
 
         this.parent.addChild(bullet);
         this.bulletList.push(bullet);
-    };
-
-    /**
-     * Burst emitter. Creates many bullets packed randomly inside a dispersion circle.
-     * @constructor
-     * @memberOf BHell
-     * @extends BHell.BHell_Emitter_Base
-     */
-    var BHell_Emitter_Burst = my.BHell_Emitter_Burst = function () {
-        this.initialize.apply(this, arguments);
     };
     return my;
 } (BHell || {}));

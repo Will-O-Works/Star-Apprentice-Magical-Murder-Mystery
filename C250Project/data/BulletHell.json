@@ -743,14 +743,23 @@
         }
     }, 
 	{
-	  "name": "VagrantLine4",
-	  "class": "BHell_Enemy_VagrantLine4",
+	  "name": "VagrantLine4_p1",
+	  "class": "BHell_Enemy_VagrantLine4_p1",
 	  "params": {
         "bullet": {
           "direction": 4
         }
     }
-	}, 
+  }, 
+  {
+	  "name": "VagrantLine4_p2",
+	  "class": "BHell_Enemy_VagrantLine4_p2",
+	  "params": {
+        "bullet": {
+          "direction": 4
+        }
+    }
+	},
 		{
 	  "name": "VagrantLine5",
 	  "class": "BHell_Enemy_VagrantLine5",
