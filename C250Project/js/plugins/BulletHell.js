@@ -1038,6 +1038,7 @@ BHell_Bullet.prototype.isOutsideMap = function () {
 // Add effects on bullet hit by V.L.
 BHell_Bullet.prototype.hit_effect = function() {
 	my.effects.push(new my.BHell_Hit_Effect(this.x, this.y, this.sprite, this.index, this.parent, my.effects));
+	AudioManager.playSe({name: "Cat", volume: 30, pitch: 100, pan: 0});
 };
 
 /**
@@ -1076,7 +1077,7 @@ var BHell_Hit_Effect = my.BHell_Hit_Effect = function() {
 BHell_Hit_Effect.prototype = Object.create(my.BHell_Sprite.prototype);
 BHell_Hit_Effect.prototype.constructor = BHell_Hit_Effect;
 
-BHell_Hit_Effect.prototype.initialize = function (x, y, sprite, index, parent, effectList) {
+BHell_Hit_Effect.prototype.initialize = function (x, y, sprite, index, parent, explosionList) {
     var sprite = sprite;
     var index = index;
     var direction = 2;
@@ -1096,7 +1097,7 @@ BHell_Hit_Effect.prototype.initialize = function (x, y, sprite, index, parent, e
 
     this.j = 0;
 
-    this.effectList = effectList;
+    this.explosionList = explosionList;
     this.parent = parent;
 
     this.parent.addChild(this);
@@ -1132,7 +1133,7 @@ BHell_Hit_Effect.prototype.destroy = function() {
         this.parent.removeChild(this);
     }
 
-    this.effectList.splice(this.effectList.indexOf(this), 1);
+    this.explosionList.splice(this.explosionList.indexOf(this), 1);
 };
 
 return my;
@@ -2434,9 +2435,6 @@ BHell_Enemy_Base.prototype.constructor = BHell_Enemy_Base;
 BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, enemyList) {
     my.BHell_Sprite.prototype.initialize.call(this, image.characterName, image.characterIndex, image.direction, image.pattern, ((params.animated != null)? params.animated: true), params.animation_speed || 25);
 
-	console.log("Hello world!");
-	my.player.bombs = 1; // Set player bomb number to 1 by V.L. 10/18/2020
-	
     this.parent = parent;
     this.parent.addChild(this);
     this.enemyList = enemyList;
@@ -2545,10 +2543,6 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
         }
     }
 
-	// Store the boss hp value by V.L. 
-	this.full_hp = this.hp; 
-	this.bombedWrong = false; 
-
     if (this.boss) {
         my.bossMaxHp += this.hp;
         my.bossHp += this.hp;
@@ -2580,7 +2574,7 @@ BHell_Enemy_Base.prototype.checkCollision = function (x, y) {
 BHell_Enemy_Base.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
     // Modified Update function by V.L. 10/11/2020
-
+	
 	if (this.dying == false) {  
 		this.move();
 		this.shoot(true);
@@ -2589,13 +2583,6 @@ BHell_Enemy_Base.prototype.update = function () {
     if (my.player.bombed == true) {
         this.destroy(); 
     }
-	
-	// set bombedWrong to true if player uses the bomb wrong by V.L. 10/18/2020
-	if (my.player.false_bomb == true && this.bombedWrong == false) {
-		this.bombedWrong = true; 
-		this.hp = this.full_hp; 
-		console.log("boss hp restored! ");
-	}
 
 	if (this.dying == true) {  // Increase timer if the boss is dying by V.L. 10/11/2020
 		this.timer = (this.timer + 1) % 1200;
@@ -2651,13 +2638,6 @@ BHell_Enemy_Base.prototype.shoot = function (t) {
 BHell_Enemy_Base.prototype.hit = function () {
     this.hp--;
     $gameBHellResult.score += this.score;
-	
-	// if hp is less than 20%, change shooting sound by V.L. 10/19/2020 
-	if (this.hp > this.full_hp * 0.2) {  
-		AudioManager.playSe({name: "hit_single_1", volume: 100, pitch: 100, pan: 0});
-	} else {
-		AudioManager.playSe({name: "hit_single_2", volume: 100, pitch: 100, pan: 0});
-	}
 
     if (this.boss) {
         my.bossHp--;
@@ -2730,8 +2710,6 @@ BHell_Enemy_Base.prototype.die = function() {
  * Destroys the enemy sprite and removes it from the controller's array of enemies.
  */
 BHell_Enemy_Base.prototype.destroy = function() {
-	
-	my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
     if (this.parent != null) {
         this.parent.removeChild(this);
     }
@@ -3881,7 +3859,7 @@ var BHell = (function (my) {
     BHell_Mover_Finisher.prototype = Object.create(BHell_Mover_Base.prototype);
     BHell_Mover_Finisher.prototype.constructor = BHell_Mover_Finisher;
 	 
-    BHell_Mover_Finisher.prototype.initialize = function (direction, radius, counterclockwise, centerX, centerY) {//changed function call to allow us to set center point YA
+    BHell_Mover_Finisher.prototype.initialize = function (direction, radius, counterclockwise,centerX,centerY) {//changed function call to allow us to set center point YA
         BHell_Mover_Base.prototype.initialize.call(this);
 		
 		this.order = direction; 
@@ -3889,8 +3867,8 @@ var BHell = (function (my) {
         this.radius = radius;
         this.counterclockwise = counterclockwise;
 		
-		this.center_x = centerX || Graphics.width / 2 ; 
-		this.center_y = centerY || Graphics.height / 2; 
+		this.center_x = centerX; 
+		this.center_y = centerY; 
 		this.rotate_speed = 0; 
         
 		// this.t = 3 * Math.PI / 2;
@@ -4325,14 +4303,13 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = lives; 
+        this.lives = lives;
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
-		this.false_bomb = false; 
 		
         if (unlimitedBombs) {
             this.startingBombs = -1;
@@ -4342,7 +4319,7 @@ var BHell = (function (my) {
         }
 
         this.startingBombs = 1;
-        this.bombs = 0; // this.startingBombs; 10/18/2020
+        this.bombs = this.startingBombs;
 
         this.spawn_se = playerData.spawn_se;
         this.death_se = playerData.death_se;
@@ -4355,10 +4332,6 @@ var BHell = (function (my) {
         this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 		
-		// Added time count down for player winning, 5 seconds to start with by V.L. 10/18/2020
-		this.win_limit = 300; 
-		this.win_count = this.win_limit; 
-		
 		// Added player_speed prameter by V.L.
         this.speed = playerParams.speed; 
 		this.player_speed = playerParams.speed / 3;
@@ -4367,13 +4340,6 @@ var BHell = (function (my) {
 		this.finisher_count = 0; 
 		this.finisher_start = false; 
 		this.finisher_correct = true; 
-		
-		// Added hitbox for player by V.L. 10/18/2020
-		this.box = [];
-		this.box.push(new my.BHell_Hitbox(this.x, this.y, this.parent, this.box));
-		
-		// Add bomb sprite count
-		this.b_index = 0; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4427,9 +4393,6 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-		console.log(this.can_bomb); 
-		
         this.move();
         if (this.bomb != null) {
             this.bomb.update();
@@ -4568,8 +4531,63 @@ var BHell = (function (my) {
                     $gameMessage.add("I should try again. "); 
                     SceneManager.goto(my.Scene_BHell_Init); 
             } else { 
-				my.playing = false;
+				my.playing = false; 
 			}
+			
+            /*var dx = Graphics.width / 2 - this.x;
+			
+			// make the stage end as soon as player uses the bomb 10/16/2020
+			if (this.y > Graphics.width) {
+				this.y -= Graphics.width; 
+			} else {
+				this.y -= this.speed;
+			}  
+            
+            if (dx > 0) {
+                this.x += Math.min(dx, this.speed);
+            }
+            else if (dx < 0) {
+                this.x += Math.max(dx, -this.speed);
+            } 
+
+            if (this.y < -this.height) {
+                
+                // Victory. 
+                // V.L.
+				if (this.finisher_start == true) {  // 10/11/2020
+					if (this.finisher_correct == false && this.finisher_start == true) {
+						messageStarted = true;
+						messageTimer = 0;
+						$gameMessage.add("\\w[" + String(windowStartupTime) + "]Hmm that doesn't sound right. "); 
+						$gameMessage.newPage(); 
+						$gameMessage.add("I should try again. "); 
+						SceneManager.goto(my.Scene_BHell_Init); 
+					} else {
+						my.playing = false;
+					}
+				}
+				else if (this.bombed == false) {
+                    messageStarted = true;
+                    messageTimer = 0;
+                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I must have missed something... "); 
+                    $gameMessage.newPage(); 
+                    $gameMessage.add("I should try again. "); 
+                    SceneManager.goto(my.Scene_BHell_Init); 
+                } else {
+                    my.playing = false; 
+                }
+            } */ 
+			
+			/*  Play victory sound (do we want this?)                   
+                    if (this.victory_se != null) {
+                     my.playing |= AudioManager._seBuffers != null && AudioManager._seBuffers.filter(function(audio) {
+                         return audio.isPlaying();
+                     }).length !== 0;
+                    }
+                    if (my.victoryMe != null) {
+                        my.playing |= AudioManager._meBuffer != null && AudioManager._meBuffer.isPlaying();
+                    }
+			*/
                     
         }
         else { // Otherwise move towards the destination.
@@ -4620,7 +4638,7 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.shoot = function (t) {
         this.emitters.forEach(e => {
-            e.shooting = t && this.justSpawned === false && this.win_count == this.win_limit;  // V.L. 10/18/2020
+            e.shooting = t && this.justSpawned === false;
         });
     };
 
@@ -4632,26 +4650,24 @@ var BHell = (function (my) {
             this.bombs--;
 			
 			// Reset the game if the player used the bomb when not supposed to by V.L.
+			//$gameVariables.setValue(0008, 1); //Change variable 0008 Bomb Used to 1 by V.L.	
 			
 			if (this.can_bomb == false) {
                 messageStarted = true;
                 messageTimer = 0;
 				$gameMessage.add("\\w[" + String(windowStartupTime) + "]Oh crap! I shouldn't be using my bomb here. "); 
 				$gameMessage.newPage(); 
-				$gameMessage.add("The text is gonna get angry >:-|"); 
-				
-				this.false_bomb = true; 
-				//SceneManager.goto(my.Scene_BHell_Init);  V.L. 10/18/2020
-			} else {
-				// resets the controller by V.L. 10/16/2020
-				my.controller.generators = [];
-				my.controller.activeGenerators = [];
-				
-				$gameBHellResult.bombsUsed++;
-				// this.bomb.activate(this.x, this.y); don't actually launch the bomb by V.L.
-				this.bombed = true;
+				$gameMessage.add("I should try again. "); 
+				SceneManager.goto(my.Scene_BHell_Init); 
 			}
-
+			
+			// resets the controller by V.L. 10/16/2020
+			my.controller.generators = [];
+			my.controller.activeGenerators = [];
+			
+            $gameBHellResult.bombsUsed++;
+            this.bomb.activate(this.x, this.y);
+            this.bombed = true;
         }
     };
 
@@ -4685,14 +4701,7 @@ var BHell = (function (my) {
      * Plays the victory SE and moves the player to the top of the map.
      */
     BHell_Player.prototype.win = function () {
-		
-		if (this.bombed == false) {
-			this.win_count = 0; 
-		}
-		
-		if (this.win_count > 0) {
-			this.win_count -= 1; 
-		} else if (this.won === false) {
+        if (this.won === false) {
             this.won = true;
             $gameSwitches.setValue(23, true);
             if (this.victory_se != null) {
@@ -4721,66 +4730,6 @@ var BHell = (function (my) {
     return my;
 }(BHell || {}));
 
-var BHell = (function (my) {
-
-/**
- * Hit Effect class when player's bullet hits an enemy by V.L. 10/16/2020 
- * @constructor
- * @memberOf BHell
- * @extends BHell.BHell_Sprite
- */
-var BHell_Hitbox = my.BHell_Hitbox = function() {
-    this.initialize.apply(this, arguments);
-};
-
-BHell_Hitbox.prototype = Object.create(my.BHell_Sprite.prototype);
-BHell_Hitbox.prototype.constructor = BHell_Hitbox;
-
-BHell_Hitbox.prototype.initialize = function (x, y, parent, effectList) {
-    var sprite = "$Hitbox";
-    var index = 1;
-	var direction = 2; 
-    var frame = 0;
-
-    my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, true, 15);
-
-    this.anchor.x = 0.5;
-    this.anchor.y = 0.5;
-
-    this.x = x;
-    this.y = y;
-    this.z = 10;
-
-    this.effectList = effectList;
-    this.parent = parent;
-
-    this.parent.addChild(this);
-};
-
-BHell_Hitbox.prototype.update = function () {
-    my.BHell_Sprite.prototype.update.call(this);
-
-    var ret = false;
-
-    this.x = my.player.x; 
-	this.y = my.player.y; 
-
-    return ret;
-};
-
-/**
- * Removes the explosion from the screen and its container.
- */
-BHell_Hitbox.prototype.destroy = function() {
-    if (this.parent != null) {
-        this.parent.removeChild(this);
-    }
-
-    this.effectList.splice(this.effectList.indexOf(this), 1);
-};
-
-return my;
-} (BHell || {}));
 
 
 var BHell = (function (my) {
@@ -5409,34 +5358,21 @@ var BHell = (function (my) {
         var h = this.life.patternHeight();
         var sx = (this.life.characterBlockX() + this.life.characterPatternX()) * w;
         var sy = (this.life.characterBlockY() + this.life.characterPatternY()) * h;
-        for (i = 0; i < my.player.lives; i++) { // slightly change in variables V.L. 10/18/2020
-            x = i * w + 10; // i * w/2 + 10;
+        for (i = 0; i < my.player.lives; i++) {
+            x = i * w / 2 + 10;
             y = Graphics.height - h - 10;
             this.hud.bitmap.blt(this.life.bitmap, sx, sy, w, h, x, y, w, h);
         }
 
-		// Update bomb image index V.L. 10/19/2020 
-        sx = this.bomb.width / 6 * (Math.round(my.player.b_index % 5)); // this.bomb.width / 16 * (player.bomb.icon_index % 16);
-        sy = 0; // this.bomb.height / 20 * Math.floor(player.bomb.icon_index / 16);
-        w = 80; // this.bomb.width / 16;
-        h = 34; // this.bomb.height / 20;
-        for (i = 0; i < my.player.bombs; i++) { // slightly change in variables V.L. 10/18/2020
+        sx = this.bomb.width / 16 * (player.bomb.icon_index % 16);
+        sy = this.bomb.height / 20 * Math.floor(player.bomb.icon_index / 16);
+        w = this.bomb.width / 16;
+        h = this.bomb.height / 20;
+        for (i = 0; i < my.player.bombs; i++) {
             x = i * w + 10;
-            y = Graphics.height - 70; // Graphics.height - h - 10 - this.life.height;
+            y = Graphics.height - h - 10 - this.life.height;
             this.hud.bitmap.blt(this.bomb, sx, sy, w, h, x, y, w, h);
         }
-		my.player.b_index += 1/10; 
-		
-		// Update bomb image when there's no bomb V.L. 10/19/2020 
-		if (my.player.bombs == 0) {
-			sx = 0; 
-			sy = 0; 
-			w = 80; 
-			h = 34; 
-			x = 10;
-			y = Graphics.height - 70; 
-			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
-		}
 
         // Update score: Graphic effect for score accumulation.
         var delta = $gameBHellResult.score - my.scoreAccumulator;
@@ -5464,11 +5400,8 @@ var BHell = (function (my) {
      */
     Scene_BHell.prototype.createHUD = function () {
         var player = $dataBulletHell.players[my.playerId];
-		
-		// Change the sprites for life and bomb 
-        this.life = new my.BHell_Sprite("$Life", player.index, 2, player.frame, false, 0);
+        this.life = new my.BHell_Sprite(player.sprite, player.index, 2, player.frame, false, 0);
         this.bomb = ImageManager.loadSystem(player.bomb.icon, 0);
-		this.nobomb = ImageManager.loadSystem("noBomb", 0);
 
         my.scoreAccumulator = 0;
         this.hud = new Sprite(new Bitmap(Graphics.width, Graphics.height));

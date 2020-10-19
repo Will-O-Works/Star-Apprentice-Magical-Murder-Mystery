@@ -77,26 +77,6 @@ var BHell = (function (my) {
         //main update loop
         BHell_Enemy_VagrantLine1_p1.prototype.update = function () {
             my.BHell_Sprite.prototype.update.call(this);
-			
-			/* Copy and paste this code into update function for all lines */
-			// Added bomb wrong case, justy for testing by V.L. 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				this.emitters[3].bulletParams.speed = 8; 
-				this.emitters[4].bulletParams.speed = 8; 
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			/* Copy and paste this code into update function for all lines */
-			
-			
             if (this.state !== "dying") {
                 this.move();
             }
@@ -208,7 +188,7 @@ var BHell = (function (my) {
         this.enemyList.splice(this.enemyList.indexOf(this), 1);
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 9 here is the map number change this to whatever map number u want to transition there on victory // Changed to 6 just for testing V.L.
+        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
     };
     BHell_Enemy_VagrantLine1_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
@@ -219,13 +199,6 @@ var BHell = (function (my) {
     //main update loop
     BHell_Enemy_VagrantLine1_p2.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-		/* Copy and paste this code into update function for all lines */
-		if (my.player.bombed == true) {
-			this.destroy(); 
-		}
-		/* Copy and paste this code into update function for all lines */
-		
         if (this.state !== "dying") {
             this.move();
         }
@@ -337,25 +310,6 @@ var BHell = (function (my) {
         //main update loop
         BHell_Enemy_VagrantLine1_p3.prototype.update = function () {
             my.BHell_Sprite.prototype.update.call(this);
-			
-			/* Copy and paste this code into update function for all lines */
-			// Added bomb wrong case, justy for testing by V.L. 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				this.emitters[1].bulletParams.speed = 8; 
-				this.emitters[2].bulletParams.speed = 8; 
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			/* Copy and paste this code into update function for all lines */
-			
             if (this.state !== "dying") {
                 this.move();
             };
