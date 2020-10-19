@@ -1,24 +1,18 @@
 //=============================================================================
 // VagrantLine2.js coat
 //=============================================================================
-
-/*:
-duplicate and edit this code to make a new boss. edit bullethell JSON file when done so the main plugin recognizes it.
-link to predifined stuff u can use or extend: https://hashakgik.github.io/BulletHell-RMMV/BHell.html
-*/ 
-
 var BHell = (function (my) {
 
     
-    var BHell_Enemy_VagrantLine2 = my.BHell_Enemy_VagrantLine2 = function() {
+    var BHell_Enemy_VagrantLine2_p1 = my.BHell_Enemy_VagrantLine2_p1 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_VagrantLine2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine2.prototype.constructor = BHell_Enemy_VagrantLine2;
+    BHell_Enemy_VagrantLine2_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine2_p1.prototype.constructor = BHell_Enemy_VagrantLine2_p1;
 
     //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_VagrantLine2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+    BHell_Enemy_VagrantLine2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
         params.hitbox_w = 500;
@@ -30,40 +24,59 @@ var BHell = (function (my) {
         this.initializeCoat(parent);
 
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
-        this.j = 0;
+        this.frameCounter = 0;
         this.state = "started";
         this.receivedDamage = 0;
         this.bulletcounter = 0;
 
         //initalize the mover function which dictaes the movement pattern here:
-        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);
+        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
     };
 
-    BHell_Enemy_VagrantLine2.prototype.initializeCoat = function (parent) {
+    BHell_Enemy_VagrantLine2_p1.prototype.initializeCoat = function (parent) {
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 3;
+        coatParams.bullet.speed = 10;
         coatParams.bullet.index = 0;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
-        coatParams.period = 300;
+        coatParams.period = 0;
         coatParams.alwaysAim = true;
-        coatParams.aim = true;
+        coatParams.aim = true; 
         this.coatEmitters = [];
-        this.coatEmitters.push(new my.BHell_Emitter_Homing(0, 0, coatParams, parent, my.enemyBullets));
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
         //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
+        this.coatEmitters[0].offsetX = 150;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[1].offsetX = -150;
+        //fine tune aiming here
+        this.coatEmitters[1].aimX = -100;
+        this.coatEmitters[1].alwaysAim = true;
+        coatParams.bullet.speed = 6;
+        coatParams.a = 0;
+        coatParams.b = 2 * Math.PI;
+        coatParams.n = 10;
+        this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[2].offsetX = 150;
+        this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[3].offsetX = -150;
     };
 
-    BHell_Enemy_VagrantLine2.prototype.updateCoat = function() {
-        if (this.j % 20 == 0){
+    BHell_Enemy_VagrantLine2_p1.prototype.updateCoat = function() {
+        if (this.frameCounter % 90 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
+            this.coatEmitters[1].shoot(this.coatEmitters,true);
+        }
+        if (this.frameCounter % 150 == 0){
+            this.coatEmitters[3].shoot(this.coatEmitters,true);
+            this.coatEmitters[2].shoot(this.coatEmitters,true);
         }
         
     };
 
-    BHell_Enemy_VagrantLine2.prototype.move = function () {
+    BHell_Enemy_VagrantLine2_p1.prototype.move = function () {
         if (this.mover != null) {
             var p = this.mover.move(this.x, this.y, this.speed);
             this.x = p[0];
@@ -72,7 +85,7 @@ var BHell = (function (my) {
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
 
-    BHell_Enemy_VagrantLine2.prototype.update = function () {
+    BHell_Enemy_VagrantLine2_p1.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
@@ -81,21 +94,19 @@ var BHell = (function (my) {
 			this.destroy(); 
 		}
 
-        if (this.state !== "dying" && this.state !== "stunned") {
+        if (this.state !== "dying") {
             this.move();
         }
         switch (this.state) {
             case "started":
-                if (this.mover.inPosition === true) {
-                    this.state = "pattern 1";
-                    this.j = 0;
-                }
+                this.state = "pattern 1";
+                this.updateCoat();
                 break;
             case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
                 this.updateCoat();
                 break;
             case "dying": // Spawns explosions for 5 seconds, then dies.
-                if (this.j > 30) {
+                if (this.frameCounter > 30) {
                     this.destroy();
                 }
                 break;
@@ -103,23 +114,19 @@ var BHell = (function (my) {
 
         // Update the received damage counter for the stunned state.
         this.coatEmitters.forEach(e => {e.update()});
-        if (this.j % 60 == 0) {
-            this.receivedDamage = 0;
-        };
-
         // Update the time counter and reset it every 20 seconds.
-        this.j = (this.j + 1) % 1200;
+        this.frameCounter = (this.frameCounter + 1) % 1200;
     }
 
-    BHell_Enemy_VagrantLine2.prototype.die = function() {
+    BHell_Enemy_VagrantLine2_p1.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
-        this.j = 0;
+        this.frameCounter = 0;
     
         my.controller.destroyEnemyBullets();
     };
 
-    BHell_Enemy_VagrantLine2.prototype.hit = function () {
+    BHell_Enemy_VagrantLine2_p1.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
     
@@ -130,7 +137,308 @@ var BHell = (function (my) {
     };
     return my;
 } (BHell || {}));
+//=============================================================================
+// VagrantLine2_p2.js coat
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_VagrantLine2_p2 = my.BHell_Enemy_VagrantLine2_p2 = function() {
+        this.initialize.apply(this, arguments);
+    };
 
+    BHell_Enemy_VagrantLine2_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine2_p2.prototype.constructor = BHell_Enemy_VagrantLine2_p2;
+
+    //initalize function. set sprite hitbox params here along with speed
+    BHell_Enemy_VagrantLine2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;
+        params.speed = 4;
+        params.hitbox_w = 500;
+        params.hitbox_h = 100;
+        params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+        //for multiple emitters initalize them here:
+        this.initializeCoat(parent);
+
+        //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
+        this.frameCounter = 0;
+        this.state = "started";
+        this.receivedDamage = 0;
+        this.bulletcounter = 0;
+
+        //initalize the mover function which dictaes the movement pattern here:
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH)
+    };
+
+    BHell_Enemy_VagrantLine2_p2.prototype.initializeCoat = function (parent) {
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 10;
+        coatParams.bullet.index = 0;
+        coatParams.bullet.frame = 2;
+        coatParams.bullet.direction = 8;
+        coatParams.period = 0;
+        coatParams.alwaysAim = true;
+        coatParams.aim = true; 
+        this.coatEmitters = [];
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        //fine tune aiming here
+        this.coatEmitters[0].aimX = 100;
+        this.coatEmitters[0].alwaysAim = true;
+        this.coatEmitters[0].offsetX = 150;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[1].offsetX = -150;
+        //fine tune aiming here
+        coatParams.aim = false; 
+        coatParams.bullet.speed = 5;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[2].angle=Math.PI/2;
+        this.coatEmitters[2].alwaysAim = false;
+        this.coatEmitters[2].offsetX = -150;
+        this.coatEmitters[3].angle=Math.PI/2;
+        this.coatEmitters[3].alwaysAim = false;
+        this.coatEmitters[3].offsetX= 150;
+        this.angl1=-(Math.PI/20);
+        this.angl2=(Math.PI/20);
+        this.flip=false;
+    };
+
+    BHell_Enemy_VagrantLine2_p2.prototype.updateCoat = function() {
+        if (this.frameCounter % 90 == 0){
+            this.coatEmitters[0].shoot(this.coatEmitters,true);
+            this.coatEmitters[1].shoot(this.coatEmitters,true);
+        }
+        if (this.frameCounter % 10 == 0){
+            this.coatEmitters[2].shoot(this.coatEmitters,true);
+            this.coatEmitters[3].shoot(this.coatEmitters,true);
+            if(this.coatEmitters[2].angle>=Math.PI||this.coatEmitters[2].angle<=0)
+            {
+                this.flip=true;
+            }
+            if(this.flip==true)
+            {
+                this.angl1=-(this.angl1);
+                this.angl2=-(this.angl1);
+                this.flip = false;
+            }
+            this.coatEmitters[2].angle+=this.angl1;
+            this.coatEmitters[3].angle+=this.angl2;
+        }
+        
+    };
+
+    BHell_Enemy_VagrantLine2_p2.prototype.move = function () {
+        if (this.mover != null) {
+            var p = this.mover.move(this.x, this.y, this.speed);
+            this.x = p[0];
+            this.y = p[1];
+        }
+        this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
+    };
+
+    BHell_Enemy_VagrantLine2_p2.prototype.update = function () {
+		
+        my.BHell_Sprite.prototype.update.call(this);
+		
+		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
+		if (my.player.bombed == true) {
+			this.destroy(); 
+		}
+
+        if (this.state !== "dying") {
+            this.move();
+        }
+        switch (this.state) {
+            case "started":
+                this.state = "pattern 1";
+                this.updateCoat();
+                break;
+            case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
+                this.updateCoat();
+                break;
+            case "dying": // Spawns explosions for 5 seconds, then dies.
+                if (this.frameCounter > 30) {
+                    this.destroy();
+                }
+                break;
+        }; 
+
+        // Update the received damage counter for the stunned state.
+        this.coatEmitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = (this.frameCounter + 1) % 1200;
+    }
+
+    BHell_Enemy_VagrantLine2_p2.prototype.die = function() {
+        $gameBHellResult.score += this.killScore;
+        this.state = "dying";
+        this.frameCounter = 0;
+    
+        my.controller.destroyEnemyBullets();
+    };
+
+    BHell_Enemy_VagrantLine2_p2.prototype.hit = function () {
+        if (this.state !== "dying") {
+            my.BHell_Enemy_Base.prototype.hit.call(this);
+    
+            if (this.state != "stunned") {
+                this.receivedDamage++;
+            }
+        }
+    };
+    return my;
+} (BHell || {}));
+//=============================================================================
+// VagrantLine2.js coat
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_VagrantLine2_p3 = my.BHell_Enemy_VagrantLine2_p3 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantLine2_p3.prototype.constructor = BHell_Enemy_VagrantLine2_p3;
+
+    //initalize function. set sprite hitbox params here along with speed
+    BHell_Enemy_VagrantLine2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;
+        params.speed = 4;
+        params.hitbox_w = 500;
+        params.hitbox_h = 100;
+        params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+        //for multiple emitters initalize them here:
+        this.initializeCoat(parent);
+
+        //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
+        this.frameCounter = 0;
+        this.state = "started";
+        this.receivedDamage = 0;
+        this.bulletcounter = 0;
+
+        //initalize the mover function which dictaes the movement pattern here:
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype.initializeCoat = function (parent) {
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 10;
+        coatParams.bullet.index = 0;
+        coatParams.bullet.frame = 2;
+        coatParams.bullet.direction = 8;
+        coatParams.period = 0;
+        coatParams.alwaysAim = true;
+        coatParams.aim = true; 
+        this.coatEmitters = [];
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[0].aimX = 100;
+        this.coatEmitters[0].alwaysAim = true;
+        this.coatEmitters[0].offsetX = 350;
+        this.coatEmitters[0].offsetY = 250;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[1].offsetX = -350;
+        this.coatEmitters[1].offsetY = 250;
+        this.coatEmitters[1].aimX = -100;
+        this.coatEmitters[1].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[2].offsetY = -150;
+        this.coatEmitters[2].offsetX = -350;
+        this.coatEmitters[2].aimX = -100;
+        this.coatEmitters[2].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[3].offsetY = -150;
+        this.coatEmitters[3].offsetX = 350;
+        this.coatEmitters[3].aimX = -100;
+        this.coatEmitters[3].alwaysAim = true;
+        coatParams.bullet.speed = 6;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[4].aimX = -100;
+        this.coatEmitters[4].alwaysAim = true;
+        coatParams.a = 0;//a: Arc's initial angle (in radians),
+        coatParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
+        coatParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
+        this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype.updateCoat = function() {
+        if (this.frameCounter % 100 == 0){
+            this.coatEmitters[0].shoot(this.coatEmitters,true);
+            this.coatEmitters[1].shoot(this.coatEmitters,true);
+            this.coatEmitters[2].shoot(this.coatEmitters,true);
+            this.coatEmitters[3].shoot(this.coatEmitters,true);
+        }
+        if (this.frameCounter % 15 == 0){
+            this.coatEmitters[4].shoot(this.coatEmitters,true);
+        } 
+        if (this.frameCounter % 120 == 0){
+            this.coatEmitters[5].shoot(this.coatEmitters,true);
+        }
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype.move = function () {
+        if (this.mover != null) {
+            var p = this.mover.move(this.x, this.y, this.speed);
+            this.x = p[0];
+            this.y = p[1];
+        }
+        this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype.update = function () {
+		
+        my.BHell_Sprite.prototype.update.call(this);
+		
+		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
+		if (my.player.bombed == true) {
+			this.destroy(); 
+		}
+
+        if (this.state !== "dying") {
+            this.move();
+        }
+        switch (this.state) {
+            case "started":
+                this.state = "pattern 1";
+                this.updateCoat();
+                break;
+            case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
+                this.updateCoat();
+                break;
+            case "dying": // Spawns explosions for 5 seconds, then dies.
+                if (this.frameCounter > 30) {
+                    this.destroy();
+                }
+                break;
+        }; 
+
+        // Update the received damage counter for the stunned state.
+        this.coatEmitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = (this.frameCounter + 1) % 1200;
+    }
+
+    BHell_Enemy_VagrantLine2_p3.prototype.die = function() {
+        $gameBHellResult.score += this.killScore;
+        this.state = "dying";
+        this.frameCounter = 0;
+    
+        my.controller.destroyEnemyBullets();
+    };
+
+    BHell_Enemy_VagrantLine2_p3.prototype.hit = function () {
+        if (this.state !== "dying") {
+            my.BHell_Enemy_Base.prototype.hit.call(this);
+    
+            if (this.state != "stunned") {
+                this.receivedDamage++;
+            }
+        }
+    };
+    return my;
+} (BHell || {}));
 /////////////////custom bullet class and emitter
 var BHell = (function (my) {
 
@@ -166,7 +474,7 @@ var BHell = (function (my) {
      * @param bulletList Array in which this bullet is contained.
      */
     BHell_HomingBullet.prototype.initialize = function (x, y, angle, params, bulletList) {
-        var speed = 3;
+        var speed = 4;
         var sprite = my.defaultBullet;
         var index = 0;
         var direction = 2;
@@ -213,19 +521,19 @@ var BHell = (function (my) {
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
         this.counter = this.counter +1;
-        /*if (seeks === 3)////change to adjust bullet lifespan
-        {
-            console.debug("destroying");
-            this.destroy();
-        }*/
-        if (this.counter%120 === 0){////////change to adjust tracking
+        // if (seeks === 7)////change to adjust bullet lifespan
+        // {
+        //     console.debug("destroying");
+        //     this.destroy();
+        // }
+        if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
             var dx = my.player.x - this.x + this.aimX;
             var dy = my.player.y - this.y + this.aimY;
             this.angle = Math.atan2(dy, dx);
             this.spotted = true;
         }
-        if (this.spotted === true){////change to adjust pause
-            if(this.counter>150)
+        if (this.spotted === true){
+            if(this.counter>30)////change to adjust pause
             {
                 seeks = seeks+1;
                 this.counter = 0;

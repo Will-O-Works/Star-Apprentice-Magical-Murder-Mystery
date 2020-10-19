@@ -122,13 +122,68 @@ var BHell = (function (my) {
         emitterParams.bullet = {};
 		emitterParams.bullet.direction = 4;
 
-		//emitterParams.shoot_x = Graphics.width / 4 + Math.random() * Graphics.width / 2; 
-		
+		//emitterParams.shoot_x = Graphics.width / 4 + Math.random() * Graphics.width / 2;
+
 		this.emitters.push(new my.BHell_Emitter_Sine(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter 
+		emitterParams.bullet.speed = 4;
+        emitterParams.period = 150;
+        emitterParams.a = 0;//a: Arc's initial angle (in radians),
+        emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
+        emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
 		this.emitters.alwaysAim = true; 
-		
-		
-    };
+	};
+	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+	BHell_Enemy_VagrantLine4_p1.prototype.updateEmitters = function () { 
+		this.emitters[0].shoot(this.emitters,true); 
+	};
+	BHell_Enemy_VagrantLine4_p1.prototype.updateCircle = function () { 
+		this.emitters[1].shoot(this.emitters,true); 
+	};
+	BHell_Enemy_VagrantLine4_p1.prototype.die = function() {
+		this.state = "dying";
+		this.frameCounter = 0;
+		my.controller.destroyEnemyBullets();
+	};
+	//main update loop
+	BHell_Enemy_VagrantLine4_p1.prototype.update = function () {
+		my.BHell_Sprite.prototype.update.call(this);
+		if (this.state !== "dying") {
+			this.move();
+		}
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
+					this.frameCounter = 0;
+				}
+				break;
+			case "active": // Shoot.
+				// if(this.frameCounter%150 === 0)
+				// {    
+				// 	this.x=125;
+				// 	this.y=125;
+				// }
+				// else
+				// {
+					
+				// }
+				this.updateEmitters(); 
+				if(this.frameCounter%151 === 0){
+					//change speed param here to adjust speed
+					this.updateCircle();
+					//revert speed param here
+				}   
+				break;
+			case "dying": // die.
+				this.destroy();
+				break;
+		}; 
+		// Update the emitter's position.
+		this.emitters.forEach(e => {e.update()});
+		// Update the time counter and reset it every 20 seconds.
+		this.frameCounter = (this.frameCounter + 1) % 1200;
+	}
 
     return my;
 } (BHell || {}));

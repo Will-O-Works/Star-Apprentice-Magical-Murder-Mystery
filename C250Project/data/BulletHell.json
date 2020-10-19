@@ -736,12 +736,26 @@
         }
     },
     {
-      "name": "VagrantLine2",
-      "class": "BHell_Enemy_VagrantLine2",
+      "name": "VagrantLine2_p1",
+      "class": "BHell_Enemy_VagrantLine2_p1",
       "params": {
           "boss": false
         }
     }, 
+    {
+      "name": "VagrantLine2_p2",
+      "class": "BHell_Enemy_VagrantLine2_p2",
+      "params": {
+          "boss": false
+        }
+    },
+    {
+      "name": "VagrantLine2_p3",
+      "class": "BHell_Enemy_VagrantLine2_p3",
+      "params": {
+          "boss": false
+        }
+    },
 	{
 	  "name": "VagrantLine4_p1",
 	  "class": "BHell_Enemy_VagrantLine4_p1",
@@ -761,8 +775,8 @@
     }
 	},
 		{
-	  "name": "VagrantLine5",
-	  "class": "BHell_Enemy_VagrantLine5",
+	  "name": "VagrantLine5_p1",
+	  "class": "BHell_Enemy_VagrantLine5_p1",
 	  "params": {
         "bullet": {
           "direction": 6
