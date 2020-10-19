@@ -11,17 +11,29 @@ var menuBGBitmap = Bitmap.load("/img/pictures/Menu_BG.png");
 var menuBGSprite = new Sprite(menuBGBitmap);
 var evidenceBGBitmap = Bitmap.load("/img/pictures/Evidence_BG.png");
 var evidenceBGSprite = new Sprite(evidenceBGBitmap);
+var optionsBGBitmap = Bitmap.load("/img/pictures/Options_BG.png");
+var optionsBGSprite = new Sprite(optionsBGBitmap);
+var saveBGBitmap = Bitmap.load("/img/pictures/Save_BG.png");
+var saveBGSprite = new Sprite(saveBGBitmap);
 var itemBGBitmap = Bitmap.load("/img/pictures/BG.png");
 var itemBGSprite = new Sprite(itemBGBitmap);
 var unravelled_timer_length = 15;
 var menuBGAnimFrames = 5;
 var timerInterval = (menuBGAnimFrames - 1)/(unravelled_timer_length);
+var o_unravelled_timer_length = 21;
+var o_menuBGAnimFrames = 7;
+var o_timerInterval = (o_menuBGAnimFrames - 1)/(o_unravelled_timer_length);
+var s_unravelled_timer_length = 24;
+var s_menuBGAnimFrames = 8;
+var s_timerInterval = (s_menuBGAnimFrames - 1)/(s_unravelled_timer_length);
 var e_unravelled_timer_length = 24;
 var e_menuBGAnimFrames = 8;
 var e_timerInterval = (e_menuBGAnimFrames - 1)/(e_unravelled_timer_length);
 var evidenceWidth = 270
 var evidenceItemSize = 64;
 var evidenceOffset = 56;
+var saveOffset = 56;
+var current_title = "Star Apprentice";
 var itemReadX = 100;
 var itemReadY = 144;
 var textDescX = 400;
@@ -33,7 +45,6 @@ var itemImageInit = true;
 
 // Initialize the scene menu itself
 Scene_Menu.prototype.create = function() {
-
     unravelled = false;
     unravelled_timer = 0;
     Scene_MenuBase.prototype.create.call(this);
@@ -94,17 +105,176 @@ Window_MenuCommand.prototype.drawAllItems = function () {
     }
 }
 
+// OPTIONS MENU
+
+// Deletes useless general options
+Window_Options.prototype.addGeneralOptions = function() {
+    // Empty
+};
+
+// Options initialize the scene menu itself
+var _Scene_Options_create = Scene_Options.prototype.create;
+Scene_Options.prototype.create = function() {
+    o_unravelled = false;
+    o_unravelled_timer = 0;
+    _Scene_Options_create.call(this);
+};
+
+// Options force sprite
+var _Scene_Options_createWindowLayer = Scene_Options.prototype.createWindowLayer;
+
+Scene_Options.prototype.createWindowLayer = function() {
+    optionsBGSpriteImage = this.addChild(optionsBGSprite);
+    _Scene_Options_createWindowLayer.call(this);
+};
+
+// Options make the cursor invisible if not unravelled yet
+var _Window_Options_updateCursor = Window_Options.prototype._updateCursor;
+
+Window_Options.prototype._updateCursor = function() {
+    _Window_Options_updateCursor.call(this);
+    if (typeof o_unravelled == "boolean") {
+        if (!o_unravelled) {
+            this._windowCursorSprite.alpha = 0;
+        }
+    }
+};
+
+// Options update script
+var _Window_Options_update = Window_Options.prototype.update;
+
+Window_Options.prototype.update = function() {
+    _Window_Options_update.call(this);
+    if (typeof o_unravelled == "boolean") {
+        if (!o_unravelled) {
+            optionsBGSpriteImage.setTransform(0, -540 * Math.floor(o_unravelled_timer * o_timerInterval));
+            if (o_unravelled_timer >= o_unravelled_timer_length) {
+                o_unravelled = true;
+            }
+            o_unravelled_timer++;
+        } else {
+            this.drawAllItems();
+        }
+    }
+};
+
+// Draw script
+_Window_Options_drawAllItems = Window_Options.prototype.drawAllItems;
+Window_Options.prototype.drawAllItems = function () {
+    if (o_unravelled) {
+        _Window_Options_drawAllItems.call(this);
+    }
+}
+
+// SAVES MENU
+
+// Get rid of this functionality
+Window_SavefileList.prototype.drawPartyCharacters = function(info, x, y) {
+    // Empty
+};
+
+// Save file
+Window_SavefileList.prototype.drawGameTitle = function(info, x, y, width) {
+    if (info.title) {
+        this.drawText(current_title, x, y, width);
+    }
+};
+
+// Makes cursor snap
+Window_SavefileList.prototype.itemRect = function(index) {
+    var rect = new Rectangle();
+    var maxCols = this.maxCols();
+    rect.width = 960 - ((saveOffset + 18) * 2);
+    rect.height = this.itemHeight();
+    rect.x = saveOffset + index % maxCols * (rect.width + this.spacing()) - this._scrollX;
+    rect.y = Math.floor(index / maxCols) * rect.height - this._scrollY;
+    return rect;
+};
+
+
+// Scene Create
+var _Scene_File_create = Scene_File.prototype.create;
+Scene_File.prototype.create = function() {
+    s_unravelled = false;
+    s_unravelled_timer = 0;
+    _Scene_File_create.call(this);
+};
+
+// Help window text
+Scene_File.prototype.createHelpWindow = function() {
+    // Empty
+};
+
+// Save force sprite
+var _Scene_File_createWindowLayer = Scene_File.prototype.createWindowLayer;
+
+Scene_File.prototype.createWindowLayer = function() {
+    saveBGSpriteImage = this.addChild(saveBGSprite);
+    _Scene_File_createWindowLayer.call(this);
+};
+
+// Save make the cursor invisible if not unravelled yet
+var _Window_SavefileList_updateCursor = Window_SavefileList.prototype._updateCursor;
+
+Window_SavefileList.prototype._updateCursor = function() {
+    _Window_SavefileList_updateCursor.call(this);
+    if (typeof s_unravelled == "boolean") {
+        if (!s_unravelled) {
+            this._windowCursorSprite.alpha = 0;
+        }
+    }
+};
+
+// Save update script
+var _Window_SavefileList_update = Window_SavefileList.prototype.update;
+
+Window_SavefileList.prototype.update = function() {
+    _Window_SavefileList_update.call(this);
+    if (typeof s_unravelled == "boolean") {
+        if (!s_unravelled) {
+            saveBGSpriteImage.setTransform(0, -540 * Math.floor(s_unravelled_timer * s_timerInterval));
+            if (s_unravelled_timer >= s_unravelled_timer_length) {
+                s_unravelled = true;
+            }
+            s_unravelled_timer++;
+        } else {
+            this.drawAllItems();
+        }
+    }
+};
+
+// Save script
+_Window_SavefileList_drawAllItems = Window_SavefileList.prototype.drawAllItems;
+Window_SavefileList.prototype.drawAllItems = function () {
+    if (s_unravelled) {
+        _Window_SavefileList_drawAllItems.call(this);
+    }
+}
+
+Scene_File.prototype.createListWindow = function() {
+    var x = 0;
+    var y = 96;
+    var width = Graphics.boxWidth;
+    var height = Graphics.boxHeight - y - 20;
+    this._listWindow = new Window_SavefileList(x, y, width, height);
+    this._listWindow.setHandler('ok',     this.onSavefileOk.bind(this));
+    this._listWindow.setHandler('cancel', this.popScene.bind(this));
+    this._listWindow.select(this.firstSavefileIndex());
+    this._listWindow.setTopRow(this.firstSavefileIndex() - 2);
+    this._listWindow.setMode(this.mode());
+    this._listWindow.refresh();
+    this.addWindow(this._listWindow);
+};
 
 // ITEM MENU
 
 // Item initialize the scene menu itself
-var _Scene_Item_prototype_create = Scene_Item.prototype.create;
+var _Scene_Item_create = Scene_Item.prototype.create;
 Scene_Item.prototype.create = function() {
     e_unravelled = false;
     e_unravelled_timer = 0;
-    _Scene_Item_prototype_create.call(this);
+    _Scene_Item_create.call(this);
 };
-
 
 // Item force sprite
 var _Scene_Item_createWindowLayer = Scene_Item.prototype.createWindowLayer;
