@@ -129,13 +129,22 @@ var BHell = (function (my) {
         params.hitbox_w = 320; // hitbox width
         params.hitbox_h = 100; // hitbox height
         params.animated = false;
-        params.dir=-1;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.frameCounter =0;
+        this.state = "started";
+        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
 
+        this.initializeVL1P2Emitter(parent);
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
 
-		var emitterParams = {};
+        this.radius = 250;
+        this.counterclockwise = true;
+        this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
+        this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,Graphics.height / 2); // initialize the enemy's movement, check BHell_Mover
+    }
+    BHell_Enemy_VagrantLine1_p2.prototype.initializeVL1P2Emitter = function (parent) {
+        var emitterParams = {};
 		emitterParams.period = 10; // period for the emitter to activate
 		emitterParams.aim = false; // if aims at player 
         emitterParams.alwaysAim = false;
@@ -143,11 +152,7 @@ var BHell = (function (my) {
         emitterParams.bullet = {};
         emitterParams.bullet.direction = 4;
         emitterParams.bullet.speed = 6;
-        this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
-        this.radius = 250;
-        this.counterclockwise = false;
-
-        this.mover = new my.BHell_Mover_Orbit(this.dir,this.radius, this.counterclockwise); // initialize the enemy's movement, check BHell_Mover
+        this.trackingCounter = 0;
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
@@ -164,6 +169,16 @@ var BHell = (function (my) {
         this.emitters[2].angle= Math.PI/2;
     };
 
+     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+     BHell_Enemy_VagrantLine1_p2.prototype.updateAngle = function () { 
+        this.emitters[0].shoot(this.emitters,true);
+        this.emitters[1].shoot(this.emitters,true);
+        this.emitters[2].shoot(this.emitters,true);  
+        this.trackingCounter += 1
+    };
+    BHell_Enemy_VagrantLine1_p2.prototype.updateCircle = function () { 
+        this.emitters[3].shoot(this.emitters,true); 
+    };
     BHell_Enemy_VagrantLine1_p2.prototype.destroy = function() {
 
         my.player.can_bomb = false; 
@@ -173,9 +188,46 @@ var BHell = (function (my) {
         this.enemyList.splice(this.enemyList.indexOf(this), 1);
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(3);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
     };
-
+    BHell_Enemy_VagrantLine1_p2.prototype.die = function() {
+        $gameBHellResult.score += this.killScore;
+        this.state = "dying";
+        this.frameCounter = 0;
+        my.controller.destroyEnemyBullets();
+    };
+    //main update loop
+    BHell_Enemy_VagrantLine1_p2.prototype.update = function () {
+        my.BHell_Sprite.prototype.update.call(this);
+        if (this.state !== "dying") {
+            this.move();
+        }
+        switch (this.state) {
+            case "started":
+                this.state = "active";
+                break;
+            case "active": // Shoot.
+            console.log("active");
+                if(this.frameCounter%8 === 0)
+                {    
+                    if (this.trackingCounter<3){this.updateAngle();}//change if comparator to adjust amout of bullets per wave
+                    else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
+                }
+                if(this.frameCounter%150 === 0){
+                    //change speed param here to adjust speed
+                    this.updateCircle();
+                    //revert speed param here
+                }   
+                break;
+            case "dying": // die.
+                this.destroy();
+                break;
+        }; 
+        // Update the emitter's position.
+        this.emitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = (this.frameCounter + 1) % 1200;
+    }
     return my;
 } (BHell || {}));
 //=============================================================================
@@ -216,6 +268,7 @@ var BHell = (function (my) {
         emitterParams.bullet = {};
         emitterParams.bullet.direction = 4;
         emitterParams.bullet.speed = 6;
+        this.trackingCounter = 0;
 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
@@ -242,9 +295,12 @@ var BHell = (function (my) {
             this.emitters[0].angle += this.Adecremepent;//change the denominator to adjust rotaion
             this.emitters[1].angle += this.Aincrement;//change the denominator to adjust rotaion
             this.emitters[0].shoot(this.emitters,true);
-            this.emitters[1].shoot(this.emitters,true);
-            this.emitters[2].shoot(this.emitters,true);    
+            this.emitters[1].shoot(this.emitters,true);    
         };
+        BHell_Enemy_VagrantLine1_p3.prototype.updateLine = function () {
+            this.trackingCounter += 1
+            this.emitters[2].shoot(this.emitters,true);
+        }
         BHell_Enemy_VagrantLine1_p3.prototype.die = function() {
             $gameBHellResult.score += this.killScore;
             this.state = "dying";
@@ -267,6 +323,8 @@ var BHell = (function (my) {
                 case "pattern 1": // shoots main angle emitters every 5 frames and shoots all emitters every 150 frames
                     if (this.frameCounter%5 === 0) {
                         this.updateVL1P3Emitter();
+                        if (this.trackingCounter<3){this.updateLine();}//change if comparator to adjust amout of bullets per wave
+                        else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
                     }
                     if(this.frameCounter%150 === 0){
                         this.shoot(this.emitters, true);

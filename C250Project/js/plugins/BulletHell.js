@@ -3859,7 +3859,7 @@ var BHell = (function (my) {
     BHell_Mover_Finisher.prototype = Object.create(BHell_Mover_Base.prototype);
     BHell_Mover_Finisher.prototype.constructor = BHell_Mover_Finisher;
 	 
-    BHell_Mover_Finisher.prototype.initialize = function (direction, radius, counterclockwise) {
+    BHell_Mover_Finisher.prototype.initialize = function (direction, radius, counterclockwise,centerX,centerY) {//changed function call to allow us to set center point YA
         BHell_Mover_Base.prototype.initialize.call(this);
 		
 		this.order = direction; 
@@ -3867,8 +3867,8 @@ var BHell = (function (my) {
         this.radius = radius;
         this.counterclockwise = counterclockwise;
 		
-		this.center_x = Graphics.width / 2; 
-		this.center_y = Graphics.height / 2; 
+		this.center_x = centerX; 
+		this.center_y = centerY; 
 		this.rotate_speed = 0; 
         
 		// this.t = 3 * Math.PI / 2;
