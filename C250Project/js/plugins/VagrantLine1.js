@@ -17,6 +17,7 @@ var BHell = (function (my) {
         params.animated = false;
         this.frameCounter =0;
         this.state = "started";
+        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
         this.initializeVL1P1Emitter(parent);
