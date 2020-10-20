@@ -101,10 +101,9 @@ var BHell = (function (my) {
 		// console.log(this.dir + 1);
 		// console.log(my.player.finisher_count);
 		
-		if (this.parent != null) {
-			this.parent.removeChild(this);
-		}
-		this.enemyList.splice(this.enemyList.indexOf(this), 1);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 	};
 
 	BHell_Enemy_Finisher.prototype.isOutsideMap = function () {
