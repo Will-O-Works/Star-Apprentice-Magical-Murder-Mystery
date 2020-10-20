@@ -1,10 +1,6 @@
 [
 null,
-<<<<<<< Updated upstream
-{"id":1,"expanded":true,"name":"MAP001","order":1,"parentId":0,"scrollX":819,"scrollY":453},
-=======
 {"id":1,"expanded":true,"name":"MAP001","order":1,"parentId":0,"scrollX":647.2,"scrollY":399.6},
->>>>>>> Stashed changes
 {"id":2,"expanded":false,"name":"Body Clicks","order":2,"parentId":1,"scrollX":853.0909090909091,"scrollY":550.9090909090909},
 {"id":3,"expanded":false,"name":"MAP003","order":6,"parentId":0,"scrollX":811,"scrollY":1465},
 {"id":4,"expanded":true,"name":"MAP004","order":3,"parentId":1,"scrollX":835.6363636363636,"scrollY":1465.0909090909092},
