@@ -5392,7 +5392,7 @@ var BHell = (function (my) {
 			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x, y, w, h);
 			
 			if (my.player.h_index < 23) {
-				my.player.h_index += 1/3; 
+				my.player.h_index += 1/4; 
 			}
 			
 		}
