@@ -5311,7 +5311,7 @@ var BHell = (function (my) {
                         my.player.shoot(false);
                     }
 
-                    if (TouchInput.isCancelled() || Input.isPressed('tab')) {
+                    if (TouchInput.isCancelled() || Input.isPressed('tab') || Input.isPressed('menu')) {
                         my.player.launchBomb();
                     }
 					
