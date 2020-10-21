@@ -451,19 +451,20 @@ function QInput() {
     }
   };
 
+
   // Gamepad button index to input action
   // shouldn't be used, left just incase
   Input.gamepadMapper = {
     0: '$ok',        // A
     1: '$cancel',    // B
     2: '$shift',     // X
-    3: '$menu',      // Y
+    3: '$tab',      // Y
     4: '$pageup',    // L1
     5: '$pagedown',  // R1
     6: '', // L2
     7: '', // R2
     8: '', // Select
-    9: '', // Start
+    9: '$menu', // Start
     10: '', // L3
     11: '', // R3
     12: '$up',       // D-pad up

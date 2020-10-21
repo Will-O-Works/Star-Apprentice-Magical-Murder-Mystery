@@ -4262,7 +4262,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = -1; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
@@ -5316,7 +5316,7 @@ var BHell = (function (my) {
                         my.player.shoot(false);
                     }
 
-                    if (TouchInput.isCancelled() || Input.isPressed('tab') || Input.isPressed('menu')) {
+                    if (TouchInput.isCancelled() || Input.isPressed('tab')) {
                         my.player.launchBomb();
                     }
 					
@@ -5395,7 +5395,7 @@ var BHell = (function (my) {
 			w = this.heavyattack.width / 24;
 			h = this.heavyattack.height;
 			x = 0; //Graphics.width / 2;
-			y = 30; //Graphics.height / 2; 
+			y = 0; //Graphics.height / 2; 
 			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x, y, w, h);
 			
 			if (my.player.h_index < 23) {

@@ -1,3 +1,82 @@
+
+var BHell = (function (my) {
+    /**
+     * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
+     * @constructor
+     * @memberOf BHell
+     * @extends BHell.BHell_Emitter_Base
+     */
+    var BHell_Emitter_Homing = my.BHell_Emitter_Homing = function () {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Emitter_Homing.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Homing.prototype.constructor = BHell_Emitter_Homing;
+
+    /**
+     * Constructor.
+     * Additional parameters:
+     *
+     * - angle: the bullets' traveling angle. If aiming, it will be used as an offset for the angle between the emitter and the player,
+     * - aim: if true the angle is relative to the player's position (i.e. angle = 0 and aim = true: the bullets will point
+     *        towards the player, angle = 0.1 and aim = true: the bullets will be shot at 0.1 radians counterclockwise, from the player's direction)
+     * - always_aim: if false (and aim = true) aiming only occours when there is a raising edge (shoot(false) -> shoot(true)),
+     * - aim_x aiming horizontal offset (used only if aim = true),
+     * - aim_y: aiming vertical offset (used only if aim = true).
+     *
+     * @param x
+     * @param y
+     * @param params
+     * @param parent
+     * @param bulletList
+     */
+    BHell_Emitter_Homing.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+
+        this.angle = 0;
+        this.aim = false;
+        this.alwaysAim = false;
+        this.aimX = 0;
+        this.aimY = 0;
+
+        this.aimingAngle = 0;
+
+        if (params != null) {
+            this.angle = params.angle || this.angle;
+            this.aim = params.aim || this.aim;
+            this.alwaysAim = params.always_aim || this.alwaysAim;
+            this.aimX = params.aim_x || this.aimX;
+            this.aimY = params.aim_y || this.aimY;
+        }
+    };
+
+    /**
+     * Shoots a single bullet towards this.angle or this.angle + angle between player and emitter.
+     */
+    BHell_Emitter_Homing.prototype.shoot = function () {
+        
+        var bullet;
+        if (this.aim) {
+            if (this.alwaysAim || this.oldShooting === false) {
+                var dx = my.player.x - this.x + this.aimX;
+                var dy = my.player.y - this.y + this.aimY;
+                this.aimingAngle = Math.atan2(dy, dx);
+            }
+
+            bullet = new my.BHell_HomingBullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+        }
+        else {
+            bullet = new my.BHell_HomingBullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+        }
+
+        this.parent.addChild(bullet);
+        this.bulletList.push(bullet);
+    };
+    return my;
+} (BHell || {}));
+
+
+
 //=============================================================================
 // VagrantLine2 Pattern1 coat
 //=============================================================================
@@ -89,6 +168,23 @@ var BHell = (function (my) {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
+		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		
 		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
 		if (my.player.bombed == true) {
 			this.destroy(); 
@@ -165,6 +261,10 @@ var BHell = (function (my) {
         this.state = "started";
         this.receivedDamage = 0;
         this.bulletcounter = 0;
+		
+		/* set player.can_bomb to true by V.L. */
+		my.player.can_bomb = true; 
+		/* set player.can_bomb to true by V.L. */
 
         //initalize the mover function which dictaes the movement pattern here:
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH)
@@ -241,11 +341,20 @@ var BHell = (function (my) {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
-		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
-		if (my.player.bombed == true) {
-			this.destroy(); 
+		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		if (my.player.bombed == true  && this.state !== "bombed") {
+			my.controller.destroyEnemyBullets(); 
+			this.timer = 0; 
+			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+			this.state = "bombed";
 		}
-
+		
+        if (this.state !== "dying" && this.state !== "bombed") {
+            this.move();
+        }
+		
+		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		
         if (this.state !== "dying") {
             this.move();
         }
@@ -262,6 +371,23 @@ var BHell = (function (my) {
                     this.destroy();
                 }
                 break;
+			/* Added bombed case if bomb is casted on the line by V.L. */
+			case "bombed":  
+				this.timer = (this.timer + 1) % 1200;
+				this.shoot(false);
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break; 
+			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
 
         // Update the received damage counter for the stunned state.
@@ -270,6 +396,18 @@ var BHell = (function (my) {
         this.frameCounter = (this.frameCounter + 1) % 1200;
     }
 
+	BHell_Enemy_VagrantLine2_p2.prototype.destroy = function() {
+
+        //adding these to the correct line allow it to transition to a different phase
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+    };
+
+
     BHell_Enemy_VagrantLine2_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
@@ -277,7 +415,7 @@ var BHell = (function (my) {
     
         my.controller.destroyEnemyBullets();
     };
-
+	
     BHell_Enemy_VagrantLine2_p2.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
@@ -522,12 +660,32 @@ var BHell = (function (my) {
      */
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
+		
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		
+		
         this.counter = this.counter +1;
         // if (seeks === 7)////change to adjust bullet lifespan
         // {
         //     console.debug("destroying");
         //     this.destroy();
         // }
+		
         if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
             var dx = my.player.x - this.x + this.aimX;
             var dy = my.player.y - this.y + this.aimY;
@@ -569,80 +727,3 @@ var BHell = (function (my) {
     
     return my;
 } (BHell || {}));
-
-var BHell = (function (my) {
-    /**
-     * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
-     * @constructor
-     * @memberOf BHell
-     * @extends BHell.BHell_Emitter_Base
-     */
-    var BHell_Emitter_Homing = my.BHell_Emitter_Homing = function () {
-        this.initialize.apply(this, arguments);
-    };
-
-    BHell_Emitter_Homing.prototype = Object.create(my.BHell_Emitter_Base.prototype);
-    BHell_Emitter_Homing.prototype.constructor = BHell_Emitter_Homing;
-
-    /**
-     * Constructor.
-     * Additional parameters:
-     *
-     * - angle: the bullets' traveling angle. If aiming, it will be used as an offset for the angle between the emitter and the player,
-     * - aim: if true the angle is relative to the player's position (i.e. angle = 0 and aim = true: the bullets will point
-     *        towards the player, angle = 0.1 and aim = true: the bullets will be shot at 0.1 radians counterclockwise, from the player's direction)
-     * - always_aim: if false (and aim = true) aiming only occours when there is a raising edge (shoot(false) -> shoot(true)),
-     * - aim_x aiming horizontal offset (used only if aim = true),
-     * - aim_y: aiming vertical offset (used only if aim = true).
-     *
-     * @param x
-     * @param y
-     * @param params
-     * @param parent
-     * @param bulletList
-     */
-    BHell_Emitter_Homing.prototype.initialize = function (x, y, params, parent, bulletList) {
-        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
-
-        this.angle = 0;
-        this.aim = false;
-        this.alwaysAim = false;
-        this.aimX = 0;
-        this.aimY = 0;
-
-        this.aimingAngle = 0;
-
-        if (params != null) {
-            this.angle = params.angle || this.angle;
-            this.aim = params.aim || this.aim;
-            this.alwaysAim = params.always_aim || this.alwaysAim;
-            this.aimX = params.aim_x || this.aimX;
-            this.aimY = params.aim_y || this.aimY;
-        }
-    };
-
-    /**
-     * Shoots a single bullet towards this.angle or this.angle + angle between player and emitter.
-     */
-    BHell_Emitter_Homing.prototype.shoot = function () {
-        
-        var bullet;
-        if (this.aim) {
-            if (this.alwaysAim || this.oldShooting === false) {
-                var dx = my.player.x - this.x + this.aimX;
-                var dy = my.player.y - this.y + this.aimY;
-                this.aimingAngle = Math.atan2(dy, dx);
-            }
-
-            bullet = new my.BHell_HomingBullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
-        }
-        else {
-            bullet = new my.BHell_HomingBullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
-        }
-
-        this.parent.addChild(bullet);
-        this.bulletList.push(bullet);
-    };
-    return my;
-} (BHell || {}));
-
