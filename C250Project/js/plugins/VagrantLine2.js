@@ -99,7 +99,7 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
 
         //for multiple emitters initalize them here:
         this.initializeCoat(parent);
@@ -170,7 +170,7 @@ var BHell = (function (my) {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -285,10 +285,8 @@ var BHell = (function (my) {
         this.state = "started";
         this.receivedDamage = 0;
         this.bulletcounter = 0;
-		
-		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = true; 
-		/* set player.can_bomb to true by V.L. */
+
+		my.player.can_bomb = false; 
 
         //initalize the mover function which dictaes the movement pattern here:
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH)
