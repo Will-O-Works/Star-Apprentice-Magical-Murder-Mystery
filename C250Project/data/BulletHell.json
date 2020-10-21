@@ -793,7 +793,7 @@
     }
   }, 
   {
-	  "name": "VagrantLine5_p1",
+	  "name": "VagrantLine5_p2",
 	  "class": "BHell_Enemy_VagrantLine5_p2",
 	  "params": {
         "bullet": {
@@ -802,7 +802,7 @@
     }
   }, 
 	{
-	  "name": "VagrantLine5_p1",
+	  "name": "VagrantLine5_p3",
 	  "class": "BHell_Enemy_VagrantLine5_p3",
 	  "params": null
   }
