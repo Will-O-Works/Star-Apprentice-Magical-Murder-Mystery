@@ -213,8 +213,10 @@ var $gameBHellResult;
 /**
  * @namespace BHell
  */
- var messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
+var messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
 var messageBGSprite = new Sprite(messageBGBitmap);
+var pauseTimer = 0;
+var pauseTimerMax = 21;
 var messageStarted = false;
 var windowStartupTime = 20;
 var windowBGAnimFrames = 7;
@@ -544,10 +546,10 @@ BHell_Sprite.prototype.update = function () {
 
     if (this.curSprite === "PlayerSprite"){
         var oldIndex =  this.characterIndex
-        if(my.player.dx <-9){
+        if(my.player.dx <= -5){
             this.characterIndex = 1;
         }
-        else if(my.player.dx >9){
+        else if(my.player.dx >= 5){
             this.characterIndex = 2;
         }
         else{
@@ -4682,7 +4684,7 @@ BHell_Hitbox.prototype.initialize = function (x, y, parent, effectList) {
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, true, 15);
 
-    this.anchor.x = 0.5;
+    this.anchor.x = 0.4;
     this.anchor.y = 0.5;
 
     this.x = x;
@@ -4741,6 +4743,7 @@ Scene_BHell_Init.prototype.constructor = Scene_BHell_Init;
 Scene_BHell_Init.prototype.initialize = function() {
     Scene_Base.prototype.initialize.call(this);
 
+    pauseTimer = 0;
     if ($dataBulletHell.players.length === 0) {
         var error = "No player defined in the JSON file.";
         console.error(error);
@@ -5042,6 +5045,7 @@ var BHell = (function (my) {
         my.stage.setup(Scene_BHell.level);
         my.stage._displayX = 0;
         my.stage._displayY = my.stage.height() - my.stage.screenTileY();
+        my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
 
         this._spriteset = new my.BHell_Spriteset();
         this.addChild(this._spriteset);
@@ -5253,6 +5257,7 @@ var BHell = (function (my) {
         if (!my.controller.paused && !$gameMessage.isBusy()) {
             if (Input.isTriggered('escape')) {
                 this.pause();
+                this.pauseWindow.pause_menu_opened = false;
             }
             else {
                 if (this.messageWindow.isOpening()) {
@@ -5359,23 +5364,25 @@ var BHell = (function (my) {
 		// Update bomb image index V.L. 10/20/2020 
         sx = this.bomb.width / 6 * (Math.round(my.player.b_index % 5)); // this.bomb.width / 16 * (player.bomb.icon_index % 16);
         sy = 0; // this.bomb.height / 20 * Math.floor(player.bomb.icon_index / 16);
-        w = 80; // this.bomb.width / 16;
-        h = 34; // this.bomb.height / 20;
+        w = 160; // this.bomb.width / 16;
+        h = 68; // this.bomb.height / 20;
         for (i = 0; i < my.player.bombs; i++) { // slightly change in variables V.L. 10/18/2020
             x = i * w + 10;
-            y = Graphics.height - 70; // Graphics.height - h - 10 - this.life.height;
+            y = Graphics.height - 120; // Graphics.height - h - 10 - this.life.height;
             this.hud.bitmap.blt(this.bomb, sx, sy, w, h, x, y, w, h);
         }
-		my.player.b_index += 1/10; 
+        if (!my.controller.paused) {
+		  my.player.b_index += 1/10; 
+        }
 		
 		// Update bomb image when there's no bomb V.L. 10/20/2020 
 		if (my.player.bombs == 0) {
 			sx = 0; 
 			sy = 0; 
-			w = 80; 
-			h = 34; 
+			w = 160; 
+			h = 68; 
 			x = 10;
-			y = Graphics.height - 70; 
+			y = Graphics.height - 120; 
 			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
 		}
 		
@@ -5396,6 +5403,25 @@ var BHell = (function (my) {
 			}
 			
 		}
+
+        // Pause menu
+        if (my.controller.paused || pauseTimer > 0) {
+            anim_frames = 7;
+            image_index = Math.floor((anim_frames / this.pauseTimerMax) * pauseTimer);
+            sx = 0;
+            sy = (this.pauseMenu.height / anim_frames) * image_index; // this.bomb.width / 6 * (Math.round(my.player.b_index % 5))
+            w = this.pauseMenu.width; // this.bomb.width / 16;
+            h = this.pauseMenu.height / anim_frames; // this.bomb.height / 20;
+            x = 0;
+            y = 0;
+            this.hud.bitmap.blt(this.pauseMenu, sx, sy, w, h, x, y, w, h);
+            if (pauseTimer < this.pauseTimerMax - 1 || !my.controller.paused) {
+                pauseTimer += my.controller.paused ? 1 : -1;
+            }
+            if (pauseTimer >= this.pauseTimerMax - 1 && my.controller.paused) {
+                this.pauseWindow.show();
+            }
+        }
 
         // Update score: Graphic effect for score accumulation.
         var delta = $gameBHellResult.score - my.scoreAccumulator;
@@ -5429,6 +5455,8 @@ var BHell = (function (my) {
         this.bomb = ImageManager.loadSystem(player.bomb.icon, 0);
 		this.nobomb = ImageManager.loadSystem("NoBomb", 0);
 		this.heavyattack = ImageManager.loadSystem("HeavyAttack", 0);
+        this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
+        this.pauseTimerMax = 21;
 
         my.scoreAccumulator = 0;
         this.hud = new Sprite(new Bitmap(Graphics.width, Graphics.height));
@@ -5457,7 +5485,7 @@ var BHell = (function (my) {
 
         if (this.confirmWindow == null) {
             this.confirmWindow = new my.BHell_Window_Confirm();
-            this.confirmWindow.x = this.pauseWindow.x + this.pauseWindow.windowWidth();
+            this.confirmWindow.x = this.pauseWindow.x + this.pauseWindow.width/2 - this.confirmWindow.width/2;
         }
 
         this.addWindow(this.pauseWindow);
@@ -5485,7 +5513,7 @@ var BHell = (function (my) {
      */
     Scene_BHell.prototype.retry = function () {
         this.pauseWindow.deactivate();
-        this.confirmWindow.y = this.pauseWindow.itemHeight() + this.pauseWindow.y;
+        this.confirmWindow.y = this.pauseWindow.y + 180;
         this.confirmWindow.setHandler("accept", this.acceptSelection.bind(this, "retry"));
         this.confirmWindow.setHandler("cancel", this.undo.bind(this));
         this.confirmWindow.open();
@@ -5524,7 +5552,7 @@ var BHell = (function (my) {
      */
     Scene_BHell.prototype.quit = function () {
         this.pauseWindow.deactivate();
-        this.confirmWindow.y = this.pauseWindow.itemHeight() * 2 + this.pauseWindow.y;
+        this.confirmWindow.y = this.pauseWindow.y + 180;
         this.confirmWindow.setHandler("accept", this.acceptSelection.bind(this, "quit"));
         this.confirmWindow.setHandler("cancel", this.undo.bind(this));
         this.confirmWindow.open();
@@ -5553,12 +5581,11 @@ var BHell = (function (my) {
         switch (cmd) {
             case "retry":
                 $gameBHellResult.retries++;
-
+                this.pauseWindow = null;
                 SceneManager.goto(my.Scene_BHell_Init);
                 break;
             case "quit":
                 $gameBHellResult.gaveUp = true;
-
                 my.playing = false;
                 break;
         }
@@ -5985,9 +6012,15 @@ BHell_Spriteset.prototype.update = function () {
 };
 
 BHell_Spriteset.prototype.createParallax = function () {
+    this._BGImageIndex = 0;
+    this._BGAnimSpeed = 1/3.6;
+    this._BGFrames = 16;
     this._parallax = new TilingSprite();
     this._parallax.move(0, 0, Graphics.width, Graphics.height);
+    this._face = new Sprite(my.currentFace);
+    this._face.move(Graphics.width/2 - my.currentFace._image.width/2, Graphics.height - my.currentFace._image.height);
     this._baseSprite.addChild(this._parallax);
+    this._baseSprite.addChild(this._face);
 };
 
 BHell_Spriteset.prototype.createTilemap = function () {
@@ -6025,8 +6058,11 @@ BHell_Spriteset.prototype.updateParallax = function () {
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
     if (this._parallax.bitmap) {
-        this._parallax.origin.x = my.stage.parallaxOx();
-        this._parallax.origin.y = my.stage.parallaxOy();
+        this._parallax.origin.y = 540 * Math.floor(this._BGImageIndex);
+        this._BGImageIndex += this._BGAnimSpeed;
+        if (this._BGImageIndex >= this._BGFrames) {
+            this._BGImageIndex = 0;
+        }
     }
 };
 
@@ -6303,6 +6339,10 @@ var BHell = (function (my) {
         return 360;
     };
 
+    BHell_Window_Pause.prototype.playOkSound = function() {
+        SoundManager.playOk();
+    };
+
     BHell_Window_Pause.prototype.updatePlacement = function () {
         this.x = (Graphics.boxWidth - this.width) / 2;
         this.y = (Graphics.boxHeight - this.height) / 2;
@@ -6314,6 +6354,16 @@ var BHell = (function (my) {
         this.addCommand(my.deadzone, "deadzone", true);
         this.addCommand(my.speedMul, "speed", true);
         this.addCommand(my.quit, "quit", my.canQuit);
+    };
+
+    var _BHell_Window_Pause_updateCursor = BHell_Window_Pause.prototype._updateCursor;
+
+    BHell_Window_Pause.prototype._updateCursor = function() {
+        _BHell_Window_Pause_updateCursor.call(this);
+        if (pauseTimer < pauseTimerMax - 1) {
+            this._windowCursorSprite.alpha = 0;
+            this.hide();
+        }
     };
 
     BHell_Window_Pause.prototype.drawItem = function (index) {
@@ -6354,6 +6404,17 @@ var BHell = (function (my) {
 
     BHell_Window_Confirm.prototype.windowWidth = function () {
         return 150;
+    };
+
+    BHell_Window_Confirm.prototype.playOkSound = function() {
+        SoundManager.playOk();
+    };
+
+     BHell_Window_Confirm.prototype.processCancel = function() {
+        SoundManager.playCancel();
+        this.updateInputData();
+        this.deactivate();
+        this.callCancelHandler();
     };
 
     BHell_Window_Confirm.prototype.updatePlacement = function () {

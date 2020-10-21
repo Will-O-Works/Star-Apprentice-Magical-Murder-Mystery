@@ -43,6 +43,50 @@ var unravelled = false;
 var unravelled_timer = 0;
 var itemImageInit = true;
 
+// SFX change
+Scene_Map.prototype.callMenu = function() {
+    AudioManager.playSe({name: 'journal_open', pan: 0, pitch: 100, volume: 90});
+    SceneManager.push(Scene_Menu);
+    Window_MenuCommand.initCommandPosition();
+    $gameTemp.clearDestination();
+    this._mapNameWindow.hide();
+    this._waitCount = 2;
+};
+
+Window_Selectable.prototype.processCancel = function() {
+    AudioManager.playSe({name: 'journal_close', pan: 0, pitch: 100, volume: 90});
+    this.updateInputData();
+    this.deactivate();
+    this.callCancelHandler();
+};
+
+Window_ChoiceList.prototype.processCancel = function() {
+    SoundManager.playCancel();
+    this.updateInputData();
+    this.deactivate();
+    this.callCancelHandler();
+};
+
+Window_Selectable.prototype.playOkSound = function() {
+    AudioManager.playSe({name: 'journal_open', pan: 0, pitch: 100, volume: 90});
+};
+
+Window_ChoiceList.prototype.playOkSound = function() {
+    if ($gameMessage.choices().length == 2) {
+        // For yes or nos
+        if (this.index() == 0) {
+            SoundManager.playOk();
+        } else {
+            SoundManager.playCancel();
+        }
+    } else {
+        // For multiple choices
+        SoundManager.playOk();
+    }
+
+};
+
+
 // Initialize the scene menu itself
 Scene_Menu.prototype.create = function() {
     unravelled = false;
