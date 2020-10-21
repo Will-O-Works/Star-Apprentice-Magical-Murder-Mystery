@@ -1,5 +1,5 @@
 //=============================================================================
-// VagrantLine2.js coat
+// VagrantLine2 Pattern1 coat
 //=============================================================================
 var BHell = (function (my) {
 
@@ -138,7 +138,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantLine2_p2.js coat
+// VagrantLine2 Pattern2 coat
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VagrantLine2_p2 = my.BHell_Enemy_VagrantLine2_p2 = function() {
@@ -290,7 +290,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantLine2.js coat
+// VagrantLine2 Pattern3 coat
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VagrantLine2_p3 = my.BHell_Enemy_VagrantLine2_p3 = function() {
@@ -439,7 +439,9 @@ var BHell = (function (my) {
     };
     return my;
 } (BHell || {}));
-/////////////////custom bullet class and emitter
+//=============================================================================
+// Custom Bullet And Emitter Clasee
+//=============================================================================
 var BHell = (function (my) {
 
     /**
