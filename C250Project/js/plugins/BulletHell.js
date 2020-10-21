@@ -5152,8 +5152,6 @@ var BHell = (function (my) {
                 if (my.bulletsHit + my.bulletsLost > 0) {
                     $gameBHellResult.hitRatio = my.bulletsHit / (my.bulletsHit + my.bulletsLost) * 100;
                 }
-                this.fadeOutAll();
-                AudioManager.stopBgm();
                 AudioManager.stopBgs();
                 if (my.prevBgm != null) {
                     AudioManager.replayBgm(my.prevBgm);
