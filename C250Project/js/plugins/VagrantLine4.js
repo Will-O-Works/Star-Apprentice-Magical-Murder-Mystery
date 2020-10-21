@@ -2,11 +2,6 @@
 // VagrantLine4 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
-	
-	/** 
-	 * VagrantLine4 by V.L.
-	 */ 
-
     var BHell_Enemy_VagrantLine4_p1 = my.BHell_Enemy_VagrantLine4_p1 = function() {
         this.initialize.apply(this, arguments);
     };
@@ -15,13 +10,13 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine4_p1.prototype.constructor = BHell_Enemy_VagrantLine4_p1;
 
 	BHell_Enemy_VagrantLine4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
-        params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hp = 75;//change to adjust Line HP
+        params.speed = 4; // change to adjust speed of boss moving 
+        params.hitbox_w = 400; // change to adjust hitbox width
+        params.hitbox_h = 100; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-		//some variables needed to change states a counter to keep track of time, state etc
+		this.bombedWrong =false;
         this.frameCounter = 0;
 		this.state = "started";
 		this.initializeVL4P1Emitter(parent);
@@ -29,42 +24,39 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 		this.can_die = false;
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 	};
 	BHell_Enemy_VagrantLine4_p1.prototype.initializeVL4P1Emitter = function (parent) {
 		var emitterParams = {};
-		emitterParams.period = 1; // period for the emitter to activate
-		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
-        emitterParams.alwaysAim = false;
-        emitterParams.bullet = {};
-		emitterParams.bullet.direction = 4;
-
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
-		emitterParams.bullet.speed = 4;
+		emitterParams.aim= false;
+		emitterParams.alwaysAim =false;
+		emitterParams.bullet = {};
+		
+		emitterParams.bullet.direction = 4;//change to adjust bullet sprite
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); 
+		emitterParams.bullet.speed = 4;//change to adjust bullet speed for next emitter
 		this.emitters[0].angle = Math.PI/2;//change to adjust emitter angle
 		this.emitters[1].angle = Math.PI/2;//change to adjust emitter angle
-		this.angle= this.emitters[0].angle+ (Math.PI/2);
-		this.amp =180;
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters[2].angle=Math.PI/2;
-        this.emitters[2].alwaysAim = false;
-        this.emitters[2].offsetX = -150;
-        this.emitters[3].angle=Math.PI/2;
-        this.emitters[3].alwaysAim = false;
-        this.emitters[3].offsetX= 150;
-		this.angl1=-(Math.PI/20);
-        this.angl2=(Math.PI/20);
+		this.angle= this.emitters[0].angle+ (Math.PI/2);//calculates normal of starting angle to finde angle of motion
+		this.amp =180;//change to adjust amplitude of sine wave
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
+		this.emitters[2].angle=Math.PI/2;//change to adjust emitter angle
+        this.emitters[2].offsetX = -150;//change to adjust horizontal offset
+        this.emitters[3].angle=Math.PI/2;//change to adjust emitter angle
+        this.emitters[3].offsetX= 150;//change to adjust horizontal offset
+		this.angl1=-(Math.PI/20);//change to adjust angle increment
+        this.angl2=(Math.PI/20);//change to adjust angle increment
 		this.flip=false;
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters[4].angle= 3*Math.PI/4;
-        this.emitters[4].alwaysAim = false;
-        this.emitters[4].offsetX = -150;
+		this.emitters[4].angle= 3*Math.PI/4;//change to adjust angle of straight lines
+        this.emitters[4].alwaysAim = false;//change to adjust angles of straight lines
+        this.emitters[4].offsetX = -150;//change to adjust horizontal offset
         this.emitters[5].angle= Math.PI/4;
         this.emitters[5].alwaysAim = false;
-        this.emitters[5].offsetX= 150;
+        this.emitters[5].offsetX= 150;//change to adjust horizontal offset
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine4_p1.prototype.updateEmitters = function () {
@@ -76,10 +68,10 @@ var BHell = (function (my) {
 			var x2=(this.amp * Math.sin(2*Math.PI * this.frameCounter / 120)*-1);
 			var y=0;
 			//reffer to the this for 3D rotations : https://math.stackexchange.com/questions/17246/is-there-a-way-to-rotate-the-graph-of-a-function
-			this.emitters[0].offsetX = ((x1)*Math.cos(this.angle)-(y)*Math.sin(this.angle))+Math.floor((Math.random() * 20));
-			this.emitters[0].offsetY = (x1)*Math.sin(this.angle)+(y)*Math.cos(this.angle)+Math.floor((Math.random() * 20));
-			this.emitters[1].offsetX = ((x2)*Math.cos(this.angle)-(y)*Math.sin(this.angle))+Math.floor((Math.random() * 20));
-			this.emitters[1].offsetY = (x2)*Math.sin(this.angle)+(y)*Math.cos(this.angle)+Math.floor((Math.random() * 20));
+			this.emitters[0].offsetX = ((x1)*Math.cos(this.angle)-(y)*Math.sin(this.angle));
+			this.emitters[0].offsetY = (x1)*Math.sin(this.angle)+(y)*Math.cos(this.angle);
+			this.emitters[1].offsetX = ((x2)*Math.cos(this.angle)-(y)*Math.sin(this.angle));
+			this.emitters[1].offsetY = (x2)*Math.sin(this.angle)+(y)*Math.cos(this.angle);
 		}
 		if (this.frameCounter % 10 == 0){
             this.emitters[2].shoot(this.emitters,true);

@@ -43,9 +43,9 @@ var BHell = (function (my) {
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         emitterParams.bullet.speed = 4;
-        emitterParams.a = 0;//a: Arc's initial angle (in radians),
-        emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
-        emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
+        emitterParams.a = 0;//a: Arc's initial angle (in radians),change to adjust
+        emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),change to adjust
+        emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
         this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters[0].alwaysAim=true;
@@ -192,7 +192,7 @@ var BHell = (function (my) {
         this.enemyList.splice(this.enemyList.indexOf(this), 1);
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
     };
     BHell_Enemy_VagrantLine1_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
