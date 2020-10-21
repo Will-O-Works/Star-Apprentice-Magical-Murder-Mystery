@@ -196,9 +196,6 @@ var BHell = (function (my) {
 		
 		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
 
-        if (this.state !== "dying") {
-            this.move();
-        }
         switch (this.state) {
             case "started":
                 this.state = "pattern 1";

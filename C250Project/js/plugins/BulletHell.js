@@ -4606,6 +4606,7 @@ var BHell = (function (my) {
             }*/ // V.L.
              if (true) {
                 this.lives--;
+				AudioManager.playSe({name: "player_hit", volume: 100, pitch: 100, pan: 0});
                 $gameBHellResult.livesLost++;
                 my.controller.stopShooting = true;
                 // When player dies, the number of bombs doesn't change by V.L.
@@ -5326,6 +5327,8 @@ var BHell = (function (my) {
 						} else {
 							my.player.slow(false);
 						}
+					} else {
+						my.player.slow(false);
 					}
 
                 }
