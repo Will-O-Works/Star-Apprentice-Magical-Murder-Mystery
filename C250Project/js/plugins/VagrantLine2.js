@@ -98,6 +98,8 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		
+		my.player.can_bomb = false; 
 
         //for multiple emitters initalize them here:
         this.initializeCoat(parent);
@@ -164,26 +166,35 @@ var BHell = (function (my) {
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
 
+	BHell_Enemy_VagrantLine2_p1.prototype.destroy = function() {
+
+        //adding these to the correct line allow it to transition to a different phase
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+    };
+	
+
     BHell_Enemy_VagrantLine2_p1.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
-		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-
-			}
-			
-			if (this.state !== "dying" && this.state !== "bombed") {
-				this.move();
-			}
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		if (my.player.bombed == true  && this.state !== "bombed") {
+			my.controller.destroyEnemyBullets(); 
+			this.timer = 0; 
+			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+			this.state = "bombed";
+		}
+		
+        if (this.state !== "dying" && this.state !== "bombed") {
+            this.move();
+        }
+		
+		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
 
         if (this.state !== "dying") {
             this.move();
@@ -201,6 +212,24 @@ var BHell = (function (my) {
                     this.destroy();
                 }
                 break;
+				
+			/* Added bombed case if bomb is casted on the line by V.L. */
+			case "bombed":  
+				this.timer = (this.timer + 1) % 1200;
+				this.shoot(false);
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break; 
+			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
 
         // Update the received damage counter for the stunned state.
@@ -438,6 +467,8 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		
+		my.player.can_bomb = false; 
 
         //for multiple emitters initalize them here:
         this.initializeCoat(parent);
