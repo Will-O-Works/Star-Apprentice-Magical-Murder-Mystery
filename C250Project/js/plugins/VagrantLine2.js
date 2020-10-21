@@ -1,3 +1,4 @@
+
 var BHell = (function (my) {
     /**
      * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
@@ -179,15 +180,10 @@ var BHell = (function (my) {
 
 			}
 			
-			if (my.player.bombed == true) {
-				this.destroy(); 
+			if (this.state !== "dying" && this.state !== "bombed") {
+				this.move();
 			}
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-		
-		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
-		if (my.player.bombed == true) {
-			this.destroy(); 
-		}
 
         if (this.state !== "dying") {
             this.move();
@@ -353,10 +349,7 @@ var BHell = (function (my) {
         }
 		
 		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		
-        if (this.state !== "dying") {
-            this.move();
-        }
+
         switch (this.state) {
             case "started":
                 this.state = "pattern 1";
@@ -399,7 +392,7 @@ var BHell = (function (my) {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);

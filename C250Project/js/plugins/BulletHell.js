@@ -5171,14 +5171,14 @@ var BHell = (function (my) {
                     console.log(my.player.nextMap);
                     my.map = my.player.nextMap;
                     $gameSelfSwitches.clear();
-                    SceneManager.goto(my.Scene_BHell)
+                    SceneManager.goto(my.Scene_BHell_Init); 
                 }
                 else
                 {
                     $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                     $gamePlayer.requestMapReload();
                     $gameSelfSwitches.clear();
-                    SceneManager.goto(Scene_Map);
+                    SceneManager.goto(my.Scene_BHell_Init); 
                 }
                 
             }

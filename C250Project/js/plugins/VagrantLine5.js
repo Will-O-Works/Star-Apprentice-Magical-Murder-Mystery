@@ -119,7 +119,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_SuicideCat.prototype.die = function() {
-        this.dying = true; 
+        this.destroy(); 
     };
 
     BHell_Enemy_SuicideCat.prototype.destroy = function() {  // The cat dies quietly without destroying the bullets on screen by V.L. 10/11/2020
@@ -181,7 +181,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_GunnerCat.prototype.die = function() {
-        this.dying = true; 
+        this.destroy(); 
     };
 
     BHell_Enemy_GunnerCat.prototype.destroy = function() {  // The cat dies quietly without destroying the bullets on screen by V.L. 10/11/2020
@@ -267,21 +267,6 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //=============================================================================
 // VagrantLine5 Phase 1.js
 //=============================================================================
@@ -299,6 +284,10 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		
+		this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
+		my.player.can_bomb = false;
+		
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.frameCounter = 0;
@@ -314,8 +303,6 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
 		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_VagrantLine5_p1.prototype.initializeCat = function () {
@@ -363,21 +350,12 @@ var BHell = (function (my) {
         }
         this.updateCat();
     };
+	
 	BHell_Enemy_VagrantLine5_p1.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
-    BHell_Enemy_VagrantLine5_p1.prototype.destroy = function() {
-        my.player.can_bomb = false; 
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-        this.enemyList.splice(this.enemyList.indexOf(this), 1);
-        //adding these to the correct line allow it to transition to a different phase just call it before in or right before the destroy fucntion
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-    };
 
     //main update loop
     BHell_Enemy_VagrantLine5_p1.prototype.update = function () {
@@ -462,8 +440,6 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
 		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_VagrantLine5_p2.prototype.initializeCat = function () {
@@ -502,22 +478,12 @@ var BHell = (function (my) {
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
-    BHell_Enemy_VagrantLine5_p2.prototype.destroy = function() {
-        my.player.can_bomb = false; 
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-        this.enemyList.splice(this.enemyList.indexOf(this), 1);
-        //adding these to the correct line allow it to transition to a different phase just call it before in or right before the destroy fucntion
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-    };
 
 	BHell_Enemy_VagrantLine5_p2.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -600,6 +566,9 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		
+		this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
+		my.player.can_bomb = false;
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.frameCounter = 0;
 		this.state = "started";
@@ -614,8 +583,6 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
 		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_VagrantLine5_p3.prototype.initializeCat = function () {
@@ -654,16 +621,6 @@ var BHell = (function (my) {
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
-    BHell_Enemy_VagrantLine5_p3.prototype.destroy = function() {
-        my.player.can_bomb = false; 
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-        this.enemyList.splice(this.enemyList.indexOf(this), 1);
-        //adding these to the correct line allow it to transition to a different phase just call it before in or right before the destroy fucntion
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-    };
 
     //main update loop
     BHell_Enemy_VagrantLine5_p3.prototype.update = function () {
