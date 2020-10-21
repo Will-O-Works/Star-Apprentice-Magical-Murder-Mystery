@@ -5164,7 +5164,7 @@ var BHell = (function (my) {
                     console.log(my.player.nextMap);
                     my.map = my.player.nextMap;
                     $gameSelfSwitches.clear();
-                    SceneManager.goto(my.Scene_BHell_Init); 
+                    SceneManager.goto(my.Scene_BHell_Init) 
                 }
                 else
                 {
