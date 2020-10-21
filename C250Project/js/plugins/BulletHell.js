@@ -4797,6 +4797,7 @@ Scene_BHell_Init.prototype.start = function() {
     my.prevBgs = AudioManager.saveBgs();
     if (my.initBgm != null) {
         AudioManager.fadeOutBgs(1);
+        AudioManager.playBgm(my.initBgm);
         AudioManager.fadeInBgm(1);
     }
 
@@ -5151,7 +5152,7 @@ var BHell = (function (my) {
                 if (my.bulletsHit + my.bulletsLost > 0) {
                     $gameBHellResult.hitRatio = my.bulletsHit / (my.bulletsHit + my.bulletsLost) * 100;
                 }
-                AudioManager.stopBgs();
+                this.fadeOutAll();
                 if (my.prevBgm != null) {
                     AudioManager.replayBgm(my.prevBgm);
                 }
@@ -5500,7 +5501,6 @@ var BHell = (function (my) {
         TouchInput.clear();
         my.controller.paused = false;
         my.bgm = my.bgm || $dataMap.bgm;
-        AudioManager.replayBgm(my.bgm);
     };
 
     /**
