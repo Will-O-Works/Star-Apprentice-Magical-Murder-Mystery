@@ -4266,6 +4266,10 @@ var BHell = (function (my) {
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
+        testimonies = [3, 6, 8, 9];
+        if ($gameMap._mapId in testimonies) {
+            this.currentTestimony = testimonies.indexOf(my.map);
+        }
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -5395,6 +5399,18 @@ var BHell = (function (my) {
 			
 		}
 
+
+        // Testimony ravyn
+        frame_width = 132;
+        frame_height = 44;
+        sx = frame_width * my.player.currentTestimony; 
+        sy = 0; 
+        w = frame_width;
+        h = frame_height;
+        x = 10;
+        y = 14;
+        this.hud.bitmap.blt(this.testimony4, sx, sy, w, h, x, y, w, h);
+
         // Pause menu
         if (my.controller.paused || pauseTimer > 0) {
             anim_frames = 7;
@@ -5447,6 +5463,7 @@ var BHell = (function (my) {
 		this.nobomb = ImageManager.loadSystem("NoBomb", 0);
 		this.heavyattack = ImageManager.loadSystem("HeavyAttack", 0);
         this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
+        this.testimony4 = ImageManager.loadPicture("Testimony4", 0);
         this.pauseTimerMax = 21;
 
         my.scoreAccumulator = 0;
@@ -6353,6 +6370,8 @@ var BHell = (function (my) {
         if (pauseTimer < pauseTimerMax - 1) {
             this._windowCursorSprite.alpha = 0;
             this.hide();
+        } else {
+            this.drawAllItems();
         }
     };
 

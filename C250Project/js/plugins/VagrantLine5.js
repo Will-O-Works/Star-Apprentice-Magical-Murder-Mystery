@@ -314,7 +314,8 @@ var BHell = (function (my) {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
-        params.animated = false;
+        params.animated = true;
+        params.frame = 2;
         params.aim = false;
         params.speed =1;
         params.hp = 5;
@@ -476,7 +477,8 @@ var BHell = (function (my) {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
-        params.animated = false;
+        params.animated = true;
+        params.frame = 2;
         params.aim = false;
         params.speed =1;
         params.hp = 5;
@@ -608,7 +610,8 @@ var BHell = (function (my) {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
-        params.animated = false;
+        params.animated = true;
+        params.frame = 2;
         params.aim = false;
         params.speed =1;
         params.hp = 5;
