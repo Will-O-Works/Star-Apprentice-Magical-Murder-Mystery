@@ -4797,7 +4797,6 @@ Scene_BHell_Init.prototype.start = function() {
     my.prevBgs = AudioManager.saveBgs();
     if (my.initBgm != null) {
         AudioManager.fadeOutBgs(1);
-        AudioManager.playBgm(my.initBgm);
         AudioManager.fadeInBgm(1);
     }
 
@@ -5212,8 +5211,6 @@ var BHell = (function (my) {
     Scene_BHell.prototype.pause = function () {
         if (!my.controller.paused) {
             my.controller.paused = true;
-            my.bgm = AudioManager.saveBgm();
-            AudioManager.stopBgm();
             this.pauseWindow.open();
             this.pauseWindow.activate();
         }
