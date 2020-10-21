@@ -4246,7 +4246,7 @@ var BHell = (function (my) {
                     playerParams[p] = 4;
                     break;
                 case "S":
-                    playerParams[p] = 5;
+                    playerParams[p] = 7;
                     break;
                 default:
                     playerParams[p] = 1;
