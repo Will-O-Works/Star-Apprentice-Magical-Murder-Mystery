@@ -4792,16 +4792,9 @@ Scene_BHell_Init.prototype.create = function() {
 Scene_BHell_Init.prototype.start = function() {
     Scene_Base.prototype.start.call(this);
     SceneManager.clearStack();
-    this.startFadeIn(this.fadeSpeed(), false);
 
     my.prevBgm = AudioManager.saveBgm();
     my.prevBgs = AudioManager.saveBgs();
-    if (my.initBgm != null) {
-        AudioManager.fadeOutBgs(1);
-        AudioManager.playBgm(my.initBgm);
-        AudioManager.fadeInBgm(1);
-    }
-
 };
 
 /**
@@ -5153,7 +5146,6 @@ var BHell = (function (my) {
                 if (my.bulletsHit + my.bulletsLost > 0) {
                     $gameBHellResult.hitRatio = my.bulletsHit / (my.bulletsHit + my.bulletsLost) * 100;
                 }
-                this.fadeOutAll();
                 if (my.prevBgm != null) {
                     AudioManager.replayBgm(my.prevBgm);
                 }
