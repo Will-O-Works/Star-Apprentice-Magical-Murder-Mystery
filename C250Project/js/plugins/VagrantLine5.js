@@ -442,15 +442,10 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.frameCounter = 0;
 		this.state = "started";
-		
-		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = true; 
-		/* set player.can_bomb to true by V.L. */
-		
         this.initializeVL5P1Emitter(parent);
         this.initializeCat(parent);
     };
@@ -462,13 +457,16 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
+        this.trackingCounter = 0;
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters[0].alwaysAim=true;
+        this.emitters[0].aim=true;
     };
     BHell_Enemy_VagrantLine5_p2.prototype.initializeCat = function () {
         this.updateCatCounter = 0;
-        this.spawnNumber=1;
+        this.spawnNumber=2;
         this.spawnCounter = 0;
     };
     BHell_Enemy_VagrantLine5_p2.prototype.updateCat = function() {
@@ -476,24 +474,39 @@ var BHell = (function (my) {
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
         params.animated = false;
-        params.hp = 20;
+        params.aim = false;
+        params.speed =1;
+        params.hp = 5;
         params.bullet = {};
         this.updateCatCounter = this.updateCatCounter + 1; //change to adjust cat spawn rate 
         /////lots of shenanigans
-        if ((this.updateCatCounter) % 10 == 0 && this.spawnNumber>=this.spawnCounter) {
-            my.controller.enemies.push(new my.BHell_Enemy_GunnerCat(this.x, this.y, image, params, this.parent, my.controller.enemies));
+        if ((this.updateCatCounter) % 10 == 0 && this.spawnNumber-1>=this.spawnCounter) {
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x - 300, this.y - 82, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
             if(this.spawnCounter==1)
             {
+                my.controller.enemies[1].destroy();
+                my.controller.enemies[1].destroy();
+            }
+        }
+        if ((this.updateCatCounter) % 500 == 0 && this.spawnNumber>=this.spawnCounter) {
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x - 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            this.spawnCounter+=1;
+            if(this.spawnCounter==1)
+            {
+                my.controller.enemies[1].destroy();
                 my.controller.enemies[1].destroy();
             }
         }
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine5_p2.prototype.updateVL5P1 = function () { 
-        if(this.frameCounter%120===0)
-        {
-            this.emitters[0].shoot(this.emitters,true);
+        if(this.frameCounter%5 === 0)
+        {    
+            if (this.trackingCounter<5){this.emitters[0].shoot();this.trackingCounter += 1;}//change if comparator to adjust amout of bullets per wave
+            else if(this.frameCounter%10 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
         }
         this.updateCat();
     };
@@ -513,35 +526,12 @@ var BHell = (function (my) {
         my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
     };
 
-	BHell_Enemy_VagrantLine5_p2.prototype.destroy = function() {
-
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-    };
-
     //main update loop
     BHell_Enemy_VagrantLine5_p2.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-        /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
+        if (this.state !== "dying") {
             this.move();
-        }
-		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		
+        };
         switch (this.state) {
             case "started":
                 if (this.mover.inPosition === true) {
@@ -556,30 +546,12 @@ var BHell = (function (my) {
             case "dying": // dies.
                 this.destroy();
                 break;
-        case "bombed":  
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				
-				if (this.timer > 70) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
-				break; 
-			/* Added bombed case if bomb is casted on the line by V.L. */
-		}; 
-		// Update the emitter's position.
-		this.emitters.forEach(e => {e.update()});
-		// Update the time counter and reset it every 25 seconds.
-		this.frameCounter = (this.frameCounter + 1) % 1500;
-	}
-
-	
+        }; 
+        // Update the received damage counter for the stunned state.
+        this.emitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = (this.frameCounter + 1) % 1200;
+    }
     return my;
 } (BHell || {}));
 //=============================================================================
@@ -599,7 +571,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.frameCounter = 0;
 		this.state = "started";
@@ -614,13 +586,19 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
+        this.trackingCounter = 0;
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		this.emitters.push(new my.BHell_Emitter_Circle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters[0].angle = Math.PI/2;
+        this.angle= this.emitters[0].angle+ (Math.PI/2);
+        this.angl1=-(Math.PI/20);
+        this.amp =180;
+
     };
     BHell_Enemy_VagrantLine5_p3.prototype.initializeCat = function () {
         this.updateCatCounter = 0;
-        this.spawnNumber=1;
+        this.spawnNumber=2;
         this.spawnCounter = 0;
     };
     BHell_Enemy_VagrantLine5_p3.prototype.updateCat = function() {
@@ -628,24 +606,41 @@ var BHell = (function (my) {
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
         params.animated = false;
-        params.hp = 20;
+        params.aim = false;
+        params.speed =1;
+        params.hp = 5;
         params.bullet = {};
         this.updateCatCounter = this.updateCatCounter + 1; //change to adjust cat spawn rate 
         /////lots of shenanigans
-        if ((this.updateCatCounter) % 10 == 0 && this.spawnNumber>=this.spawnCounter) {
-            my.controller.enemies.push(new my.BHell_Enemy_SwirlerCat(this.x, this.y, image, params, this.parent, my.controller.enemies));
+        if ((this.updateCatCounter) % 10 == 0 && this.spawnNumber-1>=this.spawnCounter) {
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x - 300, this.y - 82, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
             if(this.spawnCounter==1)
             {
+                my.controller.enemies[1].destroy();
+                my.controller.enemies[1].destroy();
+            }
+        }
+        if ((this.updateCatCounter) % 500 == 0 && this.spawnNumber>=this.spawnCounter) {
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_SuicideCat(this.x - 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            this.spawnCounter+=1;
+            if(this.spawnCounter==1)
+            {
+                my.controller.enemies[1].destroy();
                 my.controller.enemies[1].destroy();
             }
         }
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine5_p3.prototype.updateVL5P1 = function () { 
-        if(this.frameCounter%120===0)
-        {
-            //this.emitters[0].shoot(this.emitters,true);
+        if(this.frameCounter%6 === 0)
+        {    
+            this.emitters[0].shoot(this.emitters,true);
+            var x1=(this.amp * Math.sin(2*Math.PI * this.frameCounter / 120));
+            var y=0;
+            this.emitters[0].offsetX = ((x1)*Math.cos(this.angle)-(y)*Math.sin(this.angle))+Math.floor((Math.random() * 20));
         }
         this.updateCat();
     };
@@ -668,24 +663,6 @@ var BHell = (function (my) {
     //main update loop
     BHell_Enemy_VagrantLine5_p3.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-		
         if (this.state !== "dying") {
             this.move();
         };

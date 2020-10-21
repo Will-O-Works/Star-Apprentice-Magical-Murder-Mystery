@@ -1,4 +1,3 @@
-
 var BHell = (function (my) {
     /**
      * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
