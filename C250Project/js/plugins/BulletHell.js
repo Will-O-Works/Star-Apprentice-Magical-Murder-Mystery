@@ -2669,6 +2669,7 @@ BHell_Enemy_Base.prototype.destroy = function() {
 		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0}); 
 	} 
 	
+	my.player.bombs = 0;
     if (this.parent != null) {
         this.parent.removeChild(this);
     }
@@ -5168,14 +5169,14 @@ var BHell = (function (my) {
                     console.log(my.player.nextMap);
                     my.map = my.player.nextMap;
                     $gameSelfSwitches.clear();
-                    SceneManager.goto(my.Scene_BHell_Init) 
+                    SceneManager.goto(my.Scene_BHell) 
                 }
                 else
                 {
                     $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                     $gamePlayer.requestMapReload();
                     $gameSelfSwitches.clear();
-                    SceneManager.goto(my.Scene_BHell_Init); 
+                    SceneManager.goto(Scene_Map);
                 }
                 
             }

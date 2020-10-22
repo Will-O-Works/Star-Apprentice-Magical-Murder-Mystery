@@ -462,8 +462,6 @@ var BHell = (function (my) {
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
         this.trackingCounter = 0;
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[0].alwaysAim=true;
         this.emitters[0].aim=true;
@@ -578,7 +576,8 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
-        this.frameCounter = 0;
+        my.player.can_bomb = true;
+		this.frameCounter = 0;
 		this.state = "started";
         this.initializeVL5P1Emitter(parent);
         this.initializeCat(parent);
@@ -592,8 +591,6 @@ var BHell = (function (my) {
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
         this.trackingCounter = 0;
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[0].angle = Math.PI/2;
         this.angle= this.emitters[0].angle+ (Math.PI/2);
