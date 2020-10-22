@@ -1413,16 +1413,18 @@ var BHell = (function (my) {
                 if (i >= 0) {
                     e = this.enemies[i];
 
-                    if (e.isOutsideMap()) {
-                        e.destroy();
-                        i--;
-                        $gameBHellResult.enemiesMissed++;
-                    }
+                    if (e != null) {
+                        if (e.isOutsideMap()) {
+                            e.destroy();
+                            i--;
+                            $gameBHellResult.enemiesMissed++;
+                        }
 
-                    if (e.hasCrashed(my.player)) {
-                        my.player.die(false);
-                        e.crash();
-                        i--;
+                        if (e.hasCrashed(my.player)) {
+                            my.player.die(false);
+                            e.crash();
+                            i--;
+                        }
                     }
                 }
             }
@@ -1430,22 +1432,25 @@ var BHell = (function (my) {
             // Update the player's bullets.
             for (i = 0; i < my.friendlyBullets.length; i++) {
                 b = my.friendlyBullets[i];
-                if (b.isOutsideMap()) {
-                    b.destroy();
-                    my.bulletsLost++;
-                    i--;
-                } else {
-                    var enemiesHit = this.enemies.filter(e => {
-                        return e.checkCollision(b.x, b.y);
-                    });
 
-                    if (enemiesHit.length > 0) {
-                        my.bulletsHit++;
-						// Add hit animation by V.L. 10/16/2020
-						b.hit_effect(); 
+                if (b != null) {
+                    if (b.isOutsideMap()) {
                         b.destroy();
+                        my.bulletsLost++;
                         i--;
-                        enemiesHit[0].hit(); // Each bullet hits only ONE enemy.
+                    } else {
+                        var enemiesHit = this.enemies.filter(e => {
+                            return e.checkCollision(b.x, b.y);
+                        });
+
+                        if (enemiesHit.length > 0) {
+                            my.bulletsHit++;
+    						// Add hit animation by V.L. 10/16/2020
+    						b.hit_effect(); 
+                            b.destroy();
+                            i--;
+                            enemiesHit[0].hit(); // Each bullet hits only ONE enemy.
+                        }
                     }
                 }
             }
@@ -1455,18 +1460,20 @@ var BHell = (function (my) {
             // Update the enemy bullets.
             for (i = 0; i < my.enemyBullets.length; i++) {
                 b = my.enemyBullets[i];
-                if (b.isOutsideMap()) {
-                    b.destroy();
-                    i--;
-                }
-                if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
-                    this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
-                    b.destroy();
-                    my.player.die(true);
-                    i--;
-                } else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
-                    b.grazed = true; // Avoid grazing the same bullet multiple times.
-                    $gameBHellResult.score += my.grazingScore;
+                if (b != null) {
+                    if (b.isOutsideMap()) {
+                        b.destroy();
+                        i--;
+                    }
+                    if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+                        this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
+                        b.destroy();
+                        my.player.die(true);
+                        i--;
+                    } else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+                        b.grazed = true; // Avoid grazing the same bullet multiple times.
+                        $gameBHellResult.score += my.grazingScore;
+                    }
                 }
             }
 
