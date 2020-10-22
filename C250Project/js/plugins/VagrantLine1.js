@@ -34,7 +34,7 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.direction = 4;
         emitterParams.bullet.speed = 4;
         this.trackingCounter = 0; //adjust to change length of bullets
         
@@ -42,11 +42,15 @@ var BHell = (function (my) {
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
-        emitterParams.a = 0;//a: Arc's initial angle (in radians),change to adjust
-        emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),change to adjust
-        emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        var emitterParamsT = {};
+        emitterParamsT.a = 0;//a: Arc's initial angle (in radians),change to adjust
+        emitterParamsT.b = 2 * Math.PI;//b: Arc's final angle (in radians),change to adjust
+        emitterParamsT.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
+        emitterParamsT.bullet = {};
+        emitterParamsT.bullet.direction= 2;
+        emitterParamsT.bullet.speed = 4;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParamsT, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParamsT, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters[0].alwaysAim=true;
         this.emitters[1].alwaysAim=true;
         this.emitters[2].alwaysAim=true;
@@ -111,9 +115,7 @@ var BHell = (function (my) {
                         else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
                     }
                     if(this.frameCounter%150 === 0){
-                        //change speed param here to adjust speed
                         this.updateCircle();
-                        //revert speed param here
                     }   
                     break;
                 case "dying": // die.
@@ -158,7 +160,7 @@ var BHell = (function (my) {
         this.radius = 200;
         this.counterclockwise = true;
         this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
-        this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,(Graphics.height / 2)-30); // initialize the enemy's movement, check BHell_Mover
+        this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,Graphics.height / 2-40); // initialize the enemy's movement, check BHell_Mover
     }
     BHell_Enemy_VagrantLine1_p2.prototype.initializeVL1P2Emitter = function (parent) {
         var emitterParams = {};
@@ -167,8 +169,8 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 2;
-        emitterParams.bullet.speed = 6;
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 4;
         this.trackingCounter = 0;
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
@@ -178,12 +180,15 @@ var BHell = (function (my) {
         this.emitters[1].angle= (3*Math.PI/4)-0.3;
         this.emitters[1].offsetX = -180;
         this.emitters[2].angle= Math.PI/2;
-        emitterParams.bullet.speed = 6;
-        emitterParams.period = 150;
-        emitterParams.a = 0;
-        emitterParams.b = 2 * Math.PI;
-        emitterParams.n = 20;
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        var emitterParamsC = {};
+        emitterParamsC.bullet = {};
+        emitterParamsC.bullet.speed = 4;
+        emitterParamsC.bullet.direction = 2;
+        emitterParamsC.period = 150;
+        emitterParamsC.a = 0;
+        emitterParamsC.b = 2 * Math.PI;
+        emitterParamsC.n = 20;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
         this.emitters[0].angle= (Math.PI/4)+0.3;
         this.emitters[0].offsetX = 180;
         this.emitters[1].angle= (3*Math.PI/4)-0.3;
@@ -246,9 +251,8 @@ var BHell = (function (my) {
                     else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
                 }
                 if(this.frameCounter%150 === 0){
-                    //change speed param here to adjust speed
+
                     this.updateCircle();
-                    //revert speed param here
                 }   
                 break;
             case "dying": // die.
@@ -315,20 +319,23 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 2;
-        emitterParams.bullet.speed = 6;
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 4;
         this.trackingCounter = 0;
 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
-        emitterParams.bullet.speed = 6;
-        emitterParams.period = 150;
-        emitterParams.a = 0;
-        emitterParams.b = 2 * Math.PI;
-        emitterParams.n = 20;
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        var emitterParamsC = {};
+        emitterParamsC.bullet = {};
+        emitterParamsC.bullet.speed = 6;
+        emitterParamsC.bullet.direction = 2;
+        emitterParamsC.period = 150;
+        emitterParamsC.a = 0;
+        emitterParamsC.b = 2 * Math.PI;
+        emitterParamsC.n = 20;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters[0].angle= (Math.PI/4)+0.3;
         this.emitters[0].offsetX = +180;
         this.emitters[1].angle= (3*Math.PI/4)-0.3;
@@ -407,8 +414,6 @@ var BHell = (function (my) {
                         this.destroy();
                     }
                     break;
-					
-					
 				/* Added bombed case if bomb is casted on the line by V.L. */
 				case "bombed":  
 					this.timer = (this.timer + 1) % 1200;

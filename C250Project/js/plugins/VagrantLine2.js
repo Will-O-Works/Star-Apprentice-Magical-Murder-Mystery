@@ -1,6 +1,6 @@
 
 //=============================================================================
-// VagrantLine2 Pattern1 coat
+// Homing Bullet Emitters
 //=============================================================================
 var BHell = (function (my) {
     /**
@@ -77,15 +77,161 @@ var BHell = (function (my) {
     };
     return my;
 } (BHell || {}));
-
-
-
 //=============================================================================
-// VagrantLine2 Pattern1 coat
+// Custom Bullet Class
 //=============================================================================
 var BHell = (function (my) {
 
+    /**
+     * Bullet class. Represents a single bullet moving straight on the map.
+     * @constructor
+     * @memberOf BHell
+     * @extends BHell.BHell_Sprite
+     */
+    var BHell_HomingBullet = my.BHell_HomingBullet = function() {
+        this.initialize.apply(this, arguments);
+    };
     
+    BHell_HomingBullet.prototype = Object.create(my.BHell_Sprite.prototype);
+    BHell_HomingBullet.prototype.constructor = BHell_HomingBullet;
+    
+    /**
+     * Constructor.
+     * Parameters:
+     *
+     * - speed: Moving speed (in pixels per frame),
+     * - sprite: Bullet's charset,
+     * - index: Charset index,
+     * - direction: Charset direction,
+     * - frame: Initial charset frame,
+     * - animated: If true, the bullet's sprite will be animated,
+     * - animation_speed: Number of updates required for frame change.
+     *
+     * @param x Initial x coordinate.
+     * @param y Initial y coordinate.
+     * @param angle Moving angle.
+     * @param params Parameters object.
+     * @param bulletList Array in which this bullet is contained.
+     */
+    BHell_HomingBullet.prototype.initialize = function (x, y, angle, params, bulletList) {
+        var speed = 4;
+        var sprite = my.defaultBullet;
+        var index = 0;
+        var direction = 2;
+        var frame = 0;
+        var animated = false;
+        var animationSpeed = 15;
+        var grazed = false;
+    
+        if (params != null) {
+            speed = params.speed || speed;
+            sprite = params.sprite || sprite;
+            index = params.index || index;
+            direction = params.direction || direction;
+            frame = params.frame || frame;
+            if (params.animated !== false) {
+                animated = true;
+            }
+            animationSpeed = params.animation_speed || animationSpeed;
+        }
+    
+        my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
+    
+        this.anchor.x = 0.5;
+        this.anchor.y = 0.5;
+        this.rotation = angle + Math.PI / 2;
+    
+        this.x = x;
+        this.y = y;
+        this.z = 15;
+        this.angle = angle;
+        this.speed = speed;
+        this.bulletList = bulletList;
+        this.outsideMap = false;
+        this.counter = 0
+        this.aimX = 0;
+        this.aimY = 0;
+        this.spotted = false
+        seeks = 0
+    };
+    
+    /**
+     * Updates the bullet's position. If it leaves the screen, it's destroyed.
+     */
+    BHell_HomingBullet.prototype.update = function () {
+        my.BHell_Sprite.prototype.update.call(this);
+		
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		
+		
+        this.counter = this.counter +1;
+        // if (seeks === 7)////change to adjust bullet lifespan
+        // {
+        //     console.debug("destroying");
+        //     this.destroy();
+        // }
+		
+        if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
+            var dx = my.player.x - this.x + this.aimX;
+            var dy = my.player.y - this.y + this.aimY;
+            this.angle = Math.atan2(dy, dx);
+            this.spotted = true;
+        }
+        if (this.spotted === true){
+            if(this.counter>30)////change to adjust pause
+            {
+                seeks = seeks+1;
+                this.counter = 0;
+                this.spotted=false;
+            }
+        }
+        else{
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed;
+        }
+        
+
+        if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+            this.outsideMap = true;
+        }
+    };
+    
+    BHell_HomingBullet.prototype.isOutsideMap = function () {
+        return this.outsideMap;
+    };
+    
+    /**
+     * Removes the bullet from the screen and from its container.
+     */
+    BHell_HomingBullet.prototype.destroy = function() {
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.bulletList.splice(this.bulletList.indexOf(this), 1);
+    };
+    
+    return my;
+} (BHell || {}));
+
+//=============================================================================
+// VagrantLine4 Pattern1 coat
+//=============================================================================
+var BHell = (function (my) {
     var BHell_Enemy_VagrantLine2_p1 = my.BHell_Enemy_VagrantLine2_p1 = function() {
         this.initialize.apply(this, arguments);
     };
@@ -257,7 +403,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantLine2 Pattern2 coat
+// VagrantLine4 Pattern2 coat
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VagrantLine2_p2 = my.BHell_Enemy_VagrantLine2_p2 = function() {
@@ -446,7 +592,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantLine2 Pattern3 coat
+// VagrantLine4 Pattern3 coat
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VagrantLine2_p3 = my.BHell_Enemy_VagrantLine2_p3 = function() {
@@ -595,155 +741,5 @@ var BHell = (function (my) {
             }
         }
     };
-    return my;
-} (BHell || {}));
-//=============================================================================
-// Custom Bullet And Emitter Clasee
-//=============================================================================
-var BHell = (function (my) {
-
-    /**
-     * Bullet class. Represents a single bullet moving straight on the map.
-     * @constructor
-     * @memberOf BHell
-     * @extends BHell.BHell_Sprite
-     */
-    var BHell_HomingBullet = my.BHell_HomingBullet = function() {
-        this.initialize.apply(this, arguments);
-    };
-    
-    BHell_HomingBullet.prototype = Object.create(my.BHell_Sprite.prototype);
-    BHell_HomingBullet.prototype.constructor = BHell_HomingBullet;
-    
-    /**
-     * Constructor.
-     * Parameters:
-     *
-     * - speed: Moving speed (in pixels per frame),
-     * - sprite: Bullet's charset,
-     * - index: Charset index,
-     * - direction: Charset direction,
-     * - frame: Initial charset frame,
-     * - animated: If true, the bullet's sprite will be animated,
-     * - animation_speed: Number of updates required for frame change.
-     *
-     * @param x Initial x coordinate.
-     * @param y Initial y coordinate.
-     * @param angle Moving angle.
-     * @param params Parameters object.
-     * @param bulletList Array in which this bullet is contained.
-     */
-    BHell_HomingBullet.prototype.initialize = function (x, y, angle, params, bulletList) {
-        var speed = 4;
-        var sprite = my.defaultBullet;
-        var index = 0;
-        var direction = 2;
-        var frame = 0;
-        var animated = false;
-        var animationSpeed = 15;
-        var grazed = false;
-    
-        if (params != null) {
-            speed = params.speed || speed;
-            sprite = params.sprite || sprite;
-            index = params.index || index;
-            direction = params.direction || direction;
-            frame = params.frame || frame;
-            if (params.animated !== false) {
-                animated = true;
-            }
-            animationSpeed = params.animation_speed || animationSpeed;
-        }
-    
-        my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
-    
-        this.anchor.x = 0.5;
-        this.anchor.y = 0.5;
-        this.rotation = angle + Math.PI / 2;
-    
-        this.x = x;
-        this.y = y;
-        this.z = 15;
-        this.angle = angle;
-        this.speed = speed;
-        this.bulletList = bulletList;
-        this.outsideMap = false;
-        this.counter = 0
-        this.aimX = 0;
-        this.aimY = 0;
-        this.spotted = false
-        seeks = 0
-    };
-    
-    /**
-     * Updates the bullet's position. If it leaves the screen, it's destroyed.
-     */
-    BHell_HomingBullet.prototype.update = function () {
-        my.BHell_Sprite.prototype.update.call(this);
-		
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-		
-		
-        this.counter = this.counter +1;
-        // if (seeks === 7)////change to adjust bullet lifespan
-        // {
-        //     console.debug("destroying");
-        //     this.destroy();
-        // }
-		
-        if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
-            var dx = my.player.x - this.x + this.aimX;
-            var dy = my.player.y - this.y + this.aimY;
-            this.angle = Math.atan2(dy, dx);
-            this.spotted = true;
-        }
-        if (this.spotted === true){
-            if(this.counter>30)////change to adjust pause
-            {
-                seeks = seeks+1;
-                this.counter = 0;
-                this.spotted=false;
-            }
-        }
-        else{
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed;
-        }
-        
-
-        if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
-            this.outsideMap = true;
-        }
-    };
-    
-    BHell_HomingBullet.prototype.isOutsideMap = function () {
-        return this.outsideMap;
-    };
-    
-    /**
-     * Removes the bullet from the screen and from its container.
-     */
-    BHell_HomingBullet.prototype.destroy = function() {
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-        this.bulletList.splice(this.bulletList.indexOf(this), 1);
-    };
-    
     return my;
 } (BHell || {}));

@@ -29,19 +29,21 @@ var BHell = (function (my) {
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 	};
 	BHell_Enemy_VagrantLine4_p1.prototype.initializeVL4P1Emitter = function (parent) {
-		var emitterParams = {};
-		emitterParams.aim= false;
-		emitterParams.alwaysAim =false;
-		emitterParams.bullet = {};
-		
-		emitterParams.bullet.direction = 4;//change to adjust bullet sprite
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); 
+		var emitterParamsDrunk = {};
+		emitterParamsDrunk.aim= false;
+		emitterParamsDrunk.alwaysAim =false;
+		emitterParamsDrunk.bullet = {};
+		emitterParamsDrunk.bullet.direction = 6;//change to adjust bullet sprite
 		emitterParams.bullet.speed = 4;//change to adjust bullet speed for next emitter
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
 		this.emitters[0].angle = Math.PI/2;//change to adjust emitter angle
 		this.emitters[1].angle = Math.PI/2;//change to adjust emitter angle
 		this.angle= this.emitters[0].angle+ (Math.PI/2);//calculates normal of starting angle to finde angle of motion
-		this.amp =180;//change to adjust amplitude of sine wave
+		this.amp =130;//change to adjust amplitude of sine wave
+		var emitterParams = {};
+		emitterParams.bullet = {};
+		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
 		this.emitters[2].angle=Math.PI/2;//change to adjust emitter angle
@@ -51,6 +53,11 @@ var BHell = (function (my) {
 		this.angl1=-(Math.PI/20);//change to adjust angle increment
         this.angl2=(Math.PI/20);//change to adjust angle increment
 		this.flip=false;
+		var emitterParams = {};
+		emitterParams.bullet = {};
+		emitterParams.bullet.direction = 4;//change to adjust bullet sprite
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters[4].angle= 3*Math.PI/4;//change to adjust angle of straight lines
@@ -58,7 +65,13 @@ var BHell = (function (my) {
         this.emitters[4].offsetX = -150;//change to adjust horizontal offset
         this.emitters[5].angle= Math.PI/4;
         this.emitters[5].alwaysAim = false;
-        this.emitters[5].offsetX= 150;//change to adjust horizontal offset
+		this.emitters[5].offsetX= 150;//change to adjust horizontal offset
+		this.emitters[6].angle= (3*Math.PI/4)-0.2;//change to adjust angle of straight lines
+        this.emitters[6].alwaysAim = false;//change to adjust angles of straight lines
+        this.emitters[6].offsetX = -150;//change to adjust horizontal offset
+        this.emitters[7].angle= (Math.PI/4)+0.2;
+        this.emitters[7].alwaysAim = false;
+        this.emitters[7].offsetX= 150;//change to adjust horizontal offset
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine4_p1.prototype.updateEmitters = function () {
@@ -79,7 +92,9 @@ var BHell = (function (my) {
             this.emitters[2].shoot(this.emitters,true);
 			this.emitters[3].shoot(this.emitters,true);
 			this.emitters[4].shoot(this.emitters,true);//static
-            this.emitters[5].shoot(this.emitters,true);//static
+			this.emitters[5].shoot(this.emitters,true);//static
+			this.emitters[6].shoot(this.emitters,true);//static
+            this.emitters[7].shoot(this.emitters,true);//static
             if(this.emitters[2].angle>=Math.PI||this.emitters[2].angle<=0)
             {
                 this.flip=true;
