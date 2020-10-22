@@ -520,8 +520,42 @@
     "cols": 2,
     "rows": 1,
     "anchorX": 0.5,
-    "anchorY": 0.88,
+    "anchorY": 0.96,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorHorizontal.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "DoorHorizontalOpen": {
+    "name": "DoorHorizontalOpen",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorHorizontalOpen-OW.png",
     "poses": {
       "default": {
         "name": "default",

@@ -38,8 +38,8 @@ function BeatEmUp() {
         }
         var event = $gameMap.event(eventID);
         var collider = event.collider();
-        xOffset = setXOffset / QMovement.tileSize;
-        yOffset = setYOffset / QMovement.tileSize;
+        xOffset = setXOffset;
+        yOffset = setYOffset;
         var prevX = event.px / QMovement.tileSize;
         var prevY = event.py / QMovement.tileSize;
         if (offsetsOn) {
