@@ -809,6 +809,18 @@ function Window_InputRemap() {
     this.hide();
     this.deactivate();
     this.updatePlacement();
+    this.y += 38;
+  };
+
+  Window_InputRemap.prototype.playOkSound = function() {
+    SoundManager.playOk();
+  };
+
+  Window_InputRemap.prototype.processCancel = function() {
+    SoundManager.playCancel();
+    this.updateInputData();
+    this.deactivate();
+    this.callCancelHandler();
   };
 
   Window_InputRemap.prototype.windowWidth = function() {

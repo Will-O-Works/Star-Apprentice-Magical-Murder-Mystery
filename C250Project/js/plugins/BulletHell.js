@@ -5255,7 +5255,7 @@ var BHell = (function (my) {
      */
     Scene_BHell.prototype.updateInput = function () {
         if (!my.controller.paused && !$gameMessage.isBusy()) {
-            if (Input.isTriggered('escape')) {
+            if (Input.isTriggered('menu')) {
                 this.pause();
                 this.pauseWindow.pause_menu_opened = false;
             }
@@ -5309,7 +5309,7 @@ var BHell = (function (my) {
                         this.usingTouch = "no";
                     }
 
-                    if (TouchInput.isPressed() || Input.isPressed('ok')) {
+                    if (TouchInput.isPressed() || Input.isPressed('ok') || Input.isPressed('pagedown')) {
                         my.player.shoot(true);
                     }
                     else {

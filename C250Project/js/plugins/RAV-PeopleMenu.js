@@ -162,7 +162,16 @@ Scene_People.prototype.update = function () {
             rightArrowImage.y = arrowY;
             this._init = true;
         } else {
-            if (Input.isTriggered("right")) {
+            var mouseX = TouchInput._x;
+            var mouseY = TouchInput._y;
+            console.log(mouseY);
+            var mouseXOnLeftButton = mouseX >= leftArrowImage.x && mouseX <= leftArrowImage.x + leftArrowImage.width;
+            var mouseYOnLeftButton = mouseY >= leftArrowImage.y && mouseY <= leftArrowImage.y + leftArrowImage.height;
+            var mouseOnLeftButton = mouseXOnLeftButton && mouseYOnLeftButton;
+            var mouseXOnRightButton = mouseX >= rightArrowImage.x && mouseX <= rightArrowImage.x + rightArrowImage.width;
+            var mouseYOnRightButton = mouseY >= rightArrowImage.y && mouseY <= rightArrowImage.y + rightArrowImage.height;
+            var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
+            if (Input.isTriggered("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
                 rightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it;
                 AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
                 this._peopleWindow.removeChild(portraitImage);
@@ -175,7 +184,7 @@ Scene_People.prototype.update = function () {
                 this._peopleWindow.drawAllItems();
                 this._titleWindow.drawAllItems();
                 this._textWindow.drawAllItems();
-            } else if (Input.isTriggered("left")) {
+            } else if (Input.isTriggered("left") || (TouchInput.isTriggered() && mouseOnLeftButton)) {
                 leftArrowTimer = arrowTime + 1;
                 AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
                 this._peopleWindow.removeChild(portraitImage);

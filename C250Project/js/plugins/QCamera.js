@@ -152,7 +152,7 @@ function Sprite_Bars() {
   var _PARAMS = QPlus.getParams('<QCamera>', true);
   var _OFFSET = _PARAMS['Offset'];
   var _CAMERAOX = _PARAMS['Shift X'];
-  var _CAMERAOY = _PARAMS['Shift Y'];
+  _CAMERAOY = _PARAMS['Shift Y'];
 
   //-----------------------------------------------------------------------------
   // Game_Interpreter

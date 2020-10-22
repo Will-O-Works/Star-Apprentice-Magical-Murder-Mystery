@@ -71,6 +71,11 @@ Window_Selectable.prototype.playOkSound = function() {
     AudioManager.playSe({name: 'journal_open', pan: 0, pitch: 100, volume: 90});
 };
 
+Window_Options.prototype.playOkSound = function() {
+    SoundManager.playOk();
+};
+
+
 Window_ChoiceList.prototype.playOkSound = function() {
     if ($gameMessage.choices().length == 2) {
         // For yes or nos
@@ -100,6 +105,13 @@ Scene_Menu.prototype.create = function() {
     this._commandWindow.x = 320 - ww/2;
     this._commandWindow.y = 92;
     $gameSwitches.setValue(19, true);
+};
+
+var _Scene_Menu_update = Scene_Menu.prototype.update;
+
+Scene_Menu.prototype.update = function() {
+    document.body.style.cursor = 'default';
+    _Scene_Menu_update.call(this);
 };
 
 // Force the sprite behind the windowlayer
