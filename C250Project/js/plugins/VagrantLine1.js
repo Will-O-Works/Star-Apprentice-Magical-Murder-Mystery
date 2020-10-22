@@ -400,7 +400,7 @@ var BHell = (function (my) {
                     }
                     break;
                 case "pattern 1": // shoots main angle emitters every 5 frames and shoots all emitters every 150 frames
-                    if (this.frameCounter%5 === 0) {
+                    if (this.frameCounter%9 === 0) {
                         this.updateVL1P3Emitter();
                         if (this.trackingCounter<3){this.updateLine();}//change if comparator to adjust amout of bullets per wave
                         else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves

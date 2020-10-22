@@ -40,7 +40,7 @@ var BHell = (function (my) {
 		this.emitters[0].angle = Math.PI/2;//change to adjust emitter angle
 		this.emitters[1].angle = Math.PI/2;//change to adjust emitter angle
 		this.angle= this.emitters[0].angle+ (Math.PI/2);//calculates normal of starting angle to finde angle of motion
-		this.amp =130;//change to adjust amplitude of sine wave
+		this.amp =230;//change to adjust amplitude of sine wave
 		var emitterParams = {};
 		emitterParams.bullet = {};
 		emitterParams.bullet.direction = 6;//change to adjust bullet sprite
@@ -94,7 +94,7 @@ var BHell = (function (my) {
 			this.emitters[6].shoot(this.emitters,true);//static
 			this.emitters[7].shoot(this.emitters,true);//static
 		}
-		if (this.frameCounter % 20 == 0){
+		if (this.frameCounter % 16 == 0){
 			this.emitters[2].shoot(this.emitters,true);
 			this.emitters[3].shoot(this.emitters,true);
             if(this.emitters[2].angle>=Math.PI||this.emitters[2].angle<=0)
