@@ -444,6 +444,8 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
+		my.player.can_bomb = true;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         this.frameCounter = 0;
@@ -531,8 +533,16 @@ var BHell = (function (my) {
 
     //main update loop
     BHell_Enemy_VagrantLine5_p2.prototype.update = function () {
+        /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		if (my.player.bombed == true  && this.state !== "bombed") {
+			my.controller.destroyEnemyBullets(); 
+			this.timer = 0; 
+			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+			this.state = "bombed";
+        }
+        
         my.BHell_Sprite.prototype.update.call(this);
-        if (this.state !== "dying") {
+        if (this.state !== "dying"&& this.state !== "bombed") {
             this.move();
         };
         switch (this.state) {
@@ -549,6 +559,23 @@ var BHell = (function (my) {
             case "dying": // dies.
                 this.destroy();
                 break;
+                /* Added bombed case if bomb is casted on the line by V.L. */
+			case "bombed":  
+            this.timer = (this.timer + 1) % 1200;
+            this.shoot(false);
+            
+            if (this.timer > 70) {
+                // Clear screen after count down V.L. 10/20/2020
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];
+                
+                this.destroy();
+            }
+            else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+            }
+            break; 
+        /* Added bombed case if bomb is casted on the line by V.L. */
         }; 
         // Update the received damage counter for the stunned state.
         this.emitters.forEach(e => {e.update()});
@@ -574,6 +601,8 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
+		my.player.can_bomb = true;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
         my.player.can_bomb = true;
@@ -665,8 +694,15 @@ var BHell = (function (my) {
 
     //main update loop
     BHell_Enemy_VagrantLine5_p3.prototype.update = function () {
+        /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		if (my.player.bombed == true  && this.state !== "bombed") {
+			my.controller.destroyEnemyBullets(); 
+			this.timer = 0; 
+			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+			this.state = "bombed";
+		}
         my.BHell_Sprite.prototype.update.call(this);
-        if (this.state !== "dying") {
+        if (this.state !== "dying"&& this.state !== "bombed") {
             this.move();
         };
         switch (this.state) {
@@ -683,6 +719,23 @@ var BHell = (function (my) {
             case "dying": // dies.
                 this.destroy();
                 break;
+                /* Added bombed case if bomb is casted on the line by V.L. */
+			case "bombed":  
+            this.timer = (this.timer + 1) % 1200;
+            this.shoot(false);
+            
+            if (this.timer > 70) {
+                // Clear screen after count down V.L. 10/20/2020
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];
+                
+                this.destroy();
+            }
+            else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+            }
+            break; 
+        /* Added bombed case if bomb is casted on the line by V.L. */
         }; 
         // Update the received damage counter for the stunned state.
         this.emitters.forEach(e => {e.update()});
