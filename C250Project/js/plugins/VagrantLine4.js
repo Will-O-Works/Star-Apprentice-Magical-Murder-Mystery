@@ -33,8 +33,8 @@ var BHell = (function (my) {
 		emitterParamsDrunk.aim= false;
 		emitterParamsDrunk.alwaysAim =false;
 		emitterParamsDrunk.bullet = {};
-		emitterParamsDrunk.bullet.direction = 6;//change to adjust bullet sprite
-		emitterParams.bullet.speed = 4;//change to adjust bullet speed for next emitter
+		emitterParamsDrunk.bullet.direction = 2;//change to adjust bullet sprite
+		emitterParamsDrunk.bullet.speed = 4;//change to adjust bullet speed for next emitter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
 		this.emitters[0].angle = Math.PI/2;//change to adjust emitter angle
@@ -43,7 +43,7 @@ var BHell = (function (my) {
 		this.amp =130;//change to adjust amplitude of sine wave
 		var emitterParams = {};
 		emitterParams.bullet = {};
-		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
+		emitterParams.bullet.direction = 6;//change to adjust bullet sprite
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false));
 		this.emitters[2].angle=Math.PI/2;//change to adjust emitter angle
@@ -55,7 +55,7 @@ var BHell = (function (my) {
 		this.flip=false;
 		var emitterParams = {};
 		emitterParams.bullet = {};
-		emitterParams.bullet.direction = 4;//change to adjust bullet sprite
+		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
@@ -89,12 +89,14 @@ var BHell = (function (my) {
 			this.emitters[1].offsetY = (x2)*Math.sin(this.angle)+(y)*Math.cos(this.angle);
 		}
 		if (this.frameCounter % 10 == 0){
-            this.emitters[2].shoot(this.emitters,true);
-			this.emitters[3].shoot(this.emitters,true);
 			this.emitters[4].shoot(this.emitters,true);//static
 			this.emitters[5].shoot(this.emitters,true);//static
 			this.emitters[6].shoot(this.emitters,true);//static
-            this.emitters[7].shoot(this.emitters,true);//static
+			this.emitters[7].shoot(this.emitters,true);//static
+		}
+		if (this.frameCounter % 20 == 0){
+			this.emitters[2].shoot(this.emitters,true);
+			this.emitters[3].shoot(this.emitters,true);
             if(this.emitters[2].angle>=Math.PI||this.emitters[2].angle<=0)
             {
                 this.flip=true;
@@ -170,7 +172,6 @@ var BHell = (function (my) {
 // VagrantLine4 Pattern 2
 //=============================================================================
 var BHell = (function (my) {
-	
 	/** 
 	 * VagrantLine4 by V.L.
 	 */ 
@@ -205,7 +206,7 @@ var BHell = (function (my) {
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
         emitterParams.alwaysAim = false;
         emitterParams.bullet = {};
-		emitterParams.bullet.direction = 4;
+		emitterParams.bullet.direction = 6;
 
 		//emitterParams.shoot_x = Graphics.width / 4 + Math.random() * Graphics.width / 2;
 		emitterParams.bullet.speed = 4;
@@ -217,7 +218,9 @@ var BHell = (function (my) {
 		this.emitters[1].angle = Math.PI/2;//change to adjust emitter angle
 		this.emitters[2].angle = Math.PI/2;//change to adjust emitter angle
 		this.emitters[3].angle = Math.PI/2;//change to adjust emitter angle
-		emitterParams.period = 150;
+		var emitterParams = {};
+		emitterParams.bullet = {};
+		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
         emitterParams.a = 0;//a: Arc's initial angle (in radians),
         emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
         emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
@@ -376,7 +379,7 @@ var BHell = (function (my) {
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
         emitterParams.alwaysAim = false;
         emitterParams.bullet = {};
-		emitterParams.bullet.direction = 4;
+		emitterParams.bullet.direction = 6;
 
 		//emitterParams.shoot_x = Graphics.width / 4 + Math.random() * Graphics.width / 2;
 
@@ -389,17 +392,26 @@ var BHell = (function (my) {
 		this.angle1= this.emitters[0].angle+ (Math.PI/2);
 		this.angle2= this.emitters[1].angle+ (Math.PI/2);
 		this.angle3= this.emitters[2].angle+ (Math.PI/2);
-		emitterParams.bullet.speed = 4;
-		emitterParams.period = 150;
+		var emitterParams = {};
+		emitterParams.bullet = {};
+		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
         emitterParams.a = 0;//a: Arc's initial angle (in radians),
         emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
         emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
-        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+		this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter 
+		this.emitters[4].angle = 0.69;//change to adjust emitter angle
+		this.emitters[5].angle = (Math.PI)-0.69;//change to adjust emitter angle
+		this.emitters[4].offsetX = -480;//change to adjust emitter angle
+		this.emitters[5].offsetX = 480;//change to adjust emitter angle
+		this.emitters[4].offsetY = 200;//change to adjust emitter angle
+		this.emitters[5].offsetY = 200;//change to adjust emitter angle
 		
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine4_p3.prototype.updateEmitters = function () {
-		if(this.frameCounter%5 === 0){
+		if(this.frameCounter%10 === 0){
 			//"var x = amplitude * sin(TWO_PI * frameCount / period" reffer to this for harmonic oscillations: https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
 			var x=125 * Math.sin(2*Math.PI * this.frameCounter / 120);
 			var y=0;
@@ -413,11 +425,13 @@ var BHell = (function (my) {
 			this.emitters[0].shoot(this.emitters,true);
 			this.emitters[1].shoot(this.emitters,true);
 			this.emitters[2].shoot(this.emitters,true);
+			this.emitters[4].shoot(this.emitters,true);
+			this.emitters[5].shoot(this.emitters,true);
 		}
 		if(this.frameCounter%151 === 0){
 			//change speed param here to adjust speed
 			this.emitters[3].shoot(this.emitters,true);
-			//revert speed param here  
+			//revert speed param here
 		}
 	};
 	BHell_Enemy_VagrantLine4_p3.prototype.die = function() {
@@ -435,12 +449,9 @@ var BHell = (function (my) {
 				this.bombedWrong = true; 
 				this.hp = this.full_hp; 
 			}
-			
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
-
 			}
-			
 			if (my.player.bombed == true) {
 				this.destroy(); 
 			}
