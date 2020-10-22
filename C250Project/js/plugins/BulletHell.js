@@ -2368,7 +2368,10 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
     my.BHell_Sprite.prototype.initialize.call(this, image.characterName, image.characterIndex, image.direction, image.pattern, ((params.animated != null)? params.animated: true), params.animation_speed || 25);
 
 	console.log("Hello world!");
-	my.player.bombs = 1; // Set player bomb number to 1 by V.L. 10/18/2020
+	
+	if (image.characterName != "$Cat") {
+		my.player.bombs = 1; // Set player bomb number to 1 by V.L. 10/18/2020
+	}
 	
     this.parent = parent;
     this.parent.addChild(this);
@@ -5227,7 +5230,7 @@ var BHell = (function (my) {
      * @param event Blur event.
      */
     Scene_BHell.prototype.onBlur = function (event) {
-        this.pause();
+        // this.pause();
     };
 
     /**
@@ -5235,6 +5238,7 @@ var BHell = (function (my) {
      * @param event TouchEvent.
      */
     Scene_BHell.prototype.onTouchOutside = function(event) {
+		/*
         for (var i = 0; i < event.changedTouches.length; i++) {
             var touch = event.changedTouches[i];
             var x = Graphics.pageToCanvasX(touch.pageX);
@@ -5242,7 +5246,7 @@ var BHell = (function (my) {
             if (!Graphics.isInsideCanvas(x, y)) {
                 this.pause();
             }
-        }
+        }*/ 
     };
 
 
