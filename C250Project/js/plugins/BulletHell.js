@@ -1281,9 +1281,9 @@ var BHell = (function (my) {
             // Loop the bullet hell game instead of quit when defeat by V.L.
             messageStarted = true;
             messageTimer = 0;
-            $gameMessage.add("\\w[" + String(windowStartupTime) + "]So close! ..."); 
+            $gameMessage.add("\\w[" + String(windowStartupTime) + "]I lost control of the interrogation. "); 
             $gameMessage.newPage(); 
-            $gameMessage.add("I must find the contradiction in her words. "); 
+            $gameMessage.add("I have to solve the case ... "); 
             SceneManager.goto(my.Scene_BHell_Init); 
             
             $gameBHellResult.won = false;
@@ -2367,8 +2367,6 @@ BHell_Enemy_Base.prototype.constructor = BHell_Enemy_Base;
 BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, enemyList) {
     my.BHell_Sprite.prototype.initialize.call(this, image.characterName, image.characterIndex, image.direction, image.pattern, ((params.animated != null)? params.animated: true), params.animation_speed || 25);
 
-	console.log("Hello world!");
-	
 	if (image.characterName != "$Cat") {
 		my.player.bombs = 1; // Set player bomb number to 1 by V.L. 10/18/2020
 	}
@@ -4517,9 +4515,9 @@ var BHell = (function (my) {
 			} else if (this.bombed == false) {
                     messageStarted = true;
                     messageTimer = 0;
-                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I must have missed something... "); 
+                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I have to find the contradiction in their words. "); 
                     $gameMessage.newPage(); 
-                    $gameMessage.add("I should try again. "); 
+                    $gameMessage.add("I should keep looking. "); 
                     SceneManager.goto(my.Scene_BHell_Init); 
             } else { 
 				my.playing = false;
@@ -4590,9 +4588,9 @@ var BHell = (function (my) {
 			if (this.can_bomb == false) {
                 messageStarted = true;
                 messageTimer = 0;
-				$gameMessage.add("\\w[" + String(windowStartupTime) + "]Oh crap! I shouldn't be using my bomb here. "); 
+				$gameMessage.add("\\w[" + String(windowStartupTime) + "]This doesn't seem right. "); 
 				$gameMessage.newPage(); 
-				$gameMessage.add("The line is gonna get angry >:-|"); 
+				$gameMessage.add("There's no contradiction here. "); 
 				
 				this.false_bomb = true; 
 				//SceneManager.goto(my.Scene_BHell_Init);  V.L. 10/18/2020
@@ -6871,7 +6869,7 @@ var BHell = (function (my) {
             if (!my.player.bomb.isActive()) {
                 this.i = (this.i + 1) % 300;
                 if (this.i === 0) {
-                    my.player.launchBomb();
+                    // my.player.launchBomb();
                 }
                 else {
                     my.player.shoot(true);

@@ -220,8 +220,8 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 500;
-        params.hitbox_h = 100;
+        params.hitbox_w = 288;
+        params.hitbox_h = 68;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -416,8 +416,8 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 500;
-        params.hitbox_h = 100;
+        params.hitbox_w = 412;
+        params.hitbox_h = 78;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
@@ -437,6 +437,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantLine2_p2.prototype.initializeCoat = function (parent) {
+		this.p = 10; 
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 7;
@@ -503,7 +504,7 @@ var BHell = (function (my) {
             this.coatEmitters[6].shoot(this.coatEmitters,true);
             this.coatEmitters[7].shoot(this.coatEmitters,true);
         }
-        if (this.frameCounter % 10 == 0){
+        if (this.frameCounter % this.p == 0){
             this.coatEmitters[2].shoot(this.coatEmitters,true);
             this.coatEmitters[3].shoot(this.coatEmitters,true);
             if(this.coatEmitters[2].angle>=Math.PI||this.coatEmitters[2].angle<=0)
@@ -535,19 +536,28 @@ var BHell = (function (my) {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.coatEmitters[2].bulletParams.speed = 6; 
+				this.coatEmitters[3].bulletParams.speed = 6; 
+				this.p = 5; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 
         switch (this.state) {
             case "started":
@@ -633,8 +643,8 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 500;
-        params.hitbox_h = 100;
+        params.hitbox_w = 404;
+        params.hitbox_h = 68;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -654,6 +664,9 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantLine2_p3.prototype.initializeCoat = function (parent) {
+		
+		this.p = 160; 
+		
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 7;
@@ -724,7 +737,7 @@ var BHell = (function (my) {
             this.coatEmitters[6].shoot(this.coatEmitters,true);
             this.coatEmitters[7].shoot(this.coatEmitters,true);
         } 
-        if (this.frameCounter % 160 == 0){
+        if (this.frameCounter % this.p == 0){
             this.coatEmitters[8].shoot(this.coatEmitters,true);
         }
     };
@@ -741,6 +754,28 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p3.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
+		
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.coatEmitters[8].bulletParams.speed = 6; 
+				this.p = 40; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 		
 		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
 		if (my.player.bombed == true) {

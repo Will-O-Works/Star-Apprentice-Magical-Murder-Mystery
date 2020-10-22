@@ -12,8 +12,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 320; // hitbox width
-        params.hitbox_h = 100; // hitbox height
+        params.hitbox_w = 386; // hitbox width
+        params.hitbox_h = 75; // hitbox height
         params.animated = false;
         this.frameCounter =0;
         this.state = "started";
@@ -89,18 +89,20 @@ var BHell = (function (my) {
 			
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
-				this.emitters[3].bulletParams.speed = 8; 
-				this.emitters[4].bulletParams.speed = 8; 
+				this.emitters[0].bulletParams.speed = 6; 
+				this.emitters[1].bulletParams.speed = 8; 
+				this.emitters[2].bulletParams.speed = 8; 
 			}
 			
 			if (my.player.bombed == true) {
 				this.destroy(); 
 			}
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			
-            if (this.state !== "dying") {
+			if (this.state !== "dying") {
                 this.move();
             }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+
             switch (this.state) {
                 case "started":
                     if (this.mover.inPosition === true) {
@@ -145,8 +147,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 320; // hitbox width
-        params.hitbox_h = 100; // hitbox height
+        params.hitbox_w = 408; // hitbox width
+        params.hitbox_h = 72; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
@@ -157,6 +159,7 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 
+		this.circle_p = 150; // increase frequency for angry state
         this.radius = 200;
         this.counterclockwise = true;
         this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
@@ -226,19 +229,27 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine1_p2.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.circle_p = 30; 
+				// this.emitters[0].bulletParams.speed = 6; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 
         switch (this.state) {
             case "started":
@@ -250,7 +261,7 @@ var BHell = (function (my) {
                     if (this.trackingCounter<3){this.updateAngle();}//change if comparator to adjust amout of bullets per wave
                     else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
                 }
-                if(this.frameCounter%150 === 0){
+                if(this.frameCounter%this.circle_p === 0){
 
                     this.updateCircle();
                 }   
@@ -299,8 +310,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 320; // hitbox width
-        params.hitbox_h = 100; // hitbox height
+        params.hitbox_w = 306; // hitbox width
+        params.hitbox_h = 68; // hitbox height
         params.animated = false;
         this.frameCounter =0;
         this.state = "started";

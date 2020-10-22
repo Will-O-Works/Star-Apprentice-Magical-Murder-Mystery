@@ -215,6 +215,29 @@ BHell_Enemy_GunnerCat.prototype.update = function () {
         }
     }
 };
+
+	BHell_Enemy_GunnerCat.prototype.crash = function() {
+        if (this.boss !== true) {
+            my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
+            this.destroy();
+        }
+        $gameBHellResult.enemiesCrashed++;
+
+        return true;
+    };
+
+    BHell_Enemy_GunnerCat.prototype.die = function() {
+        this.destroy(); 
+    };
+
+    BHell_Enemy_GunnerCat.prototype.destroy = function() {  
+
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.enemyList.splice(this.enemyList.indexOf(this), 1);
+    };
+
     return my;
 } (BHell || {}));
 
@@ -232,8 +255,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine5_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 550;
-        params.hitbox_h = 100;
+        params.hitbox_w = 400;
+        params.hitbox_h = 66;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -415,16 +438,17 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine5_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 550;
-        params.hitbox_h = 100;
+        params.hitbox_w = 342;
+        params.hitbox_h = 74;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
 		this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
-		my.player.can_bomb = true;
+		my.player.can_bomb = false;
 		
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
         //some variables needed to change states of the boss j is a counter to keep track of time, state and recived damage are obvious
+		this.p = 30; 
         this.frameCounter = 0;
 		this.state = "started";
         this.initializeVL5P1Emitter(parent);
@@ -493,7 +517,7 @@ var BHell = (function (my) {
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VagrantLine5_p2.prototype.updateVL5P1 = function () { 
-        if(this.frameCounter%30===0)
+        if(this.frameCounter%this.p===0)
         {
             this.emitters[0].shoot(this.emitters,true);
         }
@@ -516,10 +540,6 @@ var BHell = (function (my) {
 
 	BHell_Enemy_VagrantLine5_p2.prototype.destroy = function() {
 
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
@@ -534,19 +554,26 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine5_p2.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.p = 6; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 		
         switch (this.state) {
             case "started":
@@ -600,8 +627,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantLine5_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 550;
-        params.hitbox_h = 100;
+        params.hitbox_w = 416;
+        params.hitbox_h = 68;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
@@ -722,17 +749,28 @@ var BHell = (function (my) {
 
     //main update loop
     BHell_Enemy_VagrantLine5_p3.prototype.update = function () {
-        /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-        my.BHell_Sprite.prototype.update.call(this);
-        if (this.state !== "dying"&& this.state !== "bombed") {
-            this.move();
-        };
+        
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.emitters[0].bulletParams.speed = 5; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		
         switch (this.state) {
             case "started":
                 if (this.mover.inPosition === true) {

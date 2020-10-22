@@ -77,7 +77,7 @@ var BHell = (function (my) {
         params.hp = 10;
         params.speed = 2; // speed of boss moving 
         params.hitbox_w = 100; // hitbox width
-        params.hitbox_h = 100; // hitbox height
+        params.hitbox_h = 30; // hitbox height
         params.animated = false; // if true, you need 3 frames of animation for the boss
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
