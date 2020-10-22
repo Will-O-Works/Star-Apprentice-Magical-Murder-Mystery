@@ -1,4 +1,7 @@
 
+//=============================================================================
+// VagrantLine2 Pattern1 coat
+//=============================================================================
 var BHell = (function (my) {
     /**
      * Angle emitter. Creates a single bullet traveling at an angle. Optionally aims at the player.
@@ -154,7 +157,6 @@ var BHell = (function (my) {
             this.coatEmitters[3].shoot(this.coatEmitters,true);
             this.coatEmitters[2].shoot(this.coatEmitters,true);
         }
-        
     };
 
     BHell_Enemy_VagrantLine2_p1.prototype.move = function () {

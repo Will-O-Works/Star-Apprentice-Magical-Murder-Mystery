@@ -34,15 +34,14 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 4;
-        emitterParams.bullet.speed = 6;
+        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.speed = 4;
         this.trackingCounter = 0; //adjust to change length of bullets
         
         
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
-        emitterParams.bullet.speed = 4;
         emitterParams.a = 0;//a: Arc's initial angle (in radians),change to adjust
         emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),change to adjust
         emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
@@ -54,7 +53,7 @@ var BHell = (function (my) {
         this.emitters[0].offsetX = 180;
         this.emitters[1].offsetX = -180;
         this.emitters[3].offsetX = 180;
-        this.emitters[4].offsetX = -180;  
+        this.emitters[4].offsetX = -180; 
         
         //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
         BHell_Enemy_VagrantLine1_p1.prototype.updateTracking = function () { 
@@ -156,10 +155,10 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 
-        this.radius = 250;
+        this.radius = 200;
         this.counterclockwise = true;
         this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
-        this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,Graphics.height / 2); // initialize the enemy's movement, check BHell_Mover
+        this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,(Graphics.height / 2)-30); // initialize the enemy's movement, check BHell_Mover
     }
     BHell_Enemy_VagrantLine1_p2.prototype.initializeVL1P2Emitter = function (parent) {
         var emitterParams = {};
@@ -168,7 +167,7 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.direction = 2;
         emitterParams.bullet.speed = 6;
         this.trackingCounter = 0;
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
@@ -316,7 +315,7 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = false;
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.direction = 2;
         emitterParams.bullet.speed = 6;
         this.trackingCounter = 0;
 

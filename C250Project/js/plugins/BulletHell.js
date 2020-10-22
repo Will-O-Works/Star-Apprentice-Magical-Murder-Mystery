@@ -242,7 +242,7 @@ var BHell = (function (my) {
         my.victoryMe = {name: String(parameters['victory_me']), volume: 90, pitch: 100, pan: 0};
     }
 
-    my.defaultBullet = String(parameters['bullet'] || "$Bullets");
+    my.defaultBullet = String(parameters['bullet'] || "EnemyBullets");
     my.defaultExplosion = String(parameters['explosion'] || "$Explosions");
 
     my.resume = String(parameters['resume'] || "Resume");
