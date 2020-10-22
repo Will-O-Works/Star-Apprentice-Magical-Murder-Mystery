@@ -5169,14 +5169,9 @@ var BHell = (function (my) {
                 }
                 TouchInput.clear();
                 //YA extra if condition to allow phases
-                console.log(my.player.PhaseOver);
-                console.log(my.map);
                 if (my.player.PhaseOver === true)
                 {
                     my.player.PhaseOver = false;
-                    console.log("phase Over");
-                    console.log(my.map);
-                    console.log(my.player.nextMap);
                     my.map = my.player.nextMap;
                     $gameSelfSwitches.clear();
                     SceneManager.goto(my.Scene_BHell) 
