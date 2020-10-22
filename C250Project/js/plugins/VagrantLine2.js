@@ -121,7 +121,6 @@ var BHell = (function (my) {
         var frame = 0;
         var animated = false;
         var animationSpeed = 15;
-        var grazed = false;
     
         if (params != null) {
             speed = params.speed || speed;
@@ -160,32 +159,7 @@ var BHell = (function (my) {
      */
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-		
-		
-        this.counter = this.counter +1;
-        // if (seeks === 7)////change to adjust bullet lifespan
-        // {
-        //     console.debug("destroying");
-        //     this.destroy();
-        // }
-		
+		this.counter = this.counter +1;
         if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
             var dx = my.player.x - this.x + this.aimX;
             var dy = my.player.y - this.y + this.aimY;
@@ -193,7 +167,7 @@ var BHell = (function (my) {
             this.spotted = true;
         }
         if (this.spotted === true){
-            if(this.counter>30)////change to adjust pause
+            if(this.counter>65)////change to adjust pause
             {
                 seeks = seeks+1;
                 this.counter = 0;
@@ -210,7 +184,10 @@ var BHell = (function (my) {
             this.outsideMap = true;
         }
     };
-    
+    // Add effects on bullet hit by V.L.
+    BHell_HomingBullet.prototype.hit_effect = function() {
+        my.effects.push(new my.BHell_Hit_Effect(this.x, this.y, this.sprite, this.index, this.parent, my.effects));
+    };
     BHell_HomingBullet.prototype.isOutsideMap = function () {
         return this.outsideMap;
     };
@@ -266,7 +243,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p1.prototype.initializeCoat = function (parent) {
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 10;
+        coatParams.bullet.speed = 7
         coatParams.bullet.index = 0;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
@@ -278,31 +255,53 @@ var BHell = (function (my) {
         //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
-        this.coatEmitters[0].offsetX = 150;
+        this.coatEmitters[0].offsetX = 100;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[1].offsetX = -150;
+        this.coatEmitters[1].offsetX = -100;
         //fine tune aiming here
-        this.coatEmitters[1].aimX = -100;
-        this.coatEmitters[1].alwaysAim = true;
-        coatParams.bullet.speed = 6;
+        this.coatEmitters[1].aimX;
+        this.coatEmitters[1].alwaysAim = false;
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 2;
         coatParams.a = 0;
         coatParams.b = 2 * Math.PI;
         coatParams.n = 10;
         this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[2].offsetX = 150;
-        this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[3].offsetX = -150;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[3].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
+        this.coatEmitters[3].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[3].offsetX = -250;//change to adjust horizontal offset
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[4].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
+        this.coatEmitters[4].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[4].offsetX = 250;//change to adjust horizontal offset
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[5].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
+        this.coatEmitters[5].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[5].offsetX = -220;//change to adjust horizontal offset
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[6].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
+        this.coatEmitters[6].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[6].offsetX = 220;//change to adjust horizontal offset
     };
 
     BHell_Enemy_VagrantLine2_p1.prototype.updateCoat = function() {
-        if (this.frameCounter % 90 == 0){
+        if (this.frameCounter % 125 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
         }
         if (this.frameCounter % 150 == 0){
-            this.coatEmitters[3].shoot(this.coatEmitters,true);
             this.coatEmitters[2].shoot(this.coatEmitters,true);
         }
+        if (this.frameCounter % 8 == 0){
+            this.coatEmitters[3].shoot(this.coatEmitters,true);
+            this.coatEmitters[4].shoot(this.coatEmitters,true);
+            this.coatEmitters[5].shoot(this.coatEmitters,true);
+            this.coatEmitters[6].shoot(this.coatEmitters,true);
+        }
+        
     };
 
     BHell_Enemy_VagrantLine2_p1.prototype.move = function () {
@@ -440,7 +439,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p2.prototype.initializeCoat = function (parent) {
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 10;
+        coatParams.bullet.speed = 7;
         coatParams.bullet.index = 0;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
@@ -449,6 +448,8 @@ var BHell = (function (my) {
         coatParams.aim = true; 
         this.coatEmitters = [];
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.catmax =6;//change to adjust max number of cats
+        this.catcount=0;
         //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
@@ -457,7 +458,10 @@ var BHell = (function (my) {
         this.coatEmitters[1].offsetX = -150;
         //fine tune aiming here
         coatParams.aim = false; 
-        coatParams.bullet.speed = 5;
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 2;
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters[2].angle=Math.PI/2;
@@ -469,12 +473,35 @@ var BHell = (function (my) {
         this.angl1=-(Math.PI/20);
         this.angl2=(Math.PI/20);
         this.flip=false;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[5].angle=Math.PI/2;
+        this.coatEmitters[5].alwaysAim = false;
+        this.coatEmitters[5].offsetX = -300;
+        this.coatEmitters[4].angle=Math.PI/2;
+        this.coatEmitters[4].alwaysAim = false;
+        this.coatEmitters[4].offsetX= 300;
+        this.coatEmitters[6].angle=Math.PI/2;
+        this.coatEmitters[6].alwaysAim = false;
+        this.coatEmitters[6].offsetX = -280;
+        this.coatEmitters[7].angle=Math.PI/2;
+        this.coatEmitters[7].alwaysAim = false;
+        this.coatEmitters[7].offsetX= 280;
     };
 
     BHell_Enemy_VagrantLine2_p2.prototype.updateCoat = function() {
-        if (this.frameCounter % 90 == 0){
+        if (this.frameCounter % 125 == 0&&this.catcount<=this.catmax){
+            this.catcount++;
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
+        }
+        if (this.frameCounter % 10 == 0){
+            this.coatEmitters[4].shoot(this.coatEmitters,true);
+            this.coatEmitters[5].shoot(this.coatEmitters,true);
+            this.coatEmitters[6].shoot(this.coatEmitters,true);
+            this.coatEmitters[7].shoot(this.coatEmitters,true);
         }
         if (this.frameCounter % 10 == 0){
             this.coatEmitters[2].shoot(this.coatEmitters,true);
@@ -629,8 +656,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine2_p3.prototype.initializeCoat = function (parent) {
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 10;
-        coatParams.bullet.index = 0;
+        coatParams.bullet.speed = 7;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
         coatParams.period = 0;
@@ -640,27 +666,45 @@ var BHell = (function (my) {
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
-        this.coatEmitters[0].offsetX = 350;
-        this.coatEmitters[0].offsetY = 250;
+        this.coatEmitters[0].offsetX = 150;
+        this.coatEmitters[0].offsetY = 50;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[1].offsetX = -350;
-        this.coatEmitters[1].offsetY = 250;
+        this.coatEmitters[1].offsetX = -150;
+        this.coatEmitters[1].offsetY = 50;
         this.coatEmitters[1].aimX = -100;
         this.coatEmitters[1].alwaysAim = true;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[2].offsetY = -150;
-        this.coatEmitters[2].offsetX = -350;
+        this.coatEmitters[2].offsetY = -50;
+        this.coatEmitters[2].offsetX = -150;
         this.coatEmitters[2].aimX = -100;
         this.coatEmitters[2].alwaysAim = true;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[3].offsetY = -150;
-        this.coatEmitters[3].offsetX = 350;
+        this.coatEmitters[3].offsetY = -50;
+        this.coatEmitters[3].offsetX = 150;
         this.coatEmitters[3].aimX = -100;
         this.coatEmitters[3].alwaysAim = true;
-        coatParams.bullet.speed = 6;
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 2;
+        coatParams.alwaysAim = true;
+        coatParams.aim = true; 
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[4].aimX = -100;
+        this.coatEmitters[4].offsetX=-180;
+        this.coatEmitters[4].aimX = -300;
         this.coatEmitters[4].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[5].offsetX=180;
+        this.coatEmitters[5].aimX = 300;
+        this.coatEmitters[5].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[6].offsetX=-220;
+        this.coatEmitters[6].aimX = -340;
+        this.coatEmitters[6].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[7].offsetX=220;
+        this.coatEmitters[7].aimX = 340;
+        this.coatEmitters[7].alwaysAim = true;
         coatParams.a = 0;//a: Arc's initial angle (in radians),
         coatParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
         coatParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
@@ -668,7 +712,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantLine2_p3.prototype.updateCoat = function() {
-        if (this.frameCounter % 100 == 0){
+        if (this.frameCounter % 200 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
             this.coatEmitters[2].shoot(this.coatEmitters,true);
@@ -676,9 +720,12 @@ var BHell = (function (my) {
         }
         if (this.frameCounter % 15 == 0){
             this.coatEmitters[4].shoot(this.coatEmitters,true);
-        } 
-        if (this.frameCounter % 120 == 0){
             this.coatEmitters[5].shoot(this.coatEmitters,true);
+            this.coatEmitters[6].shoot(this.coatEmitters,true);
+            this.coatEmitters[7].shoot(this.coatEmitters,true);
+        } 
+        if (this.frameCounter % 160 == 0){
+            this.coatEmitters[8].shoot(this.coatEmitters,true);
         }
     };
 
