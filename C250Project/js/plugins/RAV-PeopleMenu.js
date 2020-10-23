@@ -1,29 +1,40 @@
-var miscPortraitBitmap = Bitmap.load("/img/faces/Misc_Portrait.png");
+var miscPortraitBitmap = ImageManager.loadFace("Misc_Portrait");
 var miscPortrait = new Sprite(miscPortraitBitmap);
-var starApprenticePortraitBitmap = Bitmap.load("/img/faces/StarApprentice_Portrait.png");
+var starApprenticePortraitBitmap = ImageManager.loadFace("StarApprentice_Portrait");
 var starApprenticePortrait = new Sprite(starApprenticePortraitBitmap);
-var detectivePortraitBitmap = Bitmap.load("/img/faces/Detective_Portrait.png");
+var detectivePortraitBitmap = ImageManager.loadFace("Detective_Portrait");
 var detectivePortrait = new Sprite(detectivePortraitBitmap);
-var fanPortraitBitmap = Bitmap.load("/img/faces/Fan_Portrait.png");
+var fanPortraitBitmap = ImageManager.loadFace("Fan_Portrait");
 var fanPortrait = new Sprite(fanPortraitBitmap);
-var vagrantPortraitBitmap = Bitmap.load("/img/faces/Vagrant_Portrait.png");
+var vagrantPortraitBitmap = ImageManager.loadFace("Vagrant_Portrait");
 var vagrantPortrait = new Sprite(vagrantPortraitBitmap);
-var blackPortraitBitmap = Bitmap.load("/img/faces/Black_Portrait.png");
+var blackPortraitBitmap = ImageManager.loadFace("Black_Portrait");
 var blackPortrait = new Sprite(blackPortraitBitmap);
-var whitePortraitBitmap = Bitmap.load("/img/faces/White_Portrait.png");
+var whitePortraitBitmap = ImageManager.loadFace("White_Portrait");
 var whitePortrait = new Sprite(whitePortraitBitmap);
-var tycoonPortraitBitmap = Bitmap.load("/img/faces/Tycoon_Portrait.png");
+var tycoonPortraitBitmap = ImageManager.loadFace("Tycoon_Portrait");
 var tycoonPortrait = new Sprite(tycoonPortraitBitmap);
-var blankCharacterBitmap = Bitmap.load("/img/pictures/Blank_Character.png");
-var selectedCharacterBitmap = Bitmap.load("/img/pictures/Selected_Character.png");
+var blankCharacterBitmap = ImageManager.loadPicture("Blank_Character");
+var selectedCharacterBitmap = ImageManager.loadPicture("Selected_Character");
 var selectedCharacter = new Sprite(selectedCharacterBitmap);
-var leftArrowBitmap = Bitmap.load("/img/pictures/Left_Arrow.png");
+var leftArrowBitmap = ImageManager.loadPicture("Left_Arrow");
 var leftArrow = new Sprite(leftArrowBitmap);
-var rightArrowBitmap = Bitmap.load("/img/pictures/Right_Arrow.png");
+var rightArrowBitmap = ImageManager.loadPicture("Right_Arrow");
 var rightArrow = new Sprite(rightArrowBitmap);
+var upArrowBitmap = ImageManager.loadPicture("Up_Arrow");
+var upArrow = new Sprite(upArrowBitmap);
+var downArrowBitmap = ImageManager.loadPicture("Down_Arrow");
+var downArrow = new Sprite(downArrowBitmap);
 var selectionBuffer = 70;
 var selectionY = 12;
 var arrowY = 56;
+var v_arrowY = 488;
+var upArrowX = 98;
+var downArrowX = 500;
+var v_arrowTime = 6;
+var v_arrowMove = 4;
+var upArrowTimer = 0;
+var downArrowTimer = 0;
 var leftArrowX = 28;
 var rightArrowX = 560;
 var arrowTime = 6;
@@ -34,11 +45,11 @@ var p_unravelled = false;
 var p_unravelled_timer = 0;
 var p_unravelled_timer_length = 21;
 var peopleBGAnimFrames = 7;
-var peopleBGBitmap = Bitmap.load("/img/pictures/People_BG.png");
+var peopleBGBitmap = ImageManager.loadPicture("People_BG");
 var peopleBG = new Sprite(peopleBGBitmap);
 var p_timerInterval = (peopleBGAnimFrames - 1)/(p_unravelled_timer_length);
 var character = 0;
-const characters = {
+const char = {
     NONE: 0,
     STARAPPRENTICE: 1,
     DETECTIVE: 2,
@@ -48,26 +59,8 @@ const characters = {
     WHITE: 6,
     TYCOON: 7
 };
-var characterNames = [
-    "???",
-    "Star Apprentice",
-    "Detective",
-    "Fan",
-    "Vagrant",
-    "Black",
-    "White",
-    "Tycoon"
-];
-var characterTexts = [
-    "???",
-    "This is you!",
-    ":(",
-    "Weird!",
-    "Cool!",
-    "Edgy!",
-    "Nice!",
-    "Rich!"
-];
+var characterNames = ["???", "???", "???", "???", "???", "???", "???", "???"];
+var characterTexts = ["???", "???", "???", "???", "???", "???", "???", "???"];
 var characterPortraits = [
     miscPortrait,
     starApprenticePortrait,
@@ -78,22 +71,226 @@ var characterPortraits = [
     whitePortrait,
     tycoonPortrait
 ];
-var characterUnlocked = [
-    true,
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-];
+var characterLevels = [0,0,0,0,0,0,0,0];
 var characterSelections = [0,0,0,0,0,0,0,0];
 var characterName = characterNames[character];
 var characterText = characterTexts[character];
+var characterLevel = characterLevels[character];
 var characterPortrait = characterPortraits[character];
 var charactersAmount = characterPortraits.length;
+var startingLine = 0;
+var scrollableUp = false;
+var scrollableDown = false;
+
+function Character_Data() {
+    this.initialize.apply(this, arguments);
+}
+
+Character_Data.Names = function(character, level) {
+    switch (character) {
+        case char.STARAPPRENTICE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Minnie";
+                    break;
+                default: 
+                    return this.Names(character, 1);
+                    break;
+            }
+            break;
+        case char.DETECTIVE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Detective"
+                    break;
+                case 2:
+                    return "Maxwell Lasnam";
+                    break;
+                default: 
+                    return this.Names(character, 2);
+                    break;
+            }
+            break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Charlotte"
+                    break;
+                default: 
+                    return this.Names(character, 1);
+                    break;
+            }
+            break;
+        case char.VAGRANT:
+            switch (level) {
+                case 0:
+                    return "???";
+                case 1:
+                case 2:
+                case 3:
+                    return "Cat Lady";
+                    break;
+                case 4:
+                    return "Roxanne";
+                    break;
+                default:
+                    return this.Names(character, 4);
+                    break;
+            }
+            break;
+        case char.BLACK:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                default: 
+                    return this.Names(character, 0);
+                    break;
+            }
+            break;
+        case char.WHITE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                default: 
+                    return this.Names(character, 0);
+                    break;
+            }
+            break;
+        case char.TYCOON:
+            switch (level) {
+                case 0:
+                    return "???";
+                case 1:
+                    return "Victoria";
+                    break;
+                default: 
+                    return this.Names(character, 0);
+                    break;
+            }
+            break;
+    }
+}
+
+Character_Data.Texts = function(character, level) {
+    switch (character) {
+        case char.STARAPPRENTICE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return " ★ This is me!";
+                    break;
+                default: 
+                    return this.Texts(character, 1);
+                    break;
+            }
+            break;
+        case char.DETECTIVE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return " ★ An esteemed detective, my boss, and mentor. A good mind and a better friend.\n - Has been acting strange lately. There's something he's not telling me."
+                    break;
+                case 2:
+                    return this.Texts(character, 1) + "\n ★ He's been the victim of a heinous crime! I must find whoever did this!";
+                    break;
+                default: 
+                    return this.Texts(character, 2);
+                    break;
+            }
+            break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Weird!"
+                    break;
+                default: 
+                    return this.Texts(character, 1);
+                    break;
+            }
+            break;
+        case char.VAGRANT:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return " ★ Has lost her cat, but I'm \n     going to find it.";
+                    break;
+                case 2:
+                    return this.Texts(character, 1) + "\n ★ The cat, Snowy, has been \n     found!";
+                    break;
+                case 3:
+                    return this.Texts(character, 2) + "\n ★ Has some kind of history with the Detective."
+                    break;
+                case 4:
+                    return this.Texts(character, 3) + "\n ★ Roxie was an informant for \n     the Detective. She won't give \n     me details, but the two of \n     them came onto the train to \n     investigate something."
+                    break;
+                case 5:
+                    return this.Texts(character, 4) + "\n ★ Whoever they were \n     investigating and the \n     murderer are on this train, \n     and they're in first class \n     with us."
+                    break;
+                default: 
+                    return this.Texts(character, 5);
+                    break;
+            }
+            break;
+        case char.BLACK:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                default: 
+                    return this.Texts(character, 0);
+                    break;
+            }
+            break;
+        case char.WHITE:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                default: 
+                    return this.Texts(character, 0);
+                    break;
+            }
+            break;
+        case char.TYCOON:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                default: 
+                    return this.Texts(character, 0);
+                    break;
+            }
+            break;
+    }
+}
+
+Character_Data.changeLevel = function(character, level, force=false) {
+    if (level > characterLevels[character] || force) {
+        characterLevels[character] = level;
+        characterNames[character] = this.Names(character, level);
+        characterTexts[character] = this.Texts(character, level);
+    }
+}
 
 function Scene_People() {
     this.initialize.apply(this, arguments);
@@ -106,10 +303,10 @@ Scene_People.prototype.initialize = function() {
     Scene_MenuBase.prototype.initialize.call(this);
 };
 
-Scene_People.change_char = function (char) {
+Scene_People.changeChar = function (char) {
     // Sets the character
     character = char;
-    if (!characterUnlocked[char]) {
+    if (characterLevels[character] == 0) {
         characterPortrait = characterPortraits[0];
     } else {
         characterPortrait = characterPortraits[char];
@@ -125,7 +322,12 @@ Scene_People.prototype.create = function () {
     characterSelections = [0,0,0,0,0,0,0,0];
     leftArrowTimer = 0;
     rightArrowTimer = 0;
-    Scene_People.change_char(0);
+    upArrowTimer = 0;
+    downArrowTimer = 0;
+    startingLine = 0;
+    scrollableUp = false;
+    scrollableDown = false;
+    Scene_People.changeChar(0);
     this._init = false;
     Scene_MenuBase.prototype.create.call(this);
     this._peopleWindow = new Window_People(0, 0, 960, 540);
@@ -140,7 +342,7 @@ Scene_People.prototype.create = function () {
 Scene_People.prototype.update = function () {
     if (p_unravelled) {
         if (!this._init) {
-            Scene_People.change_char(1);
+            Scene_People.changeChar(1);
             this._peopleWindow.drawAllItems();
             this._titleWindow.drawAllItems();
             this._textWindow.drawAllItems();
@@ -160,11 +362,16 @@ Scene_People.prototype.update = function () {
             rightArrowImage = this.addChild(rightArrow);
             rightArrowImage.x = rightArrowX;
             rightArrowImage.y = arrowY;
+            upArrowImage = this.addChild(upArrow);
+            upArrowImage.y = v_arrowY;
+            upArrowImage.x = -100;
+            downArrowImage = this.addChild(downArrow);
+            downArrowImage.y = v_arrowY;
+            downArrowImage.x = -100
             this._init = true;
         } else {
             var mouseX = TouchInput._x;
             var mouseY = TouchInput._y;
-            console.log(mouseY);
             var mouseXOnLeftButton = mouseX >= leftArrowImage.x && mouseX <= leftArrowImage.x + leftArrowImage.width;
             var mouseYOnLeftButton = mouseY >= leftArrowImage.y && mouseY <= leftArrowImage.y + leftArrowImage.height;
             var mouseOnLeftButton = mouseXOnLeftButton && mouseYOnLeftButton;
@@ -172,6 +379,9 @@ Scene_People.prototype.update = function () {
             var mouseYOnRightButton = mouseY >= rightArrowImage.y && mouseY <= rightArrowImage.y + rightArrowImage.height;
             var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
             if (Input.isTriggered("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
+                startingLine = 0;
+                scrollableUp = false;
+                scrollableDown = false;
                 rightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it;
                 AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
                 this._peopleWindow.removeChild(portraitImage);
@@ -180,11 +390,14 @@ Scene_People.prototype.update = function () {
                 } else {
                    character++;
                 }
-                Scene_People.change_char(character);
+                Scene_People.changeChar(character);
                 this._peopleWindow.drawAllItems();
                 this._titleWindow.drawAllItems();
                 this._textWindow.drawAllItems();
             } else if (Input.isTriggered("left") || (TouchInput.isTriggered() && mouseOnLeftButton)) {
+                startingLine = 0;
+                scrollableUp = false;
+                scrollableDown = false;
                 leftArrowTimer = arrowTime + 1;
                 AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
                 this._peopleWindow.removeChild(portraitImage);
@@ -193,7 +406,7 @@ Scene_People.prototype.update = function () {
                 } else {
                     character--;
                 }
-                Scene_People.change_char(character);
+                Scene_People.changeChar(character);
                 this._peopleWindow.drawAllItems();
                 this._titleWindow.drawAllItems();
                 this._textWindow.drawAllItems();
@@ -211,6 +424,44 @@ Scene_People.prototype.update = function () {
                     rightArrowImage.setTransform(rightArrowX, arrowY);
                 }
                 rightArrowTimer--;
+            }
+
+            if (scrollableDown && Input.isTriggered("down")) {
+                startingLine++;
+                downArrowTimer = v_arrowTime + 1;
+                this._textWindow.drawAllItems();
+                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+            } else if (scrollableUp && Input.isTriggered("up")) {
+                startingLine--;
+                upArrowTimer = v_arrowTime + 1;
+                this._textWindow.drawAllItems();
+                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+            }
+
+            if (downArrowTimer > 0) {
+                downArrowImage.setTransform(downArrowX, v_arrowY + arrowMove);
+                if (downArrowTimer == 1) {
+                    downArrowImage.setTransform(downArrowX, v_arrowY);
+                }
+                downArrowTimer--;
+            }
+            if (upArrowTimer > 0) {
+                upArrowImage.setTransform(upArrowX, v_arrowY - arrowMove);
+                if (upArrowTimer == 1) {
+                    upArrowImage.setTransform(upArrowX, v_arrowY);
+                }
+                upArrowTimer--;
+            }
+
+            if (!scrollableDown && downArrowTimer === 0) {
+                downArrowImage.x = -100;
+            } else {
+                downArrowImage.x = downArrowX;
+            }
+            if (!scrollableUp && upArrowTimer === 0) {
+                upArrowImage.x = -100;
+            } else {
+                upArrowImage.x = upArrowX;
             }
         }
     } else {
@@ -253,7 +504,7 @@ Window_Title.prototype.initialize = function (x, y, width, height) {
 
 Window_Title.prototype.drawAllItems = function () {
     this.contents.clear();
-    this.drawText(characterUnlocked[character] ? characterNames[character] : characterNames[0], 0, 150, 596, "center");
+    this.drawText(characterNames[character], 0, 150, 596, "center");
 }
 
 function Window_Text() {
@@ -269,5 +520,24 @@ Window_Text.prototype.initialize = function (x, y, width, height) {
 
 Window_Text.prototype.drawAllItems = function () {
     this.contents.clear();
-    this.drawText(characterUnlocked[character] ? characterTexts[character] : characterTexts[0], 56, 223);
+    var texts = characterTexts[character].split("\n");
+    var lineHeight = 30;
+    var maxLines = 8;
+    if (texts.length > 8) {
+        if (startingLine + maxLines < texts.length) {
+            scrollableDown = true;
+        } else {
+            scrollableDown = false;
+        }
+        if (startingLine > 0) {
+            scrollableUp = true;
+        } else {
+            scrollableUp = false;
+        }
+        texts = texts.slice(startingLine, startingLine + maxLines);
+        
+    }
+    for (i = 0; i < texts.length; i++) {
+        this.drawText(texts[i], 56, 223 + (lineHeight * i) );
+    }
 }

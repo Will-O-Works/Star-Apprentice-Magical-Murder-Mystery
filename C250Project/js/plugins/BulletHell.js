@@ -213,7 +213,7 @@ var $gameBHellResult;
 /**
  * @namespace BHell
  */
-var messageBGBitmap = Bitmap.load("/img/pictures/TextBG.png");
+var messageBGBitmap = ImageManager.loadPicture("TextBG");
 var messageBGSprite = new Sprite(messageBGBitmap);
 var pauseTimer = 0;
 var pauseTimerMax = 21;
@@ -4234,7 +4234,10 @@ var BHell = (function (my) {
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
-        this.currentTestimony = 0;
+        if ($gameVariables.value(11) >= 4) {
+            this.currentLine = 5;
+        }
+        this.currentLine = 0;
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -5342,7 +5345,7 @@ var BHell = (function (my) {
         // Testimony ravyn
         t_frame_width = 132;
         t_frame_height = 44;
-        t_sx = t_frame_width * my.player.currentTestimony; 
+        t_sx = t_frame_width * my.player.currentLine; 
         t_sy = 0; 
         t_w = t_frame_width;
         t_h = t_frame_height;

@@ -145,7 +145,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine1_p2.prototype.constructor = BHell_Enemy_VagrantLine1_p2;
 
 	BHell_Enemy_VagrantLine1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentTestimony = 1;
+        my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 408; // hitbox width
@@ -309,7 +309,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantLine1_p3.prototype.constructor = BHell_Enemy_VagrantLine1_p3;
 
 	BHell_Enemy_VagrantLine1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentTestimony = 2;
+        my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 306; // hitbox width

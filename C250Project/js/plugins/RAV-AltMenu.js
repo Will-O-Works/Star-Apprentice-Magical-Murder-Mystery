@@ -6,16 +6,15 @@
  * @requiredAssets img/pictures/Evidence_BG.png
  * @requiredAssets img/pictures/BG.png
  */ 
-
-var menuBGBitmap = Bitmap.load("/img/pictures/Menu_BG.png");
+var menuBGBitmap = ImageManager.loadPicture("Menu_BG");
 var menuBGSprite = new Sprite(menuBGBitmap);
-var evidenceBGBitmap = Bitmap.load("/img/pictures/Evidence_BG.png");
+var evidenceBGBitmap = ImageManager.loadPicture("Evidence_BG");
 var evidenceBGSprite = new Sprite(evidenceBGBitmap);
-var optionsBGBitmap = Bitmap.load("/img/pictures/Options_BG.png");
+var optionsBGBitmap = ImageManager.loadPicture("Options_BG");
 var optionsBGSprite = new Sprite(optionsBGBitmap);
-var saveBGBitmap = Bitmap.load("/img/pictures/Save_BG.png");
+var saveBGBitmap = ImageManager.loadPicture("Save_BG");
 var saveBGSprite = new Sprite(saveBGBitmap);
-var itemBGBitmap = Bitmap.load("/img/pictures/BG.png");
+var itemBGBitmap = ImageManager.loadPicture("BG");
 var itemBGSprite = new Sprite(itemBGBitmap);
 var unravelled_timer_length = 15;
 var menuBGAnimFrames = 5;
@@ -333,6 +332,9 @@ Scene_Item.prototype.create = function() {
     e_unravelled = false;
     e_unravelled_timer = 0;
     _Scene_Item_create.call(this);
+    // Makes a window that cuts off the bottom of the items
+    this.blockingWindow = new Window_ItemList(0, 502, 960, 38);
+    this.addWindow(this.blockingWindow);
 };
 
 // Item force sprite
@@ -341,6 +343,12 @@ var _Scene_Item_createWindowLayer = Scene_Item.prototype.createWindowLayer;
 Scene_Item.prototype.createWindowLayer = function() {
     evidenceBGSpriteImage = this.addChild(evidenceBGSprite);
     _Scene_Item_createWindowLayer.call(this);
+};
+
+Window_ItemList.prototype.initialize = function(x, y, width, height) {
+    Window_Selectable.prototype.initialize.call(this, x, y, width, height + 100);
+    this._category = 'none';
+    this._data = [];
 };
 
 // Item make the cursor invisible if not unravelled yet
@@ -356,12 +364,20 @@ Window_ItemList.prototype.itemRect = function(index) {
     return rect;
 };
 
+Window_ItemList.prototype.maxTopRow = function() {
+    return Math.max(0, this.maxRows() - this.maxPageRows() + 1);
+};
+
 Window_ItemList.prototype._updateCursor = function() {
     _Window_ItemList_updateCursor.call(this);
     if (typeof e_unravelled == "boolean") {
         if (!e_unravelled) {
             this._windowCursorSprite.alpha = 0;
         }
+    }
+    var row = this.row();
+    if (row == this.bottomRow()) {
+        this.setTopRow(row - 1);
     }
 };
 
@@ -476,7 +492,7 @@ Window_MenuActor.prototype.update = function(index) {
     _Window_MenuActor_update.call(this);
     if (!itemImageInit) {
         var selectedItemName = selected_item.name.replace("\\n", "");
-        selectedItemBitmap = Bitmap.load("/img/faces/" + selectedItemName + ".png");
+        selectedItemBitmap = ImageManager.loadFace(selectedItemName);
         selectedItemSprite = new Sprite(selectedItemBitmap);
         selectedItem = this.addChild(selectedItemSprite);
         // The added values center it
