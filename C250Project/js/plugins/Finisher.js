@@ -68,6 +68,7 @@ var BHell = (function (my) {
 
 	BHell_Enemy_Finisher.prototype.initialize = function(x, y, image, params, parent, enemyList) {
 		
+        my.player.currentTestimony = 3;
 		// start the finisher stage
 		my.player.finisher_start = true; 
 		

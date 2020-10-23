@@ -29,8 +29,8 @@ var s_timerInterval = (s_menuBGAnimFrames - 1)/(s_unravelled_timer_length);
 var e_unravelled_timer_length = 24;
 var e_menuBGAnimFrames = 8;
 var e_timerInterval = (e_menuBGAnimFrames - 1)/(e_unravelled_timer_length);
-var evidenceWidth = 270
-var evidenceItemSize = 64;
+var evidenceWidth = 406;
+var evidenceItemSize = 156;
 var evidenceOffset = 56;
 var saveOffset = 56;
 var current_title = "Star Apprentice";
@@ -75,6 +75,9 @@ Window_Options.prototype.playOkSound = function() {
     SoundManager.playOk();
 };
 
+Window_ItemList.prototype.playOkSound = function() {
+    SoundManager.playOk();
+};
 
 Window_ChoiceList.prototype.playOkSound = function() {
     if ($gameMessage.choices().length == 2) {
@@ -363,11 +366,11 @@ Window_ItemList.prototype._updateCursor = function() {
 };
 
 Window_ItemList.prototype.maxCols = function() {
-    return 3;
+    return 2;
 };
 
 Window_ItemList.prototype.itemHeight = function() {
-    return 64;
+    return 156;
 };
 
 Window_ItemList.prototype.spacing = function() {
@@ -386,7 +389,7 @@ Window_ItemList.prototype.drawItem = function(index) {
         var rect = this.itemRect(index);
         rect.width -= this.textPadding();
         this.changePaintOpacity(this.isEnabled(item));
-        this.drawItemName(item, rect.x + evidenceItemSize - 66, rect.y, rect.width - numberWidth);
+        this.drawItemName(item, rect.x - 2, rect.y, rect.width - numberWidth);
         this.changePaintOpacity(1);
     }
 };
@@ -396,12 +399,15 @@ Window_ItemList.prototype.drawItemName = function(item, x, y, width) {
     if (item) {
         var item_name = "";
         var item_name_2 = "";
-        var cutOffIndex = 13;
+        var cutOffIndex = 15;
         var iconBoxWidth = Window_Base._iconWidth + 4;
         this.resetTextColor();
         this.drawIcon(item.iconIndex, x + 2, y);
         var item_width = this.contents.measureTextWidth(item.name);
-        if (item_width > evidenceWidth - evidenceItemSize) {
+        if (item.name.includes("\\n")) {
+            item_name = item.name.split("\\n")[0];
+            item_name_2 = item.name.split("\\n")[1];
+        } else if (item_width > evidenceWidth - evidenceItemSize) {
             item_name = item.name.substr(0, cutOffIndex);
             item_name_2 = item.name.substr(cutOffIndex);
         } else {
@@ -451,7 +457,7 @@ Window_ItemList.prototype.processOk = function () {
         Window_Selectable.prototype.processOk.call(this);
         itemImageInit = false;
     } else if (e_unravelled) {
-        this.callCancelHandler();
+        this.processCancel();
     }
 }
 
@@ -469,12 +475,14 @@ var _Window_MenuActor_update = Window_MenuActor.prototype.update;
 Window_MenuActor.prototype.update = function(index) {
     _Window_MenuActor_update.call(this);
     if (!itemImageInit) {
-        selectedItemBitmap = Bitmap.load("/img/faces/" + selected_item.name + ".png");
+        var selectedItemName = selected_item.name.replace("\\n", "");
+        selectedItemBitmap = Bitmap.load("/img/faces/" + selectedItemName + ".png");
         selectedItemSprite = new Sprite(selectedItemBitmap);
         selectedItem = this.addChild(selectedItemSprite);
-        selectedItem.x = itemReadX;
-        selectedItem.y = itemReadY;
-        this.drawText(selected_item.name, textDescX, textDescY);
+        // The added values center it
+        selectedItem.x = itemReadX + 72;
+        selectedItem.y = itemReadY + 86;
+        this.drawText(selectedItemName, textDescX, textDescY);
         var tempDesc = selected_item.description.split(/\n|\\n/);
         for (i = 0; i < tempDesc.length; i++) {
             this.drawText(tempDesc[i], textDescX, textDescY + this.lineHeight() * (2 + i));
@@ -500,5 +508,14 @@ Window_MenuActor.prototype._updateCursor = function(index) {
 Window_MenuActor.prototype.processCancel = function () {
     selectedItem.destroy();
     this.contents.clear();
-    Window_Selectable.prototype.processCancel.call(this);
+    SoundManager.playCancel();
+    this.updateInputData();
+    this.deactivate();
+    this.callCancelHandler();
 }
+
+Window_MenuActor.prototype.processOk = function() {
+    if (this.isCurrentItemEnabled()) {
+        this.processCancel();
+    }
+};

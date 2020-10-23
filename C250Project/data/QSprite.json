@@ -521,7 +521,7 @@
     "rows": 1,
     "anchorX": 0.5,
     "anchorY": 0.96,
-    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorHorizontal.png",
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorHorizontal-OW.png",
     "poses": {
       "default": {
         "name": "default",
@@ -575,6 +575,184 @@
       },
       "idle6": {
         "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BGTopStrip": {
+    "name": "BGTopStrip",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.025,
+    "anchorY": 1.77,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBGTopStrip-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Satchels": {
+    "name": "Satchels",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.525,
+    "anchorY": 1.67,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSatchels-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "WineBottle": {
+    "name": "WineBottle",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": -0.9,
+    "anchorY": 2.27,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWineBottle-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          1
+        ]
+      }
+    }
+  },
+  "WineGlass": {
+    "name": "WineGlass",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": -0.8,
+    "anchorY": -0.02,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWineGlass-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Body": {
+    "name": "Body",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.9,
+    "anchorY": 1.15,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBody-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BloodTrail": {
+    "name": "BloodTrail",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 1,
+    "anchorY": 1.2,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBloodTrail-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "DoorOpen": {
+    "name": "DoorOpen",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorOpen-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "WineGlasses": {
+    "name": "WineGlasses",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.05,
+    "anchorY": 2.4,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWineGlasses-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "WineBottleSpilled": {
+    "name": "WineBottleSpilled",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": -0.7,
+    "anchorY": 0.25,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWineBottleSpilled-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
         "speed": 10,
         "adjust": false,
         "pattern": [

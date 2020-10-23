@@ -227,16 +227,13 @@ var gameScreenDestroyed = true;
 var textLengths = [];
 var currentTextSoundDelay = 0;
 var maxTextSoundDelay = 20;
+var myInterpreter = new Game_Interpreter();
 
 var BHell = (function (my) {
 
     var parameters = PluginManager.parameters('BulletHell');
     var BHellJSON = String(parameters['config'] || "BulletHell.json");
 
-    my.initBgm = null;
-    if (String(parameters['init_bgm']) !== "null") {
-        my.initBgm = {name: String(parameters['init_bgm']), volume: 90, pitch: 100, pan: 0};
-    }
     my.victoryMe = null;
     if (String(parameters['victory_me']) !== "null") {
         my.victoryMe = {name: String(parameters['victory_me']), volume: 90, pitch: 100, pan: 0};
@@ -1328,20 +1325,6 @@ var BHell = (function (my) {
                     if (g.y >= this.stageY) {
                         this.activeGenerators.push(g);
 
-                        // If the BGM needs to be changed, save the old one and play the new one.
-                        if (g.bossBgm !== null) {
-                            if (g.resumeBgm) {
-                                my.prevBossBgm = AudioManager.saveBgm();
-                            }
-
-                            my.bgm = my.bgm || {"name": "", "pan": 0, "pitch": 100, "volume": 90};
-                            my.bgm.name = g.bossBgm;
-
-                            AudioManager.fadeOutBgm(1);
-                            AudioManager.playBgm(my.bgm);
-                            AudioManager.fadeInBgm(1);
-                        }
-
                         // If the warning sign needs to be displayed, pause the generators and show it.
                         if (g.bossGenerator && !g.suppressWarning) {
                             my.displayWarning = true;
@@ -1389,19 +1372,6 @@ var BHell = (function (my) {
                             if (g.sync === false || this.enemies.length === 0) {
                                 this.activeGenerators.splice(this.activeGenerators.indexOf(g), 1);
                                 i--;
-
-                                // If the BGM needs to be restored to the previous one, do it.
-                                if (g.bossBgm !== null && g.resumeBgm) {
-                                    if (my.prevBossBgm.name !== "") {
-                                        my.bgm = my.prevBossBgm;
-                                        AudioManager.fadeOutBgm(1);
-                                        AudioManager.playBgm(my.bgm);
-                                        AudioManager.fadeInBgm(1);
-                                    }
-                                    else {
-                                        AudioManager.fadeOutBgm(1);
-                                    }
-                                }
                             }
                         }
                     }
@@ -2528,7 +2498,6 @@ BHell_Enemy_Base.prototype.update = function () {
 	if (my.player.false_bomb == true && this.bombedWrong == false) {
 		this.bombedWrong = true; 
 		this.hp = this.full_hp; 
-		console.log("boss hp restored! ");
 	}
 
 	if (this.dying == true) {  // Increase timer if the boss is dying by V.L. 10/11/2020
@@ -3507,16 +3476,6 @@ BHell_Generator.prototype.initialize = function (x, y, image, name, n, period, s
 
     this.bossGenerator = this.params.boss || false;
     this.suppressWarning = this.params.suppress_warning || false;
-
-
-    this.bossBgm = this.params.boss_bgm || null;
-
-    if (this.params.resume_bgm === false || this.params.resume_bgm === "false") {
-        this.resumeBgm = false;
-    }
-    else {
-        this.resumeBgm = true;
-    }
 };
 
 /**
@@ -4271,14 +4230,11 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = -1; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
-        testimonies = [3, 6, 8, 9];
-        if ($gameMap._mapId in testimonies) {
-            this.currentTestimony = testimonies.indexOf(my.map);
-        }
+        this.currentTestimony = 0;
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -4379,9 +4335,7 @@ var BHell = (function (my) {
      */
     BHell_Player.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		
-		console.log(this.can_bomb); 
-		
+
         this.move();
         if (this.bomb != null) {
             this.bomb.update();
@@ -4515,7 +4469,7 @@ var BHell = (function (my) {
 			} else if (this.bombed == false) {
                     messageStarted = true;
                     messageTimer = 0;
-                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I have to find the contradiction in their words. "); 
+                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]I have to find the contradiction in their\n words. "); 
                     $gameMessage.newPage(); 
                     $gameMessage.add("I should keep looking. "); 
                     SceneManager.goto(my.Scene_BHell_Init); 
@@ -4649,13 +4603,6 @@ var BHell = (function (my) {
             this.won = true;
 			
             $gameSwitches.setValue(23, true);
-            if (this.victory_se != null) {
-                //AudioManager.playSe(this.victory_se);
-            }
-
-            if (my.victoryMe != null) {
-                //AudioManager.playMe(my.victoryMe);
-            }
         }
     };
 
@@ -4805,9 +4752,6 @@ Scene_BHell_Init.prototype.create = function() {
 Scene_BHell_Init.prototype.start = function() {
     Scene_Base.prototype.start.call(this);
     SceneManager.clearStack();
-
-    my.prevBgm = AudioManager.saveBgm();
-    my.prevBgs = AudioManager.saveBgs();
 };
 
 /**
@@ -5053,19 +4997,12 @@ var BHell = (function (my) {
         my.stage._displayX = 0;
         my.stage._displayY = my.stage.height() - my.stage.screenTileY();
         my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
+        my.discussionMap = 12;
 
         this._spriteset = new my.BHell_Spriteset();
         this.addChild(this._spriteset);
 
         my.controller = new my.BHell_Controller(my.stage, my.playerId, 3, this._spriteset._tilemap);
-
-        if ($dataMap.autoplayBgm) {
-            my.bgm = $dataMap.bgm;
-            AudioManager.playBgm(my.bgm);
-        }
-        if ($dataMap.autoplayBgs) {
-            AudioManager.playBgs($dataMap.bgs);
-        }
 
         this.createHUD();
         this.createWindows();
@@ -5086,6 +5023,13 @@ var BHell = (function (my) {
      * otherwise it terminates the minigame, returning to Scene_Map.
      */
     Scene_BHell.prototype.update = function () {
+
+        var bgm = AudioManager.saveBgm()
+        if (bgm.name === "vagrant_fight_intro" && bgm.pos >= 12.79) {
+            AudioManager.playVariableBgm(0, 0);
+            myInterpreter.pluginCommand('LoadVariableMixBGM', ['vagrant_fight2']);
+        }
+        
 
         if ($gameMessage.isBusy() && typeof this.messageWindow == "object") {
             //
@@ -5159,29 +5103,20 @@ var BHell = (function (my) {
                 if (my.bulletsHit + my.bulletsLost > 0) {
                     $gameBHellResult.hitRatio = my.bulletsHit / (my.bulletsHit + my.bulletsLost) * 100;
                 }
-                if (my.prevBgm != null) {
-                    AudioManager.replayBgm(my.prevBgm);
-                }
-                if (my.prevBgs != null) {
-                    AudioManager.replayBgs(my.prevBgs);
-                }
                 TouchInput.clear();
                 //YA extra if condition to allow phases
-                if (my.player.PhaseOver === true)
-                {
+                //ravyn adjusted to go to invetween areas
+                if (my.player.PhaseOver === true) {
                     my.player.PhaseOver = false;
-                    my.map = my.player.nextMap;
-                    $gameSelfSwitches.clear();
-                    SceneManager.goto(my.Scene_BHell) 
+                    $gameVariables.setValue(10, my.player.nextMap)
+                    $gameMap._mapId = 12;
+                } else {
+                    $gameMap._mapId = $gameVariables.value(12);
                 }
-                else
-                {
-                    $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
-                    $gamePlayer.requestMapReload();
-                    $gameSelfSwitches.clear();
-                    SceneManager.goto(Scene_Map);
-                }
-                
+                $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
+                $gameSelfSwitches.clear();
+                $gamePlayer.requestMapReload();
+                SceneManager.goto(Scene_Map);
             }
         }
         Scene_Base.prototype.update.call(this);
@@ -5213,6 +5148,7 @@ var BHell = (function (my) {
     Scene_BHell.prototype.pause = function () {
         if (!my.controller.paused) {
             my.controller.paused = true;
+            AudioManager.playSe({"name": "journal_open", "pan": 0, "pitch": 100, "volume": 90});
             this.pauseWindow.open();
             this.pauseWindow.activate();
         }
@@ -5387,7 +5323,6 @@ var BHell = (function (my) {
 		}
 		
 		if (my.player.bombed == true && my.player.h_index < 23) {
-			console.log("heavy! ");
 			
 			// Heavy Attack image V.L. 10/20/2020 
 			sx = this.heavyattack.width / 24 * (Math.round(my.player.h_index % 24)); 
@@ -5404,17 +5339,16 @@ var BHell = (function (my) {
 			
 		}
 
-
         // Testimony ravyn
-        frame_width = 132;
-        frame_height = 44;
-        sx = frame_width * my.player.currentTestimony; 
-        sy = 0; 
-        w = frame_width;
-        h = frame_height;
-        x = 10;
-        y = 14;
-        this.hud.bitmap.blt(this.testimony4, sx, sy, w, h, x, y, w, h);
+        t_frame_width = 132;
+        t_frame_height = 44;
+        t_sx = t_frame_width * my.player.currentTestimony; 
+        t_sy = 0; 
+        t_w = t_frame_width;
+        t_h = t_frame_height;
+        t_x = 10;
+        t_y = 14;
+        this.hud.bitmap.blt(this.testimonyHUD3, t_sx, t_sy, t_w, t_h, t_x, t_y, t_w, t_h);
 
         // Pause menu
         if (my.controller.paused || pauseTimer > 0) {
@@ -5468,7 +5402,7 @@ var BHell = (function (my) {
 		this.nobomb = ImageManager.loadSystem("NoBomb", 0);
 		this.heavyattack = ImageManager.loadSystem("HeavyAttack", 0);
         this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
-        this.testimony4 = ImageManager.loadPicture("Testimony4", 0);
+        this.testimonyHUD3 = ImageManager.loadPicture("Testimony3", 0);
         this.pauseTimerMax = 21;
 
         my.scoreAccumulator = 0;
@@ -5517,7 +5451,6 @@ var BHell = (function (my) {
         this.usingTouch = false;
         TouchInput.clear();
         my.controller.paused = false;
-        my.bgm = my.bgm || $dataMap.bgm;
     };
 
     /**
@@ -5597,7 +5530,6 @@ var BHell = (function (my) {
                 SceneManager.goto(my.Scene_BHell_Init);
                 break;
             case "quit":
-                $gameBHellResult.gaveUp = true;
                 my.playing = false;
                 break;
         }
@@ -6422,6 +6354,13 @@ var BHell = (function (my) {
 
     BHell_Window_Confirm.prototype.playOkSound = function() {
         SoundManager.playOk();
+    };
+
+
+    _BHell_Window_Confirm_updateCursor = BHell_Window_Confirm.prototype._updateCursor;
+    BHell_Window_Confirm.prototype._updateCursor = function() {
+        _BHell_Window_Confirm_updateCursor.call(this);
+        this.drawAllItems();
     };
 
      BHell_Window_Confirm.prototype.processCancel = function() {

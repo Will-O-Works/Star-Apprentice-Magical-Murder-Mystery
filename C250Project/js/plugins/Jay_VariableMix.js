@@ -59,7 +59,7 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 		this.loadVariableMixBGM(args);
 	}
 	if (command === 'PlayVariableMixBGM') {
-		AudioManager.playVariableBgm();
+		AudioManager.playVariableBgm(args);
 	}
 	Jay.VariableMix.pluginCommand.call(this, command, args);
 }
@@ -82,7 +82,7 @@ AudioManager.loadVariableBgm = function(bgm) {
 	this._variableTrack = bgm;
 }
 
-AudioManager.playVariableBgm = function() {
+AudioManager.playVariableBgm = function(fadeIn=1, posOverride=-1) {
 	var bgm = this._variableTrack;
 	if(!this._variableBuffer) {
 		return;
@@ -98,13 +98,17 @@ AudioManager.playVariableBgm = function() {
 	if(this._variableBuffer._loopStart + this._variableBuffer._loopLength < currentPos) {
 		currentPos -= this._variableBuffer._loopLength * loops;
 	}
+	if (posOverride != -1) {
+		bgm.pos = posOverride;
+		currentPos = posOverride;
+	}
 	if (!this._meBuffer) {
 		this._variableBuffer.play(true, currentPos);
 	}
 	this._bgmBuffer = this._variableBuffer;
 	this._variableBuffer = null;
 	this.updateBgmParameters(bgm);
-	this._bgmBuffer.fadeIn(1);
+	this._bgmBuffer.fadeIn(fadeIn);
 	this.updateCurrentBgm(bgm, currentPos);
 }
 
