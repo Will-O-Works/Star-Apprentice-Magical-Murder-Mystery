@@ -711,8 +711,8 @@
     "name": "DoorOpen",
     "cols": 1,
     "rows": 1,
-    "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorX": 0.2125,
+    "anchorY": 0.9625,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDoorOpen-OW.png",
     "poses": {
       "default": {

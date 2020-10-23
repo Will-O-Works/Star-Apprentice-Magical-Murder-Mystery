@@ -378,6 +378,12 @@ Scene_People.prototype.update = function () {
             var mouseXOnRightButton = mouseX >= rightArrowImage.x && mouseX <= rightArrowImage.x + rightArrowImage.width;
             var mouseYOnRightButton = mouseY >= rightArrowImage.y && mouseY <= rightArrowImage.y + rightArrowImage.height;
             var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
+            var mouseXOnUpButton = mouseX >= upArrowImage.x && mouseX <= upArrowImage.x + upArrowImage.width;
+            var mouseYOnUpButton = mouseY >= upArrowImage.y && mouseY <= upArrowImage.y + upArrowImage.height;
+            mouseOnUpButton = mouseXOnUpButton && mouseYOnUpButton;
+            var mouseXOnDownButton = mouseX >= downArrowImage.x && mouseX <= downArrowImage.x + downArrowImage.width;
+            var mouseYOnDownButton = mouseY >= downArrowImage.y && mouseY <= downArrowImage.y + downArrowImage.height;
+            mouseOnDownButton = mouseXOnDownButton && mouseYOnDownButton;
             if (Input.isTriggered("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
                 startingLine = 0;
                 scrollableUp = false;
@@ -426,12 +432,12 @@ Scene_People.prototype.update = function () {
                 rightArrowTimer--;
             }
 
-            if (scrollableDown && Input.isTriggered("down")) {
+            if (scrollableDown && (Input.isTriggered("down") || (TouchInput.isTriggered() && mouseOnDownButton))) {
                 startingLine++;
                 downArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
-            } else if (scrollableUp && Input.isTriggered("up")) {
+            } else if (scrollableUp && (Input.isTriggered("up") || (TouchInput.isTriggered() && mouseOnDownButton))) {
                 startingLine--;
                 upArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
