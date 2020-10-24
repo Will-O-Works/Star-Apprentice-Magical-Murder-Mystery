@@ -542,14 +542,18 @@ BHell_Sprite.prototype.update = function () {
     }
 
     if (this.curSprite === "PlayerSprite"){
-        var oldIndex =  this.characterIndex
-        if(my.player.dx <= -5){
+        if (my.player.focusMode) {
+            this.setColorTone([-68, -68, -68, 0]);
+        } else {
+            this.setColorTone([0, 0, 0, 0]);
+        }
+        var oldIndex =  this.characterIndex;
+        if(my.player.dx <= -7){
             this.characterIndex = 1;
         }
-        else if(my.player.dx >= 5){
+        else if(my.player.dx >= 7){
             this.characterIndex = 2;
-        }
-        else{
+        } else {
             this.characterIndex = 0;
         }
         if(this.characterIndex !== oldIndex)
@@ -4192,8 +4196,8 @@ var BHell = (function (my) {
      * @param lives Initial number of lives (-1: unlimited).
      * @param unlimitedBombs If true, the bombs are infinite.
      * @param parent Container for the sprites.
-     */
-    BHell_Player.prototype.initialize = function (id, lives, unlimitedBombs, parent) {
+     */ 
+   BHell_Player.prototype.initialize = function (id, lives, unlimitedBombs, parent) {
         var playerData = $dataBulletHell.players[id];
         var playerParams = Object.assign({}, $gamePlayer.bhellPlayers.filter(p => {
             return p.index === id;
@@ -4231,6 +4235,7 @@ var BHell = (function (my) {
         this.immortal = true;
         this.justSpawned = true;
         this.lives = 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.focusMode = false;
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
@@ -4271,7 +4276,7 @@ var BHell = (function (my) {
 		
 		// Added player_speed prameter by V.L.
         this.speed = playerParams.speed; 
-		this.player_speed = playerParams.speed / 3;
+		this.player_speed = playerParams.speed;
 		
 		// Added finisher move by V.L.
 		this.finisher_count = 0; 
@@ -4382,6 +4387,11 @@ var BHell = (function (my) {
     BHell_Player.prototype.moveTo = function (x, y) {
         this.dx = x - this.x;
         this.dy = y - this.y;
+        if ((this.dx > -my.player.player_speed && this.dx < my.player.player_speed) && (this.dy > -my.player.player_speed && this.dy < my.player.player_speed)) {
+            this.focusMode = true;
+        } else {
+            this.focusMode = false;
+        }
     };
 
     /**
@@ -4392,6 +4402,11 @@ var BHell = (function (my) {
     BHell_Player.prototype.deltaTo = function (dx, dy) {
         this.dx = dx;
         this.dy = dy;
+        if ((this.dx > -5 && this.dx < 5) && (this.dy > -5 && this.dy < 5)) {
+            this.focusMode = true;
+        } else {
+            this.focusMode = false;
+        }
     };
 
     /**
@@ -4403,15 +4418,15 @@ var BHell = (function (my) {
         this.dx += h * this.speed;
         this.dy += v * this.speed;
     };
-	
+
 	/**
 	Slow function in player by V.L.
 	*/
 	BHell_Player.prototype.slow = function (t) {
         if (t) {
-			this.speed = this.player_speed; 
+			this.speed = this.player_speed / 3; 
 		} else {
-			this.speed = this.player_speed * 3; 
+			this.speed = this.player_speed; 
 		}
     };
 
@@ -4424,6 +4439,7 @@ var BHell = (function (my) {
      * (eventually destroying them after a five seconds timeout).
      */
     BHell_Player.prototype.move = function () {
+
         // If the player has just been spawned (outside the screen), move to the starting position.
         this.index = 0;
         if (this.justSpawned === true) {
@@ -5248,9 +5264,11 @@ var BHell = (function (my) {
 
                     if (TouchInput.isPressed() || Input.isPressed('ok') || Input.isPressed('pagedown')) {
                         my.player.shoot(true);
+                        document.body.style.cursor = 'none';
                     }
                     else {
                         my.player.shoot(false);
+                        document.body.style.cursor = 'default';
                     }
 
                     if (TouchInput.isCancelled() || Input.isPressed('tab')) {
@@ -5260,16 +5278,20 @@ var BHell = (function (my) {
 					/**
 					Slow motion mode by V.L.
 					*/
-					if (my.player.justSpawned == false) {
-						if (Input.isPressed('shift')) {
-							my.player.slow(true);
-							
-						} else {
-							my.player.slow(false);
-						}
-					} else {
-						my.player.slow(false);
-					}
+                    if (this.usingTouch === "no") {
+    					if (my.player.justSpawned == false) {
+    						if (Input.isPressed('shift')) {
+    							my.player.focusMode = true;
+                                my.player.slow(true);
+    						} else {
+    							my.player.focusMode = false;
+                                my.player.slow(false);
+    						}
+    					} else {
+    						my.player.focusMode = false;
+                            my.player.slow(false);
+    					}
+                    }
 
                 }
             }
@@ -5966,6 +5988,7 @@ BHell_Spriteset.prototype.createParallax = function () {
     this._parallax.move(0, 0, Graphics.width, Graphics.height);
     this._face = new Sprite(my.currentFace);
     this._face.move(Graphics.width/2 - my.currentFace._image.width/2, Graphics.height - my.currentFace._image.height);
+    this._face.setColorTone([-68, -68, -68, 0]);
     this._baseSprite.addChild(this._parallax);
     this._baseSprite.addChild(this._face);
 };
