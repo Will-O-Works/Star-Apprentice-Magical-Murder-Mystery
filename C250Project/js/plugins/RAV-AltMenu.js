@@ -41,6 +41,11 @@ var itemBG = null;
 var unravelled = false;
 var unravelled_timer = 0;
 var itemImageInit = true;
+var rightHeld = 0;
+var leftHeld = 0;
+var volumeCooldown = 0;
+var maxVolumeCooldown = 3;
+var optionsAmount = 3;
 
 // SFX change
 Scene_Map.prototype.callMenu = function() {
@@ -170,12 +175,49 @@ Window_Options.prototype.addGeneralOptions = function() {
     // Empty
 };
 
+// Deletes useless sound options
+Window_Options.prototype.addVolumeOptions = function() {
+    this.addCommand(TextManager.bgmVolume, 'bgmVolume');
+    this.addCommand(TextManager.seVolume, 'seVolume');
+};
+
+Window_Options.prototype.cursorRight = function(wrap) {
+    var index = this.index();
+    var symbol = this.commandSymbol(index);
+    var value = this.getConfigValue(symbol);
+    if (this.isVolumeSymbol(symbol)) {
+        // Overwritten in update    
+    } else {
+        this.changeValue(symbol, true);
+    }
+};
+
+Window_Options.prototype.cursorLeft = function(wrap) {
+    var index = this.index();
+    var symbol = this.commandSymbol(index);
+    var value = this.getConfigValue(symbol);
+    if (this.isVolumeSymbol(symbol)) {
+        // Overwritten in update   
+    } else {
+        this.changeValue(symbol, false);
+    }
+};
+
 // Options initialize the scene menu itself
 var _Scene_Options_create = Scene_Options.prototype.create;
 Scene_Options.prototype.create = function() {
     o_unravelled = false;
     o_unravelled_timer = 0;
     _Scene_Options_create.call(this);
+};
+
+Scene_Options.prototype.createOptionsWindow = function() {
+    this._optionsWindow = new Window_Options();
+    this._optionsWindow.setHandler('cancel', this.popScene.bind(this));
+    var offset = 96;
+    var menuHeight = 388;
+    this._optionsWindow.y = offset + menuHeight/2 - this._optionsWindow.itemHeight() * (optionsAmount/2);
+    this.addWindow(this._optionsWindow);
 };
 
 // Options force sprite
@@ -203,6 +245,9 @@ var _Window_Options_update = Window_Options.prototype.update;
 
 Window_Options.prototype.update = function() {
     _Window_Options_update.call(this);
+    if (volumeCooldown > 0) {
+        volumeCooldown--;
+    }
     if (typeof o_unravelled == "boolean") {
         if (!o_unravelled) {
             optionsBGSpriteImage.setTransform(0, -540 * Math.floor(o_unravelled_timer * o_timerInterval));
@@ -213,6 +258,55 @@ Window_Options.prototype.update = function() {
         } else {
             this.drawAllItems();
         }
+    }
+    var index = this.index();
+    var symbol = this.commandSymbol(index);
+    if (this.isVolumeSymbol(symbol)) {
+        var value = this.getConfigValue(symbol);
+
+        if (Input.isTriggered("right")) {
+            if (rightHeld === 0) {
+                value += 1;
+                value = value.clamp(0, 100);
+                this.changeValue(symbol, value);
+            }
+        }
+        if (Input.isTriggered("left")) {
+            if (leftHeld === 0) {
+                value -= 1;
+                value = value.clamp(0, 100);
+                this.changeValue(symbol, value);
+            }
+        }
+
+        if (Input.isPressed("right")) {
+            rightHeld++;
+        } else {
+            rightHeld = 0;
+        }
+        if (Input.isPressed("left")) {
+            leftHeld++;
+        } else {
+            leftHeld = 0;
+        }
+
+        var changeAmountRight = Math.floor(rightHeld/10);
+        var changeAmountLeft = Math.floor(leftHeld/10);
+
+        if (changeAmountRight > 0 && volumeCooldown === 0) {
+            value += changeAmountRight;
+            value = value.clamp(0, 100);
+            this.changeValue(symbol, value);
+            volumeCooldown = maxVolumeCooldown;
+        }
+
+        if (changeAmountLeft > 0 && volumeCooldown === 0) {
+            value -= changeAmountLeft;
+            value = value.clamp(0, 100);
+            this.changeValue(symbol, value);
+            volumeCooldown = maxVolumeCooldown;
+        }
+
     }
 };
 

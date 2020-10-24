@@ -301,12 +301,12 @@ function Window_InputRemap() {
   var Alias_Window_Options_makeCommandList = Window_Options.prototype.makeCommandList;
   Window_Options.prototype.makeCommandList = function() {
     Alias_Window_Options_makeCommandList.call(this);
-    this.addCommand('Key Input', 'input');
+    this.addCommand('Controls', 'input');
   };
 
   var Alias_Window_Options_drawItem = Window_Options.prototype.drawItem;
   Window_Options.prototype.drawItem = function(index) {
-    if (this.commandName(index) === 'Key Input') {
+    if (this.commandName(index) === 'Controls') {
       var rect = this.itemRectForText(index);
       var statusWidth = this.statusWidth();
       var titleWidth = rect.width - statusWidth;
@@ -766,14 +766,14 @@ function Window_InputRemap() {
   Window_Options.prototype.makeCommandList = function() {
     Alias_Window_Options_makeCommandList.call(this);
     if (!this._key_added) {
-      this.addCommand('Key Input', 'input');
+      this.addCommand('Controls', 'input');
       this._key_added = true;
     }
   };
 
   var Alias_Window_Options_drawItem = Window_Options.prototype.drawItem;
   Window_Options.prototype.drawItem = function(index) {
-    if (this.commandName(index) === 'Key Input') {
+    if (this.commandName(index) === 'Controls') {
       var rect = this.itemRectForText(index);
       var statusWidth = this.statusWidth();
       var titleWidth = rect.width - statusWidth;
