@@ -715,50 +715,50 @@
         }
     },
     {
-      "name": "VagrantLine1_p1",
-      "class": "BHell_Enemy_VagrantLine1_p1",
+      "name": "VagrantTestimony1_p1",
+      "class": "BHell_Enemy_VagrantTestimony1_p1",
       "params": {
           "boss": false
         }
     },
     {
-      "name": "VagrantLine1_p2",
-      "class": "BHell_Enemy_VagrantLine1_p2",
+      "name": "VagrantTestimony1_p2",
+      "class": "BHell_Enemy_VagrantTestimony1_p2",
       "params": {
           "boss": false
         }
     },
     {
-      "name": "VagrantLine1_p3",
-      "class": "BHell_Enemy_VagrantLine1_p3",
+      "name": "VagrantTestimony1_p3",
+      "class": "BHell_Enemy_VagrantTestimony1_p3",
       "params": {
           "boss": false
         }
     },
     {
-      "name": "VagrantLine2_p1",
-      "class": "BHell_Enemy_VagrantLine2_p1",
+      "name": "VagrantTestimony2_p1",
+      "class": "BHell_Enemy_VagrantTestimony2_p1",
       "params": {
           "boss": false
         }
     }, 
     {
-      "name": "VagrantLine2_p2",
-      "class": "BHell_Enemy_VagrantLine2_p2",
+      "name": "VagrantTestimony2_p2",
+      "class": "BHell_Enemy_VagrantTestimony2_p2",
       "params": {
           "boss": false
         }
     },
     {
-      "name": "VagrantLine2_p3",
-      "class": "BHell_Enemy_VagrantLine2_p3",
+      "name": "VagrantTestimony2_p3",
+      "class": "BHell_Enemy_VagrantTestimony2_p3",
       "params": {
           "boss": false
         }
     },
 	{
-	  "name": "VagrantLine4_p1",
-	  "class": "BHell_Enemy_VagrantLine4_p1",
+	  "name": "VagrantTestimony3_p1",
+	  "class": "BHell_Enemy_VagrantTestimony3_p1",
 	  "params": {
         "bullet": {
           "direction": 4
@@ -766,8 +766,8 @@
     }
   }, 
   {
-	  "name": "VagrantLine4_p2",
-	  "class": "BHell_Enemy_VagrantLine4_p2",
+	  "name": "VagrantTestimony3_p2",
+	  "class": "BHell_Enemy_VagrantTestimony3_p2",
 	  "params": {
         "bullet": {
           "direction": 4
@@ -775,8 +775,8 @@
     }
   },
   {
-	  "name": "VagrantLine4_p3",
-	  "class": "BHell_Enemy_VagrantLine4_p3",
+	  "name": "VagrantTestimony3_p3",
+	  "class": "BHell_Enemy_VagrantTestimony3_p3",
 	  "params": {
         "bullet": {
           "direction": 4
@@ -784,8 +784,8 @@
     }
 	},
 		{
-	  "name": "VagrantLine5_p1",
-	  "class": "BHell_Enemy_VagrantLine5_p1",
+	  "name": "VagrantTestimony4_p1",
+	  "class": "BHell_Enemy_VagrantTestimony4_p1",
 	  "params": {
         "bullet": {
           "direction": 6
@@ -793,8 +793,8 @@
     }
   }, 
   {
-	  "name": "VagrantLine5_p2",
-	  "class": "BHell_Enemy_VagrantLine5_p2",
+	  "name": "VagrantTestimony4_p2",
+	  "class": "BHell_Enemy_VagrantTestimony4_p2",
 	  "params": {
         "bullet": {
           "direction": 6
@@ -802,8 +802,8 @@
     }
   }, 
 	{
-	  "name": "VagrantLine5_p3",
-	  "class": "BHell_Enemy_VagrantLine5_p3",
+	  "name": "VagrantTestimony4_p3",
+	  "class": "BHell_Enemy_VagrantTestimony4_p3",
 	  "params": null
   }
   ]

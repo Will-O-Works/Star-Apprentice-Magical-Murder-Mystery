@@ -929,7 +929,6 @@ var BHell = (function (my) {
             else if (this.i % 5 === 0) {
                 for (var j = 0; j < 25; j++) {
                     var bullet = new my.BHell_Bullet(this.x, this.y, 2 * Math.PI / 25 * j, this.bulletParams, this.bulletList);
-
                     this.bulletList.push(bullet);
                     this.parent.addChild(bullet);
                 }
@@ -985,7 +984,12 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var animationSpeed = 15;
     var grazed = false;
 	var shoot_x = my.player.x;  // restore variable for sine shaped bullets by V.L.
-	var count = 0;  // restore variable for sine shaped bullets by V.L.
+    var count = 0;  // restore variable for sine shaped bullets by V.L.
+    //variable added to allow adjustable hitboxs YA 2020/10/26
+    var hitboxshape = "dot";
+    var hitboxheight = 0;
+    var hitboxwidth =0;
+    var hitboxradius = 0;
 
     if (params != null) {
         speed = params.speed || speed;
@@ -993,9 +997,20 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         index = params.index || index;
         direction = params.direction || direction;
         frame = params.frame || frame;
+        hitboxshape = params.hitboxshape || hitboxshape;
         if (params.animated !== false) {
             animated = true;
         }
+        //checks for hitbox params YA
+        if (params.hitboxshape == "circle") {
+            hitboxradius = params.hitboxradius;
+        }
+        else(params.hitboxshape == "rectangle")
+        {
+            hitboxwidth=params.hitboxwidth;
+            hitboxheight=params.hitboxheight;
+        }
+        
         animationSpeed = params.animation_speed || animationSpeed;
 		shoot_x = params.shoot_x || my.player.x;   // restore variable for sine shaped bullets by V.L.
 		count = params.count || count;   // restore variable for sine shaped bullets by V.L.
@@ -1017,7 +1032,11 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     this.bulletList = bulletList;
     this.outsideMap = false;
 	this.count = count; 
-	this.shoot_x = shoot_x; 
+    this.shoot_x = shoot_x;
+    this.hitboxshape =hitboxshape;
+    this.hitboxradius =hitboxradius;
+    this.hitboxheight =hitboxheight;
+    this.hitboxwidth =hitboxwidth;
 };
 
 /**
@@ -1047,17 +1066,14 @@ BHell_Bullet.prototype.hit_effect = function() {
  * Removes the bullet from the screen and from its container.
  */
 BHell_Bullet.prototype.destroy = function() {
-
 	/*var bullet_effect = new my.BHell_Bullet(this.x, this.y, -Math.PI * Math.random(), this.bulletParams, this.bulletList);
     this.bulletList.push(bullet_effect); 
-    this.parent.addChild(bullet_effect); */
-	
+    this.parent.addChild(bullet_effect);*/
     if (this.parent != null) {
         this.parent.removeChild(this);
     }
     this.bulletList.splice(this.bulletList.indexOf(this), 1); 
 };
-
 return my;
 } (BHell || {}));
 
@@ -1439,7 +1455,7 @@ var BHell = (function (my) {
                         b.destroy();
                         i--;
                     }
-                    if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+                    if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
                         this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
                         b.destroy();
                         my.player.die(true);
@@ -4320,10 +4336,43 @@ var BHell = (function (my) {
      * @param y Y coordinate.
      * @returns {boolean} True if (x, y) is inside the player's hitbox.
      */
-    BHell_Player.prototype.checkCollision = function (x, y) {
-        var dx = Math.abs(this.x - x);
-        var dy = Math.abs(this.y - y);
-        return (dx < this.hitboxW / 2 && dy < this.hitboxH / 2);
+    //changed to add hit detection to work with enemy bullet hitboxes YA 2020/10/25
+    BHell_Player.prototype.checkCollision = function (shape,height,width,radius,x,y) {
+        //accounting for rotaion of bullets
+        switch (shape)
+        {
+            case "dot":
+                var dx = Math.abs(this.x - x);
+                var dy = Math.abs(this.y - y);
+                return (dx < this.hitboxW / 2 && dy < this.hitboxH / 2);
+                break;
+            case "circle":
+                // temporary variables to set edges for testing
+                var testX = x;
+                var testY = y;
+
+                // which edge is closest?
+                if (x < this.x-this.hitboxW){testX = this.x-this.hitboxW;}      // test left edge
+                else if (x > this.x+this.hitboxW){testX = this.x+this.hitboxW;}   // right edge
+                if (y < this.y-this.hitboxH){testY = this.y-this.hitboxH;}      // top edge
+                else if (y > this.y+this.hitboxH){testY = this.y+this.hitboxH;}   // bottom edge
+                // get distance from closest edges
+                var distX = x-testX;
+                var distY = y-testY;
+                var distance = Math.sqrt( (distX*distX) + (distY*distY) );
+                // if the distance is less than the radius, collision!
+                if (distance <= radius) {return true;}
+                else{return false;}
+                break;
+            case"rectangle":
+                if (this.x + this.hitboxW >= x-width &&    // r1 right edge past r2 left
+                    this.x-this.hitboxW <= x + width &&    // r2 left edge past r1 right
+                    this.y + this.hitboxH >= y-width &&    // r2 top edge past r1 bottom
+                    this.y -this.hitboxH <= y + height)    // r1 bottom edge past r2 top
+                  {return true;}
+                else{return false;}
+                break;
+        }
     };
 
     /**

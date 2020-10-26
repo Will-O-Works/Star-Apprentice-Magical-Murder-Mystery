@@ -209,15 +209,15 @@ var BHell = (function (my) {
 // VagrantLine4 Pattern1 coat
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine2_p1 = my.BHell_Enemy_VagrantLine2_p1 = function() {
+    var BHell_Enemy_VagrantTestimony3_p1 = my.BHell_Enemy_VagrantTestimony3_p1 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_VagrantLine2_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine2_p1.prototype.constructor = BHell_Enemy_VagrantLine2_p1;
+    BHell_Enemy_VagrantTestimony3_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony3_p1.prototype.constructor = BHell_Enemy_VagrantTestimony3_p1;
 
     //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_VagrantLine2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
         params.hitbox_w = 288;
@@ -240,7 +240,7 @@ var BHell = (function (my) {
         this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
     };
 
-    BHell_Enemy_VagrantLine2_p1.prototype.initializeCoat = function (parent) {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.initializeCoat = function (parent) {
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 7
@@ -287,7 +287,7 @@ var BHell = (function (my) {
         this.coatEmitters[6].offsetX = 220;//change to adjust horizontal offset
     };
 
-    BHell_Enemy_VagrantLine2_p1.prototype.updateCoat = function() {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.updateCoat = function() {
         if (this.frameCounter % 125 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
@@ -304,7 +304,7 @@ var BHell = (function (my) {
         
     };
 
-    BHell_Enemy_VagrantLine2_p1.prototype.move = function () {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.move = function () {
         if (this.mover != null) {
             var p = this.mover.move(this.x, this.y, this.speed);
             this.x = p[0];
@@ -313,7 +313,7 @@ var BHell = (function (my) {
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
 
-	BHell_Enemy_VagrantLine2_p1.prototype.destroy = function() {
+	BHell_Enemy_VagrantTestimony3_p1.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
@@ -325,7 +325,7 @@ var BHell = (function (my) {
     };
 	
 
-    BHell_Enemy_VagrantLine2_p1.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
@@ -382,7 +382,7 @@ var BHell = (function (my) {
         this.frameCounter = (this.frameCounter + 1) % 1200;
     }
 
-    BHell_Enemy_VagrantLine2_p1.prototype.die = function() {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
         this.frameCounter = 0;
@@ -390,7 +390,7 @@ var BHell = (function (my) {
         my.controller.destroyEnemyBullets();
     };
 
-    BHell_Enemy_VagrantLine2_p1.prototype.hit = function () {
+    BHell_Enemy_VagrantTestimony3_p1.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
     
@@ -405,15 +405,15 @@ var BHell = (function (my) {
 // VagrantLine4 Pattern2 coat
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine2_p2 = my.BHell_Enemy_VagrantLine2_p2 = function() {
+    var BHell_Enemy_VagrantTestimony3_p2 = my.BHell_Enemy_VagrantTestimony3_p2 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_VagrantLine2_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine2_p2.prototype.constructor = BHell_Enemy_VagrantLine2_p2;
+    BHell_Enemy_VagrantTestimony3_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony3_p2.prototype.constructor = BHell_Enemy_VagrantTestimony3_p2;
 
     //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_VagrantLine2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4;
@@ -437,7 +437,7 @@ var BHell = (function (my) {
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH)
     };
 
-    BHell_Enemy_VagrantLine2_p2.prototype.initializeCoat = function (parent) {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.initializeCoat = function (parent) {
 		this.p = 10; 
         var coatParams = {};
         coatParams.bullet = {};
@@ -493,7 +493,7 @@ var BHell = (function (my) {
         this.coatEmitters[7].offsetX= 280;
     };
 
-    BHell_Enemy_VagrantLine2_p2.prototype.updateCoat = function() {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.updateCoat = function() {
         if (this.frameCounter % 125 == 0&&this.catcount<=this.catmax){
             this.catcount++;
             this.coatEmitters[0].shoot(this.coatEmitters,true);
@@ -524,7 +524,7 @@ var BHell = (function (my) {
         
     };
 
-    BHell_Enemy_VagrantLine2_p2.prototype.move = function () {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.move = function () {
         if (this.mover != null) {
             var p = this.mover.move(this.x, this.y, this.speed);
             this.x = p[0];
@@ -533,7 +533,7 @@ var BHell = (function (my) {
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
 
-    BHell_Enemy_VagrantLine2_p2.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
@@ -598,7 +598,7 @@ var BHell = (function (my) {
         this.frameCounter = (this.frameCounter + 1) % 1200;
     }
 
-	BHell_Enemy_VagrantLine2_p2.prototype.destroy = function() {
+	BHell_Enemy_VagrantTestimony3_p2.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
@@ -610,7 +610,7 @@ var BHell = (function (my) {
     };
 
 
-    BHell_Enemy_VagrantLine2_p2.prototype.die = function() {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
         this.frameCounter = 0;
@@ -618,7 +618,7 @@ var BHell = (function (my) {
         my.controller.destroyEnemyBullets();
     };
 	
-    BHell_Enemy_VagrantLine2_p2.prototype.hit = function () {
+    BHell_Enemy_VagrantTestimony3_p2.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
     
@@ -633,15 +633,15 @@ var BHell = (function (my) {
 // VagrantLine4 Pattern3 coat
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine2_p3 = my.BHell_Enemy_VagrantLine2_p3 = function() {
+    var BHell_Enemy_VagrantTestimony3_p3 = my.BHell_Enemy_VagrantTestimony3_p3 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine2_p3.prototype.constructor = BHell_Enemy_VagrantLine2_p3;
+    BHell_Enemy_VagrantTestimony3_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony3_p3.prototype.constructor = BHell_Enemy_VagrantTestimony3_p3;
 
     //initalize function. set sprite hitbox params here along with speed
-    BHell_Enemy_VagrantLine2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4;
@@ -665,7 +665,7 @@ var BHell = (function (my) {
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype.initializeCoat = function (parent) {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.initializeCoat = function (parent) {
 		
 		this.p = 160; 
 		
@@ -726,7 +726,7 @@ var BHell = (function (my) {
         this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype.updateCoat = function() {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.updateCoat = function() {
         if (this.frameCounter % 200 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
@@ -744,7 +744,7 @@ var BHell = (function (my) {
         }
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype.move = function () {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.move = function () {
         if (this.mover != null) {
             var p = this.mover.move(this.x, this.y, this.speed);
             this.x = p[0];
@@ -753,7 +753,7 @@ var BHell = (function (my) {
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.update = function () {
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
@@ -808,7 +808,7 @@ var BHell = (function (my) {
         this.frameCounter = (this.frameCounter + 1) % 1200;
     }
 
-    BHell_Enemy_VagrantLine2_p3.prototype.die = function() {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
         this.frameCounter = 0;
@@ -816,7 +816,7 @@ var BHell = (function (my) {
         my.controller.destroyEnemyBullets();
     };
 
-    BHell_Enemy_VagrantLine2_p3.prototype.hit = function () {
+    BHell_Enemy_VagrantTestimony3_p3.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
     

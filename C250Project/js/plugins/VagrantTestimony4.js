@@ -246,13 +246,13 @@ BHell_Enemy_GunnerCat.prototype.update = function () {
 // VagrantLine5 Phase 1.js
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine5_p1 = my.BHell_Enemy_VagrantLine5_p1 = function() {
+    var BHell_Enemy_VagrantTestimony4_p1 = my.BHell_Enemy_VagrantTestimony4_p1 = function() {
         this.initialize.apply(this, arguments);
     };
-    BHell_Enemy_VagrantLine5_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine5_p1.prototype.constructor = BHell_Enemy_VagrantLine5_p1;
+    BHell_Enemy_VagrantTestimony4_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony4_p1.prototype.constructor = BHell_Enemy_VagrantTestimony4_p1;
 
-	BHell_Enemy_VagrantLine5_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
         params.hitbox_w = 400;
@@ -270,7 +270,7 @@ var BHell = (function (my) {
         this.initializeVL5P1Emitter(parent);
         this.initializeCat(parent);
     };
-    BHell_Enemy_VagrantLine5_p1.prototype.initializeVL5P1Emitter = function (parent) {
+    BHell_Enemy_VagrantTestimony4_p1.prototype.initializeVL5P1Emitter = function (parent) {
 		var emitterParams = {};
 		emitterParams.period = 75; 
 		emitterParams.after_period = 50; 
@@ -291,12 +291,12 @@ var BHell = (function (my) {
         this.emitters[2].angle= (3*Math.PI/4);
         this.emitters[2].offsetX = -180;
     };
-    BHell_Enemy_VagrantLine5_p1.prototype.initializeCat = function () {
+    BHell_Enemy_VagrantTestimony4_p1.prototype.initializeCat = function () {
         this.updateCatCounter = 0;
         this.spawnNumber=2;
         this.spawnCounter = 0;
     };
-    BHell_Enemy_VagrantLine5_p1.prototype.updateCat = function() {
+    BHell_Enemy_VagrantTestimony4_p1.prototype.updateCat = function() {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
@@ -330,7 +330,7 @@ var BHell = (function (my) {
         }
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
-	BHell_Enemy_VagrantLine5_p1.prototype.updateVL5P1 = function () { 
+	BHell_Enemy_VagrantTestimony4_p1.prototype.updateVL5P1 = function () { 
         if(this.frameCounter%120===0)
         {
             this.emitters[0].shoot(this.emitters,true);
@@ -346,13 +346,13 @@ var BHell = (function (my) {
         this.updateCat();
     };
 	
-	BHell_Enemy_VagrantLine5_p1.prototype.die = function() {
+	BHell_Enemy_VagrantTestimony4_p1.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
 
-	BHell_Enemy_VagrantLine5_p1.prototype.destroy = function() {
+	BHell_Enemy_VagrantTestimony4_p1.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
@@ -369,7 +369,7 @@ var BHell = (function (my) {
 	
 
     //main update loop
-    BHell_Enemy_VagrantLine5_p1.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony4_p1.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 		
 		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
@@ -429,13 +429,13 @@ var BHell = (function (my) {
 // VagrantLine5 Phase 2.js
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine5_p2 = my.BHell_Enemy_VagrantLine5_p2 = function() {
+    var BHell_Enemy_VagrantTestimony4_p2 = my.BHell_Enemy_VagrantTestimony4_p2 = function() {
         this.initialize.apply(this, arguments);
     };
-    BHell_Enemy_VagrantLine5_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine5_p2.prototype.constructor = BHell_Enemy_VagrantLine5_p2;
+    BHell_Enemy_VagrantTestimony4_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony4_p2.prototype.constructor = BHell_Enemy_VagrantTestimony4_p2;
 
-	BHell_Enemy_VagrantLine5_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantTestimony4_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4;
@@ -455,7 +455,7 @@ var BHell = (function (my) {
         this.initializeVL5P1Emitter(parent);
         this.initializeCat(parent);
     };
-    BHell_Enemy_VagrantLine5_p2.prototype.initializeVL5P1Emitter = function (parent) {
+    BHell_Enemy_VagrantTestimony4_p2.prototype.initializeVL5P1Emitter = function (parent) {
 		var emitterParams = {};
 		emitterParams.period = 75; 
 		emitterParams.after_period = 50; 
@@ -478,12 +478,12 @@ var BHell = (function (my) {
         this.emitters[2].angle= (3*Math.PI/4);
         this.emitters[2].offsetX = -180;
     };
-    BHell_Enemy_VagrantLine5_p2.prototype.initializeCat = function () {
+    BHell_Enemy_VagrantTestimony4_p2.prototype.initializeCat = function () {
         this.updateCatCounter = 0;
         this.spawnNumber=2;
         this.spawnCounter = 0;
     };
-    BHell_Enemy_VagrantLine5_p2.prototype.updateCat = function() {
+    BHell_Enemy_VagrantTestimony4_p2.prototype.updateCat = function() {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
@@ -517,7 +517,7 @@ var BHell = (function (my) {
         }
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
-	BHell_Enemy_VagrantLine5_p2.prototype.updateVL5P1 = function () { 
+	BHell_Enemy_VagrantTestimony4_p2.prototype.updateVL5P1 = function () { 
         if(this.frameCounter%this.p===0)
         {
             this.emitters[0].shoot(this.emitters,true);
@@ -533,13 +533,13 @@ var BHell = (function (my) {
         this.updateCat();
     };
 	
-	BHell_Enemy_VagrantLine5_p2.prototype.die = function() {
+	BHell_Enemy_VagrantTestimony4_p2.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
 
-	BHell_Enemy_VagrantLine5_p2.prototype.destroy = function() {
+	BHell_Enemy_VagrantTestimony4_p2.prototype.destroy = function() {
 
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
@@ -552,7 +552,7 @@ var BHell = (function (my) {
 	
 
     //main update loop
-    BHell_Enemy_VagrantLine5_p2.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony4_p2.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 		
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
@@ -619,13 +619,13 @@ var BHell = (function (my) {
 // VagrantLine5 Phase 3.js
 //=============================================================================
 var BHell = (function (my) {
-    var BHell_Enemy_VagrantLine5_p3 = my.BHell_Enemy_VagrantLine5_p3 = function() {
+    var BHell_Enemy_VagrantTestimony4_p3 = my.BHell_Enemy_VagrantTestimony4_p3 = function() {
         this.initialize.apply(this, arguments);
     };
-    BHell_Enemy_VagrantLine5_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantLine5_p3.prototype.constructor = BHell_Enemy_VagrantLine5_p3;
+    BHell_Enemy_VagrantTestimony4_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony4_p3.prototype.constructor = BHell_Enemy_VagrantTestimony4_p3;
 
-	BHell_Enemy_VagrantLine5_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_VagrantTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4;
@@ -641,7 +641,7 @@ var BHell = (function (my) {
         this.initializeVL5P3Emitter(parent);
         this.initializeCat(parent);
     };
-    BHell_Enemy_VagrantLine5_p3.prototype.initializeVL5P3Emitter = function (parent) {
+    BHell_Enemy_VagrantTestimony4_p3.prototype.initializeVL5P3Emitter = function (parent) {
 		var emitterParams = {};
 		emitterParams.period = 75; 
 		emitterParams.after_period = 50; 
@@ -672,12 +672,12 @@ var BHell = (function (my) {
         this.emitters[4].angle= (3*Math.PI/4);
         this.emitters[4].offsetX = -140;
     };
-    BHell_Enemy_VagrantLine5_p3.prototype.initializeCat = function () {
+    BHell_Enemy_VagrantTestimony4_p3.prototype.initializeCat = function () {
         this.updateCatCounter = 0;
         this.spawnNumber=2;
         this.spawnCounter = 0;
     };
-    BHell_Enemy_VagrantLine5_p3.prototype.updateCat = function() {
+    BHell_Enemy_VagrantTestimony4_p3.prototype.updateCat = function() {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
@@ -711,7 +711,7 @@ var BHell = (function (my) {
         }
     };
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
-	BHell_Enemy_VagrantLine5_p3.prototype.updateVL5P3 = function () { 
+	BHell_Enemy_VagrantTestimony4_p3.prototype.updateVL5P3 = function () { 
         if(this.frameCounter%6 === 0)
         {   
             if (this.trackingCounter<3){//change if comparator to adjust amout of bullets per wave
@@ -730,12 +730,12 @@ var BHell = (function (my) {
         }
         this.updateCat();
     };
-	BHell_Enemy_VagrantLine5_p3.prototype.die = function() {
+	BHell_Enemy_VagrantTestimony4_p3.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
-    BHell_Enemy_VagrantLine5_p3.prototype.destroy = function() {
+    BHell_Enemy_VagrantTestimony4_p3.prototype.destroy = function() {
         //adding these to the correct line allow it to transition to a different phase just call it before in or right before the destroy fucntion
         my.player.PhaseOver = true;
         my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
@@ -750,7 +750,7 @@ var BHell = (function (my) {
     };
 
     //main update loop
-    BHell_Enemy_VagrantLine5_p3.prototype.update = function () {
+    BHell_Enemy_VagrantTestimony4_p3.prototype.update = function () {
         
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
