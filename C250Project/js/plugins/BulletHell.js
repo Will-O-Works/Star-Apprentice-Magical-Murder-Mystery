@@ -4282,8 +4282,10 @@ var BHell = (function (my) {
         this.won = false;
         this.bonusLives = 0;
 
-        this.hitboxW = my.parse(playerData.hitbox_w, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
-        this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
+        //this.hitboxW = my.parse(playerData.hitbox_w, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); changed hitbox values cause i had no idea what was going on here YA.
+        //this.hitboxH = my.parse(playerData.hitbox_h, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
+        this.hitboxW=6;
+        this.hitboxH=6;
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 		
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
@@ -4344,14 +4346,14 @@ var BHell = (function (my) {
             case "dot":
                 var dx = Math.abs(this.x - x);
                 var dy = Math.abs(this.y - y);
-                return (dx < this.hitboxW / 2 && dy < this.hitboxH / 2);
+                return (dx < this.hitboxW && dy < this.hitboxH);
                 break;
             case "circle":
                 // temporary variables to set edges for testing
                 var testX = x;
                 var testY = y;
 
-                // which edge is closest?
+                // which edge is closest
                 if (x < this.x-this.hitboxW){testX = this.x-this.hitboxW;}      // test left edge
                 else if (x > this.x+this.hitboxW){testX = this.x+this.hitboxW;}   // right edge
                 if (y < this.y-this.hitboxH){testY = this.y-this.hitboxH;}      // top edge
