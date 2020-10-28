@@ -26,6 +26,12 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	var count = 0;  // restore variable for sine shaped bullets by V.L.
 	var type = "n"; 
 	var timer = 60; 
+	
+	//variable added to allow adjustable hitboxs YA 2020/10/26
+    var hitboxshape = "dot";
+    var hitboxheight = 0;
+    var hitboxwidth = 0;
+    var hitboxradius = 0;
 
     if (params != null) {
         speed = params.speed || speed;
@@ -61,6 +67,11 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	this.type = type; 
 	this.timer = timer; 
 	this.count = 0; 
+	
+	this.hitboxshape = hitboxshape;
+    this.hitboxradius = hitboxradius;
+    this.hitboxheight = hitboxheight;
+    this.hitboxwidth = hitboxwidth;
 };
 
 /**
@@ -159,7 +170,7 @@ var BHell = (function (my) {
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = 4; //this.params.direction;
 		
-		this.num_bullet = 10; // number of bullets in a Testimony
+		this.num_bullet = 7; // number of bullets in a Testimony
 		this.baseSpeed = 2.8; 
 		this.angle = Math.PI / 2; 
 		this.aim_type = 0; 
@@ -357,7 +368,7 @@ var BHell = (function (my) {
 		this.add_bullet = 5; 
 		this.attack_between = Graphics.height / this.num_bullet; // time between two major attacks
 
-		this.baseSpeed = 3; 
+		this.baseSpeed = 2; 
 		this.angle = 0; 
 		
 		if (params != null) {
@@ -567,6 +578,7 @@ var BHell = (function (my) {
 		
 		emitterParams.period = 60; 
 		emitterParams.aim_type = 2; 
+		emitterParams.num_bullet = 10; 
 		this.emitters.push(new my.BHell_Emitter_Linear(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
@@ -599,7 +611,6 @@ var BHell = (function (my) {
 
 		var emitterParams = {};
 		emitterParams.period = 75; 
-		emitterParams.after_period = 50; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};

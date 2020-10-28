@@ -25,6 +25,12 @@ BHell_Timer_Bullet.prototype.initialize = function (x, y, angle, params, bulletL
 	var shoot_x = my.player.x;  // restore variable for sine shaped bullets by V.L.
 	var count = 0;  // restore variable for sine shaped bullets by V.L.
 	var timer = 100; 
+	
+	//variable added to allow adjustable hitboxs YA 2020/10/26
+    var hitboxshape = "dot";
+    var hitboxheight = 0;
+    var hitboxwidth = 0;
+    var hitboxradius = 0;
 
     if (params != null) {
         speed = params.speed || speed;
@@ -57,6 +63,11 @@ BHell_Timer_Bullet.prototype.initialize = function (x, y, angle, params, bulletL
     this.bulletList = bulletList;
     this.outsideMap = false;
 	this.timer = timer; 
+	
+	this.hitboxshape = hitboxshape;
+    this.hitboxradius = hitboxradius;
+    this.hitboxheight = hitboxheight;
+    this.hitboxwidth = hitboxwidth;
 };
 
 /**

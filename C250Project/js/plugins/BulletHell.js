@@ -1481,13 +1481,13 @@ var BHell = (function (my) {
 							b.destroy();
 							i--;
 						}
-						if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+						if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
 							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
 							console.log("white hit");
 							b.destroy();
 							my.player.die(true);
 							i--;
-						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+						} else if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
 							b.grazed = true; // Avoid grazing the same bullet multiple times.
 							$gameBHellResult.score += my.grazingScore;
 						}
@@ -1501,13 +1501,13 @@ var BHell = (function (my) {
 							b.destroy();
 							i--;
 						}
-						if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+						if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
 							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
 							console.log("black hit");
 							b.destroy();
 							my.player.die(true);
 							i--;
-						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+						} else if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
 							b.grazed = true; // Avoid grazing the same bullet multiple times.
 							$gameBHellResult.score += my.grazingScore;
 						}
@@ -4298,7 +4298,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = -1; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
         //YA some variables to allow phases
         this.PhaseOver;

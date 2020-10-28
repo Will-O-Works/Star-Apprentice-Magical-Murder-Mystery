@@ -25,6 +25,13 @@ Bhell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
 	var shoot_x = my.player.x;  // restore variable for sine shaped bullets by V.L.
 	var count = 0;  // restore variable for sine shaped bullets by V.L.
 	var type = "b"; 
+	
+	//variable added to allow adjustable hitboxs YA 2020/10/26
+    var hitboxshape = "dot";
+    var hitboxheight = 0;
+    var hitboxwidth = 0;
+    var hitboxradius = 0;
+
 
     if (params != null) {
         speed = params.speed || speed;
@@ -57,6 +64,11 @@ Bhell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
     this.bulletList = bulletList;
     this.outsideMap = false;
 	this.type = type; 
+	
+	this.hitboxshape = hitboxshape;
+    this.hitboxradius = hitboxradius;
+    this.hitboxheight = hitboxheight;
+    this.hitboxwidth = hitboxwidth;
 };
 
 /**
