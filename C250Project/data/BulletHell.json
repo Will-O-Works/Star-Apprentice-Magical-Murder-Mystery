@@ -805,6 +805,114 @@
 	  "name": "VagrantTestimony4_p3",
 	  "class": "BHell_Enemy_VagrantTestimony4_p3",
 	  "params": null
+  }, 
+  {
+	  "name": "TwinsTestimony1_p1",
+	  "class": "BHell_Enemy_TwinsTestimony1_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony1_p2",
+	  "class": "BHell_Enemy_TwinsTestimony1_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony1_p3",
+	  "class": "BHell_Enemy_TwinsTestimony1_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony2_p1",
+	  "class": "BHell_Enemy_TwinsTestimony2_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony2_p2",
+	  "class": "BHell_Enemy_TwinsTestimony2_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony2_p3",
+	  "class": "BHell_Enemy_TwinsTestimony2_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony3_p1",
+	  "class": "BHell_Enemy_TwinsTestimony3_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony3_p2",
+	  "class": "BHell_Enemy_TwinsTestimony3_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony3_p3",
+	  "class": "BHell_Enemy_TwinsTestimony3_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony4_p1",
+	  "class": "BHell_Enemy_TwinsTestimony4_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony4_p2",
+	  "class": "BHell_Enemy_TwinsTestimony4_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  }, 
+  {
+	  "name": "TwinsTestimony4_p3",
+	  "class": "BHell_Enemy_TwinsTestimony4_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
   }
   ]
 }

@@ -1183,6 +1183,11 @@ var BHell = (function (my) {
     BHell_Controller.prototype.initialize = function (stage, playerId, lives, parent) {
         my.friendlyBullets = [];
         my.enemyBullets = [];
+		
+		/* Black and White bullets for the twins by V.L. 10/25/2020*/ 
+		my.whiteBullets = [];
+		my.blackBullets = [];
+		/* Black and White bullets for the twins by V.L. 10/25/2020*/ 
 
         my.bulletsHit = 0;
         my.bulletsLost = 0;
@@ -1466,6 +1471,49 @@ var BHell = (function (my) {
                     }
                 }
             }
+
+			// Update black and white bullets by V.L. 10/25/2020
+			if (my.player.x <= Graphics.width / 2) {
+				for (i = 0; i < my.whiteBullets.length; i++) {
+					b = my.whiteBullets[i];
+					if (b != null) {
+                    if (b.isOutsideMap()) {
+							b.destroy();
+							i--;
+						}
+						if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
+							console.log("white hit");
+							b.destroy();
+							my.player.die(true);
+							i--;
+						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+							b.grazed = true; // Avoid grazing the same bullet multiple times.
+							$gameBHellResult.score += my.grazingScore;
+						}
+					}
+				}				
+			} else {
+				for (i = 0; i < my.blackBullets.length; i++) {
+					b = my.blackBullets[i];
+					if (b != null) {
+                    if (b.isOutsideMap()) {
+							b.destroy();
+							i--;
+						}
+						if (!this.playerHit && my.player.checkCollision(b.x, b.y)) {
+							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
+							console.log("black hit");
+							b.destroy();
+							my.player.die(true);
+							i--;
+						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+							b.grazed = true; // Avoid grazing the same bullet multiple times.
+							$gameBHellResult.score += my.grazingScore;
+						}
+					}
+				}				
+			}
 
             // Update explosions. If the stage is scrolling, move the explosions with it.
             for (i = 0; i < my.explosions.length; i++) {
