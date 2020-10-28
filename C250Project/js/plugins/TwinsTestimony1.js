@@ -59,7 +59,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
     this.bulletList = bulletList;
     this.outsideMap = false;
 	this.type = type; 
-	this.timer = timer + 1; 
+	this.timer = timer; 
 	this.count = 0; 
 };
 
@@ -99,6 +99,7 @@ BHell_Marching_Bullet.prototype.update = function () {
 	if (this.type == "l") {  // for emitter linear
 		if (this.count < this.timer) {
 			this.count += 1; 
+			this.speed = 0.98 * this.speed; 
 		} else {
 			this.destroy(); 
 		}
@@ -158,8 +159,8 @@ var BHell = (function (my) {
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = 4; //this.params.direction;
 		
-		this.num_bullet = 12; // number of bullets in a Testimony
-		this.baseSpeed = 1.5; 
+		this.num_bullet = 10; // number of bullets in a Testimony
+		this.baseSpeed = 2.8; 
 		this.angle = Math.PI / 2; 
 		this.aim_type = 0; 
 		this.b_x = this.x; 
@@ -208,8 +209,8 @@ var BHell = (function (my) {
 					
 			} 
 			
-			for (var j = 0; j < this.num_bullet; j++) {
-				this.bulletParams.speed = this.baseSpeed * (j + 1); 
+			for (var j = 1; j < this.num_bullet; j++) {
+				this.bulletParams.speed = this.baseSpeed * j; 
 				this.bulletParams.type = "l"; 
 				this.bulletParams.timer = this.period; 
 
