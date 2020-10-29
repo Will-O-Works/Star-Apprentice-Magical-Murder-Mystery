@@ -16,6 +16,18 @@ var saveBGBitmap = ImageManager.loadPicture("Save_BG");
 var saveBGSprite = new Sprite(saveBGBitmap);
 var itemBGBitmap = ImageManager.loadPicture("BG");
 var itemBGSprite = new Sprite(itemBGBitmap);
+var leftArrowBitmap = ImageManager.loadPicture("Left_Arrow");
+var leftArrow = new Sprite(leftArrowBitmap);
+var rightArrowBitmap = ImageManager.loadPicture("Right_Arrow");
+var rightArrow = new Sprite(rightArrowBitmap);
+var evidenceArrowY = 456;
+var evidenceLeftArrowX = 522;
+var evidenceRightArrowX = 740;
+var arrowTime = 6;
+var arrowMove = 6;
+var evidenceRightArrowTimer = 0;
+var evidenceLeftArrowTimer = 0;
+var arrowImageInit = false;
 var unravelled_timer_length = 15;
 var menuBGAnimFrames = 5;
 var timerInterval = (menuBGAnimFrames - 1)/(unravelled_timer_length);
@@ -46,6 +58,7 @@ var leftHeld = 0;
 var volumeCooldown = 0;
 var maxVolumeCooldown = 3;
 var optionsAmount = 3;
+
 
 // SFX change
 Scene_Map.prototype.callMenu = function() {
@@ -541,12 +554,34 @@ Scene_Item.prototype.update = function() {
     var itemWin = this._itemWindow;
         if (this._actorWindow.active) {
         // Evidence cycling
-        if ((Input.isRepeated("right") && itemWin.index() != itemWin.maxItems() - 2) || (Input.isRepeated("left") && itemWin.index() != 0)) {
-            if (Input.isRepeated("right")) {
-                itemWin.cursorRight(Input.isTriggered('right'));
+        var mouseX = TouchInput._x;
+        var mouseY = TouchInput._y;
+        var mouseXOnLeftButton = mouseX >= evidenceLeftArrowImage.x && mouseX <= evidenceLeftArrowImage.x + evidenceLeftArrowImage.width;
+        var mouseYOnLeftButton = mouseY >= evidenceLeftArrowImage.y && mouseY <= evidenceLeftArrowImage.y + evidenceLeftArrowImage.height;
+        var mouseOnLeftButton = mouseXOnLeftButton && mouseYOnLeftButton;
+        var mouseXOnRightButton = mouseX >= evidenceRightArrowImage.x && mouseX <= evidenceRightArrowImage.x + evidenceRightArrowImage.width;
+        var mouseYOnRightButton = mouseY >= evidenceRightArrowImage.y && mouseY <= evidenceRightArrowImage.y + evidenceRightArrowImage.height;
+        var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
+        var rightValid = itemWin.index() != itemWin.maxItems() - 1;
+        var leftValid = itemWin.index() != 0;
+        if (leftValid) {
+            evidenceLeftArrowImage.y = evidenceArrowY;
+        } else if (evidenceLeftArrowTimer <= 0) {
+            evidenceLeftArrowImage.y = -200;
+        }
+        if (rightValid) {
+            evidenceRightArrowImage.y = evidenceArrowY;
+        } else if (evidenceRightArrowTimer <= 0){
+            evidenceRightArrowImage.y = -200;
+        }
+        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isTriggered())) && rightValid) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isTriggered())) && leftValid)) {
+            if (Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isTriggered())) {
+                evidenceRightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
+                itemWin.cursorRight(Input.isTriggered('right') || (mouseOnRightButton && TouchInput.isTriggered()));
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
             } else {
-                itemWin.cursorLeft(Input.isTriggered('left'));
+                evidenceLeftArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
+                itemWin.cursorLeft(Input.isTriggered('left') ||(mouseOnLeftButton && TouchInput.isTriggered()));
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
             }
             selectedItem.destroy();
@@ -598,7 +633,10 @@ Window_ItemList.prototype.processOk = function () {
     if (e_unravelled) {
         if (this._data.length > 0) {
             Window_Selectable.prototype.processOk.call(this);
+            leftArrowTimer = 0;
+            rightArrowTimer = 0;
             itemImageInit = false;
+            arrowImageInit = false;
         } else {
             this.processCancel();
         }
@@ -617,6 +655,31 @@ var _Window_MenuActor_update = Window_MenuActor.prototype.update;
 
 Window_MenuActor.prototype.update = function(index) {
     _Window_MenuActor_update.call(this);
+    if (!arrowImageInit) {
+        // Arrows
+        evidenceLeftArrowImage = this.addChild(leftArrow);
+        evidenceLeftArrowImage.x = evidenceLeftArrowX;
+        evidenceLeftArrowImage.y = evidenceArrowY;
+        evidenceRightArrowImage = this.addChild(rightArrow);
+        evidenceRightArrowImage.x = evidenceRightArrowX;
+        evidenceRightArrowImage.y = evidenceArrowY;
+        arrowImageInit = true;
+    }
+    if (evidenceLeftArrowTimer > 0) {
+        evidenceLeftArrowImage.setTransform(evidenceLeftArrowX - arrowMove, evidenceArrowY);
+        if (evidenceLeftArrowTimer == 1) {
+            evidenceLeftArrowImage.setTransform(evidenceLeftArrowX, evidenceArrowY);
+        }
+        evidenceLeftArrowTimer--;
+    }
+    if (evidenceRightArrowTimer > 0) {
+        evidenceRightArrowImage.setTransform(evidenceRightArrowX + arrowMove, evidenceArrowY);
+        if (evidenceRightArrowTimer == 1) {
+            evidenceRightArrowImage.setTransform(evidenceRightArrowX, evidenceArrowY);
+        }
+        evidenceRightArrowTimer--;
+    }
+
     if (!itemImageInit) {
         var selectedItemName = selected_item.name.replace("\\n", "");
         selectedItemBitmap = ImageManager.loadFace(selectedItemName);

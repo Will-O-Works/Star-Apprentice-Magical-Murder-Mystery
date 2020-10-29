@@ -41,6 +41,8 @@ var arrowTime = 6;
 var arrowMove = 6;
 var rightArrowTimer = 0;
 var leftArrowTimer = 0;
+var characterSpacing = 70;
+var characterY = 12;
 var p_unravelled = false;
 var p_unravelled_timer = 0;
 var p_unravelled_timer_length = 21;
@@ -348,8 +350,8 @@ Scene_People.prototype.update = function () {
             this._textWindow.drawAllItems();
             for (i = 1; i < charactersAmount; i++) {
                 characterSelections[i] = this.addChild(new Sprite(blankCharacterBitmap));
-                characterSelections[i].x = Math.ceil((70 * i)/2)*2; // Aligns it to the pixel grid
-                characterSelections[i].y = 12;
+                characterSelections[i].x = Math.ceil((characterSpacing * i)/2)*2; // Aligns it to the pixel grid
+                characterSelections[i].y = characterY;
             }
             // Selection overlay
             selectedCharacterImage = this.addChild(selectedCharacter);
@@ -372,6 +374,7 @@ Scene_People.prototype.update = function () {
         } else {
             var mouseX = TouchInput._x;
             var mouseY = TouchInput._y;
+            // Buttons
             var mouseXOnLeftButton = mouseX >= leftArrowImage.x && mouseX <= leftArrowImage.x + leftArrowImage.width;
             var mouseYOnLeftButton = mouseY >= leftArrowImage.y && mouseY <= leftArrowImage.y + leftArrowImage.height;
             var mouseOnLeftButton = mouseXOnLeftButton && mouseYOnLeftButton;
@@ -380,10 +383,28 @@ Scene_People.prototype.update = function () {
             var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
             var mouseXOnUpButton = mouseX >= upArrowImage.x && mouseX <= upArrowImage.x + upArrowImage.width;
             var mouseYOnUpButton = mouseY >= upArrowImage.y && mouseY <= upArrowImage.y + upArrowImage.height;
-            mouseOnUpButton = mouseXOnUpButton && mouseYOnUpButton;
+            var mouseOnUpButton = mouseXOnUpButton && mouseYOnUpButton;
             var mouseXOnDownButton = mouseX >= downArrowImage.x && mouseX <= downArrowImage.x + downArrowImage.width;
             var mouseYOnDownButton = mouseY >= downArrowImage.y && mouseY <= downArrowImage.y + downArrowImage.height;
-            mouseOnDownButton = mouseXOnDownButton && mouseYOnDownButton;
+            var mouseOnDownButton = mouseXOnDownButton && mouseYOnDownButton;
+
+            // Character selections
+            var startChar = characterSelections[1];
+            var finalChar = characterSelections[charactersAmount - 1];
+            // This distbetween/2 nonsense aligns it so the selection is centered on the characters, rather than the start of their index
+            // The minus one is a safety net so you can't select something unselectable
+            var distBetween = characterSpacing - startChar.width;
+            var mouseXOnCharacters = mouseX >= startChar.x && mouseX <= finalChar.x + finalChar.width + distBetween/2 - 1;
+            var mouseYOnCharacters = mouseY >= startChar.y && mouseY <= finalChar.y + finalChar.height + distBetween/2 - 1;
+            var mouseOnCharacters = mouseXOnCharacters && mouseYOnCharacters;
+            if (TouchInput.isTriggered() && mouseOnCharacters) {
+                // Returns an index by dividing the mouse position by the spacing and flooring it.
+                var selectedIndex = Math.floor((mouseX - startChar.x + distBetween/2)/(characterSpacing)) + 1;
+                if (selectedIndex != character) {
+                    AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
+                    Scene_People.changeChar(selectedIndex);
+                }
+            }
             if (Input.isTriggered("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
                 startingLine = 0;
                 scrollableUp = false;
@@ -477,7 +498,7 @@ Scene_People.prototype.update = function () {
         }
         p_unravelled_timer++;
     }
-    if (Input.isTriggered("cancel") || Input.isTriggered("menu")) {
+    if (Input.isTriggered("cancel") || Input.isTriggered("menu") || TouchInput.isCancelled()) {
         AudioManager.playSe({name: 'journal_close', pan: 0, pitch: 100, volume: 90});
         SceneManager.pop();
     }
