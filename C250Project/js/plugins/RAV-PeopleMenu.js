@@ -408,7 +408,7 @@ Scene_People.prototype.update = function () {
                     Scene_People.changeChar(selectedIndex);
                 }
             }
-            if (Input.isTriggered("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
+            if (Input.isRepeated("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
                 startingLine = 0;
                 scrollableUp = false;
                 scrollableDown = false;
@@ -424,7 +424,7 @@ Scene_People.prototype.update = function () {
                 this._peopleWindow.drawAllItems();
                 this._titleWindow.drawAllItems();
                 this._textWindow.drawAllItems();
-            } else if (Input.isTriggered("left") || (TouchInput.isTriggered() && mouseOnLeftButton)) {
+            } else if (Input.isRepeated("left") || (TouchInput.isTriggered() && mouseOnLeftButton)) {
                 startingLine = 0;
                 scrollableUp = false;
                 scrollableDown = false;
@@ -456,12 +456,12 @@ Scene_People.prototype.update = function () {
                 rightArrowTimer--;
             }
 
-            if (scrollableDown && (Input.isTriggered("down") || (TouchInput.isTriggered() && mouseOnDownButton))) {
+            if (scrollableDown && (Input.isRepeated("down") || (TouchInput.isTriggered() && mouseOnDownButton))) {
                 startingLine++;
                 downArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
-            } else if (scrollableUp && (Input.isTriggered("up") || (TouchInput.isTriggered() && mouseOnDownButton))) {
+            } else if (scrollableUp && (Input.isRepeated("up") || (TouchInput.isTriggered() && mouseOnDownButton))) {
                 startingLine--;
                 upArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
