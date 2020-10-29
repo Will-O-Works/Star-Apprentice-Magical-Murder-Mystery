@@ -465,7 +465,7 @@ Window_ItemList.prototype.maxTopRow = function() {
 Window_ItemList.prototype._updateCursor = function() {
     _Window_ItemList_updateCursor.call(this);
     if (typeof e_unravelled == "boolean") {
-        if (!e_unravelled) {
+        if (!e_unravelled || this._data.length === 0) {
             this._windowCursorSprite.alpha = 0;
         }
     }
@@ -579,6 +579,12 @@ Window_ItemList.prototype.updateHelp = function() {
     // No item description
 };
 
+Window_ItemList.prototype.makeItemList = function() {
+    this._data = $gameParty.allItems().filter(function(item) {
+        return this.includes(item);
+    }, this);
+};
+
 // Item DrawAllItems script, make the items invisible if not unravelled yet
 var _Window_ItemList_drawAllItems = Window_ItemList.prototype.drawAllItems;
 
@@ -589,11 +595,13 @@ Window_ItemList.prototype.drawAllItems = function () {
 }
 
 Window_ItemList.prototype.processOk = function () {
-    if (e_unravelled && this.index() != this._data.length - 1) {
-        Window_Selectable.prototype.processOk.call(this);
-        itemImageInit = false;
-    } else if (e_unravelled) {
-        this.processCancel();
+    if (e_unravelled) {
+        if (this._data.length > 0) {
+            Window_Selectable.prototype.processOk.call(this);
+            itemImageInit = false;
+        } else {
+            this.processCancel();
+        }
     }
 }
 
