@@ -205,13 +205,16 @@ Character_Data.Texts = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return " ★ An esteemed detective, my boss, and mentor. A good mind and a better friend.\n - Has been acting strange lately. There's something he's not telling me."
+                    return " ★ An esteemed detective, my\n     boss, and mentor. A good mind\n     and a better friend."
                     break;
                 case 2:
-                    return this.Texts(character, 1) + "\n ★ He's been the victim of a heinous crime! I must find whoever did this!";
+                    return this.Texts(character, 1) + "\n ★ Has been acting strange\n     lately. There's something he's\n     not telling me."
+                    break;
+                case 3:
+                    return this.Texts(character, 2) + "\n ★ He's been the victim of a\n     heinous crime! I must find\n     whoever did this!";
                     break;
                 default: 
-                    return this.Texts(character, 2);
+                    return this.Texts(character, 3);
                     break;
             }
             break;
@@ -240,7 +243,7 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 1) + "\n ★ The cat, Snowy, has been \n     found!";
                     break;
                 case 3:
-                    return this.Texts(character, 2) + "\n ★ Has some kind of history with the Detective."
+                    return this.Texts(character, 2) + "\n ★ Has some kind of history with\n     the Detective."
                     break;
                 case 4:
                     return this.Texts(character, 3) + "\n ★ Roxie was an informant for \n     the Detective. She won't give \n     me details, but the two of \n     them came onto the train to \n     investigate something."
