@@ -477,7 +477,7 @@ Scene_People.prototype.update = function () {
         }
         p_unravelled_timer++;
     }
-    if (Input.isTriggered("cancel")) {
+    if (Input.isTriggered("cancel") || Input.isTriggered("menu")) {
         AudioManager.playSe({name: 'journal_close', pan: 0, pitch: 100, volume: 90});
         SceneManager.pop();
     }

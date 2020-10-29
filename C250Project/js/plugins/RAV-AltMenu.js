@@ -501,6 +501,9 @@ Window_ItemList.prototype.drawItem = function(index) {
         this.changePaintOpacity(this.isEnabled(item));
         this.drawItemName(item, rect.x - 2, rect.y, rect.width - numberWidth);
         this.changePaintOpacity(1);
+    } else {
+        var rect = this.itemRect(index);
+        this.drawIcon(0, rect.x, rect.y);
     }
 };
 
@@ -530,6 +533,30 @@ Window_ItemList.prototype.drawItemName = function(item, x, y, width) {
     }
 };
 
+// Item update script scene
+var _Scene_Item_update = Scene_Item.prototype.update;
+
+Scene_Item.prototype.update = function() {
+    _Scene_Item_update.call(this);
+    var itemWin = this._itemWindow;
+        if (this._actorWindow.active) {
+        // Evidence cycling
+        if ((Input.isRepeated("right") && itemWin.index() != itemWin.maxItems() - 2) || (Input.isRepeated("left") && itemWin.index() != 0)) {
+            if (Input.isRepeated("right")) {
+                itemWin.cursorRight(Input.isTriggered('right'));
+                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+            } else {
+                itemWin.cursorLeft(Input.isTriggered('left'));
+                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+            }
+            selectedItem.destroy();
+            this._actorWindow.contents.clear();
+            itemImageInit = false;
+        }
+    }
+    selected_item = itemWin._data[itemWin.index()];
+};
+
 // Item update script
 var _Window_ItemList_update = Window_ItemList.prototype.update;
 
@@ -546,7 +573,6 @@ Window_ItemList.prototype.update = function() {
             this.drawAllItems();
         }
     }
-    selected_item = this._data[this.index()];
 };
 
 Window_ItemList.prototype.updateHelp = function() {
@@ -570,7 +596,6 @@ Window_ItemList.prototype.processOk = function () {
         this.processCancel();
     }
 }
-
 
 // Item selection menu
 
@@ -604,7 +629,6 @@ Window_MenuActor.prototype.update = function(index) {
         itemBG.x = itemReadX;
         itemBG.y = itemReadY;
     }  
-    
 };
 
 Window_MenuActor.prototype.drawAllItems = function(index) {
