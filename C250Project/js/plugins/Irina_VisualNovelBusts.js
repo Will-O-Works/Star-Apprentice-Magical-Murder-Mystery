@@ -1270,7 +1270,7 @@ Sprite_VisualNovelBust.prototype.fullClear = function () {
         this.opacity = 0
     }
 };
-Sprite_VisualNovelBust.prototype.loadBitmap = function (t, e) {
+Sprite_VisualNovelBust.prototype.loadBitmap = function (t, e, fade = true) {
     if (this._type !== t || this._bustName !== e) {
         this._type = t;
         this._bustName = e;
@@ -1291,7 +1291,8 @@ Sprite_VisualNovelBust.prototype.loadBitmap = function (t, e) {
     if (e === "") {
         this.fadeOut(Imported.Irina_VisualNovelBusts.BustFadeDuration)
     } else {
-        this.fadeIn(Imported.Irina_VisualNovelBusts.BustFadeDuration)
+        var duration = fade ? Imported.Irina_VisualNovelBusts.BustFadeDuration : 0;
+        this.fadeIn(duration);
     }
 };
 Sprite_VisualNovelBust.prototype.afterLoadBitmap = function () {

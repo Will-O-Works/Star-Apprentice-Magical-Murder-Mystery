@@ -59,7 +59,6 @@ var volumeCooldown = 0;
 var maxVolumeCooldown = 3;
 var optionsAmount = 3;
 
-
 // SFX change
 Scene_Map.prototype.callMenu = function() {
     AudioManager.playSe({name: 'journal_open', pan: 0, pitch: 100, volume: 90});
@@ -574,14 +573,14 @@ Scene_Item.prototype.update = function() {
         } else if (evidenceRightArrowTimer <= 0){
             evidenceRightArrowImage.y = -200;
         }
-        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isTriggered())) && rightValid) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isTriggered())) && leftValid)) {
-            if (Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isTriggered())) {
+        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isRepeated())) && rightValid) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isRepeated())) && leftValid)) {
+            if (Input.isRepeated("right") || (mouseOnRightButton)) {
                 evidenceRightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
                 itemWin.cursorRight(Input.isTriggered('right') || (mouseOnRightButton && TouchInput.isTriggered()));
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
             } else {
                 evidenceLeftArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
-                itemWin.cursorLeft(Input.isTriggered('left') ||(mouseOnLeftButton && TouchInput.isTriggered()));
+                itemWin.cursorLeft(Input.isTriggered('left') || (mouseOnLeftButton && TouchInput.isTriggered()));
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
             }
             selectedItem.destroy();

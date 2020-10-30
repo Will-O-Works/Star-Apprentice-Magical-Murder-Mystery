@@ -62,6 +62,7 @@ const char = {
     TYCOON: 7
 };
 var characterNames = ["???", "???", "???", "???", "???", "???", "???", "???"];
+var characterNamePlates = ["Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???"];
 var characterTexts = ["???", "???", "???", "???", "???", "???", "???", "???"];
 var characterPortraits = [
     miscPortrait,
@@ -177,7 +178,100 @@ Character_Data.Names = function(character, level) {
                     return "Victoria";
                     break;
                 default: 
-                    return this.Names(character, 0);
+                    return this.Names(character, 1);
+                    break;
+            }
+            break;
+    }
+}
+
+Character_Data.NamePlates = function(character, level) {
+    switch (character) {
+        case char.STARAPPRENTICE:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                    break;
+                case 1:
+                    return "Name_StarApprentice";
+                    break;
+                default: 
+                    return this.NamePlates(character, 1);
+                    break;
+            }
+            break;
+        case char.DETECTIVE:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                    break;
+                case 1:
+                    return "Name_Detective"
+                    break;
+                default: 
+                    return this.NamePlates(character, 1);
+                    break;
+            }
+            break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                    break;
+                case 1:
+                    return "Name_Fan"
+                    break;
+                default: 
+                    return this.NamePlates(character, 1);
+                    break;
+            }
+            break;
+        case char.VAGRANT:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                case 1:
+                case 2:
+                case 3:
+                    return "Name_CatLady";
+                    break;
+                case 4:
+                    return "Name_Vagrant";
+                    break;
+                default:
+                    return this.NamePlates(character, 4);
+                    break;
+            }
+            break;
+        case char.BLACK:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                    break;
+                default: 
+                    return this.NamePlates(character, 0);
+                    break;
+            }
+            break;
+        case char.WHITE:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                    break;
+                default: 
+                    return this.NamePlates(character, 0);
+                    break;
+            }
+            break;
+        case char.TYCOON:
+            switch (level) {
+                case 0:
+                    return "Name_???";
+                case 1:
+                    return "Name_Tycoon";
+                    break;
+                default: 
+                    return this.NamePlates(character, 1);
                     break;
             }
             break;
@@ -293,6 +387,7 @@ Character_Data.changeLevel = function(character, level, force=false) {
     if (level > characterLevels[character] || force) {
         characterLevels[character] = level;
         characterNames[character] = this.Names(character, level);
+        characterNamePlates[character] = this.NamePlates(character, level);
         characterTexts[character] = this.Texts(character, level);
     }
 }
@@ -408,7 +503,7 @@ Scene_People.prototype.update = function () {
                     Scene_People.changeChar(selectedIndex);
                 }
             }
-            if (Input.isRepeated("right") || (TouchInput.isTriggered() && mouseOnRightButton)) {
+            if (Input.isRepeated("right") || (TouchInput.isRepeated() && mouseOnRightButton)) {
                 startingLine = 0;
                 scrollableUp = false;
                 scrollableDown = false;
@@ -424,7 +519,7 @@ Scene_People.prototype.update = function () {
                 this._peopleWindow.drawAllItems();
                 this._titleWindow.drawAllItems();
                 this._textWindow.drawAllItems();
-            } else if (Input.isRepeated("left") || (TouchInput.isTriggered() && mouseOnLeftButton)) {
+            } else if (Input.isRepeated("left") || (TouchInput.isRepeated() && mouseOnLeftButton)) {
                 startingLine = 0;
                 scrollableUp = false;
                 scrollableDown = false;
@@ -456,12 +551,14 @@ Scene_People.prototype.update = function () {
                 rightArrowTimer--;
             }
 
-            if (scrollableDown && (Input.isRepeated("down") || (TouchInput.isTriggered() && mouseOnDownButton))) {
+            var scrollThreshold = 20;
+
+            if (scrollableDown && (Input.isRepeated("down") || (TouchInput.isRepeated() && mouseOnDownButton) || (TouchInput.wheelY >= scrollThreshold))) {
                 startingLine++;
                 downArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
                 AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
-            } else if (scrollableUp && (Input.isRepeated("up") || (TouchInput.isTriggered() && mouseOnDownButton))) {
+            } else if (scrollableUp && (Input.isRepeated("up") || (TouchInput.isRepeated() && mouseOnUpButton) || (TouchInput.wheelY <= -scrollThreshold))) {
                 startingLine--;
                 upArrowTimer = v_arrowTime + 1;
                 this._textWindow.drawAllItems();
