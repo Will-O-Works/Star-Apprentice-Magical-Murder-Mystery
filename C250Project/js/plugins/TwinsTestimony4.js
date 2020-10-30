@@ -15,7 +15,7 @@ BHell_BW_Bullet.prototype.constructor = BHell_BW_Bullet;
 
 BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var speed = 3;
-    var sprite = my.defaultBullet;
+    var sprite = "$TwinsBullets2";
     var index = 0;
     var direction = 2;
     var frame = 0;
@@ -92,7 +92,7 @@ BHell_BW_Bullet.prototype.update = function () {
 				this.direction = 6; 
 			} else {
 				this.type = "b"; 
-				this.direction = 4; 
+				this.direction = 8; 
 			}
 			
 			this.bounce = 0; 
@@ -152,7 +152,7 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.sprite = "$TwinsBullets2";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -210,7 +210,7 @@ var BHell = (function (my) {
 					this.angle = - Math.PI / 2; 
 					this.bulletParams.type = "b"; 
 					this.b_x = this.count * this.attack_between + j * this.space; 
-					this.bulletParams.direction = 4; 
+					this.bulletParams.direction = 8; 
 					
 					var bullet = new my.BHell_BW_Bullet(this.b_x, Graphics.height, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -242,7 +242,7 @@ var BHell = (function (my) {
 					this.angle = Math.PI; 
 					this.bulletParams.type = "b"; 
 					this.b_y = j * this.line_space; 
-					this.bulletParams.direction = 4; 
+					this.bulletParams.direction = 8; 
 				
 					var bullet = new my.BHell_BW_Bullet(Graphics.width, this.b_y, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -274,7 +274,7 @@ var BHell = (function (my) {
 					this.angle = Math.PI; 
 					this.bulletParams.type = "b"; 
 					this.b_y = this.count * this.y_attack_between + j * this.y_space; 
-					this.bulletParams.direction = 4; 
+					this.bulletParams.direction = 8; 
 					
 					var bullet = new my.BHell_BW_Bullet(Graphics.width, this.b_y, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -329,7 +329,7 @@ var BHell = (function (my) {
 		
         this.bulletParams = {};
 		this.bulletParams.speed = 2; 
-        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.sprite = "$TwinsBullets2";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -379,7 +379,7 @@ var BHell = (function (my) {
 			this.angle += this.bullet_angle; 
 			
 			this.bulletParams.type = "b"; 
-			this.bulletParams.direction = 4; 
+			this.bulletParams.direction = 8; 
 			var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.angle, this.bulletParams, this.bulletList);
 			
 			this.parent.addChild(bullet);
@@ -400,7 +400,7 @@ var BHell = (function (my) {
 				
 				this.bulletParams.speed = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 40 * this.speed; 
 				this.bulletParams.type = "b"; 
-				this.bulletParams.direction = 4; 
+				this.bulletParams.direction = 8; 
 				var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.aimingAngle, this.bulletParams, this.bulletList);
 				
 				this.parent.addChild(bullet);
@@ -411,7 +411,7 @@ var BHell = (function (my) {
 			
 			/*for (var j = 0; j < this.num_waves; j++) {
 				this.bulletParams.type = "b"; 
-				this.bulletParams.direction = 4; 
+				this.bulletParams.direction = 8; 
 				var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.angle + j * this.ang_change, this.bulletParams, this.bulletList);
 				
 				this.parent.addChild(bullet);
@@ -476,9 +476,9 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.sprite = "$TwinsBullets2";
         this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = 4;
+        this.bulletParams.direction = 8;
 		
 		this.num_waves = 100; // number of waves in a Testimony
 		this.num_bullet = 2; // number of bullets in a Testimony
@@ -524,7 +524,7 @@ var BHell = (function (my) {
 				} else {
 					this.bulletParams.type = "b"; 
 					this.bulletParams.bounce = 1; 
-					this.bulletParams.direction = 4; 
+					this.bulletParams.direction = 8; 
 					var bullet = new my.BHell_BW_Bullet(this.center_x, this.y, this.angle + j * this.ang_change, this.bulletParams, this.bulletList);
 					
 					this.parent.addChild(bullet);
@@ -586,7 +586,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = my.defaultBullet;
+		emitterParams.bullet.sprite = "$TwinsBullets2";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -628,7 +628,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = my.defaultBullet;
+		emitterParams.bullet.sprite = "$TwinsBullets2";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -665,12 +665,12 @@ var BHell = (function (my) {
 
 		var emitterParams = {};
 		emitterParams.period = 1; 
-		emitterParams.after_period = 200; 
+		emitterParams.after_period = 250; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = my.defaultBullet;
+		emitterParams.bullet.sprite = "$TwinsBullets2";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
