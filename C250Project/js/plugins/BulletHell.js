@@ -1560,7 +1560,7 @@ var BHell = (function (my) {
         var ret = null;
 
         var params = Object.assign({}, emitter.params);
-
+        params.bullet.speed = 7;// change to adjust player bullet speed YA
         params.ranks = params.ranks || ["D", "C", "B", "A", "S"];
 
         switch (rate) {
