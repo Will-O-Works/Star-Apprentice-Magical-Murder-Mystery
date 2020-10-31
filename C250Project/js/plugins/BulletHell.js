@@ -1451,22 +1451,24 @@ var BHell = (function (my) {
             for (i = 0; i < my.enemyBullets.length; i++) {
                 b = my.enemyBullets[i];
 				
-                if ((b.type == "w" && my.player.x <= Graphics.width / 2) || (b.type == "b" && my.player.x > Graphics.width / 2) || (b != null && b.type != "w" && b.type != "b")) {
-                    if (b.isOutsideMap()) {
-                        b.destroy();
-                        i--;
-                    }
-                    if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
-                        this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
-                        b.destroy();
-                        my.player.die(true);
-                        i--;
-                    } else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
-                        b.grazed = true; // Avoid grazing the same bullet multiple times.
-                        $gameBHellResult.score += my.grazingScore;
-                    }
-                }
-            }
+				if (b != null) {
+					if ((b.type == "w" && my.player.x <= Graphics.width / 2) || (b.type == "b" && my.player.x > Graphics.width / 2) || (b != null && b.type != "w" && b.type != "b")) {
+						if (b.isOutsideMap()) {
+							b.destroy();
+							i--;
+						}
+						if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
+							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
+							b.destroy();
+							my.player.die(true);
+							i--;
+						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
+							b.grazed = true; // Avoid grazing the same bullet multiple times.
+							$gameBHellResult.score += my.grazingScore;
+						}
+					}
+				}
+			}
 
             // Update explosions. If the stage is scrolling, move the explosions with it.
             for (i = 0; i < my.explosions.length; i++) {

@@ -15,7 +15,7 @@ BHell_Marching_Bullet.prototype.constructor = BHell_Marching_Bullet;
 
 BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var speed = 3;
-    var sprite = "$TwinsBullets";
+    var sprite = "$TwinsBulletsBlack";
     var index = 0;
     var direction = 2;
     var frame = 0;
@@ -168,7 +168,7 @@ var BHell = (function (my) {
         this.bulletParams = {};
         this.bulletParams.sprite = this.params.sprite;
         this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = 4; //this.params.direction;
+        this.bulletParams.direction = 6; //this.params.direction;
 		
 		this.num_bullet = 7; // number of bullets in a Testimony
 		this.baseSpeed = 2.8; 
@@ -238,8 +238,8 @@ var BHell = (function (my) {
 				
 				if (this.bulletList[b].type == "l") {
 					var bp = {}; 
-					bp.direction = this.bulletParams.direction; 
-					bp.sprite = "$TwinsBullets"; 
+					bp.direction = 8; 
+					bp.sprite = "$TwinsBulletsBlack"; 
 				
 					for (var j = 0; j < 6; j++) {
 						bp.speed = 1 + j; 
@@ -287,7 +287,7 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = "$TwinsBullets";
+        this.bulletParams.sprite = "$TwinsBulletsBlack";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -361,7 +361,7 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = "$TwinsBullets";
+        this.bulletParams.sprite = "$TwinsBulletsBlack";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -449,7 +449,7 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = "$TwinsBullets";
+        this.bulletParams.sprite = "$TwinsBulletsBlack";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -457,7 +457,7 @@ var BHell = (function (my) {
 		this.add_bullet = 15; 
 		this.attack_between = Graphics.height / this.num_bullet; // time between two major attacks
 
-		this.baseSpeed = 3; 
+		this.baseSpeed = 2; 
 		this.angle = Math.PI / 4; 
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
@@ -525,7 +525,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsBlack";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -569,7 +569,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsBlack";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -616,7 +616,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsBlack";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.

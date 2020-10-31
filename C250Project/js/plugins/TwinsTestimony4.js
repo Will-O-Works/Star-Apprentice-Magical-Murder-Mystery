@@ -15,7 +15,7 @@ BHell_BW_Bullet.prototype.constructor = BHell_BW_Bullet;
 
 BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var speed = 3;
-    var sprite = "$TwinsBullets2";
+    var sprite = "$TwinsBulletsBW";
     var index = 0;
     var direction = 2;
     var frame = 0;
@@ -78,10 +78,6 @@ BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
  * Updates the bullet's position. If it leaves the screen, it's destroyed.
  */
 BHell_BW_Bullet.prototype.update = function () {
-    my.BHell_Sprite.prototype.update.call(this);
-
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed;
 
     if (this.x < 0 || this.x > Graphics.width) {
         if (this.bounce == 1) {
@@ -89,15 +85,22 @@ BHell_BW_Bullet.prototype.update = function () {
 			this.rotation = this.angle + Math.PI / 2;
 			if (this.type == "b") {
 				this.type = "w"; 
-				this.direction = 6; 
+				this.sprite = "$TwinsBulletsBW"; 
+				this.direction = 4; 
 			} else {
 				this.type = "b"; 
-				this.direction = 8; 
+				this.sprite = "$TwinsBulletsBW"; 
+				this.direction = 2; 
 			}
 			
 			this.bounce = 0; 
 		} 
     }
+	
+	my.BHell_Sprite.prototype.update.call(this);
+
+    this.x += Math.cos(this.angle) * this.speed;
+    this.y += Math.sin(this.angle) * this.speed;
 	
 	if (this.y < -this.height || this.x < -this.width || this.x > Graphics.width + this.width || this.y > Graphics.height + this.height) {
         this.outsideMap = true;
@@ -152,7 +155,7 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = "$TwinsBullets2";
+        this.bulletParams.sprite = "$TwinsBulletsBW";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -199,7 +202,8 @@ var BHell = (function (my) {
 					this.angle = Math.PI / 2; 
 					this.bulletParams.type = "w"; 
 					this.b_x = this.count * this.attack_between + j * this.space; 
-					this.bulletParams.direction = 6; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 4; 
 				
 					var bullet = new my.BHell_BW_Bullet(this.b_x, 0, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -210,7 +214,8 @@ var BHell = (function (my) {
 					this.angle = - Math.PI / 2; 
 					this.bulletParams.type = "b"; 
 					this.b_x = this.count * this.attack_between + j * this.space; 
-					this.bulletParams.direction = 8; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 2; 
 					
 					var bullet = new my.BHell_BW_Bullet(this.b_x, Graphics.height, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -227,7 +232,8 @@ var BHell = (function (my) {
 					this.angle = 0; 
 					this.bulletParams.type = "w"; 
 					this.b_y = j * this.line_space; 
-					this.bulletParams.direction = 6; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 4; 
 				
 					var bullet = new my.BHell_BW_Bullet(0, this.b_y, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -242,7 +248,8 @@ var BHell = (function (my) {
 					this.angle = Math.PI; 
 					this.bulletParams.type = "b"; 
 					this.b_y = j * this.line_space; 
-					this.bulletParams.direction = 8; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 2; 
 				
 					var bullet = new my.BHell_BW_Bullet(Graphics.width, this.b_y, this.angle, this.bulletParams, this.bulletList);
 					this.parent.addChild(bullet);
@@ -329,7 +336,7 @@ var BHell = (function (my) {
 		
         this.bulletParams = {};
 		this.bulletParams.speed = 2; 
-        this.bulletParams.sprite = "$TwinsBullets2";
+        this.bulletParams.sprite = "$TwinsBulletsBW";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
@@ -368,7 +375,8 @@ var BHell = (function (my) {
 			this.angle += this.bullet_angle; 
 			
 			this.bulletParams.type = "w"; 
-			this.bulletParams.direction = 6; 
+			this.bulletParams.sprite = "$TwinsBulletsBW";
+			this.bulletParams.direction = 4; 
 			var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.angle, this.bulletParams, this.bulletList);
 			
 			this.parent.addChild(bullet);
@@ -379,7 +387,8 @@ var BHell = (function (my) {
 			this.angle += this.bullet_angle; 
 			
 			this.bulletParams.type = "b"; 
-			this.bulletParams.direction = 8; 
+			this.bulletParams.sprite = "$TwinsBulletsBW";
+			this.bulletParams.direction = 2; 
 			var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.angle, this.bulletParams, this.bulletList);
 			
 			this.parent.addChild(bullet);
@@ -400,7 +409,8 @@ var BHell = (function (my) {
 				
 				this.bulletParams.speed = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 40 * this.speed; 
 				this.bulletParams.type = "b"; 
-				this.bulletParams.direction = 8; 
+				this.bulletParams.sprite = "$TwinsBulletsBW";
+				this.bulletParams.direction = 2; 
 				var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.aimingAngle, this.bulletParams, this.bulletList);
 				
 				this.parent.addChild(bullet);
@@ -429,7 +439,8 @@ var BHell = (function (my) {
 				
 				this.bulletParams.speed = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) / 40 * this.speed; 
 				this.bulletParams.type = "w"; 
-				this.bulletParams.direction = 6; 
+				this.bulletParams.sprite = "$TwinsBulletsBW";
+				this.bulletParams.direction = 4; 
 				var bullet = new my.BHell_BW_Bullet(this.center_x, this.center_y, this.aimingAngle, this.bulletParams, this.bulletList);
 				
 				this.parent.addChild(bullet);
@@ -476,9 +487,9 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = "$TwinsBullets2";
+        this.bulletParams.sprite = "$TwinsBulletsBW";
         this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = 8;
+        this.bulletParams.direction = 4;
 		
 		this.num_waves = 100; // number of waves in a Testimony
 		this.num_bullet = 2; // number of bullets in a Testimony
@@ -516,7 +527,8 @@ var BHell = (function (my) {
 				if (this.type == 0) {
 					this.bulletParams.type = "w"; 
 					this.bulletParams.bounce = 1; 
-					this.bulletParams.direction = 6; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 4; 
 					var bullet = new my.BHell_BW_Bullet(this.center_x, this.y, this.angle + j * this.ang_change, this.bulletParams, this.bulletList);
 					
 					this.parent.addChild(bullet);
@@ -524,7 +536,8 @@ var BHell = (function (my) {
 				} else {
 					this.bulletParams.type = "b"; 
 					this.bulletParams.bounce = 1; 
-					this.bulletParams.direction = 8; 
+					this.bulletParams.sprite = "$TwinsBulletsBW";
+					this.bulletParams.direction = 2; 
 					var bullet = new my.BHell_BW_Bullet(this.center_x, this.y, this.angle + j * this.ang_change, this.bulletParams, this.bulletList);
 					
 					this.parent.addChild(bullet);
@@ -586,7 +599,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets2";
+		emitterParams.bullet.sprite = "$TwinsBulletsBW";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -628,7 +641,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets2";
+		emitterParams.bullet.sprite = "$TwinsBulletsBW";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -670,7 +683,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets2";
+		emitterParams.bullet.sprite = "$TwinsBulletsBW";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.

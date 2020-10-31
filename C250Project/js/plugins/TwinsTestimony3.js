@@ -20,9 +20,9 @@ var BHell = (function (my) {
 		
         this.bulletParams = {};
 		this.bulletParams.speed = 1.5; 
-        this.bulletParams.sprite = "$TwinsBullets";
+        this.bulletParams.sprite = "$TwinsBulletsWhite";
         this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = 6; //this.params.direction;
+        this.bulletParams.direction = 4; //this.params.direction;
 		
 		this.angle = 0; 
 		this.angle_change = 0; 
@@ -90,7 +90,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsWhite";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -143,7 +143,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsWhite";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -193,7 +193,7 @@ var BHell = (function (my) {
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
-		emitterParams.bullet.sprite = "$TwinsBullets";
+		emitterParams.bullet.sprite = "$TwinsBulletsWhite";
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
@@ -205,7 +205,7 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Go_Home(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 		emitterParams.period = 80; 
-		emitterParams.aim_type = 3; 
+		emitterParams.aim_type = 1; 
 		this.emitters.push(new my.BHell_Emitter_Linear(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
