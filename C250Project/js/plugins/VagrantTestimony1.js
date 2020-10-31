@@ -15,10 +15,11 @@ var BHell = (function (my) {
         params.hitbox_w = 386; // hitbox width
         params.hitbox_h = 75; // hitbox height
         params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
-        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        
 
         this.initializeVL1P1Emitter(parent);
 
