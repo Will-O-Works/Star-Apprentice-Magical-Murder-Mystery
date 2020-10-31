@@ -7,28 +7,32 @@ var BHell = (function (my) {
     };
     BHell_Enemy_VictoriaTestimony1_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VictoriaTestimony1_p1.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p1;
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;//change to adjust boss HP
-        params.speed = 4; //change to adjust speed of boss moving 
-        params.hitbox_w = 386; //change to adjust hitbox width
-        params.hitbox_h = 75; //change to adjust hitbox height
-        params.animated = false;
-        this.frameCounter =0;
-        this.state = "started";
-        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
-        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.initializeBrick(parent);
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;//change to adjust Line HP
+        params.speed = 4; // change to adjust speed of boss moving 
+        params.hitbox_w = 410; // change to adjust hitbox width
+        params.hitbox_h = 80; // change to adjust hitbox heights
+		params.animated = false;
+		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		this.bombedWrong = false;
+        this.frameCounter = 0;
+		this.state = "started";
+		this.initializeBrick(parent);
 
-		// set player.can_bomb to true by V.L.
-        my.player.can_bomb = false;
-        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 225, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
-    };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeBrick = function () {
+		/* set player.can_bomb to true by V.L. */
+		my.player.can_bomb = false; 
+		/* set player.can_bomb to true by V.L. */
+		
+		this.p = 16; 
+		this.can_die = false;
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+	};
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeBrick = function (parent) {
         this.spawnNumber=5;
         this.spawnCounter = 0;
-    };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.updateBrick = function() {
-        console.log("updateBrick");
+	};
+	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.updateBrick = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
             var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
             var params = {};
@@ -41,7 +45,6 @@ var BHell = (function (my) {
             params.posX = this.x;
             //params.posY=this.y+125;
             params.posY=this.y;
-            console.log("made a brick");
             //my.controller.enemies.push(new my.BHell_Enemy_BrickOrbit(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
             my.controller.enemies.push(new my.BHell_Enemy_BrickOrbit(this.x, this.y, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
@@ -50,69 +53,64 @@ var BHell = (function (my) {
             my.controller.enemies[1].destroy();
             }
         }  
-    };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.die = function() {
+	};
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
-	};
-
+	};	
 	BHell_Enemy_VictoriaTestimony1_p1.prototype.destroy = function() {
+        //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);
-		while (my.controller.enemies[1] != null) {
-			my.controller.enemies[1].destroy();
-		}
+        my.player.nextMap = Number(8);//the 3 here is the map number change this to whatever map number u want to transition there on victory		
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
-    };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.update = function () {
-        my.BHell_Sprite.prototype.update.call(this);
-        //this is to allow for angry mode if bomb is used wrong
-        if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-        }
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-        switch (this.state) {
-            case "started":
-                if (this.mover.inPosition === true) {
-                    this.state = "pattern 1";
-                    this.frameCounter = 0;
-                }
-                break;
-            case "pattern 1":
-                if(this.frameCounter%120===0)
-                {
-                    this.updateBrick();
-                }
-                break;
-            case "dying":
-                this.destroy();
-                break;
-			case "bombed":  
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				if (this.timer > 70) {
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+    };	
+	//main update loop
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.update = function () {
+		my.BHell_Sprite.prototype.update.call(this);
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.p = 8; 
+				this.emitters[2].bulletParams.speed = 6; 
+				this.emitters[3].bulletParams.speed = 6; 
+			}
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			if (this.state !== "dying") {
+                this.move();
+            }
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
+					this.frameCounter = 0;
 				}
 				break;
-        }; 
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter = (this.frameCounter + 1) % 1200;
-    };
+			case "active": // Shoot.
+                if(this.frameCounter%3===0){
+                    this.updateBrick();
+                }  
+				break;
+			case "dying": // die.
+				this.destroy();
+				break;
+		}; 
+		// Update the emitter's position.
+		this.emitters.forEach(e => {e.update()});
+		// Update the time counter and reset it every 20 seconds.
+		this.frameCounter = (this.frameCounter + 1) % 1200;
+	}
     return my;
 } (BHell || {}));
 //=============================================================================
-// VictoriaTestimony2 Pattern 
+// VictoriaTestimony2 Pattern 1 Test
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony2_p1 = my.BHell_Enemy_VictoriaTestimony2_p1 = function() {
@@ -126,79 +124,102 @@ var BHell = (function (my) {
         params.hitbox_w = 386; //change to adjust hitbox width
         params.hitbox_h = 75; //change to adjust hitbox height
         params.animated = false;
-        this.frameCounter =0;
+        params.aim =false;
+        params.alwaysAim=false;
+        this.frameCounter =1;
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.initializeBrick(parent);
+        this.initializeDolla(parent);
 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
-        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 225, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
-    BHell_Enemy_VictoriaTestimony2_p1.prototype.initializeDolla = function () {
-        this.spawnNumber=5;
-        this.spawnCounter = 0;
+    BHell_Enemy_VictoriaTestimony2_p1.prototype.initializeDolla = function (parent) {
+        var emitterParams = {};
+        emitterParams.angle = Math.PI/2;
+        emitterParams.bullet = {};
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 4;
+        this.waveWidth =8;
+        for(var i =0;i<this.waveWidth;i++){
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[i].offsetX = 30-(i*30);
+            this.emitters[i].offsetY = -100
+        }
+        for(var i =this.waveWidth;i<this.waveWidth*2;i++){
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[i].offsetX = ((i%this.waveWidth)*30)-30;
+            this.emitters[i].offsetY = -100;
+        }
     };
-    BHell_Enemy_VictoriaTestimony2_p1.prototype.updateBrick = function() {
+    BHell_Enemy_VictoriaTestimony2_p1.prototype.updateDolla = function() {
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(2+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.waveWidth;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                console.log(this.frameCounter);
+            }
+        } 
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(58+(7*wave))) {//change to adjust block spawn rate
+                for(var i =this.waveWidth;i<this.waveWidth*2;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                console.log(this.frameCounter);
+            }
+        }
+        this.frameCounter = ((this.frameCounter) % 114)+1;
     };
     BHell_Enemy_VictoriaTestimony2_p1.prototype.die = function() {
 		this.state = "dying";
-		this.frameCounter = 0;
+		this.frameCounter = 1;
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_VictoriaTestimony2_p1.prototype.destroy = function() {
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);
-		while (my.controller.enemies[1] != null) {
-			my.controller.enemies[1].destroy();
-		}
+        my.player.nextMap = Number(8);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
     BHell_Enemy_VictoriaTestimony2_p1.prototype.update = function () {
-        my.BHell_Sprite.prototype.update.call(this);
-        //this is to allow for angry mode if bomb is used wrong
-        if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-        }
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-        switch (this.state) {
-            case "started":
-                if (this.mover.inPosition === true) {
-                    this.state = "pattern 1";
-                    this.frameCounter = 0;
-                }
-                break;
-            case "pattern 1":
-                if(this.frameCounter%120===0)
-                {
-                    this.updateBrick();
-                }
-                break;
-            case "dying":
-                this.destroy();
-                break;
-			case "bombed":  
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				if (this.timer > 70) {
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+		my.BHell_Sprite.prototype.update.call(this);
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.p = 8; 
+				this.emitters[2].bulletParams.speed = 6; 
+				this.emitters[3].bulletParams.speed = 6; 
+			}
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			if (this.state !== "dying") {
+                this.move();
+            }
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
 				}
 				break;
-        }; 
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter = (this.frameCounter + 1) % 1200;
-    };
+			case "active": // Shoot.
+                this.updateDolla(); 
+				break;
+			case "dying": // die.
+				this.destroy();
+				break;
+		}; 
+		// Update the emitter's position.
+		this.emitters.forEach(e => {e.update()});
+		// Update the time counter and reset it every 20 seconds.
+		
+	};
     return my;
 } (BHell || {}));
 //=============================================================================
@@ -309,7 +330,6 @@ var BHell = (function (my) {
      }
     return my;
 } (BHell || {}));
-
 //=============================================================================
 // SOrbit Mover
 //=============================================================================

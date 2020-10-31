@@ -44,6 +44,7 @@ var $plugins =
 {"name":"VagrantTestimony4","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony3","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony2","status":true,"description":"","parameters":{}},
+{"name":"VictoriaTestimony1","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony1","status":true,"description":"","parameters":{}},
 {"name":"Jay_VariableMix","status":true,"description":"Allows for variable mixes to be played.","parameters":{}}
 ];
