@@ -37,6 +37,7 @@ var $plugins =
 {"name":"SkeletonCode","status":true,"description":"","parameters":{}},
 {"name":"Finisher","status":true,"description":"","parameters":{}},
 {"name":"ParticleEmitter","status":true,"description":"ParticleEmitter","parameters":{"configName":"[\"angle\",\"bubble\",\"emitter\",\"stars\"]","staticToPlayer":"true"}},
+{"name":"VictoriaTestimony1","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony1","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony2","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony3","status":true,"description":"","parameters":{}},
@@ -44,7 +45,6 @@ var $plugins =
 {"name":"VagrantTestimony4","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony3","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony2","status":true,"description":"","parameters":{}},
-{"name":"VictoriaTestimony1","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony1","status":true,"description":"","parameters":{}},
 {"name":"Jay_VariableMix","status":true,"description":"Allows for variable mixes to be played.","parameters":{}}
 ];

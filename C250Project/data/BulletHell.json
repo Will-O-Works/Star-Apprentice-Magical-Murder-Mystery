@@ -931,6 +931,15 @@
           "direction": 6
         }
     }
+  },
+  {
+	  "name": "VictoriaTestimony3_p1",
+	  "class": "BHell_Enemy_VictoriaTestimony3_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
   }
   ]
 }

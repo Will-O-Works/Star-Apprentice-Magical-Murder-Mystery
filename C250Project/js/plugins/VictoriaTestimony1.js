@@ -222,6 +222,49 @@ var BHell = (function (my) {
 	};
     return my;
 } (BHell || {}));
+// =============================================================================
+// VictoriaTestimony3 Pattern 1 Test
+// =============================================================================
+var BHell = (function (my) {
+
+    var BHell_Enemy_VictoriaTestimony3_p1 = my.BHell_Enemy_VictoriaTestimony3_p1 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_VictoriaTestimony3_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VictoriaTestimony3_p1.prototype.constructor = BHell_Enemy_VictoriaTestimony3_p1;
+
+	BHell_Enemy_VictoriaTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;
+        params.speed = 25;
+        params.hitbox_w = 300;
+        params.hitbox_h = 100;
+        params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+
+		var emitterParams = {};
+		emitterParams.period = 40; 
+		emitterParams.aim = true;
+		emitterParams.alwaysAim = true;
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 6;
+		emitterParams.bullet.sprite = "$TwinsBullets";
+        emitterParams.bullet.index = 0;
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		
+		emitterParams.period = 60; 
+		emitterParams.aim_type = 1; 
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+    };
+	
+	
+    return my;
+} (BHell || {}));
 //=============================================================================
 // Brick Emitter
 //=============================================================================
@@ -330,22 +373,19 @@ var BHell = (function (my) {
      }
     return my;
 } (BHell || {}));
-//=============================================================================
+// =============================================================================
 // SOrbit Mover
-//=============================================================================
+// =============================================================================
 var BHell = (function (my) {
-    var BHell_Mover_SOrbit = my.BHell_Mover_SOrbit = function () {
+
+    var BHell_Mover_SOrbit = my.BHell_Mover_SOrbit = function() {
         this.initialize.apply(this, arguments);
     };
+
     BHell_Mover_SOrbit.prototype = Object.create(my.BHell_Mover_Base.prototype);
     BHell_Mover_SOrbit.prototype.constructor = BHell_Mover_SOrbit;
 
-    /**
-     * Constructor.
-     * @param radius Orbit distance from the player.
-     * @param counterclockwise If true orbits in the counterclockwise direction.
-     */
-    BHell_Mover_SOrbit.prototype.initialize = function (radius, counterclockwise,x,y) {
+	BHell_Mover_SOrbit.prototype.initialize = function(radius, counterclockwise,x,y) {
         my.BHell_Mover_Base.prototype.initialize.call(this);
         this.x=x;
         this.y=y;
@@ -355,14 +395,6 @@ var BHell = (function (my) {
         this.t = 3 * Math.PI / 2;
     };
 
-    /**
-     * If the player is not ready yet (e.g. it's just been resurrected) remains still, otherwise chases the player until the set
-     * radius is reached, then starts orbiting.
-     * @param oldX Old x coordinate.
-     * @param oldY Old y coordinate.
-     * @param speed Movement speed (pixels per frame during the chase phase, degrees per frame during the orbiting phase).
-     * @returns {Array}
-     */
     BHell_Mover_SOrbit.prototype.move = function (oldX, oldY, speed) {
         var ret = [];
 
@@ -405,4 +437,148 @@ var BHell = (function (my) {
 
         return ret;
     };
+    return my;
 } (BHell || {}));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//below lies cursed code that should not be uncommented lest it bring devistation to the game +. YA 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var BHell = (function (my) {
+//     var BHell_Mover_SOrbit = my.BHell_Mover_SOrbit = function () {
+//         this.initialize.apply(this, arguments);
+//     };
+//     BHell_Mover_SOrbit.prototype = Object.create(my.BHell_Mover_Base.prototype);
+//     BHell_Mover_SOrbit.prototype.constructor = BHell_Mover_SOrbit;
+
+//     BHell_Mover_SOrbit.prototype.initialize = function (radius, counterclockwise,x,y) {
+//         my.BHell_Mover_Base.prototype.initialize.call(this);
+//         this.x=x;
+//         this.y=y;
+//         this.inPosition = false;
+//         this.radius = radius;
+//         this.counterclockwise = counterclockwise;
+//         this.t = 3 * Math.PI / 2;
+//     };
+
+//     BHell_Mover_SOrbit.prototype.move = function (oldX, oldY, speed) {
+//         var ret = [];
+
+//         if (my.player.justSpawned) {
+//             this.inPosition = false;
+//             this.t = 3 * Math.PI / 2;
+//             ret.push(oldX);
+//             ret.push(oldY);
+//         }
+//         else {
+//             if (this.inPosition) {
+//                 ret.push(this.x + this.radius * Math.cos(this.t));
+//                 ret.push(this.y + this.radius * Math.sin(this.t));
+
+//                 if (this.counterclockwise) {
+//                     this.t -= speed * Math.PI / 360;
+//                 }
+//                 else {
+//                     this.t += speed * Math.PI / 360;
+//                 }
+//                 if (this.t > 2 * Math.PI) {
+//                     this.t -= 2 * Math.PI;
+//                 }
+//             }
+//             else {
+//                 var dx = this.x - oldX;
+//                 var dy = this.y - oldY - this.radius;
+//                 if (Math.abs(dx) <= 2 && Math.abs(dy) <= 2) { // If the error is less than two pixels
+//                     this.inPosition = true;
+//                     ret.push(dx + oldX);
+//                     ret.push(dy + oldY);
+//                 }
+//                 else {
+//                     var angle = Math.atan2(dy, dx);
+//                     ret.push(oldX + Math.cos(angle) * speed);
+//                     ret.push(oldY + Math.sin(angle) * speed);
+//                 }
+//             }
+//         }
+
+//         return ret;
+//     };
+// } (BHell || {}));

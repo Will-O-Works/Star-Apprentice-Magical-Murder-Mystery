@@ -1450,7 +1450,6 @@ var BHell = (function (my) {
             // Update the enemy bullets.
             for (i = 0; i < my.enemyBullets.length; i++) {
                 b = my.enemyBullets[i];
-				
 				if (b != null) {
 					if ((b.type == "w" && my.player.x <= Graphics.width / 2) || (b.type == "b" && my.player.x > Graphics.width / 2) || (b != null && b.type != "w" && b.type != "b")) {
 						if (b.isOutsideMap()) {
@@ -1469,7 +1468,6 @@ var BHell = (function (my) {
 					}
 				}
 			}
-
             // Update explosions. If the stage is scrolling, move the explosions with it.
             for (i = 0; i < my.explosions.length; i++) {
                 e = my.explosions[i];
