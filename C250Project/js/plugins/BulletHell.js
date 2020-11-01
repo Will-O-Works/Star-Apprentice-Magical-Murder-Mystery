@@ -1287,7 +1287,6 @@ var BHell = (function (my) {
         var e;
         var b;
         var m;
-
         if (this.generators.length === 0 && this.activeGenerators.length === 0 && this.enemies.length === 0) {
             // Victory.
             $gameBHellResult.won = true;
@@ -1424,6 +1423,13 @@ var BHell = (function (my) {
                 b = my.friendlyBullets[i];
 
                 if (b != null) {
+                    if(my.player.Timestop==true)
+                    {
+                        b.speed=0;
+                    }
+                    else{
+                        b.speed=7;//resume speed
+                    }
                     if (b.isOutsideMap()) {
                         b.destroy();
                         my.bulletsLost++;
@@ -1560,7 +1566,7 @@ var BHell = (function (my) {
         var ret = null;
 
         var params = Object.assign({}, emitter.params);
-        params.bullet.speed = 7;// change to adjust player bullet speed YA
+        params.bullet.speed = 7;// change to adjust player bullet speed YA (IMPORTANT NOTE: if u change this make sure to ctrl+f and search resume speed change that val too
         params.ranks = params.ranks || ["D", "C", "B", "A", "S"];
 
         switch (rate) {
@@ -4260,6 +4266,8 @@ var BHell = (function (my) {
             this.currentLine = 5;
         }
         this.currentLine = 0;
+        //variable for ZaWarudo
+        this.Timestop = false;
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -4995,6 +5003,7 @@ var BHell = (function (my) {
         Scene_Base.prototype.create.call(this);
         this.loadMap();
         this.createWindowLayer();
+        this.frameCounter = 0;
     };
 
     /**
@@ -5094,7 +5103,7 @@ var BHell = (function (my) {
      * otherwise it terminates the minigame, returning to Scene_Map.
      */
     Scene_BHell.prototype.update = function () {
-
+        this.frameCounter++;
         var bgm = AudioManager.saveBgm()
         if (bgm.name === "vagrant_fight_intro" && bgm.pos >= 12.79) {
             AudioManager.playVariableBgm(0, 0);
@@ -5263,6 +5272,10 @@ var BHell = (function (my) {
             if (Input.isTriggered('menu')) {
                 this.pause();
                 this.pauseWindow.pause_menu_opened = false;
+            }
+            else if(my.player.Timestop==true)//time stops for player charachter when zawarudo is active YA
+            {
+                console.log("time paused");
             }
             else {
                 if (this.messageWindow.isOpening()) {
