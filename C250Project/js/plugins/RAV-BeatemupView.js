@@ -13,13 +13,15 @@ var charPortrait = [
     'Misc_Portrait',
     'StarApprentice_Portrait[Exp3x3]',
     'Detective_Portrait',
-    'Fan_Portrait',
     'Vagrant_Portrait[Exp3x3]',
+    'Fan_Portrait',
     'Black_Portrait',
     'White_Portrait',
     'Tycoon_Portrait'
 ];
 
+var allNamePlate = "Name_All";
+var bothNamePlate = "Name_Both";
 var sAX = 141;
 var charX = 480;
 var charY = 540;
@@ -153,14 +155,22 @@ function VN() {
             }
             activeChar === i ? $bust(i).light(0) : $bust(i).dim(0);
         }
-        setTimeout(VN.showName, 300, characterNamePlates[currentChars[activeChar]]);
+        if (currentActiveChar != 0) {
+            setTimeout(VN.showName, 300, $gameSystem.characterNamePlates[currentChars[activeChar]]);
+        }
     }
     VN.showName = function(name) {
         $gameScreen.showPicture(2, name, 0, nameX, nameY, 100, 100, 255, 0);
     }
     VN.activeChar = function(char, charAmount = charXs.length) {
+        var activeChars = [];
+        if (typeof char === "object") {
+            activeChars = char;
+        } else {
+            activeChars = [char];
+        }
         for (i = 1; i <= charAmount; i++) {
-            if (i === char) {
+            if (activeChars.contains(i)) {
                 if (i === 1) {
                     $bust(i).moveTo(charXs[i], charY);
                 } else {
@@ -176,8 +186,14 @@ function VN() {
                 $bust(i).dim();
             }
         }
-        activeChar = char;
-        VN.showName(characterNamePlates[currentChars[activeChar]]);
+        if (typeof char === "object") {
+            activeChar = 0;
+            var namePlate = char.length == 2 ? bothNamePlate : allNamePlate;
+            VN.showName(namePlate);
+        } else {
+            activeChar = char;
+            VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
+        }
     }
     VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length,) {
         var fullRes = 960;
@@ -240,7 +256,7 @@ function VN() {
             }
         }
         currentChars[charPos] = char;
-        VN.showName(characterNamePlates[currentChars[activeChar]]);
+        VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
     }
     VN.removeChar = function(charPos, isActive = false, slide = true) {
         var prevActive = activeChar;
@@ -266,11 +282,13 @@ function VN() {
         } else {
             $bust(9).loadBitmap('face', charPortrait[currentChars[charPos]], false);
             prevActive === charPos ? $bust(9).light(0) : $bust(9).dim(0);
-            $bust(9).moveTo(charXs[charPos], charY + charInc, 0);
+            $bust(9).moveTo(charXs[charPos], isActive ? charY : charY + charInc, 0);
             $bust(9).moveTo(charXs[charPos], isActive ? charY : charY + charInc);
             isActive ? $bust(9).light() : $bust(9).dim();
             slide ? $bust(9).slideOutToRight() : $bust(9).fadeOut();
-            
+            if (charAmount == 2) {
+                $bust(charPos).clear(0);
+            }
             var tempNewCharXs = [];
             var tempNewCurrentChars = [];
             tempNewCharXs[1] = charXs[1];
@@ -291,9 +309,7 @@ function VN() {
             currentChars.length = 0;
             charXs = tempNewCharXs;
             currentChars = tempNewCurrentChars;
-            console.log(charAmount);
             charAmount--;
-            console.log(charAmount);
             for (i = 2; i <= charAmount; i++) {
                 $bust(i).loadBitmap('face', charPortrait[currentChars[i]]);
                 $bust(i).moveTo(charXs[i], i === activeChar ? charY : charY + charInc, 0);
@@ -322,6 +338,8 @@ function VN() {
         $bust(2).moveTo(480, 302, 0);
         $bust(3).loadBitmap('face', 'BG');
         $bust(3).moveTo(480, 340, 0);
+        $bust(2).light();
+        $bust(3).light();
     }
     VN.end = function() {
         for (i = 1; i <= charXs.length; i++) {

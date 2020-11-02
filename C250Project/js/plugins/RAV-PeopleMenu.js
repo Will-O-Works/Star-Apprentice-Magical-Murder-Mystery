@@ -55,39 +55,41 @@ const char = {
     NONE: 0,
     STARAPPRENTICE: 1,
     DETECTIVE: 2,
-    FAN: 3,
-    VAGRANT: 4,
+    VAGRANT: 3,
+    FAN: 4,
     BLACK: 5,
     WHITE: 6,
     TYCOON: 7
 };
-var characterNames = ["???", "???", "???", "???", "???", "???", "???", "???"];
-var characterNamePlates = ["Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???", "Name_???"];
-var characterTexts = ["???", "???", "???", "???", "???", "???", "???", "???"];
 var characterPortraits = [
     miscPortrait,
     starApprenticePortrait,
     detectivePortrait,
-    fanPortrait,
     vagrantPortrait,
+    fanPortrait,
     blackPortrait,
     whitePortrait,
     tycoonPortrait
 ];
-var characterLevels = [0,0,0,0,0,0,0,0];
 var characterSelections = [0,0,0,0,0,0,0,0];
-var characterName = characterNames[character];
-var characterText = characterTexts[character];
-var characterLevel = characterLevels[character];
 var characterPortrait = characterPortraits[character];
 var charactersAmount = characterPortraits.length;
 var startingLine = 0;
 var scrollableUp = false;
 var scrollableDown = false;
 
+var _GS_init = Game_System.prototype.initialize; 
+Game_System.prototype.initialize = function() {
+    _GS_init.call(this); 
+    this.characterNames = ["???", "???", "???", "???", "???", "???", "???", "???"];
+    this.characterNamePlates = ["Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question"];
+    this.characterTexts = ["???", "???", "???", "???", "???", "???", "???", "???"];
+    this.characterLevels = [0,0,0,0,0,0,0,0];
+};
+
 function Character_Data() {
     this.initialize.apply(this, arguments);
-}
+};
 
 Character_Data.Names = function(character, level) {
     switch (character) {
@@ -110,26 +112,16 @@ Character_Data.Names = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return "Detective"
+                    return "Detective";
                     break;
                 case 2:
+                    return this.Names(character, 1);
+                    break;
+                case 3:
                     return "Maxwell Lasnam";
                     break;
                 default: 
-                    return this.Names(character, 2);
-                    break;
-            }
-            break;
-        case char.FAN:
-            switch (level) {
-                case 0:
-                    return "???";
-                    break;
-                case 1:
-                    return "Charlotte"
-                    break;
-                default: 
-                    return this.Names(character, 1);
+                    return this.Names(character, 3);
                     break;
             }
             break;
@@ -147,6 +139,19 @@ Character_Data.Names = function(character, level) {
                     break;
                 default:
                     return this.Names(character, 4);
+                    break;
+            }
+            break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Charlotte"
+                    break;
+                default: 
+                    return this.Names(character, 1);
                     break;
             }
             break;
@@ -190,7 +195,7 @@ Character_Data.NamePlates = function(character, level) {
         case char.STARAPPRENTICE:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                     break;
                 case 1:
                     return "Name_StarApprentice";
@@ -203,7 +208,7 @@ Character_Data.NamePlates = function(character, level) {
         case char.DETECTIVE:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                     break;
                 case 1:
                     return "Name_Detective"
@@ -213,23 +218,10 @@ Character_Data.NamePlates = function(character, level) {
                     break;
             }
             break;
-        case char.FAN:
-            switch (level) {
-                case 0:
-                    return "Name_???";
-                    break;
-                case 1:
-                    return "Name_Fan"
-                    break;
-                default: 
-                    return this.NamePlates(character, 1);
-                    break;
-            }
-            break;
         case char.VAGRANT:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                 case 1:
                 case 2:
                 case 3:
@@ -243,10 +235,23 @@ Character_Data.NamePlates = function(character, level) {
                     break;
             }
             break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "Name_Question";
+                    break;
+                case 1:
+                    return "Name_Fan"
+                    break;
+                default: 
+                    return this.NamePlates(character, 1);
+                    break;
+            }
+            break;
         case char.BLACK:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                     break;
                 default: 
                     return this.NamePlates(character, 0);
@@ -256,7 +261,7 @@ Character_Data.NamePlates = function(character, level) {
         case char.WHITE:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                     break;
                 default: 
                     return this.NamePlates(character, 0);
@@ -266,7 +271,7 @@ Character_Data.NamePlates = function(character, level) {
         case char.TYCOON:
             switch (level) {
                 case 0:
-                    return "Name_???";
+                    return "Name_Question";
                 case 1:
                     return "Name_Tycoon";
                     break;
@@ -299,29 +304,16 @@ Character_Data.Texts = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return " ★ An esteemed detective, my\n     boss, and mentor. A good mind\n     and a better friend."
+                    return " ★ An esteemed detective, my\n     boss, and mentor. A good mind\n     and a better friend.\n ★ Has been acting strange\n     lately. There's something\n     he's not telling me."
                     break;
                 case 2:
-                    return this.Texts(character, 1) + "\n ★ Has been acting strange\n     lately. There's something he's\n     not telling me."
+                    return this.Texts(character, 1) + "\n ★ When I'm done searching for \n     the cat, we're going to chat \n     about why we're really on\n     this train."
                     break;
                 case 3:
                     return this.Texts(character, 2) + "\n ★ He's been the victim of a\n     heinous crime! I must find\n     whoever did this!";
                     break;
                 default: 
                     return this.Texts(character, 3);
-                    break;
-            }
-            break;
-        case char.FAN:
-            switch (level) {
-                case 0:
-                    return "???";
-                    break;
-                case 1:
-                    return "Weird!"
-                    break;
-                default: 
-                    return this.Texts(character, 1);
                     break;
             }
             break;
@@ -347,6 +339,19 @@ Character_Data.Texts = function(character, level) {
                     break;
                 default: 
                     return this.Texts(character, 5);
+                    break;
+            }
+            break;
+        case char.FAN:
+            switch (level) {
+                case 0:
+                    return "???";
+                    break;
+                case 1:
+                    return "Detective Lasnam's biggest fan... apparently."
+                    break;
+                default: 
+                    return this.Texts(character, 1);
                     break;
             }
             break;
@@ -384,11 +389,11 @@ Character_Data.Texts = function(character, level) {
 }
 
 Character_Data.changeLevel = function(character, level, force=false) {
-    if (level > characterLevels[character] || force) {
-        characterLevels[character] = level;
-        characterNames[character] = this.Names(character, level);
-        characterNamePlates[character] = this.NamePlates(character, level);
-        characterTexts[character] = this.Texts(character, level);
+    if (level > $gameSystem.characterLevels[character] || force) {
+        $gameSystem.characterLevels[character] = level;
+        $gameSystem.characterNames[character] = this.Names(character, level);
+        $gameSystem.characterNamePlates[character] = this.NamePlates(character, level);
+        $gameSystem.characterTexts[character] = this.Texts(character, level);
     }
 }
 
@@ -406,7 +411,7 @@ Scene_People.prototype.initialize = function() {
 Scene_People.changeChar = function (char) {
     // Sets the character
     character = char;
-    if (characterLevels[character] == 0) {
+    if ($gameSystem.characterLevels[character] == 0) {
         characterPortrait = characterPortraits[0];
     } else {
         characterPortrait = characterPortraits[char];
@@ -450,6 +455,9 @@ Scene_People.prototype.update = function () {
                 characterSelections[i] = this.addChild(new Sprite(blankCharacterBitmap));
                 characterSelections[i].x = Math.ceil((characterSpacing * i)/2)*2; // Aligns it to the pixel grid
                 characterSelections[i].y = characterY;
+                if ($gameSystem.characterLevels[i] === 0) {
+                    characterSelections[i].opacity = 85;
+                }
             }
             // Selection overlay
             selectedCharacterImage = this.addChild(selectedCharacter);
@@ -631,7 +639,7 @@ Window_Title.prototype.initialize = function (x, y, width, height) {
 
 Window_Title.prototype.drawAllItems = function () {
     this.contents.clear();
-    this.drawText(characterNames[character], 0, 150, 596, "center");
+    this.drawText($gameSystem.characterNames[character], 0, 150, 596, "center");
 }
 
 function Window_Text() {
@@ -647,7 +655,7 @@ Window_Text.prototype.initialize = function (x, y, width, height) {
 
 Window_Text.prototype.drawAllItems = function () {
     this.contents.clear();
-    var texts = characterTexts[character].split("\n");
+    var texts = $gameSystem.characterTexts[character].split("\n");
     var lineHeight = 30;
     var maxLines = 8;
     if (texts.length > 8) {
