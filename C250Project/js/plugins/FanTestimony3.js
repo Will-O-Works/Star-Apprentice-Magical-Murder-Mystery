@@ -30,7 +30,7 @@ var BHell = (function (my) {
 		
 		this.num_bullet = 16; 
 		this.center_x = this.x; 
-		this.center_y = Graphics.height / 2; 
+		this.center_y = 125; 
 		this.angle = 0; 
 		this.baseSpeed = 5; 
 		this.timer = 0; 
@@ -57,12 +57,12 @@ var BHell = (function (my) {
 			for (var n = 0; n < this.num_bullet; n++) {
 				
 				this.bulletParams.phase = 4; 
-				var bullet = new my.BHell_Fan_Bullet(this.x, 125, - this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Fan_Bullet(this.x, this.center_y, - this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 				
 				this.bulletParams.phase = 5; 
-				var bullet = new my.BHell_Fan_Bullet(this.x, 125, this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Fan_Bullet(this.x, this.center_y, this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 				
@@ -81,7 +81,7 @@ var BHell = (function (my) {
 					
 					for (var a = 2; a < 5; a ++) {
 						this.bulletParams.after_speed = a/100; 
-						var bullet = new my.BHell_Fan_Bullet(this.x, 125, - this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
+						var bullet = new my.BHell_Fan_Bullet(this.x, this.center_y, - this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
 						this.parent.addChild(bullet);
 						this.bulletList.push(bullet);
 					}
@@ -93,7 +93,7 @@ var BHell = (function (my) {
 					
 					for (var a = 2; a < 5; a ++) {
 						this.bulletParams.after_speed = a/100; 
-						var bullet = new my.BHell_Fan_Bullet(this.x, 125, this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
+						var bullet = new my.BHell_Fan_Bullet(this.x, this.center_y, this.angle + 2 * Math.PI / this.num_bullet * n, this.bulletParams, this.bulletList);
 						this.parent.addChild(bullet);
 						this.bulletList.push(bullet);
 					}

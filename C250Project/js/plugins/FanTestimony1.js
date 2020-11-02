@@ -65,8 +65,7 @@ BHell_Fan_Bullet.prototype.initialize = function (x, y, angle, params, bulletLis
 	this.after_speed = after_speed; 
 	
 	this.timer = 0; 
-	this.add = 0; 
-
+	
 	this.hitboxshape = hitboxshape;
     this.hitboxradius = hitboxradius;
     this.hitboxheight = hitboxheight;
@@ -89,8 +88,7 @@ BHell_Fan_Bullet.prototype.update = function () {
 	
 	switch (this.phase) {
 		case 1: 
-		this.add += 0.004; 
-		this.speed += this.add; 
+		this.speed *= 1.015; 
 		break; 
 		
 		case 2: 
