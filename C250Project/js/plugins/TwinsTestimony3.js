@@ -95,6 +95,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 0;
 		
 		emitterParams.baseSpeed = 2; 
 		emitterParams.num_bullet = 10; 
@@ -111,6 +112,18 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_TwinsTestimony3_p1.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			this.emitters[1].bullet_count = 8; 
+			this.emitters[2].bullet_count = 8; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
@@ -148,6 +161,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 1;
 		
 		emitterParams.baseSpeed = 2; 
 		this.emitters.push(new my.BHell_Emitter_Opposite(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -161,6 +175,17 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_TwinsTestimony3_p2.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			this.emitters[0].baseSpeed = 4; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
@@ -197,7 +222,8 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Cross(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
@@ -210,6 +236,16 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_TwinsTestimony3_p3.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(21);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));

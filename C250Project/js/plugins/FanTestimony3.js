@@ -162,7 +162,8 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T3(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
@@ -205,7 +206,8 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 1;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T3(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
@@ -248,7 +250,8 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T3(this.x, this.y, emitterParams, parent, my.enemyBullets));
 

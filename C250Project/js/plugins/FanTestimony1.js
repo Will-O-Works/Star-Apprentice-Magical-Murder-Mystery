@@ -199,6 +199,7 @@ var BHell = (function (my) {
 		
 		this.type = 0; 
 		this.attack_between = 50; 
+		this.angry = false; 
 		
 		if (params != null) {
 			this.num_bullet = params.num_bullet || this.num_bullet;
@@ -238,17 +239,33 @@ var BHell = (function (my) {
 			this.parent.addChild(bullet);
 			this.bulletList.push(bullet);
 			
+			if (this.angry == true) {
+				var bullet = new my.BHell_Fan_Bullet(this.x - 200, 125, -Math.PI + this.angle, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+					
+				var bullet = new my.BHell_Fan_Bullet(this.x + 200, 125, -Math.PI - this.angle, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+			}
+			
 		} else if (this.type == 3) {
 			
 			this.angle += Math.PI / 90;
 			
-			for (var n = 0; n < 3; n++) {
+			var num = 3; 
+			
+			if (this.angry == true) {
+				num = 5; 
+			}
+			
+			for (var n = 0; n < num; n++) {
 				
-				var bullet = new my.BHell_Fan_Bullet(this.x, 125, this.angle + 2 * Math.PI / 3 * n, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Fan_Bullet(this.x, 125, this.angle + 2 * Math.PI / num * n, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 				
-				var bullet = new my.BHell_Fan_Bullet(this.x, 125, -this.angle + 2 * Math.PI / 3 * n, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Fan_Bullet(this.x, 125, -this.angle + 2 * Math.PI / num * n, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 				
@@ -297,11 +314,24 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T1(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
+	
+		
+	BHell_Enemy_FanTestimony1_p1.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(16);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
 	
     return my;
@@ -340,11 +370,24 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 1;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T1(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
 	
+	BHell_Enemy_FanTestimony1_p2.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			//this.emitters[0].attack_between = 125; 
+			this.emitters[0].angry = true; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
@@ -382,12 +425,25 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T1(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
 
     };
 	
+	BHell_Enemy_FanTestimony1_p3.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			//this.emitters[0].attack_between = 125; 
+			this.emitters[0].angry = true; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));

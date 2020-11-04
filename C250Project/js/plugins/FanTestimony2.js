@@ -96,7 +96,7 @@ var BHell = (function (my) {
 			
 		}
 		
-		if (this.timer % this.attack_between < (this.attack_between / 2)) {
+		if (this.timer % this.attack_between < 5) {
 			
 			if (this.type == 3 && this.timer > this.attack_between) {
 				this.bp.speed = 6; 
@@ -182,11 +182,24 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T2(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
 	
+	BHell_Enemy_FanTestimony2_p1.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			//this.emitters[0].attack_between = 125; 
+			this.emitters[0].attack_between = 5; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
@@ -224,12 +237,23 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true;
+		my.player.currentLine = 1;		
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T2(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
 	
+	BHell_Enemy_FanTestimony2_p2.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(17);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));
@@ -268,11 +292,24 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T2(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
 	
+	BHell_Enemy_FanTestimony2_p3.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			//this.emitters[0].attack_between = 125; 
+			this.emitters[0].attack_between = 5; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
