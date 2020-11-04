@@ -1045,9 +1045,9 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
 BHell_Bullet.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
 
+
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
-
     if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
         this.outsideMap = true;
     }
@@ -1428,7 +1428,7 @@ var BHell = (function (my) {
                         b.speed=0;
                     }
                     else{
-                        b.speed=25;//resume speed
+                        b.speed=7;//resume speed
                     }
                     if (b.isOutsideMap()) {
                         b.destroy();
@@ -1566,7 +1566,7 @@ var BHell = (function (my) {
         var ret = null;
 
         var params = Object.assign({}, emitter.params);
-        params.bullet.speed = 25;// change to adjust player bullet speed YA (IMPORTANT NOTE: if u change this make sure to ctrl+f and search resume speed change that val too
+        params.bullet.speed = 7;// change to adjust player bullet speed YA (IMPORTANT NOTE: if u change this make sure to ctrl+f and search resume speed change that val too
 
         params.ranks = params.ranks || ["D", "C", "B", "A", "S"];
 
@@ -2194,6 +2194,8 @@ var BHell = (function (my) {
         this.alwaysAim = false;
         this.aimX = 0;
         this.aimY = 0;
+        this.x=x;
+        this.y=y;
 
         this.aimingAngle = 0;
 
@@ -5276,7 +5278,7 @@ var BHell = (function (my) {
             }
             else if(my.player.Timestop==true)//time stops for player charachter when zawarudo is active YA
             {
-                console.log("time paused");
+                my.player.shoot(false);
             }
             else {
                 if (this.messageWindow.isOpening()) {

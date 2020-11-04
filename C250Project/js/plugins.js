@@ -38,6 +38,8 @@ var $plugins =
 {"name":"Finisher","status":true,"description":"","parameters":{}},
 {"name":"ParticleEmitter","status":true,"description":"ParticleEmitter","parameters":{"configName":"[\"angle\",\"bubble\",\"emitter\",\"stars\"]","staticToPlayer":"true"}},
 {"name":"VictoriaTestimony1","status":true,"description":"","parameters":{}},
+{"name":"VictoriaTestimony2","status":true,"description":"","parameters":{}},
+{"name":"VictoriaTestimony3","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony1","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony2","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony3","status":true,"description":"","parameters":{}},
