@@ -292,7 +292,6 @@ var BHell = (function (my) {
         this.bulletParams.direction = this.params.direction;
 		
 		this.num_bullet = 12; // number of bullets in a Testimony
-		this.attack_between = Graphics.width / this.num_bullet; // time between two major attacks
 				
 		this.baseSpeed = 3; 
 		this.angle = 3 * Math.PI / 4; 
@@ -310,6 +309,8 @@ var BHell = (function (my) {
     };
 
     BHell_Emitter_Marching.prototype.shoot = function () {
+		
+		this.attack_between = Graphics.width / this.num_bullet; // time between two major attacks
 		
 		for (var j = -5; j < this.num_bullet + 5; j++) {
 			this.bulletParams.speed = this.baseSpeed; 
@@ -518,6 +519,7 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		this.bombedWrong = false; 
 
 		var emitterParams = {};
 		emitterParams.period = 40; 
@@ -530,6 +532,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Marching(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
@@ -538,9 +541,22 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Linear(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
 	
+	BHell_Enemy_TwinsTestimony1_p1.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			this.emitters[0].num_bullet = 16; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
+
+
 
 //=============================================================================
 // TwinsTestimony1 Pattern 2
@@ -562,6 +578,7 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		this.bombedWrong = false; 
 
 		var emitterParams = {};
 		emitterParams.period = 75; 
@@ -573,7 +590,8 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
+		my.player.currentLine = 1;
 		
 		this.emitters.push(new my.BHell_Emitter_Opposite(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
@@ -584,6 +602,16 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_TwinsTestimony1_p2.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(19);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));
@@ -609,6 +637,7 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		this.bombedWrong = false; 
 
 		var emitterParams = {};
 		emitterParams.period = 75; 
@@ -621,6 +650,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Cross(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
@@ -630,6 +660,18 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_TwinsTestimony1_p3.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			this.emitters[0].baseSpeed = 4; 
+			this.emitters[0].period = 50; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));

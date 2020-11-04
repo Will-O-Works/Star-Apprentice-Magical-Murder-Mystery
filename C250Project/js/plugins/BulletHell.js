@@ -2519,7 +2519,7 @@ BHell_Enemy_Base.prototype.update = function () {
 	}
 	
     if (my.player.bombed == true) {
-        this.destroy(); 
+		this.die();
     }
 	
 	// set bombedWrong to true if player uses the bomb wrong by V.L. 10/18/2020
@@ -2532,7 +2532,13 @@ BHell_Enemy_Base.prototype.update = function () {
 		this.timer = (this.timer + 1) % 1200;
 		this.shoot(false);
 		
-		if (this.timer > 50) {
+		if (this.timer > 70) {
+			
+			if (my.player.bombed == true) {
+				my.controller.generators = [];
+				my.controller.activeGenerators = [];
+			}
+			
 			this.destroy();
 		}
 		else if (this.timer % 10 === 0) {  // Explosion on the enemy effect, if people want it by V.L. 10/11/2020
@@ -5004,7 +5010,7 @@ var BHell = (function (my) {
         Scene_Base.prototype.create.call(this);
         this.loadMap();
         this.createWindowLayer();
-        this.frameCounter = 0;
+        this.frameCounter = 0; 
     };
 
     /**
@@ -5077,8 +5083,39 @@ var BHell = (function (my) {
         my.stage.setup(Scene_BHell.level);
         my.stage._displayX = 0;
         my.stage._displayY = my.stage.height() - my.stage.screenTileY();
-        my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
-        my.discussionMap = 12;
+		
+		/* discussionMap change by V.L. */ 
+		switch (my.map) {
+			case 3: 
+			case 6: 
+			case 8: 
+			case 9: 
+			my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
+			my.discussionMap = 12;
+			break; 
+			
+			case 13: 
+			case 19: 
+			case 20: 
+			case 21: 
+			my.currentFace = ImageManager.loadFace("White_Portrait", 0);
+			my.discussionMap = 29;
+			break; 
+			
+			case 15: 
+			case 16: 
+			case 17: 
+			my.currentFace = ImageManager.loadFace("Fan_Portrait", 0);
+			my.discussionMap = 18;
+			break; 
+			
+			default: 
+			my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
+			my.discussionMap = 12;
+			break; 
+		}
+
+        /* discussionMap change by V.L. */ 
 
         this._spriteset = new my.BHell_Spriteset();
         this.addChild(this._spriteset);
@@ -5190,9 +5227,9 @@ var BHell = (function (my) {
                 if (my.player.PhaseOver === true) {
                     my.player.PhaseOver = false;
                     $gameVariables.setValue(10, my.player.nextMap)
-                    $gameMap._mapId = 12;
+                    $gameMap._mapId = my.discussionMap;
                 } else {
-                    $gameMap._mapId = $gameVariables.value(12);
+                    $gameMap._mapId = $gameVariables.value(my.discussionMap);
                 }
                 $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                 $gameSelfSwitches.clear();
