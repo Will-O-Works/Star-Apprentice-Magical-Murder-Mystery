@@ -1428,7 +1428,7 @@ var BHell = (function (my) {
                         b.speed=0;
                     }
                     else{
-                        b.speed=7;//resume speed
+                        b.speed=25;//resume speed
                     }
                     if (b.isOutsideMap()) {
                         b.destroy();
@@ -1566,7 +1566,7 @@ var BHell = (function (my) {
         var ret = null;
 
         var params = Object.assign({}, emitter.params);
-        params.bullet.speed = 7;// change to adjust player bullet speed YA (IMPORTANT NOTE: if u change this make sure to ctrl+f and search resume speed change that val too
+        params.bullet.speed = 25;// change to adjust player bullet speed YA (IMPORTANT NOTE: if u change this make sure to ctrl+f and search resume speed change that val too
 
         params.ranks = params.ranks || ["D", "C", "B", "A", "S"];
 
