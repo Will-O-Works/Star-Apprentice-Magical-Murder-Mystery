@@ -1057,6 +1057,87 @@
           "direction": 6
         }
     }
+  }, 
+  {
+	  "name": "SuperFanTestimony1_p1",
+	  "class": "BHell_Enemy_SuperFanTestimony1_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony1_p2",
+	  "class": "BHell_Enemy_SuperFanTestimony1_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony1_p3",
+	  "class": "BHell_Enemy_SuperFanTestimony1_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony2_p1",
+	  "class": "BHell_Enemy_SuperFanTestimony2_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "SuperFanTestimony2_p2",
+	  "class": "BHell_Enemy_SuperFanTestimony2_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony2_p3",
+	  "class": "BHell_Enemy_SuperFanTestimony2_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony3_p1",
+	  "class": "BHell_Enemy_SuperFanTestimony3_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "SuperFanTestimony3_p2",
+	  "class": "BHell_Enemy_SuperFanTestimony3_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony3_p3",
+	  "class": "BHell_Enemy_SuperFanTestimony3_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
   }
   ]
 }
