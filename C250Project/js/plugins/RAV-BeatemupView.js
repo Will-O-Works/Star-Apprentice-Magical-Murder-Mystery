@@ -10,7 +10,7 @@
  */
 
 var charPortrait = [
-    'Misc_Portrait',
+    'Nothing',
     'StarApprentice_Portrait[Exp3x3]',
     'Detective_Portrait',
     'Vagrant_Portrait[Exp3x3]',
@@ -123,14 +123,16 @@ function VN() {
         var startingPoint = fullRes - accessibleRes;
         for (i = 1; i <= charAmount; i++) {
             if (i === 1) {
-                $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
-                $bust(i).moveTo((activeChar === i ? sAX : sAX - charInc) - (slideSelf ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
-                if (slideSelf) {
-                    $bust(i).moveTo(activeChar === i ? sAX : sAX - charInc, activeChar === i ? charY : charY + charInc);
-                }
-                $bust(i).fadeIn();
-                if (chars[i - 1] != char.STARAPPRENTICE) {
-                    $bust(i).mirror();
+                if (chars[i - 1] != undefined) {
+                    $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
+                    $bust(i).moveTo((activeChar === i ? sAX : sAX - charInc) - (slideSelf ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
+                    if (slideSelf) {
+                        $bust(i).moveTo(activeChar === i ? sAX : sAX - charInc, activeChar === i ? charY : charY + charInc);
+                    }
+                    $bust(i).fadeIn();
+                    if (chars[i - 1] != char.STARAPPRENTICE) {
+                        $bust(i).mirror();
+                    }
                 }
                 charXs[i] = sAX;
                 currentChars[i] = chars[i - 1];
@@ -141,14 +143,16 @@ function VN() {
                 } else {
                     charXVal = startingPoint + ((accessibleRes / charAmount) * (i - 1));
                 }
-                $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
-                $bust(i).moveTo(charXVal + (slideOthers ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
-                if (slideOthers) {
-                    $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
-                }
-                $bust(i).fadeIn();
-                if (chars[i - 1] === char.STARAPPRENTICE) {
-                    $bust(i).mirror();
+                if (chars[i - 1] != undefined) {
+                    $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
+                    $bust(i).moveTo(charXVal + (slideOthers ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
+                    if (slideOthers) {
+                        $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
+                    }
+                    $bust(i).fadeIn();
+                    if (chars[i - 1] === char.STARAPPRENTICE) {
+                        $bust(i).mirror();
+                    }
                 }
                 charXs[i] = charXVal;
                 currentChars[i] = chars[i - 1];
@@ -162,7 +166,10 @@ function VN() {
     VN.showName = function(name) {
         $gameScreen.showPicture(2, name, 0, nameX, nameY, 100, 100, 255, 0);
     }
-    VN.activeChar = function(char, charAmount = charXs.length) {
+    VN.activeChar = function(char, evidence = false, charAmount = charXs.length) {
+        if (char != 1 && evidence) {
+            char += 2;
+        }
         var activeChars = [];
         if (typeof char === "object") {
             activeChars = char;
@@ -170,20 +177,22 @@ function VN() {
             activeChars = [char];
         }
         for (i = 1; i <= charAmount; i++) {
-            if (activeChars.contains(i)) {
-                if (i === 1) {
-                    $bust(i).moveTo(charXs[i], charY);
+            if (!evidence || i === 1 || i > 3) {
+                if (activeChars.contains(i)) {
+                    if (i === 1) {
+                        $bust(i).moveTo(charXs[i], charY);
+                    } else {
+                        $bust(i).moveTo(charXs[i], charY);
+                    }
+                    $bust(i).light();
                 } else {
-                    $bust(i).moveTo(charXs[i], charY);
+                    if (i === 1) {
+                        $bust(i).moveTo(charXs[i] - charInc, charY + charInc);
+                    } else {
+                        $bust(i).moveTo(charXs[i], charY + charInc);
+                    }
+                    $bust(i).dim();
                 }
-                $bust(i).light();
-            } else {
-                if (i === 1) {
-                    $bust(i).moveTo(charXs[i] - charInc, charY + charInc);
-                } else {
-                    $bust(i).moveTo(charXs[i], charY + charInc);
-                }
-                $bust(i).dim();
             }
         }
         if (typeof char === "object") {
@@ -338,8 +347,10 @@ function VN() {
         $bust(2).moveTo(480, 302, 0);
         $bust(3).loadBitmap('face', 'BG');
         $bust(3).moveTo(480, 340, 0);
-        $bust(2).light();
-        $bust(3).light();
+        $bust(2).light(0);
+        $bust(3).light(0);
+        $bust(2).fadeIn();
+        $bust(3).fadeIn();
     }
     VN.end = function() {
         for (i = 1; i <= charXs.length; i++) {

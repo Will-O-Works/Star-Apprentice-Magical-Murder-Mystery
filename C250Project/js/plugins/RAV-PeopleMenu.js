@@ -85,6 +85,7 @@ Game_System.prototype.initialize = function() {
     this.characterNamePlates = ["Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question", "Name_Question"];
     this.characterTexts = ["???", "???", "???", "???", "???", "???", "???", "???"];
     this.characterLevels = [0,0,0,0,0,0,0,0];
+    this.evidenceLevel = 0;
 };
 
 function Character_Data() {
@@ -112,16 +113,16 @@ Character_Data.Names = function(character, level) {
                     return "???";
                     break;
                 case 1:
+                case 2:
+                case 3:
+                case 4:
                     return "Detective";
                     break;
-                case 2:
-                    return this.Names(character, 1);
-                    break;
-                case 3:
+                case 5:
                     return "Maxwell Lasnam";
                     break;
                 default: 
-                    return this.Names(character, 3);
+                    return this.Names(character, 5);
                     break;
             }
             break;
@@ -132,13 +133,17 @@ Character_Data.Names = function(character, level) {
                 case 1:
                 case 2:
                 case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
                     return "Cat Lady";
                     break;
-                case 4:
+                case 8:
                     return "Roxanne";
                     break;
                 default:
-                    return this.Names(character, 4);
+                    return this.Names(character, 8);
                     break;
             }
             break;
@@ -148,10 +153,13 @@ Character_Data.Names = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return "Charlotte"
+                    return "Fan";
+                    break;
+                case 2:
+                    return "Charlotte";
                     break;
                 default: 
-                    return this.Names(character, 1);
+                    return this.Names(character, 2);
                     break;
             }
             break;
@@ -160,8 +168,11 @@ Character_Data.Names = function(character, level) {
                 case 0:
                     return "???";
                     break;
+                case 1:
+                    return "Lily";
+                    break;
                 default: 
-                    return this.Names(character, 0);
+                    return this.Names(character, 1);
                     break;
             }
             break;
@@ -170,8 +181,11 @@ Character_Data.Names = function(character, level) {
                 case 0:
                     return "???";
                     break;
+                case 1:
+                    return "Iris";
+                    break;
                 default: 
-                    return this.Names(character, 0);
+                    return this.Names(character, 1);
                     break;
             }
             break;
@@ -180,7 +194,7 @@ Character_Data.Names = function(character, level) {
                 case 0:
                     return "???";
                 case 1:
-                    return "Victoria";
+                    return "Victoria Windsor";
                     break;
                 default: 
                     return this.Names(character, 1);
@@ -225,13 +239,17 @@ Character_Data.NamePlates = function(character, level) {
                 case 1:
                 case 2:
                 case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
                     return "Name_CatLady";
                     break;
-                case 4:
+                case 8:
                     return "Name_Vagrant";
                     break;
                 default:
-                    return this.NamePlates(character, 4);
+                    return this.NamePlates(character, 8);
                     break;
             }
             break;
@@ -243,8 +261,11 @@ Character_Data.NamePlates = function(character, level) {
                 case 1:
                     return "Name_Fan"
                     break;
+                case 2:
+                    return "Name_Charlotte"
+                    break;
                 default: 
-                    return this.NamePlates(character, 1);
+                    return this.NamePlates(character, 2);
                     break;
             }
             break;
@@ -253,8 +274,11 @@ Character_Data.NamePlates = function(character, level) {
                 case 0:
                     return "Name_Question";
                     break;
+                case 1:
+                    return "Name_Black";
+                    break;
                 default: 
-                    return this.NamePlates(character, 0);
+                    return this.NamePlates(character, 1);
                     break;
             }
             break;
@@ -263,8 +287,11 @@ Character_Data.NamePlates = function(character, level) {
                 case 0:
                     return "Name_Question";
                     break;
+                case 1:
+                    return "Name_White";
+                    black;
                 default: 
-                    return this.NamePlates(character, 0);
+                    return this.NamePlates(character, 1);
                     break;
             }
             break;
@@ -312,8 +339,11 @@ Character_Data.Texts = function(character, level) {
                 case 3:
                     return this.Texts(character, 2) + "\n ★ He's been the victim of a\n     heinous crime! I must find\n     whoever did this!";
                     break;
+                case 4:
+                    return this.Texts(character, 3) + "\n ★ Whoever murdered him knew\n     about his abilities and what\n     room he would be in.";
+                    break;
                 default: 
-                    return this.Texts(character, 3);
+                    return this.Texts(character, 4);
                     break;
             }
             break;
@@ -326,19 +356,33 @@ Character_Data.Texts = function(character, level) {
                     return " ★ Has lost her cat, but I'm \n     going to find it.";
                     break;
                 case 2:
-                    return this.Texts(character, 1) + "\n ★ The cat, Snowy, has been \n     found!";
+                    return this.Texts(character, 1) + "\n ★ The cat has been \n     found!";
                     break;
-                case 3:
-                    return this.Texts(character, 2) + "\n ★ Has some kind of history with\n     the Detective."
+                case 3: 
+                    return this.Texts(character, 1) + "\n ★ The cat, Snowy, has been\n     found!";
                     break;
                 case 4:
-                    return this.Texts(character, 3) + "\n ★ Roxie was an informant for \n     the Detective. She won't give \n     me details, but the two of \n     them came onto the train to \n     investigate something."
+                    if ($gameSystem.characterLevels[character] < 10) {
+                        return this.Texts(character, 3) + "\n ★ Claims girl in the next car\n     saw her coming out of the\n     Detective's room."
+                    } else {
+                        return this.Texts(character, 3) + "\n ★ Claims girl in the next car\n     saw her coming out of the\n     Detective's room. The girl\n     turned out to be Charlotte.\n     Alibi confirmed."
+                    }
                     break;
                 case 5:
-                    return this.Texts(character, 4) + "\n ★ Whoever they were \n     investigating and the \n     murderer are on this train, \n     and they're in first class \n     with us."
+                    return this.Texts(character, 4) + "\n ★ She had some kind of history\n     with the Detective."
+                    break;
+                case 6:
+                    return this.Texts(character, 5) + "\n ★ Her ticket was purchased\n     before the Detective's, plus\n     our room was changed, so she\n     couldn't have known where he\n     would be beforehand. But why\n     does she know when his ticket\n     was bought?"
+                    break;
+                case 7:
+                case 8:
+                    return this.Texts(character, 6) + "\n ★ She was an informant for\n     the Detective. She won't give \n     me details, but the two of \n     them came onto the train to \n     investigate something.";
+                    break;
+                case 9:
+                    return this.Texts(character, 7) + "\n ★ The investigation target and\n     the murderer are on this\n     train, and they're in first\n     class with us."
                     break;
                 default: 
-                    return this.Texts(character, 5);
+                    return this.Texts(character, 9);
                     break;
             }
             break;
@@ -348,7 +392,10 @@ Character_Data.Texts = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return "Detective Lasnam's biggest fan... apparently."
+                    return " ★ Apparently, the detective\n     has a fan. A big, crazy one.\n ★ She wants to meet the\n     Detective, but that'll have to\n     wait."
+                    break;
+                case 2:
+                    return this.Texts(character, 1) + "\n ★ Despite my better judgement,\n     Charlotte will be assisting\n     me on this case. I'm mostly\n     trying to keep her out of\n     trouble.\n ★ Charlotte confirmed\n     Roxanne's alibi."
                     break;
                 default: 
                     return this.Texts(character, 1);
@@ -360,8 +407,14 @@ Character_Data.Texts = function(character, level) {
                 case 0:
                     return "???";
                     break;
+                case 1:
+                    return " ★ Works for Victoria Windsor.\n     Cuddly as a landmine. Iris'\n     twin sister.";
+                    break;
+                case 2:
+                    return this.Texts(character, 1) + " ★ She was in the Military."
+                    break;
                 default: 
-                    return this.Texts(character, 0);
+                    return this.Texts(character, 2);
                     break;
             }
             break;
@@ -370,8 +423,11 @@ Character_Data.Texts = function(character, level) {
                 case 0:
                     return "???";
                     break;
+                case 1:
+                    return " ★ Works for Victoria Windsor.\n     Saccharine sweet. Lily's\n     twin sister.";
+                    break;
                 default: 
-                    return this.Texts(character, 0);
+                    return this.Texts(character, 1);
                     break;
             }
             break;
@@ -380,8 +436,11 @@ Character_Data.Texts = function(character, level) {
                 case 0:
                     return "???";
                     break;
+                case 1:
+                    return " ★ Owner of the Windsor\n     Locomotive Company, the line\n     I'm on right now."
+                    break;
                 default: 
-                    return this.Texts(character, 0);
+                    return this.Texts(character, 1);
                     break;
             }
             break;
@@ -408,13 +467,15 @@ Scene_People.prototype.initialize = function() {
     Scene_MenuBase.prototype.initialize.call(this);
 };
 
-Scene_People.changeChar = function (char) {
+Scene_People.changeChar = function (chara) {
     // Sets the character
-    character = char;
-    if ($gameSystem.characterLevels[character] == 0) {
+    character = chara;
+    console.log(character === char.TYCOON);
+    console.log($gameSystem.characterLevels[character]);
+    if ($gameSystem.characterLevels[character] === 0 || (character === char.TYCOON && $gameSystem.characterLevels[character] === 1)) {
         characterPortrait = characterPortraits[0];
     } else {
-        characterPortrait = characterPortraits[char];
+        characterPortrait = characterPortraits[character];
     }
     if (typeof selectedCharacterImage != "undefined") {
         selectedCharacterImage.setTransform(Math.ceil((70 * character)/2)*2, selectedCharacterImage.y);

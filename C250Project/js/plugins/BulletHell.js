@@ -5225,7 +5225,7 @@ var BHell = (function (my) {
                 }
                 TouchInput.clear();
                 //YA extra if condition to allow phases
-                //ravyn adjusted to go to invetween areas
+                //ravyn adjusted to go to inbetween areas
                 if (my.player.PhaseOver === true) {
                     my.player.PhaseOver = false;
                     $gameVariables.setValue(10, my.player.nextMap)

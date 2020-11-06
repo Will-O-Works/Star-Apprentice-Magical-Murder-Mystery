@@ -519,6 +519,55 @@ Window_ItemList.prototype.drawItem = function(index) {
     }
 };
 
+// Cursor wrapping code
+Window_ItemList.prototype.cursorUp = function(wrap) {
+    var index = this.index();
+    var maxItems = this.maxItems();
+    var maxCols = this.maxCols();
+    if (index >= maxCols || (wrap && maxCols === 1)) {
+        this.select((index - maxCols + maxItems) % maxItems);
+    } else if (index === 0) {
+        this.select(this._data.length - 1);
+    } else if (index === 1) {
+        this.select(this._data.length - 1);
+    }
+};
+
+Window_ItemList.prototype.cursorLeft = function(wrap) {
+    var index = this.index();
+    var maxItems = this.maxItems();
+    var maxCols = this.maxCols();
+    if (maxCols >= 2 && (index > 0 || (wrap && this.isHorizontal()))) {
+        this.select((index - 1 + maxItems) % maxItems);
+    } else if (index === 0) {
+        this.select(this._data.length - 1);
+    }
+};
+
+Window_ItemList.prototype.cursorDown = function(wrap) {
+    var index = this.index();
+    var maxItems = this.maxItems();
+    var maxCols = this.maxCols();
+    if (index < maxItems - maxCols || (wrap && maxCols === 1)) {
+        this.select((index + maxCols) % maxItems);
+    } else if (index === this._data.length - 1) {
+        this.select(0);
+    } else if (!this.isCursorLeft && index === this._data.length - 2) {
+        this.select(this._data.length - 1);
+    }
+};
+
+Window_ItemList.prototype.cursorRight = function(wrap) {
+    var index = this.index();
+    var maxItems = this.maxItems();
+    var maxCols = this.maxCols();
+    if (maxCols >= 2 && (index < maxItems - 1 || (wrap && this.isHorizontal()))) {
+        this.select((index + 1) % maxItems);
+    } else if (index === this._data.length - 1) {
+        this.select(0);
+    }
+};
+
 Window_ItemList.prototype.drawItemName = function(item, x, y, width) {
     width = width || 312;
     if (item) {
@@ -563,17 +612,7 @@ Scene_Item.prototype.update = function() {
         var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
         var rightValid = itemWin.index() != itemWin.maxItems() - 1;
         var leftValid = itemWin.index() != 0;
-        if (leftValid) {
-            evidenceLeftArrowImage.y = evidenceArrowY;
-        } else if (evidenceLeftArrowTimer <= 0) {
-            evidenceLeftArrowImage.y = -200;
-        }
-        if (rightValid) {
-            evidenceRightArrowImage.y = evidenceArrowY;
-        } else if (evidenceRightArrowTimer <= 0){
-            evidenceRightArrowImage.y = -200;
-        }
-        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isRepeated())) && rightValid) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isRepeated())) && leftValid)) {
+        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isRepeated()))) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isRepeated())))) {
             if (Input.isRepeated("right") || (mouseOnRightButton)) {
                 evidenceRightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
                 itemWin.cursorRight(Input.isTriggered('right') || (mouseOnRightButton && TouchInput.isTriggered()));
@@ -688,7 +727,13 @@ Window_MenuActor.prototype.update = function(index) {
         selectedItem.x = itemReadX + 72;
         selectedItem.y = itemReadY + 86;
         this.drawText(selectedItemName, textDescX, textDescY);
-        var tempDesc = selected_item.description.split(/\n|\\n/);
+        var unslicedDesc = selected_item.description;
+        if (selectedItemName === "Old Tickets") {
+            if ($gameSystem.evidenceLevel >= 1) {
+                unslicedDesc += "\n ★ Roxie's tickets were bought\nbefore our original ones. She\ncouldn't have known which room\nwe were in!";
+            }
+        }
+        var tempDesc = unslicedDesc.split(/\n|\\n/);
         for (i = 0; i < tempDesc.length; i++) {
             this.drawText(tempDesc[i], textDescX, textDescY + this.lineHeight() * (2 + i));
         }
