@@ -142,7 +142,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony3_p1;
 
 	BHell_Enemy_SuperFanTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 300;
         params.hitbox_h = 100;
@@ -186,7 +186,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony3_p2;
 
 	BHell_Enemy_SuperFanTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 300;
         params.hitbox_h = 100;
@@ -230,7 +230,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony3_p3;
 
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 300;
         params.hitbox_h = 100;

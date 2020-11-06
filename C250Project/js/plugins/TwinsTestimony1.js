@@ -26,6 +26,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	var count = 0;  // restore variable for sine shaped bullets by V.L.
 	var type = "n"; 
 	var timer = 60; 
+	var a = 0; 
 	
 	//variable added to allow adjustable hitboxs YA 2020/10/26
     var hitboxshape = "dot";
@@ -47,6 +48,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 		count = params.count || count;   // restore variable for sine shaped bullets by V.L.
 		type = params.type || type; 
 		timer = params.timer || timer; 
+		a = params.a || a; 
     }
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
@@ -67,6 +69,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	this.type = type; 
 	this.timer = timer; 
 	this.count = 0; 
+	this.a = a; 
 	
 	this.hitboxshape = hitboxshape;
     this.hitboxradius = hitboxradius;
@@ -79,6 +82,22 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
  */
 BHell_Marching_Bullet.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
+	
+	if (this.type == "s") {
+		if (this.count < 50) {
+			this.count += 1; 
+			this.speed = 0; 
+		} else {
+			if (this.timer == 1) {
+				this.angle = -Math.PI/2; 
+			} else {
+				this.angle = Math.PI/2; 
+			}
+			
+			this.speed += 0.01; 
+		}
+		
+	}
 
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
@@ -114,6 +133,10 @@ BHell_Marching_Bullet.prototype.update = function () {
 		} else {
 			this.destroy(); 
 		}
+	}
+	
+	if (this.type == "a") {  // for emitter linear
+		this.speed += this.a; 
 	}
 };
 
@@ -493,6 +516,148 @@ var BHell = (function (my) {
         }
 		
 		// console.log("shooting...");
+    };
+
+
+    return my;
+} (BHell || {}));
+
+//=============================================================================
+// Updown marching Bullet Emitters
+//=============================================================================
+
+var BHell = (function (my) {
+	
+	var BHell_Emitter_Updown = my.BHell_Emitter_Updown = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Updown.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Updown.prototype.constructor = BHell_Emitter_Updown;
+	
+    BHell_Emitter_Updown.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = "$TwinsBulletsBlack";
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = 8; // this.params.direction;
+		
+		this.num_bullet = 12; // number of bullets in a Testimony
+		this.attack_between = Graphics.width / this.num_bullet; // time between two major attacks
+
+		this.baseSpeed = 1; 
+		this.angle = Math.PI / 2; 
+		this.count = 1; 
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Updown.prototype.shoot = function () {
+		
+		this.center_x = Graphics.width / 4 + Graphics.width / 2 * Math.random() ; 
+		if (this.count == 0) {
+			this.b_y = Graphics.height - 1; 
+			this.angle = - Math.PI / 2; 
+			this.count = 1; 
+		} else {
+			this.b_y = 0; 
+			this.angle = Math.PI / 2; 
+			this.count = 0; 
+		}
+		
+		for (var j = 0; j < this.num_bullet; j++) {
+			
+			for (var k = 0; k < 5; k ++) {
+				
+				this.bulletParams.speed = this.baseSpeed + k / 2; 
+				this.bulletParams.type = "a"; 
+				this.bulletParams.a = (this.num_bullet - j) / 150; 
+				this.b_x = this.center_x + j * this.attack_between; 
+				
+				var bullet = new my.BHell_Marching_Bullet(this.b_x, this.b_y, this.angle, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+				
+				this.b_x = this.center_x - j * this.attack_between; 
+				var bullet = new my.BHell_Marching_Bullet(this.b_x, this.b_y, this.angle, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+			}
+
+        }
+		
+		// console.log("shooting...");
+    };
+
+
+    return my;
+} (BHell || {}));
+
+
+//=============================================================================
+// Ring Bullet Emitters
+//=============================================================================
+
+var BHell = (function (my) {
+	
+	var BHell_Emitter_Ring = my.BHell_Emitter_Ring = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Ring.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Ring.prototype.constructor = BHell_Emitter_Ring;
+	
+    BHell_Emitter_Ring.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = 6;
+		this.bulletParams.phase = 1; 
+		
+		this.num_bullet = 24; 
+		this.angle = Math.PI - Math.PI / 4; 
+		this.baseSpeed = 0; 
+		this.timer = 0; 
+		
+		this.center_x = Graphics.width / 2; // Graphics.width - 200; 
+		this.center_y = Graphics.height - 125; // Graphics.height / 2; 
+		
+		if (params != null) {
+			this.num_bullet = params.num_bullet || this.num_bullet;
+			this.attack_between = params.attack_between || this.attack_between;
+			this.type = params.type || this.type; 
+        }
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Ring.prototype.shoot = function () {
+		
+		for (var n = 0; n < this.num_bullet; n++) {
+			this.aimingAngle = this.angle + 3/2 * Math.PI / this.num_bullet * n;
+				
+			var bullet = new my.BHell_Marching_Bullet(this.center_x, this.center_y, this.aimingAngle, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+				
+		}
+			
+		this.angle += Math.PI / this.num_bullet; 
+		
     };
 
 
