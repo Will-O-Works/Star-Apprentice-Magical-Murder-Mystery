@@ -212,7 +212,6 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-		this.bulletParams.speed = 2; 
         this.bulletParams.sprite = "$TwinsBulletsWhite";
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = 6;
@@ -224,13 +223,17 @@ var BHell = (function (my) {
 		
 		this.center_x = Graphics.width / 2; 
 		this.center_y = Graphics.height / 2; 
+		this.speed = 2; 
 		
 		if (params != null) {
             this.center_x = params.center_x || this.center_x;
 			this.center_y = params.center_y || this.center_y;
 			this.space_angle = params.space_angle || this.space_angle; 
 			this.bullet_count = params.bullet_count || this.bullet_count; 
+			this.speed = params.speed || this.speed; 
         }
+		
+		this.bulletParams.speed = this.speed; 
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
@@ -293,6 +296,13 @@ var BHell = (function (my) {
 		this.center_y = Graphics.height / 2; 
 		this.count = 24; 
 		this.speed = 4; 
+		
+		if (params != null) {
+            this.center_x = params.center_x || this.center_x;
+			this.center_y = params.center_y || this.center_y;
+			this.count = params.count || this.count; 
+			this.speed = params.speed || this.speed; 
+        }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
@@ -390,6 +400,123 @@ var BHell = (function (my) {
 	
     return my;
 } (BHell || {}));
+
+
+//=============================================================================
+// Go Player Emitters
+//=============================================================================
+
+var BHell = (function (my) {
+	
+	var BHell_Emitter_Go_Player = my.BHell_Emitter_Go_Player = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Go_Player.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Go_Player.prototype.constructor = BHell_Emitter_Go_Player;
+	
+    BHell_Emitter_Go_Player.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = "$TwinsBulletsWhite";
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = 8; //this.params.direction;
+		
+		this.angle = 0; 
+		this.angle_change = Math.PI/18; 
+		this.radius = 200; // 2 * Graphics.width / 3; 
+		this.center_x = my.player.x; 
+		this.center_y = my.player.y; 
+		this.count = 12; 
+		this.speed = 1.5; 
+		this.num = 0; 
+		
+		if (params != null) {
+			this.count = params.count || this.count;
+			this.speed = params.speed || this.speed;
+        }
+	
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Go_Player.prototype.shoot = function () {
+		
+		if (this.num == 0) {
+			this.bullets = [];
+			
+			var j;
+			var bullet;
+
+			for (j = 0; j < this.count; j++) {
+				this.bulletParams.type = ""; 
+				bullet = new my.BHell_Bullet(200 * Math.cos(2 * Math.PI / this.count * j) + my.player.x, 200 * Math.sin(2 * Math.PI / this.count * j) + my.player.y, 2 * Math.PI / this.count * j, this.bulletParams, this.bulletList);
+				bullet.update = function () {
+					this.x = 200 * Math.cos(this.angle) + my.player.x;
+					this.y = 200 * Math.sin(this.angle) + my.player.y;
+					this.angle += Math.PI / 180;
+					if (this.angle >= Math.PI * 2) {
+						this.angle -= Math.PI * 2;
+					}
+				};
+
+				this.bullets.push(bullet);
+				this.bulletList.push(bullet);
+				this.parent.addChild(bullet);
+			}
+		}
+		
+		
+		for (j = 0; j < this.count; j++) {
+			
+			for (var k = 0; k < 3; k++) {
+				this.bulletParams.speed = 5 + k; 
+				this.bulletParams.direction = 6;
+				this.bulletParams.type = "t"; 
+				var b = new my.BHell_Marching_Bullet(200 * Math.cos(2 * Math.PI / this.count * j) + my.player.x, 200 * Math.sin(2 * Math.PI / this.count * j) + my.player.y, 2 * Math.PI / this.count * j, this.bulletParams, this.bulletList);
+
+				this.bulletList.push(b);
+				this.parent.addChild(b);
+			}
+			
+		}
+		
+		this.bulletParams.type = ""; 
+		
+		this.bulletParams.direction = 0;
+
+		this.center_x = my.player.x; 
+		this.center_y = my.player.y; 
+			
+		var dx = - this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num); 
+		var dy = - this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num); 
+		this.aimingAngle = Math.atan2(dy, dx);
+
+		this.bulletParams.timer = this.radius / this.bulletParams.speed; 
+		this.bulletParams.speed = this.speed; 
+			
+		var bx = this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num) + this.center_x; 
+		var by = this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num) + this.center_y; 
+			
+		var bullet = new my.BHell_Bullet(bx, by, this.aimingAngle, this.bulletParams, this.bulletList);
+            
+		this.parent.addChild(bullet);
+		this.bulletList.push(bullet);
+		
+		this.angle += this.angle_change; 
+		this.num += 1; 
+    };
+	
+    return my;
+} (BHell || {}));
+
 
 //=============================================================================
 // TwinsTestimony2 Pattern 1

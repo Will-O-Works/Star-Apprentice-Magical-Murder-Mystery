@@ -30,6 +30,13 @@ var BHell = (function (my) {
 		this.center_y = 60; 
 		this.count = 24; 
 		this.speed = 4; 
+		this.type = 0; 
+		
+		if (params != null) {
+			this.type = params.type || this.type;
+			this.center_x = params.center_x || this.center_x;
+			this.speed = params.speed || this.speed;
+        }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
@@ -38,7 +45,9 @@ var BHell = (function (my) {
 
     BHell_Emitter_Heart_Drop.prototype.shoot = function () {
 		this.dir = this.angle; 
-		this.center_x = my.player.x; 
+		if (this.type == 0) {
+			this.center_x = my.player.x; 
+		} 
 
 		for (var num = 0; num < this.count; num ++) {
 			var dx = (16 * Math.sin(this.dir) * Math.sin(this.dir) * Math.sin(this.dir)); 
