@@ -201,7 +201,11 @@ function VN() {
             VN.showName(namePlate);
         } else {
             activeChar = char;
-            VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
+            if (char != 0) {
+                VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
+            } else {
+                $gameScreen.erasePicture(2);
+            }
         }
     }
     VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length,) {
