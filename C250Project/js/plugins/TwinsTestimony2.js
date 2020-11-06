@@ -456,6 +456,7 @@ var BHell = (function (my) {
 			var bullet;
 
 			for (j = 0; j < this.count; j++) {
+				this.bulletParams.type = ""; 
 				bullet = new my.BHell_Bullet(200 * Math.cos(2 * Math.PI / this.count * j) + my.player.x, 200 * Math.sin(2 * Math.PI / this.count * j) + my.player.y, 2 * Math.PI / this.count * j, this.bulletParams, this.bulletList);
 				bullet.update = function () {
 					this.x = 200 * Math.cos(this.angle) + my.player.x;
@@ -471,6 +472,23 @@ var BHell = (function (my) {
 				this.parent.addChild(bullet);
 			}
 		}
+		
+		
+		for (j = 0; j < this.count; j++) {
+			
+			for (var k = 0; k < 3; k++) {
+				this.bulletParams.speed = 5 + k; 
+				this.bulletParams.direction = 6;
+				this.bulletParams.type = "t"; 
+				var b = new my.BHell_Marching_Bullet(200 * Math.cos(2 * Math.PI / this.count * j) + my.player.x, 200 * Math.sin(2 * Math.PI / this.count * j) + my.player.y, 2 * Math.PI / this.count * j, this.bulletParams, this.bulletList);
+
+				this.bulletList.push(b);
+				this.parent.addChild(b);
+			}
+			
+		}
+		
+		this.bulletParams.type = ""; 
 		
 		this.bulletParams.direction = 0;
 

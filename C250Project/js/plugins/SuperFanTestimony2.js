@@ -219,7 +219,7 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Updown(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
 		
-		emitterParams.period = 10; 
+		emitterParams.period = 20; 
 		this.emitters.push(new my.BHell_Emitter_Go_Player(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 

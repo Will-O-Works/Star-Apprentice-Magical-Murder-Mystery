@@ -138,6 +138,10 @@ BHell_Marching_Bullet.prototype.update = function () {
 	if (this.type == "a") {  // for emitter linear
 		this.speed += this.a; 
 	}
+	
+	if (this.type == "t") {
+		this.angle += 0.015; 
+	}
 };
 
 BHell_Marching_Bullet.prototype.isOutsideMap = function () {
