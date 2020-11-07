@@ -138,8 +138,8 @@ var BHell = (function (my) {
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = 2;
 		
-		this.num_waves = 12; // number of waves in a Testimony
-		this.num_bullet = 15; // number of bullets in a Testimony
+		this.num_waves = 8; // number of waves in a Testimony
+		this.num_bullet = 12; // number of bullets in a Testimony
 		this.attack_between = 150; // time between two major attacks
 		
 		if (params != null) {
@@ -166,7 +166,7 @@ var BHell = (function (my) {
 		if (this.timer > 100) {
 			for (var j = 0; j < this.num_waves; j++) {
 				this.bulletParams.speed = this.baseSpeed + this.count / 4; 
-				var bullet = new my.BHell_Bullet(this.x, this.y, this.angle + this.count * Math.PI / 180 + j * 2 * Math.PI / 12, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Bullet(this.x, this.y, this.angle + this.count * Math.PI / 180 + j * 2 * Math.PI / this.num_waves, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 			}
