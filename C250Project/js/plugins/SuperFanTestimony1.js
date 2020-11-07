@@ -264,7 +264,7 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_SuperSuperFanTestimony1_p3.prototype.update = function() {
+	BHell_Enemy_SuperFanTestimony1_p3.prototype.update = function() {
 		
 		if (this.bombedWrong == true) {
 			// Write the bombedWrong penalty in here

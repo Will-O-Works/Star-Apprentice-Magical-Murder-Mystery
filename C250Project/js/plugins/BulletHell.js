@@ -2650,7 +2650,6 @@ BHell_Enemy_Base.prototype.crash = function() {
         this.destroy();
     }
     $gameBHellResult.enemiesCrashed++;*/ 
-
     return false; //return true;
 };
 
@@ -2681,6 +2680,8 @@ BHell_Enemy_Base.prototype.destroy = function() {
 	} else {
 		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0}); 
 	} 
+	
+	my.controller.destroyEnemyBullets();
 	
 	my.player.bombs = 0;
     if (this.parent != null) {
