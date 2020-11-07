@@ -871,7 +871,7 @@
   },
   "Cat": {
     "name": "Cat",
-    "cols": 2,
+    "cols": 4,
     "rows": 2,
     "anchorX": 0.5,
     "anchorY": 1,
@@ -890,7 +890,7 @@
         "speed": 10,
         "adjust": false,
         "pattern": [
-          0
+          2
         ]
       },
       "idle6": {
@@ -898,7 +898,7 @@
         "speed": 10,
         "adjust": false,
         "pattern": [
-          3
+          6
         ]
       },
       "move4": {
@@ -915,8 +915,39 @@
         "speed": 10,
         "adjust": false,
         "pattern": [
-          2,
+          4,
+          5
+        ]
+      },
+      "duck4": {
+        "name": "duck4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
           3
+        ]
+      },
+      "duck6": {
+        "name": "duck6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          7
+        ]
+      },
+      "dance": {
+        "name": "dance",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
         ]
       }
     }
@@ -1126,6 +1157,173 @@
     "anchorX": 0.13,
     "anchorY": 1,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QKnifeRack-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "CurtainsOpen": {
+    "name": "CurtainsOpen",
+    "cols": 4,
+    "rows": 1,
+    "anchorX": 0.9,
+    "anchorY": 0.98,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QCurtainsOpen-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "idle4": {
+        "name": "idle4",
+        "speed": 15,
+        "adjust": false,
+        "pattern": [
+          0,
+          1,
+          2,
+          3
+        ]
+      }
+    }
+  },
+  "TableTopsChess": {
+    "name": "TableTopsChess",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1.66,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTableTopsChess-OW.png",
+    "poses": {}
+  },
+  "WasteBasket": {
+    "name": "WasteBasket",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.72,
+    "anchorY": 0.26,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWasteBasket-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Trash": {
+    "name": "Trash",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTrash-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "TrashDamaged": {
+    "name": "TrashDamaged",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTrashDamaged-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Dresser": {
+    "name": "Dresser",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1.05,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDresser-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Desk": {
+    "name": "Desk",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.81,
+    "anchorY": 1.16,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDesk-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "DeskChair": {
+    "name": "DeskChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.47,
+    "anchorY": 0.95,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDeskChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Knife": {
+    "name": "Knife",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.07,
+    "anchorY": 3,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QKnife-OW.png",
     "poses": {
       "default": {
         "name": "default",

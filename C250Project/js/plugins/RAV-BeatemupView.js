@@ -208,7 +208,7 @@ function VN() {
             }
         }
     }
-    VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length,) {
+    VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length) {
         var fullRes = 960;
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 

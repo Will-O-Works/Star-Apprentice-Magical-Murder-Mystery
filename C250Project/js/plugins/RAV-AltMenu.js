@@ -612,19 +612,24 @@ Scene_Item.prototype.update = function() {
         var mouseOnRightButton = mouseXOnRightButton && mouseYOnRightButton;
         var rightValid = itemWin.index() != itemWin.maxItems() - 1;
         var leftValid = itemWin.index() != 0;
-        if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isRepeated()))) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isRepeated())))) {
-            if (Input.isRepeated("right") || (mouseOnRightButton)) {
-                evidenceRightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
-                itemWin.cursorRight(Input.isTriggered('right') || (mouseOnRightButton && TouchInput.isTriggered()));
-                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
-            } else {
-                evidenceLeftArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
-                itemWin.cursorLeft(Input.isTriggered('left') || (mouseOnLeftButton && TouchInput.isTriggered()));
-                AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+        if ((this._itemWindow._data.length) != 1) {
+            if (((Input.isRepeated("right") || (mouseOnRightButton && TouchInput.isRepeated()))) || ((Input.isRepeated("left") || (mouseOnLeftButton && TouchInput.isRepeated())))) {
+                if (Input.isRepeated("right") || (mouseOnRightButton)) {
+                    evidenceRightArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
+                    itemWin.cursorRight(Input.isTriggered('right') || (mouseOnRightButton && TouchInput.isTriggered()));
+                    AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+                } else {
+                    evidenceLeftArrowTimer = arrowTime + 1 // Account for the one extra frame that resets it
+                    itemWin.cursorLeft(Input.isTriggered('left') || (mouseOnLeftButton && TouchInput.isTriggered()));
+                    AudioManager.playSe({name: 'select_hover', pan: 0, pitch: 100, volume: 90});
+                }
+                selectedItem.destroy();
+                this._actorWindow.contents.clear();
+                itemImageInit = false;
             }
-            selectedItem.destroy();
-            this._actorWindow.contents.clear();
-            itemImageInit = false;
+        } else {
+            evidenceLeftArrowImage.x = -200;
+            evidenceRightArrowImage.x = -200;
         }
     }
     selected_item = itemWin._data[itemWin.index()];
@@ -728,10 +733,17 @@ Window_MenuActor.prototype.update = function(index) {
         selectedItem.y = itemReadY + 86;
         this.drawText(selectedItemName, textDescX, textDescY);
         var unslicedDesc = selected_item.description;
-        if (selectedItemName === "Old Tickets") {
-            if ($gameSystem.evidenceLevel >= 1) {
-                unslicedDesc += "\n ★ Roxie's tickets were bought\nbefore our original ones. She\ncouldn't have known which room\nwe were in!";
-            }
+        switch (selectedItemName) {
+            case "Old Tickets":
+                if ($gameSystem.evidenceLevel >= 1) {
+                    unslicedDesc += "\n ★ Roxie's tickets were bought\nbefore our original ones. She\ncouldn't have known which room\nwe were in!";
+                }
+                break;
+            case "Open Window":
+                if ($gameSystem.evidenceLevel >= 2) {
+                    unslicedDesc += "\n ★ The window is letting out the\nsmell of the ashes. They're\ntrying to cover something up!";
+                }
+                break;
         }
         var tempDesc = unslicedDesc.split(/\n|\\n/);
         for (i = 0; i < tempDesc.length; i++) {
