@@ -274,9 +274,9 @@ var BHell = (function (my) {
 		my.player.can_bomb = false; 
 		my.player.currentLine = 2;
 		
-		for (var j = 0; j < 4; j ++) {
+		for (var j = 0; j < 5; j ++) {
 			emitterParams.period = 1; 
-			emitterParams.angle = j * Math.PI / 2;
+			emitterParams.angle = j * 2 * Math.PI / 5;
 			emitterParams.type = 0; 
 			this.emitters.push(new my.BHell_Emitter_Shape(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		}
