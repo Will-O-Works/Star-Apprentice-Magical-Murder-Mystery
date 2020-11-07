@@ -410,50 +410,130 @@ var BHell = (function (my) {
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.initializeDolla(parent);
+        this.initializeDollaV(parent);
+        this.initializeDollaH(parent);
+        
 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
-    BHell_Enemy_VictoriaTestimony2_p3.prototype.initializeDolla = function (parent) {
+    BHell_Enemy_VictoriaTestimony2_p3.prototype.initializeDollaV = function (parent) {
         var emitterParams = {};
         emitterParams.angle = Math.PI/2;
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 4;
-        emitterParams.bullet.speed = 4;
+        emitterParams.bullet.sprite = "$VictoriaBullets1";
+        emitterParams.bullet.direction = 8;
+        emitterParams.bullet.speed = 5;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
-        this.waveWidth =8;
-        for(var i =0;i<this.waveWidth;i++){
+        this.totalWidth =20;
+        for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
-            this.emitters[i].offsetX = 30-(i*30);
+            this.emitters[i].offsetX = 280-(i*30);
             this.emitters[i].offsetY = -100
         }
-        for(var i =this.waveWidth;i<this.waveWidth*2;i++){
+        emitterParams.angle = 3*Math.PI/2;
+        for(var i =this.totalWidth;i<(this.totalWidth*2);i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
-            this.emitters[i].offsetX = ((i%this.waveWidth)*30)-30;
-            this.emitters[i].offsetY = -100;
+            this.emitters[i].offsetX = 280-((i%this.totalWidth)*30);
+            this.emitters[i].offsetY = 400
         }
     };
-    BHell_Enemy_VictoriaTestimony2_p3.prototype.updateDolla = function() {
-        for(var wave =0;wave<4;wave++){
-            if (this.frameCounter==(2+(7*wave))) {//change to adjust block spawn rate
-                for(var i =0;i<this.waveWidth;i++){
+    BHell_Enemy_VictoriaTestimony2_p3.prototype.updateDollaV = function() {
+        this.shenanigns==false;
+        for(var wave =0;wave<12;wave++){
+            if (this.frameCounter==(120+(4*wave))) {//change to adjust block spawn rate
+                for(var i =6;i<this.totalWidth-6;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
-                //console.log(this.frameCounter);
-            }
-        } 
-        for(var wave =0;wave<4;wave++){
-            if (this.frameCounter==(58+(7*wave))) {//change to adjust block spawn rate
-                for(var i =this.waveWidth;i<this.waveWidth*2;i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
-                //console.log(this.frameCounter);
             }
         }
-        this.frameCounter = ((this.frameCounter) % 114)+1;
+        for(var wave =0;wave<6;wave++){
+            if (this.frameCounter==(220+(4*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalWidth;i<(this.totalWidth*2)-14;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                for(var i =this.totalWidth+14;i<(this.totalWidth*2);i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+            }
+        }
+        //---------------------------------------------------------------------------
+        for(var wave =0;wave<12;wave++){
+            if (this.frameCounter==(400+(4*wave))) {//change to adjust block spawn rate
+                for(var i =5;i<this.totalWidth-5;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                if(wave==11){this.shenanigns=true;}
+            };
+        };
+        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.shenanigns=false;} 
+    };
+    BHell_Enemy_VictoriaTestimony2_p3.prototype.initializeDollaH = function (parent) {
+        var emitterParams = {};
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction = 6;
+        emitterParams.bullet.speed = 7;
+        emitterParams.aim =false;
+        emitterParams.alwaysAim=false;
+        this.totalHeight =(this.totalWidth*2)+16;
+        this.totalHeight2= this.totalHeight+16;
+        for(var i =this.totalWidth*2;i<this.totalHeight;i++){
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[i].offsetX = -500;
+            this.emitters[i].offsetY = 70+((i%this.totalWidth)*20);
+        }
+        emitterParams.angle = Math.PI;
+        for(var i =this.totalHeight;i<this.totalHeight2;i++){
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[i].offsetX = 500;
+            this.emitters[i].offsetY = 70+((i%this.totalHeight)*20);
+        }
+    };
+    BHell_Enemy_VictoriaTestimony2_p3.prototype.updateDollaH = function() {
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(60+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalWidth*2)+4;i<this.totalHeight;i++){
+                    this.emitters[i].shoot(this.emitters,true);            
+                };
+            };
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(60+(4*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalHeight+4;i<this.totalHeight2;i++){
+                    this.emitters[i].shoot(this.emitters,true);            
+                };
+            };
+        }
+        //---------------------------------------------------------------------------
+        //---------------------------------------------------------------------------
+        for(var wave =0;wave<20;wave++){
+            if (this.frameCounter==(260+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalWidth*2)+8;i<this.totalHeight-4;i++){
+                    this.emitters[i].shoot(this.emitters,true);           
+                };
+            };
+        }
+        //---------------------------------------------------------------------------
+        for(var wave =0;wave<20;wave++){
+            if (this.frameCounter==(260+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalHeight)+12;i<this.totalHeight2;i++){
+                    this.emitters[i].shoot(this.emitters,true);         
+                };
+            };
+        }
+        for(var wave =0;wave<20;wave++){
+            if (this.frameCounter==(290+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalHeight)+4;i<this.totalHeight2-8;i++){
+                    this.emitters[i].shoot(this.emitters,true);            
+                };
+            };
+        }
+        //---------------------------------------------------------------------------
+        //---------------------------------------------------------------------------
     };
     BHell_Enemy_VictoriaTestimony2_p3.prototype.die = function() {
 		this.state = "dying";
@@ -476,7 +556,7 @@ var BHell = (function (my) {
 				// Write the bombedWrong penalty in here
 				this.p = 8; 
 				this.emitters[2].bulletParams.speed = 6; 
-				this.emitters[3].bulletParams.speed = 6; 
+				this.emitters[3].bulletParams.speed = 6;
 			}
 			if (my.player.bombed == true) {
 				this.destroy(); 
@@ -491,7 +571,8 @@ var BHell = (function (my) {
 				}
 				break;
 			case "active": // Shoot.
-                this.updateDolla(); 
+                this.updateDollaV(); 
+                this.updateDollaH(); 
 				break;
 			case "dying": // die.
 				this.destroy();
@@ -500,7 +581,7 @@ var BHell = (function (my) {
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
 		// Update the time counter and reset it every 20 seconds.
-		
+		this.frameCounter = ((this.frameCounter) % 1200)+1;
 	};
     return my;
 } (BHell || {}));
