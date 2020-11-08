@@ -1339,8 +1339,8 @@
     "name": "RoomSign10",
     "cols": 1,
     "rows": 1,
-    "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorX": 0.86,
+    "anchorY": 1.28,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign10-OW.png",
     "poses": {
       "default": {
@@ -1357,8 +1357,8 @@
     "name": "RoomSign11",
     "cols": 2,
     "rows": 1,
-    "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorX": 0.13,
+    "anchorY": 1.28,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign11-OW.png",
     "poses": {
       "default": {
