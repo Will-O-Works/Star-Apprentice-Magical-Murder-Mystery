@@ -5042,6 +5042,7 @@ var BHell = (function (my) {
 
     Scene_BHell.prototype.initialize = function () {
         Scene_Base.prototype.initialize.call(this);
+		this.credit_y = 0; 
     };
 
     Scene_BHell.prototype.create = function () {
@@ -5124,6 +5125,11 @@ var BHell = (function (my) {
 		
 		/* discussionMap change by V.L. */ 
 		switch (my.map) {
+			case 4: 
+			my.currentFace = ImageManager.loadFace("Empty", 0);
+			my.discussionMap = 0;
+			break; 
+			
 			case 3: 
 			case 6: 
 			case 8: 
@@ -5466,6 +5472,26 @@ var BHell = (function (my) {
         var y;
         var i;
 
+		// Credits V.L. 11/08/2020 
+		if (my.map == 4) {
+			this.credit = ImageManager.loadSystem("Credits", 0);
+			
+			var w = this.credit.width; // Graphics.width;
+			var h = this.credit.height; //Graphics.height;
+			
+			console.log(Graphics.height);
+			var sx = 0;
+			var sy = 0;
+			x = 0; 
+			y = Graphics.height - this.credit_y;  
+			if (this.credit_y < this.credit.height) {
+				this.credit_y += 1; 
+			}
+			
+			this.hud.bitmap.blt(this.credit, sx, sy, w, h, x, y, w, h);
+
+		} else {
+
         // Update lives:
         var w = this.life.patternWidth();
         var h = this.life.patternHeight();
@@ -5568,6 +5594,9 @@ var BHell = (function (my) {
                 this.hud.bitmap.fillRect(11, 4, (Graphics.width - 22) * my.bossHp / my.bossMaxHp, 8, "rgba(" + red + ", " + green + ", 0, 0.8)");
             }
         }
+		
+		// V.L. 11/08/2020
+		}
     };
 
     /**

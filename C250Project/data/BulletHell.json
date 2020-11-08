@@ -1237,6 +1237,15 @@
           "direction": 6
         }
     }
+  },
+  {
+	  "name": "Credits",
+	  "class": "BHell_Enemy_Credits",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
   }
   ]
 }
