@@ -124,14 +124,20 @@ var BHell = (function (my) {
 		// console.log(this.dir + 1);
 		// console.log(my.player.finisher_count);
 		
+		// for sentence building (Ohi)
+		console.log(this.sprite);
+		my.player.wordsList.push([$VagrantSentence, this.hitboxW, this.hitboxH]);
+		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		
-		// for sentence building (Ohi)
-		my.player.words += 1;
-		my.player.wordsList.append([this.bulletParams.sprite, this.hitboxW, this.hitboxH]);
 	};
+	
+	//BHell_Enemy_Finisher.prototype.update = function() {
+	//	console.log(this.sprite);
+	//	my.BHell_Enemy_Base.prototype.update.call(this);
+	//};
 
 	BHell_Enemy_Finisher.prototype.isOutsideMap = function () {
         return false;

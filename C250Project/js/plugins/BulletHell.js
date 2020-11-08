@@ -4308,10 +4308,7 @@ var BHell = (function (my) {
         }
         this.currentLine = 0;
 		// variables for sentence building (Ohi)
-		this.words = 0;
-		this.wordsList = {};
-		this.wordsX = 0;
-		this.wordsY	= 0;
+		this.wordsList = [];
         //variable for ZaWarudo
         this.Timestop = false;
 		// Determine if the player should use bomb or not by V.L.
@@ -5523,11 +5520,25 @@ var BHell = (function (my) {
 			
 		}
 		
-		for(var i = 0; i < this.words; i++){
-			sx = this.wordsX;
+		// draw sentence as it forms (Ohi)
+		var wordsX = 0;
+		for(var i = 0; i < my.player.wordsList.length; i++){
+			sx = 0;
 			sy = 0;
-			w = this.words[i][1];
-			this.hud.bitmap.blt(this.words[i][0]);
+			w = my.player.wordsList[i][1];
+			h = my.player.wordsList[i][2];
+			x = wordsX;
+			y = 0;
+			wordsX += w + 10;
+			
+			console.log(my.player.wordsList[i][0]);
+			console.log(sx)
+			console.log(sy);
+			console.log(w);
+			console.log(h);
+			console.log(x);
+			console.log(y);
+			this.hud.bitmap.blt(ImageManager.loadCharacter(my.player.wordsList[i][0]), sx, sy, w, h, x, y, w, h);
 		}
 
         // Testimony ravyn
