@@ -4310,6 +4310,7 @@ var BHell = (function (my) {
         this.currentLine = 0;
 		// variables for sentence building (Ohi)
 		this.wordsList = [];
+		this.finisherImage = "$VagrantSentence"; 
         //variable for ZaWarudo
         this.Timestop = false;
 		// Determine if the player should use bomb or not by V.L.
@@ -5586,7 +5587,7 @@ var BHell = (function (my) {
 		x = -80; 
 
 		for(var i = 0; i < my.player.wordsList.length; i++){
-			this.finisher = ImageManager.loadCharacter("$VagrantSentence", 0);
+			this.finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
 			
 			var w = this.finisher.width / 3; // Graphics.width;
 			var h = this.finisher.height / 4; //Graphics.height;

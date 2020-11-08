@@ -73,6 +73,7 @@ var BHell = (function (my) {
 		
 		this.radius = 600;
         this.counterclockwise = false;
+		my.player.finisherImage = image.characterName; 
 		
         params.hp = 10;
         params.speed = 2; // speed of boss moving 
@@ -121,8 +122,6 @@ var BHell = (function (my) {
 			my.player.finisher_correct = false; 
 		} 
 		my.player.finisher_count += 1; 
-		// console.log(this.dir + 1);
-		// console.log(my.player.finisher_count);
 		
 		// for sentence building (Ohi)
 		my.player.wordsList.push([this.dir, this.hitboxW, this.hitboxH]);
