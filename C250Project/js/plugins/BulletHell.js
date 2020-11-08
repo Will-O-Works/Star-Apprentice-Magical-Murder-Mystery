@@ -2510,6 +2510,7 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
     }
 
 	// Store the boss hp value by V.L. 
+	this.flash = true; 
 	this.prev_hp = this.hp; 
 	this.full_hp = this.hp; 
 	this.bombedWrong = false; 
@@ -2544,15 +2545,21 @@ BHell_Enemy_Base.prototype.checkCollision = function (x, y) {
  */
 BHell_Enemy_Base.prototype.update = function () {
 	
-	if (this.prev_hp == this.hp) {
-		if (this.bombedWrong == true) {
-			this.setColorTone([255, 0, 0, 1]);
+	// Update line color V.L. 11/08/2020
+	if (this.flash == true) {
+			
+		if (this.prev_hp == this.hp) {
+			if (this.bombedWrong == true) {
+				this.setColorTone([255, 0, 0, 1]);
+			} else {
+				this.setColorTone([0, 0, 0, 1]);
+			}
 		} else {
-			this.setColorTone([0, 0, 0, 1]);
+			this.setColorTone([255, 255, 0, 1]);
 		}
-	} else {
-		this.setColorTone([255, 255, 0, 1]);
+		
 	}
+
 	
 	this.prev_hp = this.hp; 
 	
@@ -2633,8 +2640,6 @@ BHell_Enemy_Base.prototype.shoot = function (t) {
  * Makes the enemy lose one hit point, possibly killing it.
  */
 BHell_Enemy_Base.prototype.hit = function () {
-	this.setColorTone([255, 255, 0, 1]);
-	
     this.hp--;
     $gameBHellResult.score += this.score;
 	
@@ -2653,7 +2658,6 @@ BHell_Enemy_Base.prototype.hit = function () {
         this.die();
         $gameBHellResult.enemiesKilled++;
     }
-
 };
 
 /**
@@ -5431,14 +5435,11 @@ var BHell = (function (my) {
                     Input.clear();
                 }
                 else {
-                    if (this.usingTouch === "touch") {
-                        my.player.deltaTo(TouchInput.dx, TouchInput.dy);
-                    }
-                    else if (this.usingTouch === "mouse") {
+                    if (this.usingTouch === true) {
 						// V.L. 11/07/2020
 						my.player.use_mouse = true; 
-						
                         my.player.moveTo(TouchInput.x, TouchInput.y);
+						
                     }
 
                     if (Input.isLastInputGamepad()) {
@@ -5465,19 +5466,18 @@ var BHell = (function (my) {
                             my.player.step(+1, 0);
                         }
                     }
+					
+					/* No need to hold left and move with the mouse any more V.L. 11/08/2020 */
+                    if (this.prev_x == TouchInput.x && this.prev_y == TouchInput.y) {
+                        this.usingTouch = false;
+                    } else {
+						this.usingTouch = true;
+					}
 
-                    if (TouchInput.isPressed()) {
-                        if (TouchInput._screenPressed) {
-                            this.usingTouch = "touch";
-                        }
-                        else {
-                            this.usingTouch = "mouse";
-                        }
-                    }
-                    else {
-                        this.usingTouch = "no";
-                    }
-
+					this.prev_x = TouchInput.x; 
+					this.prev_y = TouchInput.y; 
+					/* No need to hold left and move with the mouse any more V.L. 11/08/2020 */
+					
                     if (TouchInput.isPressed() || Input.isPressed('ok') || Input.isPressed('pagedown')) {
                         my.player.shoot(true);
                         document.body.style.cursor = 'none';
@@ -5494,7 +5494,7 @@ var BHell = (function (my) {
 					/**
 					Slow motion mode by V.L.
 					*/
-                    if (this.usingTouch === "no") {
+                    if (this.usingTouch === false) {
     					if (my.player.justSpawned == false) {
     						if (Input.isPressed('shift')) {
     							my.player.focusMode = true;

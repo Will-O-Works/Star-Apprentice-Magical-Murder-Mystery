@@ -330,6 +330,19 @@ var BHell = (function (my) {
 
     BHell_Enemy_VagrantTestimony4_p1.prototype.update = function () {
 		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
+		
         my.BHell_Sprite.prototype.update.call(this);
 		
 		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
@@ -537,6 +550,19 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantTestimony4_p2.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
 		
         my.BHell_Sprite.prototype.update.call(this);
 		
@@ -757,6 +783,19 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantTestimony4_p3.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
 		
         my.BHell_Sprite.prototype.update.call(this);
 		

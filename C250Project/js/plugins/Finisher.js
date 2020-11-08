@@ -126,9 +126,11 @@ var BHell = (function (my) {
 		// for sentence building (Ohi)
 		my.player.wordsList.push([this.dir, this.hitboxW, this.hitboxH]);
 		
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0});
+		if (this.parent != null) {
+			this.parent.removeChild(this);
+		}
+		this.enemyList.splice(this.enemyList.indexOf(this), 1);
 		
 	};
 	
