@@ -19,6 +19,7 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.initializeDollaV(parent);
         this.initializeDollaH(parent);
+        this.initializeZaWarudo(parent);
         
 
 		// set player.can_bomb to true by V.L.
@@ -77,8 +78,8 @@ var BHell = (function (my) {
             }
 		}
 		//----------------------------------------------------------------------
-		for(var wave =0;wave<4;wave++){
-            if (this.frameCounter==(120+(4*wave))) {//change to adjust block spawn rate
+		for(var wave =0;wave<40;wave++){
+            if (this.frameCounter==(270+(4*wave))) {//change to adjust block spawn rate
                 for(var i =this.totalWidth;i<(this.totalWidth*2)-12;i++){
                     this.emitters[i].shoot(this.emitters,true);
 				};
@@ -86,8 +87,14 @@ var BHell = (function (my) {
                     this.emitters[i].shoot(this.emitters,true);
                 };
             }
+        }
+        for(var wave =0;wave<30;wave++){
+            if (this.frameCounter==(320+(4*wave))) {//change to adjust block spawn rate
+                for(var i =8;i<(this.totalWidth)-8;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+				};
+            }
 		}
-        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.shenanigns=false;} 
     };
     BHell_Enemy_SuperFanTestimony3_p1.prototype.initializeDollaH = function (parent) {
         var emitterParams = {};
@@ -127,7 +134,74 @@ var BHell = (function (my) {
                 };
             };
 		}
-		//----------------------------------------------------------------------
+        //----------------------------------------------------------------------
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(440+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalWidth*2);i<this.totalHeight-8;i++){
+                    this.emitters[i].shoot(this.emitters,true);            
+                };
+            };
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(440+(4*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalHeight;i<this.totalHeight2-8;i++){
+                    this.emitters[i].shoot(this.emitters,true);            
+                };
+            };
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(495+(4*wave))) {//change to adjust block spawn rate
+                for(var i =(this.totalWidth*2)+8;i<this.totalHeight;i++){
+                    this.emitters[i].bulletParams.speed=4.5;
+                    this.emitters[i].shoot(this.emitters,true); 
+                    this.emitters[i].bulletParams.speed=7;           
+                };
+            };
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(495+(4*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalHeight+8;i<this.totalHeight2;i++){
+                    this.emitters[i].bulletParams.speed=4.5;
+                    this.emitters[i].shoot(this.emitters,true); 
+                    this.emitters[i].bulletParams.speed=7;           
+                };
+                if(wave==3){this.shenanigns=true;}
+            };
+        }
+        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.shenanigns=false;} 
+    };
+    BHell_Enemy_SuperFanTestimony3_p1.prototype.initializeZaWarudo = function (parent) {
+        var emitterParams={};
+        emitterParams.a = 0;
+        emitterParams.b = 2 * Math.PI;;
+        emitterParams.n = 20;
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.speed = 2;
+        emitterParams.bullet.num = 0;
+        emitterParams.rotating=true;
+        emitterParams.bullet.stoppable="false";
+        emitterParams.bullet.moveTime=100;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters[this.totalHeight2].offsetX=300;
+        this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters[this.totalHeight2+1].offsetX=-300;
+    };
+    BHell_Enemy_SuperFanTestimony3_p1.prototype.updateZaWarudo = function() {
+        if(this.frameCounter==270){
+            my.player.Timestop=true;
+        }
+        if(this.frameCounter%20 == 0&&my.player.Timestop==true&&this.frameCounter<370)
+        {
+            this.emitters[this.totalHeight2].shoot(true);
+            this.emitters[this.totalHeight2].bulletParams.num++;
+            this.emitters[this.totalHeight2+1].shoot(true);
+            this.emitters[this.totalHeight2+1].bulletParams.num++;
+        }
+        if(this.frameCounter==400){
+            my.player.Timestop=false;
+        }
     };
     BHell_Enemy_SuperFanTestimony3_p1.prototype.die = function() {
 		this.state = "dying";
@@ -167,6 +241,7 @@ var BHell = (function (my) {
 			case "active": // Shoot.
                 this.updateDollaV(); 
                 this.updateDollaH(); 
+                this.updateZaWarudo();
 				break;
 			case "dying": // die.
 				this.destroy();
