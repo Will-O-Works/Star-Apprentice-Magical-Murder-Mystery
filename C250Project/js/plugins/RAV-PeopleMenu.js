@@ -59,7 +59,8 @@ const char = {
     FAN: 4,
     BLACK: 5,
     WHITE: 6,
-    TYCOON: 7
+    TYCOON: 7,
+    JEEVES: 8
 };
 var characterPortraits = [
     miscPortrait,

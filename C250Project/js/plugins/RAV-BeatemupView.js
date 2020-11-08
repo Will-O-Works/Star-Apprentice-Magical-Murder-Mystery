@@ -17,7 +17,8 @@ var charPortrait = [
     'Fan_Portrait',
     'Black_Portrait',
     'White_Portrait',
-    'Tycoon_Portrait'
+    'Tycoon_Portrait',
+    'Jeeves_Portrait'
 ];
 
 var allNamePlate = "Name_All";
@@ -32,6 +33,7 @@ var currentChars = [];
 var nameX = 90;
 var nameY = 380;
 var fadeDist = 140;
+var jeevesPos = 0;
 var _ = undefined;
 
 function BeatEmUp() {
@@ -176,6 +178,9 @@ function VN() {
         } else {
             activeChars = [char];
         }
+        if (char === jeevesPos - 1) {
+            activeChars.push(jeevesPos);
+        }
         for (i = 1; i <= charAmount; i++) {
             if (!evidence || i === 1 || i > 3) {
                 if (activeChars.contains(i)) {
@@ -208,7 +213,7 @@ function VN() {
             }
         }
     }
-    VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length) {
+    VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length, slideDir = 1) {
         var fullRes = 960;
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
@@ -219,7 +224,7 @@ function VN() {
         var charAmount = charXs.length - 1;
         if (charPos === 1) {
             $bust(charPos).loadBitmap('face', charPortrait[char]);
-            $bust(charPos).moveTo((isActive ? sAX : sAX - charInc) - (slide ? fadeDist : 0), isActive ? charY : charY + charInc, 0);
+            $bust(charPos).moveTo((isActive ? sAX : sAX - charInc) - (slide ? fadeDist * slideDir : 0), isActive ? charY : charY + charInc, 0);
             if (slide) {
                 $bust(charPos).moveTo(isActive ? sAX : sAX - charInc, isActive ? charY : charY + charInc);
             }
@@ -270,6 +275,23 @@ function VN() {
         }
         currentChars[charPos] = char;
         VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
+    }
+    VN.addJeeves = function() {
+        var fullRes = 960;
+        var playerWidth = 280; // 280 is Minnie's max width
+        var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
+        var startingPoint = fullRes - accessibleRes;
+        var charAmount = charXs.length - 1;
+        $bust(charAmount + 1).loadBitmap('face', charPortrait[char.JEEVES]);
+        currentChars[charAmount + 1] = char.JEEVES;
+        charXs[charAmount + 1] = charXs[charAmount];
+        var charXVal = charXs[charAmount] + 200;
+        $bust(charAmount + 1).moveTo(charXs[charAmount + 1], charY, 0);
+        $bust(charAmount + 1).moveTo(charXVal, charY, 40);
+        $bust(charAmount + 1).fadeIn(40);
+        charXs[i] = charXVal;
+        $bust(charAmount + 1).light(0);
+        jeevesPos = charAmount + 1;
     }
     VN.removeChar = function(charPos, isActive = false, slide = true) {
         var prevActive = activeChar;
