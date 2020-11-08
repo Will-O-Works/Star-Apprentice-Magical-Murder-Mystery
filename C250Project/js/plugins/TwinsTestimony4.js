@@ -28,10 +28,10 @@ BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
 	var bounce = 0; 
 	
 	//variable added to allow adjustable hitboxs YA 2020/10/26
-    var hitboxshape = "dot";
+    var hitboxshape = "circle";
     var hitboxheight = 0;
     var hitboxwidth = 0;
-    var hitboxradius = 0;
+    var hitboxradius = 11;
 
 
     if (params != null) {

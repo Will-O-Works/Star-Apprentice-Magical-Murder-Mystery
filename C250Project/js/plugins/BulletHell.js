@@ -5125,12 +5125,16 @@ var BHell = (function (my) {
 		
 		/* discussionMap change by V.L. */ 
 		switch (my.map) {
+			
+			// Credits room
 			case 4: 
 			my.currentFace = ImageManager.loadFace("Empty", 0);
 			my.discussionMap = 0;
 			break; 
 			
+			// Vagrant Testimony
 			case 3: 
+			case 5: 
 			case 6: 
 			case 8: 
 			case 9: 
@@ -5138,17 +5142,43 @@ var BHell = (function (my) {
 			my.discussionMap = 12;
 			break; 
 			
+			// Twins Testimony
 			case 13: 
+			my.currentFace = ImageManager.loadFace("Black_Portrait", 0);
+			my.discussionMap = 29;
+			break; 
+
 			case 19: 
-			case 20: 
-			case 21: 
 			my.currentFace = ImageManager.loadFace("White_Portrait", 0);
 			my.discussionMap = 29;
 			break; 
 			
+			case 20: 
+			case 21: 
+			case 22: 
+			my.currentFace = ImageManager.loadFace("Twins_Portrait", 0);
+			my.discussionMap = 29;
+			break; 
+			
+			// Victoria Testimony
+			case 14: 
+			case 37: 
+			case 38: 
+			case 41: 
+			case 42:
+			my.currentFace = ImageManager.loadFace("Tycoon_Portrait", 0);
+			my.discussionMap = 43;
+			break; 
+			
+			// Fake Fan Testimony
 			case 15: 
 			case 16: 
 			case 17: 
+			my.currentFace = ImageManager.loadFace("Fan_Portrait", 0);
+			my.discussionMap = 18;
+			break; 
+			
+			// True Fan Testimony
 			case 30: 
 			case 31: 
 			case 32: 
@@ -5156,9 +5186,13 @@ var BHell = (function (my) {
 			my.discussionMap = 18;
 			break; 
 			
-			// V.L. 11/07/2020
+			// Tutorial Testimony
 			case 33: 
 			case 35: 
+			my.currentFace = ImageManager.loadFace("Empty", 0);
+			my.discussionMap = 39;
+			break; 
+
 			case 36: 
 			my.currentFace = ImageManager.loadFace("Detective_Portrait", 0);
 			my.discussionMap = 39;
