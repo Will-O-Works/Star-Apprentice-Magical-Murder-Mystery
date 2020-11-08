@@ -127,6 +127,10 @@ var BHell = (function (my) {
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		
+		// for sentence building (Ohi)
+		my.player.words += 1;
+		my.player.wordsList.append([this.bulletParams.sprite, this.hitboxW, this.hitboxH]);
 	};
 
 	BHell_Enemy_Finisher.prototype.isOutsideMap = function () {

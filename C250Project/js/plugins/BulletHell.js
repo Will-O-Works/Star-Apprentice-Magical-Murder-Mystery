@@ -4276,6 +4276,11 @@ var BHell = (function (my) {
             this.currentLine = 5;
         }
         this.currentLine = 0;
+		// variables for sentence building (Ohi)
+		this.words = 0;
+		this.wordsList = {};
+		this.wordsX = 0;
+		this.wordsY	= 0;
         //variable for ZaWarudo
         this.Timestop = false;
 		// Determine if the player should use bomb or not by V.L.
@@ -5471,6 +5476,13 @@ var BHell = (function (my) {
 				my.player.h_index += 1/4; 
 			}
 			
+		}
+		
+		for(var i = 0; i < this.words; i++){
+			sx = this.wordsX;
+			sy = 0;
+			w = this.words[i][1];
+			this.hud.bitmap.blt(this.words[i][0]);
 		}
 
         // Testimony ravyn
