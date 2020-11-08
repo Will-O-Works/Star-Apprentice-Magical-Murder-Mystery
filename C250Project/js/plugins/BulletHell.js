@@ -2510,6 +2510,7 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
     }
 
 	// Store the boss hp value by V.L. 
+	this.prev_hp = this.hp; 
 	this.full_hp = this.hp; 
 	this.bombedWrong = false; 
 
@@ -2543,9 +2544,17 @@ BHell_Enemy_Base.prototype.checkCollision = function (x, y) {
  */
 BHell_Enemy_Base.prototype.update = function () {
 	
-	if (this.bombedWrong == true) {
-		this.setColorTone([255, 0, 0, 1]);
+	if (this.prev_hp == this.hp) {
+		if (this.bombedWrong == true) {
+			this.setColorTone([255, 0, 0, 1]);
+		} else {
+			this.setColorTone([0, 0, 0, 1]);
+		}
+	} else {
+		this.setColorTone([255, 255, 0, 1]);
 	}
+	
+	this.prev_hp = this.hp; 
 	
     my.BHell_Sprite.prototype.update.call(this);
     // Modified Update function by V.L. 10/11/2020
@@ -2624,7 +2633,7 @@ BHell_Enemy_Base.prototype.shoot = function (t) {
  * Makes the enemy lose one hit point, possibly killing it.
  */
 BHell_Enemy_Base.prototype.hit = function () {
-	my.BHell_Sprite.prototype.update.call(this);
+	this.setColorTone([255, 255, 0, 1]);
 	
     this.hp--;
     $gameBHellResult.score += this.score;
@@ -2645,7 +2654,6 @@ BHell_Enemy_Base.prototype.hit = function () {
         $gameBHellResult.enemiesKilled++;
     }
 
-	my.BHell_Sprite.prototype.update.call(this);
 };
 
 /**
