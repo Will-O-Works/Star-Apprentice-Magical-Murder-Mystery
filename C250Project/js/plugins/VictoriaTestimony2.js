@@ -8,8 +8,8 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony2_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VictoriaTestimony2_p1.prototype.constructor = BHell_Enemy_VictoriaTestimony2_p1;
     BHell_Enemy_VictoriaTestimony2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;//change to adjust boss HP
-        params.speed = 5; //change to adjust speed of boss moving 
+        params.hp = 999;//change to adjust boss HP
+        params.speed = 4; //change to adjust speed of boss moving 
         params.hitbox_w = 386; //change to adjust hitbox width
         params.hitbox_h = 75; //change to adjust hitbox height
         params.animated = false;
@@ -27,113 +27,76 @@ var BHell = (function (my) {
         var emitterParams = {};
         emitterParams.angle = Math.PI/2;
         emitterParams.bullet = {};
-        emitterParams.bullet.sprite = "$VictoriaBullets1";
-        emitterParams.bullet.direction = 8;
-        emitterParams.bullet.speed = 5;
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 6;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
-        this.totalWidth =20;
+        this.totalWidth =16;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
-            this.emitters[i].offsetX = 280-(i*30);
+            this.emitters[i].offsetX = 240-(i*30);
             this.emitters[i].offsetY = -100
-        }
-        emitterParams.angle = 3*Math.PI/2;
-        for(var i =this.totalWidth;i<(this.totalWidth*2);i++){
-            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
-            this.emitters[i].offsetX = 280-((i%this.totalWidth)*30);
-            this.emitters[i].offsetY = 400
         }
     };
     BHell_Enemy_VictoriaTestimony2_p1.prototype.updateDolla = function() {
-        this.shenanigns==false;
-        for(var wave =0;wave<6;wave++){
-            if (this.frameCounter==(60+(4*wave))) {//change to adjust block spawn rate
-                for(var i =5;i<this.totalWidth-5;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(2+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.totalWidth;i++){
+                    if(i>11&&i<13){continue;}
                     this.emitters[i].shoot(this.emitters,true);
                 };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<6;wave++){
-            if (this.frameCounter==(60+(4*wave))) {//change to adjust block spawn rate
-                for(var i =this.totalWidth;i<(this.totalWidth*2)-15;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(59+(7*wave))) {//change to adjust block spawn rate
+                for(var i =5;i<this.totalWidth;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
-                for(var i =this.totalWidth+15;i<(this.totalWidth*2);i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<7;wave++){
-            if (this.frameCounter==(125+(4*wave))) {//change to adjust block spawn rate
-                for(var i =0;i<this.totalWidth-15;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(101+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.totalWidth-7;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
-                for(var i =10;i<this.totalWidth;i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<15;wave++){
-            if (this.frameCounter==(180+(4*wave))) {//change to adjust block spawn rate
-                for(var i =this.totalWidth+5;i<(this.totalWidth*2)-10;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(143+(7*wave))) {//change to adjust block spawn rate
+                for(var i =7;i<this.totalWidth;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<8;wave++){
-            if (this.frameCounter==(280+(4*wave))) {//change to adjust block spawn rate
-                for(var i =this.totalWidth+5;i<(this.totalWidth*2)-10;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(185+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.totalWidth-7;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<7;wave++){
-            if (this.frameCounter==(240+(4*wave))) {//change to adjust block spawn rate
-                for(var i =0;i<(this.totalWidth)-15;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(228+(7*wave))) {//change to adjust block spawn rate
+                for(var i =7;i<this.totalWidth;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<10;wave++){
-            if (this.frameCounter==(240+(4*wave))) {//change to adjust block spawn rate
-                for(var i =10;i<(this.totalWidth)-5;i++){
+        for(var wave =0;wave<3;wave++){
+            if (this.frameCounter==(267+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.totalWidth-7;i++){
                     this.emitters[i].shoot(this.emitters,true);
                 };
+                //console.log(this.frameCounter);
             }
         }
-        for(var wave =0;wave<30;wave++){
-            if (this.frameCounter==(320+(4*wave))) {//change to adjust block spawn rate
-                for(var i =this.totalWidth+15;i<(this.totalWidth*2);i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
-            }
-        }
-        
-        // //-----------------------------------------
-        for(var wave =0;wave<50;wave++){
-            if (this.frameCounter==(340+(3*wave))) {//change to adjust block spawn rate
-                for(var i =10;i<(this.totalWidth-5);i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
-            }
-        }
-        for(var wave =0;wave<30;wave++){
-            if (this.frameCounter==(420+(3*wave))) {//change to adjust block spawn rate
-                for(var i =this.totalWidth+5;i<(this.totalWidth*2)-10;i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
-            }
-        }
-        for(var wave =0;wave<50;wave++){
-            if (this.frameCounter==(460+(3*wave))) {//change to adjust block spawn rate
-                for(var i =0;i<(this.totalWidth-15);i++){
-                    this.emitters[i].shoot(this.emitters,true);
-                };
-                if(wave==49){this.shenanigns=true;}
-            };
-        };
-        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.shenanigns=false;}    
+        this.frameCounter = ((this.frameCounter) % 300)+1;
     };
     BHell_Enemy_VictoriaTestimony2_p1.prototype.die = function() {
 		this.state = "dying";
@@ -179,8 +142,7 @@ var BHell = (function (my) {
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter = ((this.frameCounter) % 1200)+1;
+		// Update the time counter and reset it every 20 seconds.
 		
 	};
     return my;
@@ -342,7 +304,17 @@ var BHell = (function (my) {
                 if(wave==24){this.shenanigns=true;}
             };
         };
-        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.shenanigns=false;}        
+
+        // for(var wave=0;wave<25;wave++){
+        //     if (this.frameCounter==(230+(3*wave))) {//change to adjust block spawn rate
+        //         for(var i =this.totalWidth;i<(this.totalWidth*2)-8;i++){
+        //             if(this.emitters[i]==null){i--;}
+        //             this.emitters[i].shoot(this.emitters,true);
+        //         };
+        //         if(wave==24){this.shenanigns=true;}
+        //     };
+        // }
+        if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;}        
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.die = function() {
 		this.state = "dying";
