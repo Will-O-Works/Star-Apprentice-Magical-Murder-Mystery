@@ -2542,8 +2542,14 @@ BHell_Enemy_Base.prototype.checkCollision = function (x, y) {
  * Update function, called every frame.
  */
 BHell_Enemy_Base.prototype.update = function () {
+	
+	if (this.bombedWrong == true) {
+		this.setColorTone([255, 0, 0, 1]);
+	}
+	
     my.BHell_Sprite.prototype.update.call(this);
     // Modified Update function by V.L. 10/11/2020
+
 
 	if (this.dying == false) {  
 		this.move();
@@ -2618,6 +2624,8 @@ BHell_Enemy_Base.prototype.shoot = function (t) {
  * Makes the enemy lose one hit point, possibly killing it.
  */
 BHell_Enemy_Base.prototype.hit = function () {
+	my.BHell_Sprite.prototype.update.call(this);
+	
     this.hp--;
     $gameBHellResult.score += this.score;
 	
@@ -2636,6 +2644,8 @@ BHell_Enemy_Base.prototype.hit = function () {
         this.die();
         $gameBHellResult.enemiesKilled++;
     }
+
+	my.BHell_Sprite.prototype.update.call(this);
 };
 
 /**
