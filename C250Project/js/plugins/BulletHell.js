@@ -1440,8 +1440,9 @@ var BHell = (function (my) {
 
                         if (e.hasCrashed(my.player)) {
                             my.player.die(false);
-                            e.crash();
-                            i--;
+							// fixed the kamikaze thing V.L. 11/09/2020
+                            // e.crash();
+                            // i--;
                         }
                     }
                 }
