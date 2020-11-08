@@ -157,9 +157,9 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony2_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VictoriaTestimony2_p2.prototype.constructor = BHell_Enemy_VictoriaTestimony2_p2;
     BHell_Enemy_VictoriaTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;//change to adjust boss HP
+        params.hp = 999;//change to adjust boss HP
         params.speed = 4; //change to adjust speed of boss moving 
-        params.hitbox_w = 375; //change to adjust hitbox width
+        params.hitbox_w = 45; //change to adjust hitbox width
         params.hitbox_h = 75; //change to adjust hitbox height
         params.animated = false;
         this.frameCounter =1;
@@ -176,25 +176,31 @@ var BHell = (function (my) {
         var emitterParams = {};
         emitterParams.angle = 0;
         emitterParams.bullet = {};
+<<<<<<< HEAD
         emitterParams.bullet.sprite="$VictoriaBulletsTemp"
         emitterParams.bullet.direction = 2;
         emitterParams.bullet.speed = 7;
+=======
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 8;
+>>>>>>> parent of 542059f... Victoria Test
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
-        this.totalWidth =16;
+        this.totalWidth =11;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
             this.emitters[i].offsetX = -500;
-            this.emitters[i].offsetY = 70+(i*20);
+            this.emitters[i].offsetY = 70+(i*30);
         }
         emitterParams.angle = Math.PI;
         for(var i =this.totalWidth;i<this.totalWidth*2;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
             this.emitters[i].offsetX = 500;
-            this.emitters[i].offsetY = 70+((i%this.totalWidth)*20);
+            this.emitters[i].offsetY = 55+((i%this.totalWidth)*30);
         }
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.updateDolla = function() {
+<<<<<<< HEAD
         this.shenanigns = false;
         for(var wave =0;wave<7;wave++){
             if (this.frameCounter==(60+(4*wave))) {//change to adjust block spawn rate
@@ -315,6 +321,41 @@ var BHell = (function (my) {
         //     };
         // }
         if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;}        
+=======
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(2+(7*wave))) {//change to adjust block spawn rate
+                for(var i =3;i<this.totalWidth;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                //console.log(this.frameCounter);
+            }
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(2+(7*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalWidth;i<this.totalWidth*2-3;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                //console.log(this.frameCounter);
+            }
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(144+(7*wave))) {//change to adjust block spawn rate
+                for(var i =this.totalWidth+3;i<this.totalWidth*2;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                //console.log(this.frameCounter);
+            }
+        }
+        for(var wave =0;wave<4;wave++){
+            if (this.frameCounter==(144+(7*wave))) {//change to adjust block spawn rate
+                for(var i =0;i<this.totalWidth-3;i++){
+                    this.emitters[i].shoot(this.emitters,true);
+                };
+                //console.log(this.frameCounter);
+            }
+        }
+        this.frameCounter = ((this.frameCounter) % 300)+1;
+>>>>>>> parent of 542059f... Victoria Test
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.die = function() {
 		this.state = "dying";
@@ -335,6 +376,9 @@ var BHell = (function (my) {
 			}
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
+				this.p = 8; 
+				this.emitters[2].bulletParams.speed = 6; 
+				this.emitters[3].bulletParams.speed = 6; 
 			}
 			if (my.player.bombed == true) {
 				this.destroy(); 
@@ -357,8 +401,7 @@ var BHell = (function (my) {
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter = ((this.frameCounter) % 1200)+1;
+		// Update the time counter and reset it every 20 seconds.
 		
 	};
     return my;
