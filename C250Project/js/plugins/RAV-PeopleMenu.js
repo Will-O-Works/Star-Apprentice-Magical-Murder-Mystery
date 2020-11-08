@@ -598,7 +598,12 @@ Scene_People.prototype.update = function () {
                 var selectedIndex = Math.floor((mouseX - startChar.x + distBetween/2)/(characterSpacing)) + 1;
                 if (selectedIndex != character) {
                     AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
-                    Scene_People.changeChar(selectedIndex);
+                    this._peopleWindow.removeChild(portraitImage);
+                    character = selectedIndex
+                    Scene_People.changeChar(character);
+                    this._peopleWindow.drawAllItems();
+                    this._titleWindow.drawAllItems();
+                    this._textWindow.drawAllItems();
                 }
             }
             if (Input.isRepeated("right") || (TouchInput.isRepeated() && mouseOnRightButton)) {
