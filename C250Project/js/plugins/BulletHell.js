@@ -5143,7 +5143,7 @@ var BHell = (function (my) {
      */
     Scene_BHell.prototype.onMapLoaded = function () {
 
-        my.stage.setup(Scene_BHell.level);
+		my.stage.setup(Scene_BHell.level);
         my.stage._displayX = 0;
         my.stage._displayY = my.stage.height() - my.stage.screenTileY();
 		
@@ -6254,6 +6254,12 @@ BHell_Spriteset.prototype.createParallax = function () {
     this._BGFrames = 16;
     this._parallax = new TilingSprite();
     this._parallax.move(0, 0, Graphics.width, Graphics.height);
+	
+	/* Say hi to the twins V.L. */
+	this.twins_faces = ImageManager.loadFace("Twins_Portrait", 0);
+	this.twins_buffer = new Sprite(this.twins_faces);
+	/* Say hi to the twins V.L. */
+	
     this._face = new Sprite(my.currentFace);
     this._face.move(Graphics.width/2 - my.currentFace._image.width/2, Graphics.height - my.currentFace._image.height);
     this._face.setColorTone([-68, -68, -68, 0]);
