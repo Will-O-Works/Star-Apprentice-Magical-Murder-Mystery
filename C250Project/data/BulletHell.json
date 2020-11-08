@@ -978,6 +978,24 @@
     }
   },
   {
+	  "name": "VictoriaTestimony3_p2",
+	  "class": "BHell_Enemy_VictoriaTestimony3_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "VictoriaTestimony3_p3",
+	  "class": "BHell_Enemy_VictoriaTestimony3_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
 	  "name": "FanTestimony1_p1",
 	  "class": "BHell_Enemy_FanTestimony1_p1",
 	  "params": {
@@ -1133,6 +1151,87 @@
   {
 	  "name": "SuperFanTestimony3_p3",
 	  "class": "BHell_Enemy_SuperFanTestimony3_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Tutorial_p1",
+	  "class": "BHell_Enemy_Tutorial_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Tutorial_p2",
+	  "class": "BHell_Enemy_Tutorial_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Tutorial_p3",
+	  "class": "BHell_Enemy_Tutorial_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Practice_p1",
+	  "class": "BHell_Enemy_Practice_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Practice_p2",
+	  "class": "BHell_Enemy_Practice_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Practice_p3",
+	  "class": "BHell_Enemy_Practice_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Detective_p1",
+	  "class": "BHell_Enemy_Detective_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Detective_p2",
+	  "class": "BHell_Enemy_Detective_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "Detective_p3",
+	  "class": "BHell_Enemy_Detective_p3",
 	  "params": {
         "bullet": {
           "direction": 6

@@ -385,6 +385,10 @@ function VN() {
         }
     }
     VN.evidenceClear = function() {
+        var fullRes = 960;
+        var playerWidth = 280; // Minnie width, plus room to accomodate evidence
+        var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
+        var startingPoint = fullRes - accessibleRes;
         var charAmount = charXs.length - 1;
         $bust(charAmount + 1).fadeOut();
         $bust(charAmount + 2).fadeOut();

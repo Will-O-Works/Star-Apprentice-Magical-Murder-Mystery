@@ -429,7 +429,7 @@
     "name": "RedChairLeft",
     "cols": 1,
     "rows": 1,
-    "anchorX": 0.2,
+    "anchorX": 0.3,
     "anchorY": 1,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedChairLeft-OW.png",
     "poses": {
@@ -957,7 +957,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.21,
-    "anchorY": 0.92,
+    "anchorY": 0.4,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBack-Search.png",
     "poses": {
       "default": {
@@ -1232,7 +1232,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorY": 0.56,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTrash-OW.png",
     "poses": {
       "default": {
@@ -1249,8 +1249,8 @@
     "name": "TrashDamaged",
     "cols": 1,
     "rows": 1,
-    "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorX": 0.51,
+    "anchorY": 0.56,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTrashDamaged-OW.png",
     "poses": {
       "default": {
@@ -1557,9 +1557,369 @@
     "name": "SatchelsClosed",
     "cols": 1,
     "rows": 1,
+    "anchorX": 0.525,
+    "anchorY": 1.67,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSatchelsClosed-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedChairRight": {
+    "name": "RedChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.8,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedLoungeChair": {
+    "name": "RedLoungeChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedLoungeChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedLoungeChairRight": {
+    "name": "RedLoungeChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedLoungeChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueLoungeChair": {
+    "name": "BlueLoungeChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueLoungeChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueLoungeChairRight": {
+    "name": "BlueLoungeChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueLoungeChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedTrimChair": {
+    "name": "RedTrimChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": -0.32,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedTrimChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedTrimChairRight": {
+    "name": "RedTrimChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 1.32,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedTrimChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueTrimChair": {
+    "name": "BlueTrimChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueTrimChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueTrimChairRight": {
+    "name": "BlueTrimChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueTrimChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "GreenCrumbs": {
+    "name": "GreenCrumbs",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 2.8,
+    "anchorY": 2.4,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QGreenCrumbs-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Bar": {
+    "name": "Bar",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.126,
+    "anchorY": 0.95,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBar-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BarStool": {
+    "name": "BarStool",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.75,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBarStool-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BarStool2": {
+    "name": "BarStool2",
+    "cols": 1,
+    "rows": 1,
     "anchorX": 0.5,
     "anchorY": 1,
-    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSatchelsClosed-OW.png",
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBarStool2-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Couch": {
+    "name": "Couch",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QCouch-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Jouch": {
+    "name": "Jouch",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QJouch-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Bookshelf": {
+    "name": "Bookshelf",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.24,
+    "anchorY": 0.74,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBookshelf-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Cabinet": {
+    "name": "Cabinet",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.24,
+    "anchorY": 0.74,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QCabinet-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "PoolTable": {
+    "name": "PoolTable",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QPoolTable-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "SmallTable2": {
+    "name": "SmallTable2",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.38,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSmallTable2-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BigTable2": {
+    "name": "BigTable2",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.25,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBigTable2-OW.png",
     "poses": {
       "default": {
         "name": "default",

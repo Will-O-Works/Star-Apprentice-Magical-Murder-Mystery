@@ -41,9 +41,7 @@ var BHell = (function (my) {
         this.alwaysAim = false;
         this.aimX = 0;
         this.aimY = 0;
-
         this.aimingAngle = 0;
-
         if (params != null) {
             this.angle = params.angle || this.angle;
             this.aim = params.aim || this.aim;
@@ -121,6 +119,11 @@ var BHell = (function (my) {
         var frame = 0;
         var animated = false;
         var animationSpeed = 15;
+        //variable added to allow adjustable hitboxs YA 2020/10/26
+        this.hitboxshape = "circle";
+        this.hitboxheight = 0;
+        this.hitboxwidth = 0;
+        this.hitboxradius = 2;
     
         if (params != null) {
             speed = params.speed || speed;
