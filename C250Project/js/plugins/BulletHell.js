@@ -2661,7 +2661,9 @@ BHell_Enemy_Base.prototype.die = function() {
     //my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
 	this.dying = true; 
 	my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
-    // this.destroy();
+	
+	// V.L. 11/07/2020
+	my.player.bombs = 0;
 };
 
 /**
@@ -4349,6 +4351,9 @@ var BHell = (function (my) {
 
         this.dx = 0;
         this.dy = 0;
+		
+		// V.L. 11/07/2020
+		this.use_mouse = false; 
     };
 
     /**
@@ -5115,6 +5120,14 @@ var BHell = (function (my) {
 			my.discussionMap = 18;
 			break; 
 			
+			// V.L. 11/07/2020
+			case 33: 
+			case 35: 
+			case 36: 
+			my.currentFace = ImageManager.loadFace("Detective_Portrait", 0);
+			my.discussionMap = 39;
+			break; 
+			
 			default: 
 			my.currentFace = ImageManager.loadFace("Vagrant_Portrait", 0);
 			my.discussionMap = 12;
@@ -5331,6 +5344,9 @@ var BHell = (function (my) {
                         my.player.deltaTo(TouchInput.dx, TouchInput.dy);
                     }
                     else if (this.usingTouch === "mouse") {
+						// V.L. 11/07/2020
+						my.player.use_mouse = true; 
+						
                         my.player.moveTo(TouchInput.x, TouchInput.y);
                     }
 
@@ -6142,6 +6158,12 @@ BHell_Spriteset.prototype.updateParallax = function () {
         if (this._BGImageIndex >= this._BGFrames) {
             this._BGImageIndex = 0;
         }
+
+		// V.L. 11/07/2020
+		if (my.map == 21) {
+			this._parallax.bitmap.fillRect(0, 540 * Math.floor(this._BGImageIndex), Graphics.width/2, 540 * Math.floor(this._BGImageIndex) + Graphics.height, "rgba(0, 0, 0, 1)");
+			this._parallax.bitmap.fillRect(Graphics.width/2, 540 * Math.floor(this._BGImageIndex), Graphics.width, 540 * Math.floor(this._BGImageIndex) + Graphics.height, "rgba(255, 255, 255, 1)");
+		}
     }
 };
 
