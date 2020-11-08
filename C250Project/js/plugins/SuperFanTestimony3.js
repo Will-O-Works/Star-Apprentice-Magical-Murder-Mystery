@@ -254,3 +254,195 @@ var BHell = (function (my) {
 	};
     return my;
 } (BHell || {}));
+//=============================================================================
+// VictoriaTestimony1 Pattern 2
+//=============================================================================
+//=============================================================================
+// SuperFanTestimony1 Pattern 3
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_SuperFanTestimony3_p2 = my.BHell_Enemy_SuperFanTestimony3_p2 = function() {
+        this.initialize.apply(this, arguments);
+    };
+    BHell_Enemy_SuperFanTestimony3_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_SuperFanTestimony3_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony3_p2;
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 45;//change to adjust Line HP
+        params.speed = 3.5; // change to adjust speed of boss moving 
+        params.hitbox_w = 410; // change to adjust hitbox width
+        params.hitbox_h = 80; // change to adjust hitbox heights
+		params.animated = false;
+		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		this.bombedWrong = false;
+        this.frameCounter = 0;
+		this.state = "started";
+        this.initializeBrick(parent);
+        this.initializeEmitters(parent);
+        this.initializeSwipe(parent);
+
+		/* set player.can_bomb to true by V.L. */
+		my.player.can_bomb = false; 
+		/* set player.can_bomb to true by V.L. */
+		
+		this.p = 16; 
+		this.can_die = false;
+		this.mover = new my.BHell_Mover_Still((Graphics.width / 2)+6, 125, 0, this.hitboxW, this.hitboxH);
+    };
+    BHell_Enemy_SuperFanTestimony3_p2.prototype.initializeEmitters = function (parent) {
+        var emitterParams = {};
+        emitterParams.aim=false;
+        emitterParams.alwaysAim=false;
+        emitterParams.bullet={};
+        emitterParams.bullet.speed=5;
+        var emitterTotal=10;
+        for (let index = 0; index < emitterTotal; index+=2) {
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[index].angle= (Math.PI*1.32);
+            this.emitters[index].offsetX= 500;
+            this.emitters[index].offsetY= 400-((index/2)*40);
+            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[index+1].angle= (Math.PI*1.68);
+            this.emitters[index+1].offsetX= -500;
+            this.emitters[index+1].offsetY= 400-((index/2)*40);
+        }
+    };
+    BHell_Enemy_SuperFanTestimony3_p2.prototype.updateEmitters = function (parent) {
+        if(this.frameCounter%10==0){
+            for (let index = 0; index < 10; index++) {
+                this.emitters[index].shoot(true);
+            }
+        }
+    };
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.initializeBrick = function (parent) {
+        this.spawnNumber=6;
+        this.spawnCounter = 0;
+        this.lineNum=2;
+        this.wallSize = (this.spawnNumber/this.lineNum)-1;
+	};
+	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.updateBrick = function (frameCounter) {
+        while (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+            var params = {};
+            params.animated = false;
+            params.frame = 2;
+            params.speed =4;
+            params.hp = 999;
+            params.wallSize=this.wallSize;
+            params.Xposition =  ((this.spawnCounter-1)%(this.spawnNumber/this.lineNum));
+            params.posX = this.x+(this.wallSize*25)-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
+            params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+            params.bullet = {};
+            my.controller.enemies.push(new my.BHell_Enemy_BrickFollow(this.x, this.y, image, params, this.parent, my.controller.enemies,frameCounter));
+            this.spawnCounter+=1;
+            if(this.spawnCounter==1)
+            {
+            my.controller.enemies[1].destroy();
+            }
+        }  
+    };
+    BHell_Enemy_SuperFanTestimony3_p2.prototype.initializeSwipe = function (parent) {
+		this.p = 2; 
+        var emitterParams = {};
+        emitterParams.bullet = {};
+        emitterParams.bullet.speed = 4;
+        emitterParams.bullet.direction = 2;
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters[10].angle=Math.PI/2;
+        this.emitters[10].alwaysAim = false;
+        this.emitters[10].offsetX = -150;
+        this.emitters[11].angle=Math.PI/2;
+        this.emitters[11].alwaysAim = false;
+        this.emitters[11].offsetX= 150;
+        this.angl1= -(Math.PI/20);
+        this.angl2= (Math.PI/20);
+        this.flip=false;
+    };
+
+    BHell_Enemy_SuperFanTestimony3_p2.prototype.updateSwipe = function() {
+        if (this.frameCounter % 10 == 0){
+            this.emitters[10].shoot(true);
+            this.emitters[11].shoot(true);
+            if(this.emitters[10].angle>=Math.PI||this.emitters[11].angle<=0)
+            {
+                this.flip=true;
+            }
+            if(this.flip==true)
+            {
+                this.angl1= -(this.angl1);
+                this.flip = false;
+            }
+            this.emitters[10].angle-=this.angl1;
+            this.emitters[11].angle-=this.angl1;
+        } 
+    };
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.die = function() {
+		this.state = "dying";
+		this.frameCounter = 0;
+		my.controller.destroyEnemyBullets();
+	};	
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.destroy = function() {
+        while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}	
+        my.BHell_Enemy_Base.prototype.destroy.call(this);
+    };	
+	//main update loop
+	BHell_Enemy_SuperFanTestimony3_p2.prototype.update = function () {
+		my.BHell_Sprite.prototype.update.call(this);
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+			}
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			if (this.state !== "dying") {
+                this.move();
+            }
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
+					this.frameCounter = 0;
+				}
+				break;
+			case "active": // Shoot.
+                if(this.frameCounter%3===0){
+                    this.updateBrick(this.frameCounter);  
+                }  
+                this.updateEmitters();
+                this.updateSwipe();
+				break;
+			case "dying": // die.
+				this.destroy();
+                break;
+			case "bombed":  
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                
+                if (this.timer > 70) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
+            break; 
+		}; 
+		// Update the emitter's position.
+		this.emitters.forEach(e => {e.update()});
+		// Update the time counter and reset it every 20 seconds.
+		this.frameCounter = (this.frameCounter + 1) % 1200;
+	}
+    return my;
+} (BHell || {}));
