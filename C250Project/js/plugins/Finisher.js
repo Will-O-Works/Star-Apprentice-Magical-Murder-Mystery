@@ -125,8 +125,7 @@ var BHell = (function (my) {
 		// console.log(my.player.finisher_count);
 		
 		// for sentence building (Ohi)
-		console.log(this.sprite);
-		my.player.wordsList.push([$VagrantSentence, this.hitboxW, this.hitboxH]);
+		my.player.wordsList.push([this.dir, this.hitboxW, this.hitboxH]);
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);

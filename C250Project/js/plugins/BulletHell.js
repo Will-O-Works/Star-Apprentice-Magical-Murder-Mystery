@@ -5583,23 +5583,32 @@ var BHell = (function (my) {
 		
 		// draw sentence as it forms (Ohi)
 		var wordsX = 0;
+		x = -80; 
+
 		for(var i = 0; i < my.player.wordsList.length; i++){
-			sx = 0;
-			sy = 0;
-			w = my.player.wordsList[i][1];
-			h = my.player.wordsList[i][2];
-			x = wordsX;
-			y = 0;
-			wordsX += w + 10;
+			this.finisher = ImageManager.loadCharacter("$VagrantSentence", 0);
 			
-			console.log(my.player.wordsList[i][0]);
-			console.log(sx)
-			console.log(sy);
-			console.log(w);
-			console.log(h);
-			console.log(x);
-			console.log(y);
-			this.hud.bitmap.blt(ImageManager.loadCharacter(my.player.wordsList[i][0]), sx, sy, w, h, x, y, w, h);
+			var w = this.finisher.width / 3; // Graphics.width;
+			var h = this.finisher.height / 4; //Graphics.height;
+
+			var sx = my.player.wordsList[i][0] * this.finisher.width / 3;
+			var sy = 0;
+			
+			if (my.player.wordsList[i][0] == 3) {
+				var sx = 0;
+				var sy = this.finisher.height / 4;
+			}
+
+			y = Graphics.height/2;  
+			x += my.player.wordsList[i][1] / 2; 
+			
+			if (this.credit_y < this.finisher.height) {
+				this.credit_y += 1; 
+			}
+			
+			this.hud.bitmap.blt(this.finisher, sx, sy, w, h, x, y, w, h);
+			
+			x += my.player.wordsList[i][1] / 2 + 30; 
 		}
 
         // Testimony ravyn
