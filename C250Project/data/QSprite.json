@@ -1334,5 +1334,223 @@
         ]
       }
     }
+  },
+  "RoomSign10": {
+    "name": "RoomSign10",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign10-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RoomSign11": {
+    "name": "RoomSign11",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign11-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "on": {
+        "name": "on",
+        "speed": 5,
+        "adjust": false,
+        "pattern": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "RoomSign12": {
+    "name": "RoomSign12",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.86,
+    "anchorY": 1.28,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign12-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "on": {
+        "name": "on",
+        "speed": 5,
+        "adjust": false,
+        "pattern": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "RoomSign13": {
+    "name": "RoomSign13",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.18,
+    "anchorY": 1.22,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign13-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "on": {
+        "name": "on",
+        "speed": 5,
+        "adjust": false,
+        "pattern": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "RoomSign14": {
+    "name": "RoomSign14",
+    "cols": 2,
+    "rows": 1,
+    "anchorX": 0.86,
+    "anchorY": 1.28,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign14-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      },
+      "on": {
+        "name": "on",
+        "speed": 5,
+        "adjust": false,
+        "pattern": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "RoomSign15": {
+    "name": "RoomSign15",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.13,
+    "anchorY": 1.28,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRoomSign15-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "DeskLamp": {
+    "name": "DeskLamp",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": -0.2,
+    "anchorY": 2.4,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QDeskLamp-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
   }
 }

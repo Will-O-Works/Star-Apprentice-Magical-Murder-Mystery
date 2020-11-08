@@ -166,7 +166,7 @@ function VN() {
     VN.showName = function(name) {
         $gameScreen.showPicture(2, name, 0, nameX, nameY, 100, 100, 255, 0);
     }
-    VN.activeChar = function(char, evidence = false, charAmount = charXs.length) {
+    VN.activeChar = function(char, evidence = false, charAmount = charXs.length - 1) {
         if (char != 1 && evidence) {
             char += 2;
         }
@@ -355,6 +355,49 @@ function VN() {
         $bust(3).light(0);
         $bust(2).fadeIn();
         $bust(3).fadeIn();
+    }
+    VN.showEvidence = function(evidence) {
+        var charAmount = charXs.length - 1;
+        var fullRes = 960;
+        var playerWidth = 280; // Minnie width, plus room to accomodate evidence
+        var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
+        var startingPoint = fullRes - accessibleRes;
+        for (i = 2; i <= charAmount; i++) {
+            var charXVal = 0;
+            charXVal = startingPoint + ((accessibleRes / (charAmount + 1)) * (i));
+            $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
+            charXs[i] = charXVal;
+        }
+        var evidenceXVal = startingPoint + ((accessibleRes / (charAmount + 1)));
+        $bust(charAmount + 1).loadBitmap('face', evidence);
+        $bust(charAmount + 1).moveTo(evidenceXVal, 302, 0);
+        $bust(charAmount + 2).loadBitmap('face', 'BG');
+        $bust(charAmount + 2).moveTo(evidenceXVal, 340, 0);
+        $bust(charAmount + 1).light(0);
+        $bust(charAmount + 2).light(0);
+        $bust(charAmount + 1).fadeIn();
+        $bust(charAmount + 2).fadeIn();
+        for (i = 2; i <= charAmount; i++) {
+            var charXVal = 0;
+            charXVal = startingPoint + ((accessibleRes / (charAmount + 1)) * (i));
+            $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
+            charXs[i] = charXVal;
+        }
+    }
+    VN.evidenceClear = function() {
+        var charAmount = charXs.length - 1;
+        $bust(charAmount + 1).fadeOut();
+        $bust(charAmount + 2).fadeOut();
+        for (i = 2; i <= charAmount; i++) {
+            var charXVal = 0;
+            if (charAmount === 2) {
+                charXVal = charX;
+            } else {
+                charXVal = startingPoint + ((accessibleRes / charAmount) * (i - 1));
+            }
+            $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
+            charXs[i] = charXVal;
+        }
     }
     VN.end = function() {
         for (i = 1; i <= charXs.length; i++) {

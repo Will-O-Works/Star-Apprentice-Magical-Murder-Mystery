@@ -411,10 +411,22 @@ Character_Data.Texts = function(character, level) {
                     return " ★ Works for Victoria Windsor.\n     Cuddly as a landmine. Iris'\n     twin sister.";
                     break;
                 case 2:
-                    return this.Texts(character, 1) + " ★ She was in the Military."
+                    return this.Texts(character, 1) + "\n ★ She was in the Military.";
+                    break;
+                case 3:
+                    return this.Texts(character, 2) + "\n ★ She is currently a rich\n     tycoon's bodyguard, so I\n     assume she is very good with\n     weapons.";
+                    break;
+                case 4:
+                    return this.Texts(character, 3) + "\n ★ There's something weird about\n     her eyes ...";
+                    break;
+                case 5:
+                    return this.Texts(character, 4) + "\n ★ Claimed that the burnt ashes\n     in her room were from a\n     breakup letter.";
+                    break;
+                case 6:
+                    return this.Texts(character, 5) + "\n ★ Sounds like the army was the\n     first place she ever fit in,\n     so why did she leave? Was\n     she discharged?";
                     break;
                 default: 
-                    return this.Texts(character, 2);
+                    return this.Texts(character, 6);
                     break;
             }
             break;

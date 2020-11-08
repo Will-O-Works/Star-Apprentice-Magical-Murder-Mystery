@@ -744,6 +744,11 @@ Window_MenuActor.prototype.update = function(index) {
                     unslicedDesc += "\n ★ The window is letting out the\nsmell of the ashes. They're\ntrying to cover something up!";
                 }
                 break;
+            case "Dagger":
+                if ($gameSystem.evidenceLevel >= 3) {
+                    unslicedDesc += "\n ★ Lily showed me another\ndagger she carries on her. Both\nappear to be clean, but I'm not\nconvinced."
+                }
+                break;
         }
         var tempDesc = unslicedDesc.split(/\n|\\n/);
         for (i = 0; i < tempDesc.length; i++) {
