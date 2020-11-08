@@ -1440,8 +1440,9 @@ var BHell = (function (my) {
 
                         if (e.hasCrashed(my.player)) {
                             my.player.die(false);
-                            e.crash();
-                            i--;
+							// fixed the kamikaze thing V.L. 11/09/2020
+                            // e.crash();
+                            // i--;
                         }
                     }
                 }
@@ -5043,6 +5044,7 @@ var BHell = (function (my) {
 
     Scene_BHell.prototype.initialize = function () {
         Scene_Base.prototype.initialize.call(this);
+		this.credit_y = 0; 
     };
 
     Scene_BHell.prototype.create = function () {
@@ -5125,7 +5127,16 @@ var BHell = (function (my) {
 		
 		/* discussionMap change by V.L. */ 
 		switch (my.map) {
+			
+			// Credits room
+			case 4: 
+			my.currentFace = ImageManager.loadFace("Empty", 0);
+			my.discussionMap = 0;
+			break; 
+			
+			// Vagrant Testimony
 			case 3: 
+			case 5: 
 			case 6: 
 			case 8: 
 			case 9: 
@@ -5133,17 +5144,43 @@ var BHell = (function (my) {
 			my.discussionMap = 12;
 			break; 
 			
+			// Twins Testimony
 			case 13: 
+			my.currentFace = ImageManager.loadFace("Black_Portrait", 0);
+			my.discussionMap = 29;
+			break; 
+
 			case 19: 
-			case 20: 
-			case 21: 
 			my.currentFace = ImageManager.loadFace("White_Portrait", 0);
 			my.discussionMap = 29;
 			break; 
 			
+			case 20: 
+			case 21: 
+			case 22: 
+			my.currentFace = ImageManager.loadFace("Twins_Portrait", 0);
+			my.discussionMap = 29;
+			break; 
+			
+			// Victoria Testimony
+			case 14: 
+			case 37: 
+			case 38: 
+			case 41: 
+			case 42:
+			my.currentFace = ImageManager.loadFace("Tycoon_Portrait", 0);
+			my.discussionMap = 43;
+			break; 
+			
+			// Fake Fan Testimony
 			case 15: 
 			case 16: 
 			case 17: 
+			my.currentFace = ImageManager.loadFace("Fan_Portrait", 0);
+			my.discussionMap = 18;
+			break; 
+			
+			// True Fan Testimony
 			case 30: 
 			case 31: 
 			case 32: 
@@ -5151,9 +5188,13 @@ var BHell = (function (my) {
 			my.discussionMap = 18;
 			break; 
 			
-			// V.L. 11/07/2020
+			// Tutorial Testimony
 			case 33: 
 			case 35: 
+			my.currentFace = ImageManager.loadFace("Empty", 0);
+			my.discussionMap = 39;
+			break; 
+
 			case 36: 
 			my.currentFace = ImageManager.loadFace("Detective_Portrait", 0);
 			my.discussionMap = 39;
@@ -5467,6 +5508,26 @@ var BHell = (function (my) {
         var y;
         var i;
 
+		// Credits V.L. 11/08/2020 
+		if (my.map == 4) {
+			this.credit = ImageManager.loadSystem("Credits", 0);
+			
+			var w = this.credit.width; // Graphics.width;
+			var h = this.credit.height; //Graphics.height;
+			
+			console.log(Graphics.height);
+			var sx = 0;
+			var sy = 0;
+			x = 0; 
+			y = Graphics.height - this.credit_y;  
+			if (this.credit_y < this.credit.height) {
+				this.credit_y += 1; 
+			}
+			
+			this.hud.bitmap.blt(this.credit, sx, sy, w, h, x, y, w, h);
+
+		} else {
+
         // Update lives:
         var w = this.life.patternWidth();
         var h = this.life.patternHeight();
@@ -5590,6 +5651,9 @@ var BHell = (function (my) {
                 this.hud.bitmap.fillRect(11, 4, (Graphics.width - 22) * my.bossHp / my.bossMaxHp, 8, "rgba(" + red + ", " + green + ", 0, 0.8)");
             }
         }
+		
+		// V.L. 11/08/2020
+		}
     };
 
     /**
