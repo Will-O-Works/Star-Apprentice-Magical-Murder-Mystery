@@ -990,6 +990,9 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var hitboxheight = 0;
     var hitboxwidth =0;
     var hitboxradius = 0;
+    var stoppable = "true";///variable used to deccide if it is affected by Timestop YA
+    var num=0;
+    var moveTime = moveTime;
 
     if (params != null) {
         speed = params.speed || speed;
@@ -1000,6 +1003,16 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         hitboxshape = params.hitboxshape || hitboxshape;
         if (params.animated !== false) {
             animated = true;
+        }
+        //checks for time stop YA
+        if (params.stoppable !== false) {
+            stoppable = params.stoppable;
+        }
+        if (params.num !== false) {
+            num = params.num;
+        }
+        if (params.moveTime !== false) {
+            moveTime = params.moveTime;
         }
         //checks for hitbox params YA
         if (params.hitboxshape == "circle") {
@@ -1037,6 +1050,11 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     this.hitboxradius =hitboxradius;
     this.hitboxheight =hitboxheight;
     this.hitboxwidth =hitboxwidth;
+    this.stoppable=stoppable;
+    this.waitcounter=0;
+    this.frameCounter=0;
+    this.num=num
+    this.moveTime=moveTime;
 };
 
 /**
@@ -1044,12 +1062,23 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
  */
 BHell_Bullet.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
-
-
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed;
-    if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+    if(my.player.Timestop==false){
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
         this.outsideMap = true;
+        }
+    }
+    else if(this.stoppable=="false"&&my.player.Timestop==true){
+        this.frameCounter++;
+        if(this.frameCounter<(this.moveTime-(10*this.num))){
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed;
+            if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+            this.outsideMap = true;
+        }
+        else{this.stoppable=="true"};
+        }
     }
 };
 
@@ -1876,19 +1905,21 @@ var BHell = (function (my) {
         this.b = 0;
         this.aim = false;
         this.alwaysAim = false;
+        this.rotating=false;
         this.aimX = 0;
         this.aimY = 0;
-
         this.aimingAngle = 0;
-
+        this.rotating=false;
         if (params != null) {
             this.n = params.n || this.n;
             this.a = params.a || this.a;
             this.b = params.b || this.b;
             this.aim = params.aim || this.aim;
             this.alwaysAim = params.always_aim || this.alwaysAim;
+            this.rotating = params.rotating || this.rotating;
             this.aimX = params.aim_x || this.aimX;
             this.aimY = params.aim_y || this.aimY;
+            this.rotating = params.rotating || this.rotating;
         }
     };
 
@@ -1904,13 +1935,11 @@ var BHell = (function (my) {
                     var dy = my.player.y - this.y + this.aimY;
                     this.aimingAngle = Math.atan2(dy, dx);
                 }
-
                 bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
             }
             else {
                 bullet = new my.BHell_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
             }
-
             this.parent.addChild(bullet);
             this.bulletList.push(bullet);
         }
