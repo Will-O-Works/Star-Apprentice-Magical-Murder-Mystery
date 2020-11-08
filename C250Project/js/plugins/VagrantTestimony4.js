@@ -621,7 +621,7 @@ var BHell = (function (my) {
         my.controller.destroyEnemyBullets();
     };
 	
-    BHell_Enemy_VagrantTestimony3_p2.prototype.hit = function () {
+    BHell_Enemy_VagrantTestimony4_p2.prototype.hit = function () {
         if (this.state !== "dying") {
             my.BHell_Enemy_Base.prototype.hit.call(this);
     
@@ -641,7 +641,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantTestimony4_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VagrantTestimony3_p3.prototype.constructor = BHell_Enemy_VagrantTestimony4_p3;
+    BHell_Enemy_VagrantTestimony4_p3.prototype.constructor = BHell_Enemy_VagrantTestimony4_p3;
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
