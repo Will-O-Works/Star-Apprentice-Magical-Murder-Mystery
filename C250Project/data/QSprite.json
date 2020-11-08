@@ -1552,5 +1552,23 @@
         ]
       }
     }
+  },
+  "SatchelsClosed": {
+    "name": "SatchelsClosed",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSatchelsClosed-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
   }
 }

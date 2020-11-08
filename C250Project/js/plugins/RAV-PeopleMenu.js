@@ -445,7 +445,7 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 2) + "\n ★ Weird eyes like her sister.";
                     break;
                 case 4:
-                    return this.Texts(character, 3) + "\n ★ Shockingly, was more popular\n     and generally accepted when the twins were kids.";
+                    return this.Texts(character, 3) + "\n ★ Shockingly, was more popular\n     and generally accepted when\n     the twins were kids.";
                     break;
                 default: 
                     return this.Texts(character, 4);
