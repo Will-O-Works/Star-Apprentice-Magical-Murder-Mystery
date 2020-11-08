@@ -2559,7 +2559,6 @@ BHell_Enemy_Base.prototype.update = function () {
 		}
 		
 	}
-
 	
 	this.prev_hp = this.hp; 
 	

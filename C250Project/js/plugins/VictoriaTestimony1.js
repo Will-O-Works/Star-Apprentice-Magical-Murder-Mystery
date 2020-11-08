@@ -115,6 +115,20 @@ var BHell = (function (my) {
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony1_p1.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
+		
 		my.BHell_Sprite.prototype.update.call(this);
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
@@ -303,6 +317,20 @@ var BHell = (function (my) {
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony1_p2.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
+		
 		my.BHell_Sprite.prototype.update.call(this);
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
@@ -488,6 +516,20 @@ var BHell = (function (my) {
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.prev_hp == this.hp) {
+				if (this.bombedWrong == true) {
+					this.setColorTone([255, 0, 0, 1]);
+				} else {
+					this.setColorTone([0, 0, 0, 1]);
+				}
+			} else {
+				this.setColorTone([255, 255, 0, 1]);
+			}
+			
+			this.prev_hp = this.hp; 
+		
 		my.BHell_Sprite.prototype.update.call(this);
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
