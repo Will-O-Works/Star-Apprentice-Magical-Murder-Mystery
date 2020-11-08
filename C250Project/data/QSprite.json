@@ -957,7 +957,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.21,
-    "anchorY": 0.92,
+    "anchorY": 0.4,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBack-Search.png",
     "poses": {
       "default": {
@@ -1557,9 +1557,169 @@
     "name": "SatchelsClosed",
     "cols": 1,
     "rows": 1,
-    "anchorX": 0.5,
-    "anchorY": 1,
+    "anchorX": 0.525,
+    "anchorY": 1.67,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSatchelsClosed-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedChairRight": {
+    "name": "RedChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.8,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": []
+      }
+    }
+  },
+  "RedLoungeChair": {
+    "name": "RedLoungeChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedLoungeChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedLoungeChairRight": {
+    "name": "RedLoungeChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedLoungeChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueLoungeChair": {
+    "name": "BlueLoungeChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueLoungeChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueLoungeChairRight": {
+    "name": "BlueLoungeChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueLoungeChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedTrimChair": {
+    "name": "RedTrimChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedTrimChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "RedTrimChairRight": {
+    "name": "RedTrimChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.45,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QRedTrimChairRight-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueTrimChair": {
+    "name": "BlueTrimChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.55,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueTrimChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BlueTrimChairRight": {
+    "name": "BlueTrimChairRight",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.78,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlueTrimChairRight-OW.png",
     "poses": {
       "default": {
         "name": "default",

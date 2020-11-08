@@ -458,10 +458,19 @@ Character_Data.Texts = function(character, level) {
                     return "???";
                     break;
                 case 1:
-                    return " ★ Owner of the Windsor\n     Locomotive Company, the line\n     I'm on right now."
+                    return " ★ Won't let me through to the\n     rest of the train for some\n     reason.";
+                    break;
+                case 2:
+                    return this.Texts(character, 1) + "\n ★ Owner of the Windsor\n     Locomotive Company, the line\n     I'm on right now. Fits the\n     description of a powerful\n     person.";
+                    break;
+                case 3:
+                    return this.Texts(character, 2) + "\n ★ She's an elitist, alright. I\n     can tell she's barely\n     controlling herself. A\n     combination like this is\n     explosive, especially over\n     something important to them.";
+                    break;
+                case 4:
+                    return this.Texts(character, 3) + "\n ★ Has control over an ethereal\n     servant. That thing is big,\n     strong, and it can seemingly\n     disappear at will. The\n     perfect weapon.";
                     break;
                 default: 
-                    return this.Texts(character, 1);
+                    return this.Texts(character, 4);
                     break;
             }
             break;
@@ -491,9 +500,7 @@ Scene_People.prototype.initialize = function() {
 Scene_People.changeChar = function (chara) {
     // Sets the character
     character = chara;
-    console.log(character === char.TYCOON);
-    console.log($gameSystem.characterLevels[character]);
-    if ($gameSystem.characterLevels[character] === 0 || (character === char.TYCOON && $gameSystem.characterLevels[character] === 1)) {
+    if ($gameSystem.characterLevels[character] === 0 || (character === char.TYCOON && $gameSystem.characterLevels[character] < 3)) {
         characterPortrait = characterPortraits[0];
     } else {
         characterPortrait = characterPortraits[character];
@@ -688,7 +695,7 @@ Scene_People.prototype.update = function () {
         }
         p_unravelled_timer++;
     }
-    if (Input.isTriggered("cancel") || Input.isTriggered("menu") || TouchInput.isCancelled()) {
+    if (Input.isTriggered("cancel") || Input.isTriggered("menu") || TouchInput.isCancelled() || Input.isTriggered("ok")) {
         AudioManager.playSe({name: 'journal_close', pan: 0, pitch: 100, volume: 90});
         SceneManager.pop();
     }
