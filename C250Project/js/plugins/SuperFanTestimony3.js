@@ -624,6 +624,8 @@ var BHell = (function (my) {
 	
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
 
+		my.player.bombed = true;
+
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
