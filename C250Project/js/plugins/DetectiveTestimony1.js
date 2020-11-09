@@ -118,7 +118,6 @@ var BHell = (function (my) {
 				this.count += 1; 
 			}
 		}
-		console.log(my.player.use_mouse);
 		
 		if (my.player.use_mouse == true && this.y == 125) {
 			this.count = 4; 

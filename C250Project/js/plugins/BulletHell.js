@@ -228,6 +228,7 @@ var textLengths = [];
 var currentTextSoundDelay = 0;
 var maxTextSoundDelay = 20;
 var myInterpreter = new Game_Interpreter();
+var callingMsg = false;
 
 var BHell = (function (my) {
 
@@ -2514,7 +2515,8 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
 	this.full_hp = this.hp; 
     this.bombedWrong = false; 
     //added variable to make flash longer
-    this.holdFlash=0;
+    this.holdFlash = 0;
+    this.holdFlashTime = 3;
 
     if (this.boss) {
         my.bossMaxHp += this.hp;
@@ -2552,16 +2554,22 @@ BHell_Enemy_Base.prototype.update = function () {
 		if (this.prev_hp == this.hp) {
 			if (this.bombedWrong == true) {
 				this.setColorTone([255, 0, 0, 1]);
-			} else if(this.holdFlash<=0){
+			} else if(this.holdFlash <= 0){
 				this.setColorTone([0, 0, 0, 1]);
             }
 		} else {
-            this.holdFlash=60;//change to adjust lenght of hit flash
+            this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
         }
-        if (this.holdFlash>0){console.log("holding");this.setColorTone([255, 255, 0, 1]);}
+        if (this.holdFlash > 0){
+            this.setColorTone([255, 255, 0, 1]);
+        }
 		
 	}
 	
+    if (this.holdFlash > 0) {
+        this.holdFlash--;
+    }
+
 	this.prev_hp = this.hp; 
 	
     my.BHell_Sprite.prototype.update.call(this);
@@ -5301,7 +5309,9 @@ var BHell = (function (my) {
                 messageBGSpriteImage.setTransform(0, -540 * Math.floor(messageTimer * timerInterval));
                 messageTimer++;
                 if (messageTimer >= windowStartupTime) {
-                    $gameScreen.showPicture(1, "TextBGExit[1x7]", 0, 50, 376, 100, 100, 255, 0);
+                    if (!callingMsg) {
+                        $gameScreen.showPicture(1, "TextBGExit[1x7]", 0, 50, 376, 100, 100, 255, 0);
+                    }
                     messageStarted = false;
                 }
             } else {
@@ -5326,16 +5336,18 @@ var BHell = (function (my) {
                 this.messageWindow.show();
             }
         } else {
-            if (!destructionStarted && typeof messageBGSpriteImage === "object") {
-                messageBGSpriteImage.setTransform(0, -9999);
-                destructionStarted = true;
-            } else {
-                if (destructionTimer <= windowStartupTime + (windowStartupTime)/(windowBGAnimFrames - 1)) {
-                    destructionTimer++;
+            if (!callingMsg) {
+                if (!destructionStarted && typeof messageBGSpriteImage === "object") {
+                    messageBGSpriteImage.setTransform(0, -9999);
+                    destructionStarted = true;
                 } else {
-                    if (!gameScreenDestroyed) {
-                        $gameScreen.erasePicture(1);
-                        gameScreenDestroyed = true;
+                    if (destructionTimer <= windowStartupTime + (windowStartupTime)/(windowBGAnimFrames - 1)) {
+                        destructionTimer++;
+                    } else {
+                        if (!gameScreenDestroyed) {
+                            $gameScreen.erasePicture(1);
+                            gameScreenDestroyed = true;
+                        }
                     }
                 }
             }
@@ -5483,7 +5495,7 @@ var BHell = (function (my) {
                     }
 					
 					/* No need to hold left and move with the mouse any more V.L. 11/08/2020 */
-                    if (this.prev_x == TouchInput.x && this.prev_y == TouchInput.y) {
+                    if ((this.prev_x == TouchInput.x && this.prev_y == TouchInput.y) || this.prev_x === undefined) {
                         this.usingTouch = false;
                     } else {
 						this.usingTouch = true;
