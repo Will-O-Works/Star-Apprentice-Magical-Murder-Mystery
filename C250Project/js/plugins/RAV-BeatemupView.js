@@ -288,7 +288,7 @@ function VN() {
                         charXVal = startingPoint + ((accessibleRes / charAmount) * (i - 1));
                     }
                     if (i === charPos) {
-                        $bust(i).moveTo(charXVal + (slide ? fadeDist : 0), i === activeChar ? charY : charY + charInc, 0);
+                        $bust(i).moveTo(charXVal + (slide ? fadeDist * slideDir : 0), i === activeChar ? charY : charY + charInc, 0);
                         if (slide) {
                             $bust(i).moveTo(charXVal, i === activeChar ? charY : charY + charInc);
                         }

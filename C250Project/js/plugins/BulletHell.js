@@ -4336,9 +4336,10 @@ var BHell = (function (my) {
         this.PhaseOver;
         this.nextMap;
         if ($gameVariables.value(11) >= 4) {
-            this.currentLine = 5;
+            this.currentLine = -1;
+        } else {
+            this.currentLine = 0;
         }
-        this.currentLine = 0;
 		// variables for sentence building (Ohi)
 		this.wordsList = [];
 		this.finisherImage = "$VagrantSentence"; 
@@ -6338,9 +6339,6 @@ BHell_Spriteset.prototype.updateParallax = function () {
         this._parallaxName = my.stage.parallaxName();
         if (my.map >= 30 && my.map <= 32) {
             this._BGAnimSpeed = 8/60;
-            my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
-        } else if (my.map == 21) {
-            my.stage.changeParallax('BulletHell_Twins', 0, 0, 0, 0);
         }
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
@@ -6349,6 +6347,13 @@ BHell_Spriteset.prototype.updateParallax = function () {
             my.stage.changeParallax('BulletHell_Frozen', 0, 0, 0, 0);
         } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_A') {
             my.stage.changeParallax('BulletHell_A', 0, 0, 0, 0);
+        }
+    }
+    if (my.map === 32) {
+        if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final_') {
+            my.stage.changeParallax('BulletHell_Final_Frozen', 0, 0, 0, 0);
+        } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final') {
+            my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
         }
     }
     if (this._parallax.bitmap) {

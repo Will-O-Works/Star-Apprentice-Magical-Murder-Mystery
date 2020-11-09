@@ -21,7 +21,7 @@ var BHell = (function (my) {
         this.initializeEmitters(parent);
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = false; 
-		/* set player.can_bomb to true by V.L. */
+		my.player.currentLine = 0;
 		this.p = 16; 
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -213,8 +213,8 @@ var BHell = (function (my) {
         this.initializeSwipe(parent);
 
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = false; 
-		/* set player.can_bomb to true by V.L. */
+		my.player.can_bomb = false;
+        my.player.currentLine = 1;
 		
 		this.p = 16; 
 		this.can_die = false;
@@ -446,7 +446,7 @@ var BHell = (function (my) {
         this.initializeEmitters(parent);
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = true; 
-		/* set player.can_bomb to true by V.L. */
+		my.player.currentLine = 2;
 		
         this.p = 16; 
         

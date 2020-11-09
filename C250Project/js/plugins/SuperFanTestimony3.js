@@ -627,7 +627,7 @@ var BHell = (function (my) {
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;
 		my.player.PhaseOver = true;
-		my.player.nextMap = Number(4);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		my.player.nextMap = Number(44);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
