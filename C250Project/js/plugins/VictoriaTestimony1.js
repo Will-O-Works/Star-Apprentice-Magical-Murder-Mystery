@@ -29,7 +29,8 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeEmitters = function (parent) {
         var emitterParams={};
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction=2;
         emitterParams.bullet.speed = 2;
         emitterParams.aim= false;
         emitterParams.alwaysAim =false;
@@ -40,7 +41,8 @@ var BHell = (function (my) {
         this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
         var emitterParams={};
         emitterParams.bullet = {};
-        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction=8;
         emitterParams.bullet.speed = 4;
         emitterParams.angle=Math.PI/2;
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -85,15 +87,17 @@ var BHell = (function (my) {
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VictoriaTestimony1_p1.prototype.updateBrick = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
             var params = {};
-            params.animated = true;
-            params.frame = 2;
+            params.animated = false;
+            params.frame = 0;
             params.speed =3;
             params.hp = 12;
             params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
             params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             params.bullet = {};
+            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.direction=4;
             params.bullet.speed=5;//+(Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             my.controller.enemies.push(new my.BHell_Enemy_Brick(this.x, this.y, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
@@ -220,7 +224,9 @@ var BHell = (function (my) {
         var emitterParams = {};
         emitterParams.aim=false;
         emitterParams.alwaysAim=false;
-        emitterParams.bullet={};
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction=6;
         emitterParams.bullet.speed=5;
         var emitterTotal=10;
         for (let index = 0; index < emitterTotal; index+=2) {
@@ -241,40 +247,69 @@ var BHell = (function (my) {
             }
         }
     };
-	BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function (parent) {
-        this.spawnNumber=6;
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function () {
+        this.spawnNumber=27;
         this.spawnCounter = 0;
-        this.lineNum=2;
-        this.wallSize = (this.spawnNumber/this.lineNum)-1;
+        this.lineNum=3;
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
-	BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function (frameCounter) {
-        while (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+	BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function () {
+        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
             var params = {};
             params.animated = false;
-            params.frame = 2;
-            params.speed =4;
-            params.hp = 999;
-            params.wallSize=this.wallSize;
-            params.Xposition =  ((this.spawnCounter-1)%(this.spawnNumber/this.lineNum));
-            params.posX = this.x+(this.wallSize*25)-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
+            params.frame = 0;
+            params.speed =3;
+            params.hp = 12;
+            params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
             params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             params.bullet = {};
-            my.controller.enemies.push(new my.BHell_Enemy_BrickFollow(this.x, this.y, image, params, this.parent, my.controller.enemies,frameCounter));
+            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.direction=4;
+            params.bullet.speed=5;//+(Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+            my.controller.enemies.push(new my.BHell_Enemy_Brick(this.x, this.y, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
             if(this.spawnCounter==1)
             {
-            my.controller.enemies[1].destroy();
+                my.controller.enemies[1].destroy();
             }
         }  
-    };
+	};
+	// BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function (parent) {
+    //     this.spawnNumber=6;
+    //     this.spawnCounter = 0;
+    //     this.lineNum=2;
+    //     this.wallSize = (this.spawnNumber/this.lineNum)-1;
+	// };
+	// //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+	// BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function (frameCounter) {
+    //     while (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+    //         var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+    //         var params = {};
+    //         params.animated = false;
+    //         params.frame = 2;
+    //         params.speed =4;
+    //         params.hp = 999;
+    //         params.wallSize=this.wallSize;
+    //         params.Xposition =  ((this.spawnCounter-1)%(this.spawnNumber/this.lineNum));
+    //         params.posX = this.x+(this.wallSize*25)-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
+    //         params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+    //         params.bullet = {};
+    //         my.controller.enemies.push(new my.BHell_Enemy_BrickFollow(this.x, this.y, image, params, this.parent, my.controller.enemies,frameCounter));
+    //         this.spawnCounter+=1;
+    //         if(this.spawnCounter==1)
+    //         {
+    //         my.controller.enemies[1].destroy();
+    //         }
+    //     }  
+    // };
     BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeSwipe = function (parent) {
 		this.p = 2; 
         var emitterParams = {};
         emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction=4;
         emitterParams.bullet.speed = 4;
-        emitterParams.bullet.direction = 2;
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[10].angle=Math.PI/2;
@@ -425,13 +460,15 @@ var BHell = (function (my) {
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.updateBrick = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
             var params = {};
-            params.animated = true;
+            params.animated = false;
             params.frame = 2;
             params.speed =5;
             params.hp = 8;
             params.bullet = {};
+            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.direction=4;
             //params.posX = this.x+125-(50*(this.spawnCounter-1));
             params.posX = this.x;
             params.num=this.spawnCounter;
@@ -454,7 +491,9 @@ var BHell = (function (my) {
         var emitterParams = {};
         emitterParams.aim=false;
         emitterParams.alwaysAim=false;
-        emitterParams.bullet={};
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction=6;
         emitterParams.bullet.speed=5;
         var emitterTotal=10;
         this.updateRate =100;
@@ -477,6 +516,8 @@ var BHell = (function (my) {
             emitterParams.b = 9.3;//b: Arc's final angle (in radians),change to adjust
             emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
             emitterParams.bullet = {};
+            emitterParams.bullet.sprite="$VictoriaBullets2"
+            emitterParams.bullet.direction=4;
             emitterParams.bullet.speed=4;
             this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
