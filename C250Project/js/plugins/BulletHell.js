@@ -6287,8 +6287,7 @@ BHell_Spriteset.prototype.update = function () {
 
 BHell_Spriteset.prototype.createParallax = function () {
     this._BGImageIndex = 0;
-    //this._BGAnimSpeed = 1/3.6;
-    this._BGAnimSpeed = 8/60;
+    this._BGAnimSpeed = 1/3.6;
     this._BGFrames = 16;
     this._parallax = new TilingSprite();
     this._parallax.move(0, 0, Graphics.width, Graphics.height);
@@ -6338,7 +6337,10 @@ BHell_Spriteset.prototype.updateParallax = function () {
     if (this._parallaxName !== my.stage.parallaxName()) {
         this._parallaxName = my.stage.parallaxName();
         if (my.map >= 30 && my.map <= 32) {
+            this._BGAnimSpeed = 8/60;
             my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
+        } else if (my.map == 21) {
+            my.stage.changeParallax('BulletHell_Twins', 0, 0, 0, 0);
         }
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
@@ -6348,12 +6350,6 @@ BHell_Spriteset.prototype.updateParallax = function () {
         if (this._BGImageIndex >= this._BGFrames) {
             this._BGImageIndex = 0;
         }
-
-		// V.L. 11/07/2020
-		if (my.map == 21) {
-			this._parallax.bitmap.fillRect(0, 540 * Math.floor(this._BGImageIndex), Graphics.width/2, 540 * Math.floor(this._BGImageIndex) + Graphics.height, "rgba(0, 0, 0, 1)");
-			this._parallax.bitmap.fillRect(Graphics.width/2, 540 * Math.floor(this._BGImageIndex), Graphics.width, 540 * Math.floor(this._BGImageIndex) + Graphics.height, "rgba(255, 255, 255, 1)");
-		}
     }
 };
 
