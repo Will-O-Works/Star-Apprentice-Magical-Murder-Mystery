@@ -452,7 +452,7 @@ var BHell = (function (my) {
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.updateBrick = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+            var image = {"characterName":"$JeevesSmallRed","direction":2,"pattern":2,"characterIndex":2};
             var params = {};
             params.animated = true;
             params.frame = 2;
@@ -710,7 +710,7 @@ var BHell = (function (my) {
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_SuperFanTestimony3_p2.prototype.updateBrick = function (frameCounter) {
         while (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};
+            var image = {"characterName":"$JeevesSmallRed","direction":2,"pattern":2,"characterIndex":2};
             var params = {};
             params.animated = false;
             params.frame = 2;

@@ -2397,7 +2397,7 @@ BHell_Enemy_Base.prototype.constructor = BHell_Enemy_Base;
 BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, enemyList) {
     my.BHell_Sprite.prototype.initialize.call(this, image.characterName, image.characterIndex, image.direction, image.pattern, ((params.animated != null)? params.animated: true), params.animation_speed || 25);
 
-	if (image.characterName != "$Cat") {
+	if (image.characterName != "$Cat" && image.characterName != "$JeevesSmallRed") {
 		my.player.bombs = 1; // Set player bomb number to 1 by V.L. 10/18/2020
 	}
 	
@@ -6296,6 +6296,8 @@ BHell_Spriteset.prototype.createParallax = function () {
 	/* Say hi to the twins V.L. */
 	this.twins_faces = ImageManager.loadFace("Twins_Portrait", 0);
 	this.twins_buffer = new Sprite(this.twins_faces);
+	this.fan_faces = ImageManager.loadFace("Super_Fan_Portrait", 0);
+	this.fan_buffer = new Sprite(this.fan_faces);
 	/* Say hi to the twins V.L. */
 	
     this._face = new Sprite(my.currentFace);
