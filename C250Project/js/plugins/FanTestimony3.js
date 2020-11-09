@@ -149,11 +149,11 @@ var BHell = (function (my) {
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
-
+		
 		var emitterParams = {};
-		emitterParams.period = 30; 
-		emitterParams.attack_between = 10; 
-		emitterParams.type = 1; 
+		emitterParams.period = 2;  
+		emitterParams.attack_between = 15; 
+		emitterParams.type = 3; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
@@ -163,7 +163,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		my.player.currentLine = 0;
+		my.player.currentLine = 2;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T3(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
@@ -238,10 +238,11 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
+		
 		var emitterParams = {};
-		emitterParams.period = 2;  
-		emitterParams.attack_between = 15; 
-		emitterParams.type = 3; 
+		emitterParams.period = 30; 
+		emitterParams.attack_between = 10; 
+		emitterParams.type = 1; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
@@ -251,7 +252,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		my.player.currentLine = 2;
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Fan_T3(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
