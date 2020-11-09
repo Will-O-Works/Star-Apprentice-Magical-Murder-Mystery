@@ -147,7 +147,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		my.player.currentLine = 1;
+		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Ring(this.x, this.y, emitterParams, parent, my.enemyBullets));
 

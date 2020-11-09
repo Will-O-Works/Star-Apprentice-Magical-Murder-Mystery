@@ -20,6 +20,8 @@ var BHell = (function (my) {
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
+		
+		my.player.currentLine = 0; 
         this.initalizeEmitters(parent)
         this.initializeZaWarudo(parent);
 		// set player.can_bomb to true by V.L.
@@ -168,7 +170,7 @@ var BHell = (function (my) {
         this.initializeDollaH(parent);
         this.initializeZaWarudo(parent);
         
-
+		my.player.currentLine = 1; 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
@@ -433,6 +435,8 @@ var BHell = (function (my) {
 		this.state = "started";
         this.initializeBrick(parent);
         this.initializeEmitters(parent);
+		
+		my.player.currentLine = 2; 
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = false; 
 		/* set player.can_bomb to true by V.L. */

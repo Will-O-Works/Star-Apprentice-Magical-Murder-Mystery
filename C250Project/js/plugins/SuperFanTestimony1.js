@@ -10,7 +10,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p1;
 
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentLine = 2;
+        my.player.currentLine = 0;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 348; // hitbox width
@@ -249,7 +249,8 @@ var BHell = (function (my) {
         this.frameCounter = 0;
 		this.state = "started";
 		this.initializeVL4P1Emitter(parent);
-
+		
+		my.player.currentLine = 1;
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 		this.can_die = false;
@@ -367,6 +368,7 @@ var BHell = (function (my) {
 		this.initializeCat(parent);
 
 		// set player.can_bomb to true by V.L.
+		my.player.currentLine = 2;
 		my.player.can_bomb = false; 
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
