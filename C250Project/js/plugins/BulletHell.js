@@ -5342,7 +5342,7 @@ var BHell = (function (my) {
                     $gameVariables.setValue(10, my.player.nextMap)
                     $gameMap._mapId = my.discussionMap;
                 } else {
-                    $gameMap._mapId = $gameVariables.value(my.discussionMap);
+                    //$gameMap._mapId = $gameVariables.value(my.discussionMap);
                 }
                 $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                 $gameSelfSwitches.clear();
