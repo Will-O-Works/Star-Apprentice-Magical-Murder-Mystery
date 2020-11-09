@@ -1936,7 +1936,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.5,
-    "anchorY": 1.27,
+    "anchorY": 0.56,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSmallPlant-OW.png",
     "poses": {
       "default": {
@@ -1954,7 +1954,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.54,
-    "anchorY": 1.14,
+    "anchorY": 0.76,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTallPlant-OW.png",
     "poses": {
       "default": {
@@ -1972,7 +1972,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.48,
-    "anchorY": 1.15,
+    "anchorY": 0.75,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBigPlant-OW.png",
     "poses": {
       "default": {
