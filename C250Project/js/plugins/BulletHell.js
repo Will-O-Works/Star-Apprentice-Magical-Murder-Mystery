@@ -5256,21 +5256,21 @@ var BHell = (function (my) {
     Scene_BHell.prototype.update = function () {
         this.frameCounter++;
         var bgm = AudioManager.saveBgm()
-        if (bgm.name === "vagrant_fight_intro" && bgm.pos >= 12.79) {
+        if (bgm.name === "vagrant_fight_intro" && bgm.pos >= 12.78) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['vagrant_fight2']);
-        } else if (bgm.name === "tutorial_intro" && bgm.pos >= 15.99) {
+        } else if (bgm.name === "tutorial_intro" && bgm.pos >= 15.98) {
             AudioManager.playVariableBgm(0, 0);
-        } else if (bgm.name === "twin_fight_intro" && bgm.pos >= 22.587) {
+        } else if (bgm.name === "twin_fight_intro" && bgm.pos >= 22.57) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['twin_fight2']);
-        } else if (bgm.name === "twin_fight_bridge" && bgm.pos >= 11.293) {
+        } else if (bgm.name === "twin_fight_bridge" && bgm.pos >= 11.28) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['twin_fight4']);
-        } else if (bgm.name === "vic_fight_intro" && bgm.pos >= 26.66) {
+        } else if (bgm.name === "vic_fight_intro" && bgm.pos >= 26.65) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['vic_fight2']);
-        } else if (bgm.name === "final_fight_intro" && bgm.pos >= 10.66) {
+        } else if (bgm.name === "final_fight_intro" && bgm.pos >= 10.65) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['final_fight2']);
         }
