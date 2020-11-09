@@ -118,7 +118,10 @@ function VN() {
         }
         $gameSwitches.setValue(3, true);
         $gameMap._interpreter.wait(21);
-        var prevChars = Array.from(charXs);
+        var prevChars = [];
+        if (newAdditions.length > 0) {
+            prevChars = Array.from(charXs);
+        }
         charXs = [];
         currentChars = [];
         if (typeof currentActiveChar === "object") {
@@ -185,7 +188,9 @@ function VN() {
         } else {
             activeChar = currentActiveChar;
             if (currentActiveChar != 0) {
-                setTimeout(VN.showName, 300, $gameSystem.characterNamePlates[currentChars[activeChar]]);
+                if (newAdditions.length === 0) {
+                    setTimeout(VN.showName, 300, $gameSystem.characterNamePlates[currentChars[activeChar]]);
+                }
             } else {
                 $gameScreen.erasePicture(2);
             }
@@ -289,7 +294,6 @@ function VN() {
                         }
                         $bust(i).fadeIn();
                         if (chara === char.STARAPPRENTICE) {
-                            console.log("?")
                             $bust(i).mirror();
                         }
                     } else {
@@ -460,6 +464,7 @@ function VN() {
         charXs = [];
         currentChars = [];
         prevChars = [];
+        jeevesPos = 0;
     }
     VN.forceEnd = function() {
         for (i = 1; i <= charXs.length; i++) {
@@ -470,6 +475,7 @@ function VN() {
         charXs = [];
         currentChars = [];
         prevChars = [];
+        jeevesPos = 0;
     }
 
 }());
