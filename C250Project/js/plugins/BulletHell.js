@@ -6325,7 +6325,9 @@ BHell_Spriteset.prototype.updateTileset = function () {
 BHell_Spriteset.prototype.updateParallax = function () {
     if (this._parallaxName !== my.stage.parallaxName()) {
         this._parallaxName = my.stage.parallaxName();
-        my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
+        if (my.map >= 30 && my.map <= 32) {
+            my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
+        }
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
     if (this._parallax.bitmap) {

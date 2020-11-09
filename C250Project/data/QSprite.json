@@ -1918,7 +1918,7 @@
     "cols": 1,
     "rows": 1,
     "anchorX": 0.25,
-    "anchorY": 1,
+    "anchorY": 1.25,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBigTable2-OW.png",
     "poses": {
       "default": {
@@ -1930,5 +1930,68 @@
         ]
       }
     }
+  },
+  "SmallPlant": {
+    "name": "SmallPlant",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 1.27,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QSmallPlant-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "TallPlant": {
+    "name": "TallPlant",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.54,
+    "anchorY": 1.14,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QTallPlant-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "BigPlant": {
+    "name": "BigPlant",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.48,
+    "anchorY": 1.15,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBigPlant-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "VerticalCouch": {
+    "name": "VerticalCouch",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.3,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QVerticalCouch-OW.png",
+    "poses": {}
   }
 }
