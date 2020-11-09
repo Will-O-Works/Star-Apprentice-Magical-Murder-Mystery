@@ -5259,6 +5259,20 @@ var BHell = (function (my) {
         if (bgm.name === "vagrant_fight_intro" && bgm.pos >= 12.79) {
             AudioManager.playVariableBgm(0, 0);
             myInterpreter.pluginCommand('LoadVariableMixBGM', ['vagrant_fight2']);
+        } else if (bgm.name === "tutorial_intro" && bgm.pos >= 15.99) {
+            AudioManager.playVariableBgm(0, 0);
+        } else if (bgm.name === "twins_fight_intro" && bgm.pos >= 22.587) {
+            AudioManager.playVariableBgm(0, 0);
+            myInterpreter.pluginCommand('LoadVariableMixBGM', ['twins_fight2']);
+        } else if (bgm.name === "twins_fight_bridge" && bgm.pos >= 11.293) {
+            AudioManager.playVariableBgm(0, 0);
+            myInterpreter.pluginCommand('LoadVariableMixBGM', ['twins_fight4']);
+        } else if (bgm.name === "vic_fight_intro" && bgm.pos >= 26.66) {
+            AudioManager.playVariableBgm(0, 0);
+            myInterpreter.pluginCommand('LoadVariableMixBGM', ['vic_fight2']);
+        } else if (bgm.name === "final_fight_intro" && bgm.pos >= 10.66) {
+            AudioManager.playVariableBgm(0, 0);
+            myInterpreter.pluginCommand('LoadVariableMixBGM', ['final_fight2']);
         }
         
 
