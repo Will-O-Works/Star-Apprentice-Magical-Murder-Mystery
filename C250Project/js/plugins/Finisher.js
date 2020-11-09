@@ -89,27 +89,75 @@ var BHell = (function (my) {
 		
 		this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
 		
-		switch (this.dir) {
-			case 0: 
-				this.hitboxW = 68; // hitbox width
-				this.hitboxH = 30; // hitbox height
-			break; 
-			
-			case 1: 
-				this.hitboxW = 86; // hitbox width
-				this.hitboxH = 30; // hitbox height
-			break; 
-			
-			case 2: 
-				this.hitboxW = 312; // hitbox width
-				this.hitboxH = 30; // hitbox height
-			break; 
-			
-			case 3: 
-				this.hitboxW = 221; // hitbox width
-				this.hitboxH = 30; // hitbox height
-			break; 
-		}
+		
+		if (image.characterName == "$VagrantSentence") {
+			switch (this.dir) {
+				case 0: 
+					this.hitboxW = 68; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 1: 
+					this.hitboxW = 86; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 2: 
+					this.hitboxW = 312; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 3: 
+					this.hitboxW = 221; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+			}
+		} else if (image.characterName == "$TwinsSentence") {
+			switch (this.dir) {
+				case 0: 
+					this.hitboxW = 204; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 1: 
+					this.hitboxW = 266; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 2: 
+					this.hitboxW = 130; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 3: 
+					this.hitboxW = 204; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+			}
+		} else if (image.characterName == "$VictoriaSentence") {
+			switch (this.dir) {
+				case 0: 
+					this.hitboxW = 174; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 1: 
+					this.hitboxW = 170; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 2: 
+					this.hitboxW = 204; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 3: 
+					this.hitboxW = 152; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+			}
+		} 
+
 		
         this.mover = new my.BHell_Mover_Finisher(this.dir, this.radius, this.counterclockwise); // initialize the enemy's movement, check BHell_Mover
 		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
