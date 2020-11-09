@@ -307,7 +307,8 @@ function VN() {
         currentChars[charPos] = chara;
         VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
     }
-    VN.addJeeves = function() {
+    VN.addJeeves = function(slide = true) {
+        var isActive = activeChar === charXs.length - 1;
         var fullRes = 960;
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
@@ -317,11 +318,15 @@ function VN() {
         currentChars[charAmount + 1] = char.JEEVES;
         charXs[charAmount + 1] = charXs[charAmount];
         var charXVal = charXs[charAmount] + 200;
-        $bust(charAmount + 1).moveTo(charXs[charAmount + 1], charY, 0);
-        $bust(charAmount + 1).moveTo(charXVal, charY, 40);
-        $bust(charAmount + 1).fadeIn(40);
+        $bust(charAmount + 1).moveTo(slide ? charXs[charAmount + 1] : charXVal, isActive ? charY : charY + charInc, 0);
+        if (slide) {
+            $bust(charAmount + 1).moveTo(charXVal, isActive ? charY : charY + charInc, 40);
+            $bust(charAmount + 1).fadeIn(40);
+        } else {
+            $bust(charAmount + 1).fadeIn();
+        }
         charXs[i] = charXVal;
-        $bust(charAmount + 1).light(0);
+        isActive ? $bust(charAmount + 1).light(0) : $bust(charAmount + 1).dim(0);
         jeevesPos = charAmount + 1;
     }
     VN.removeChar = function(charPos, isActive = false, slide = true) {

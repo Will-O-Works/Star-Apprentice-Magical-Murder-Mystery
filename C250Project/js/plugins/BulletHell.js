@@ -6344,6 +6344,13 @@ BHell_Spriteset.prototype.updateParallax = function () {
         }
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
+    if (my.map === 38) {
+        if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Frozen') {
+            my.stage.changeParallax('BulletHell_Frozen', 0, 0, 0, 0);
+        } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_A') {
+            my.stage.changeParallax('BulletHell_A', 0, 0, 0, 0);
+        }
+    }
     if (this._parallax.bitmap) {
         this._parallax.origin.y = 540 * Math.floor(this._BGImageIndex);
         this._BGImageIndex += this._BGAnimSpeed;
