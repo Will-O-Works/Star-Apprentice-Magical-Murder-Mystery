@@ -5625,7 +5625,9 @@ var BHell = (function (my) {
 		
 
 		for(var i = 0; i < my.player.wordsList.length; i++){
-			this.finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
+			var finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
+			this.finisher = new Sprite(finisher);
+			this.finisher.setColorTone([-64, -64, -64, 0.6]);
 			
 			var w = this.finisher.width / 3; // Graphics.width;
 			var h = this.finisher.height / 4; //Graphics.height;
@@ -5638,7 +5640,7 @@ var BHell = (function (my) {
 				var sy = this.finisher.height / 4;
 			}
 
-			y = Graphics.height/2;  
+			y = Graphics.height/4;  
 			x += my.player.wordsList[i][1] / 2; 
 			
 			if (this.credit_y < this.finisher.height) {
