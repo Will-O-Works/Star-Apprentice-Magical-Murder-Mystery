@@ -98,6 +98,7 @@ var BHell = (function (my) {
         emitterParams.bullet = {};
         emitterParams.bullet.direction = 4;
         emitterParams.bullet.speed = 6;
+        if(params.bullet.speed!=false){emitterParams.bullet.speed=params.bullet.speed;}
         emitterParams.period = 110;
         emitterParams.a = 0;//a: Arc's initial angle (in radians),
         emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
