@@ -4330,7 +4330,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = -1; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = $gameSwitches.value(59) ? -1 : 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
         //YA some variables to allow phases
         this.PhaseOver;

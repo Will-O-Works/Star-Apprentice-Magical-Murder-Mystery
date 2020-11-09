@@ -184,13 +184,32 @@ Window_MenuCommand.prototype.drawAllItems = function () {
 
 // Deletes useless general options
 Window_Options.prototype.addGeneralOptions = function() {
-    // Empty
+    this.addCommand('Infinite Lives', 'lives');
 };
 
 // Deletes useless sound options
 Window_Options.prototype.addVolumeOptions = function() {
     this.addCommand(TextManager.bgmVolume, 'bgmVolume');
     this.addCommand(TextManager.seVolume, 'seVolume');
+};
+
+Window_Options.prototype.processOk = function() {
+    var index = this.index();
+    var symbol = this.commandSymbol(index);
+    var value = this.getConfigValue(symbol);
+    if (this.isVolumeSymbol(symbol)) {
+        value += this.volumeOffset();
+        if (value > 100) {
+            value = 0;
+        }
+        value = value.clamp(0, 100);
+        this.changeValue(symbol, value);
+    } else {
+        if (symbol === 'lives') {
+            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+        }
+        this.changeValue(symbol, !value);
+    }
 };
 
 Window_Options.prototype.cursorRight = function(wrap) {
@@ -200,6 +219,9 @@ Window_Options.prototype.cursorRight = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update    
     } else {
+        if (symbol === 'lives') {
+            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+        }
         this.changeValue(symbol, true);
     }
 };
@@ -211,6 +233,9 @@ Window_Options.prototype.cursorLeft = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update   
     } else {
+        if (symbol === 'lives') {
+            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+        }
         this.changeValue(symbol, false);
     }
 };
