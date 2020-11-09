@@ -55,12 +55,13 @@ var BHell = (function (my) {
         this.emitters[4].offsetX = -350;
         this.emitters[5].offsetX = 380;
         this.emitters[6].offsetX = -380;
+        this.punish=0;
         for (let i = 1; i < this.emitters.length; i++) {
             this.emitters[i].offsetY=-120;    
         }  
     }
     BHell_Enemy_VictoriaTestimony1_p1.prototype.updateEmitters = function (parent) {
-        if(this.frameCounter%30==0)
+        if(this.frameCounter%(30-this.punish)==0)
         {
             this.emitters[0].a+=0.85;
             this.emitters[0].b+=0.85;
@@ -137,7 +138,7 @@ var BHell = (function (my) {
 				this.hp = this.full_hp; 
 			}
 			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
+				this.punish=15; 
 			}
 			if (my.player.bombed == true) {
 				this.destroy(); 
@@ -409,10 +410,11 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
         this.initializeEmitters(parent);
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
 		/* set player.can_bomb to true by V.L. */
 		
-		this.p = 16; 
+        this.p = 16; 
+        
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 100, 0, this.hitboxW, this.hitboxH);
 	};
@@ -509,10 +511,15 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
 	};	
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.destroy = function() {
+        //adding these to the correct line allow it to transition to a different phase
+        //the 3 here is the map number change this to whatever map number u want to transition there on victory
         while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}	
         my.BHell_Enemy_Base.prototype.destroy.call(this);
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(37);
+        
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.update = function () {
@@ -539,8 +546,11 @@ var BHell = (function (my) {
 			}
 			if (this.bombedWrong == true) {
 			}
-			if (my.player.bombed == true) {
-				this.destroy(); 
+			if (my.player.bombed == true&& this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
 			}
 			if (this.state !== "dying") {
                 this.move();
@@ -564,12 +574,12 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                
+                console.log(this.timer);
                 if (this.timer > 70) {
                     // Clear screen after count down V.L. 10/20/2020
                     my.controller.generators = [];
                     my.controller.activeGenerators = [];
-                    
+                    console.log("boom");
                     this.destroy();
                 }
                 else if (this.timer % 10 === 0) {  // Explosion on the line effect 
