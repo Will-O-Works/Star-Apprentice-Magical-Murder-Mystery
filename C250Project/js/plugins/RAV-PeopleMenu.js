@@ -398,8 +398,11 @@ Character_Data.Texts = function(character, level) {
                 case 2:
                     return this.Texts(character, 1) + "\n ★ Despite my better judgement,\n     Charlotte will be assisting\n     me on this case. I'm mostly\n     trying to keep her out of\n     trouble.\n ★ Charlotte confirmed\n     Roxanne's alibi."
                     break;
+                case 3:
+                    return this.Texts(character, 2) + "\n ★ I never said the Detective's\n     eye was taken - I just\n     thought he was blinded. How\n     does she know?"
+                    break;
                 default: 
-                    return this.Texts(character, 1);
+                    return this.Texts(character, 3);
                     break;
             }
             break;
@@ -597,6 +600,9 @@ Scene_People.prototype.update = function () {
                 // Returns an index by dividing the mouse position by the spacing and flooring it.
                 var selectedIndex = Math.floor((mouseX - startChar.x + distBetween/2)/(characterSpacing)) + 1;
                 if (selectedIndex != character) {
+                    startingLine = 0;
+                    scrollableUp = false;
+                    scrollableDown = false;
                     AudioManager.playSe({name: 'textadvanceclick', pan: 0, pitch: 100, volume: 90});
                     this._peopleWindow.removeChild(portraitImage);
                     character = selectedIndex

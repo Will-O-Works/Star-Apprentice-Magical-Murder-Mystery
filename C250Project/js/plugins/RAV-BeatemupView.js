@@ -112,24 +112,36 @@ function VN() {
             }
         }
     }
-    VN.init = function(chars = [char.STARAPPRENTICE], currentActiveChar = 1, slideSelf = true, slideOthers = false) {
+    VN.init = function(chars = [char.STARAPPRENTICE], currentActiveChar = 1, slideSelf = true, slideOthers = false, newAdditions = [], slideDir = 1) {
+        for (i = 1; i <= chars.length - 1; i++) {
+            $bust(i).clear(0);
+        }
         $gameSwitches.setValue(3, true);
         $gameMap._interpreter.wait(21);
-        charXs = [];
-        currentChars = [];
+        if (charXs === undefined) {
+            charXs = [];
+            currentChars = [];
+            prevChars = [];
+        }
+        if (typeof currentActiveChar === "object") {
+            activeChars = currentActiveChar;
+        } else {
+            activeChars = [currentActiveChar];
+        }
         activeChar = currentActiveChar;
         var charAmount = chars.length;
         var fullRes = 960;
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
         var startingPoint = fullRes - accessibleRes;
+        var prevChars = Array.from(charXs);
         for (i = 1; i <= charAmount; i++) {
             if (i === 1) {
                 if (chars[i - 1] != undefined) {
                     $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
-                    $bust(i).moveTo((activeChar === i ? sAX : sAX - charInc) - (slideSelf ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
+                    $bust(i).moveTo((activeChars.contains(i) ? sAX : sAX - charInc) - (slideSelf ? fadeDist * slideDir : 0), activeChars.contains(i) ? charY : charY + charInc, 0);
                     if (slideSelf) {
-                        $bust(i).moveTo(activeChar === i ? sAX : sAX - charInc, activeChar === i ? charY : charY + charInc);
+                        $bust(i).moveTo(activeChars.contains(i) ? sAX : sAX - charInc, activeChars.contains(i) ? charY : charY + charInc);
                     }
                     $bust(i).fadeIn();
                     if (chars[i - 1] != char.STARAPPRENTICE) {
@@ -147,11 +159,18 @@ function VN() {
                 }
                 if (chars[i - 1] != undefined) {
                     $bust(i).loadBitmap('face', charPortrait[chars[i - 1]]);
-                    $bust(i).moveTo(charXVal + (slideOthers ? fadeDist : 0), activeChar === i ? charY : charY + charInc, 0);
+                    $bust(i).moveTo((prevChars[i] != undefined && !newAdditions.contains(i)) ? prevChars[i - (i < newAdditions[0] ? 0 : 1)] : (i === charAmount && newAdditions.length > 0 ? prevChars[charAmount - 1] : (charXVal + (slideOthers ? fadeDist * slideDir : 0))), activeChars.contains(i) ? charY : charY + charInc, 0);
                     if (slideOthers) {
-                        $bust(i).moveTo(charXVal, activeChar === i ? charY : charY + charInc);
+                        $bust(i).moveTo(charXVal, activeChars.contains(i) ? charY : charY + charInc);
                     }
-                    $bust(i).fadeIn();
+                    if (i != charAmount || newAdditions.length === 0) {
+                        if (newAdditions.contains(i)) {
+                            $bust(i).fadeOut(0);
+                        }
+                        $bust(i).fadeIn();
+                    } else {
+                        $bust(i).fadeIn(0);
+                    }
                     if (chars[i - 1] === char.STARAPPRENTICE) {
                         $bust(i).mirror();
                     }
@@ -159,10 +178,19 @@ function VN() {
                 charXs[i] = charXVal;
                 currentChars[i] = chars[i - 1];
             }
-            activeChar === i ? $bust(i).light(0) : $bust(i).dim(0);
+            activeChars.contains(i) ? $bust(i).light(0) : $bust(i).dim(0);
         }
-        if (currentActiveChar != 0) {
-            setTimeout(VN.showName, 300, $gameSystem.characterNamePlates[currentChars[activeChar]]);
+        if (typeof currentActiveChar === "object") {
+            activeChar = 0;
+            var namePlate = currentActiveChar.length === 2 ? bothNamePlate : allNamePlate;
+            setTimeout(VN.showName, 300, namePlate);
+        } else {
+            activeChar = currentActiveChar;
+            if (currentActiveChar != 0) {
+                setTimeout(VN.showName, 300, $gameSystem.characterNamePlates[currentChars[activeChar]]);
+            } else {
+                $gameScreen.erasePicture(2);
+            }
         }
     }
     VN.showName = function(name) {
@@ -213,7 +241,7 @@ function VN() {
             }
         }
     }
-    VN.addChar = function(char, isActive = true, slide = true, charPos = charXs.length, slideDir = 1) {
+    VN.addChar = function(chara, isActive = true, slide = true, charPos = charXs.length, slideDir = 1) {
         var fullRes = 960;
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
@@ -244,7 +272,7 @@ function VN() {
             }
         } else {
             charAmount++;
-            $bust(charPos).loadBitmap('face', charPortrait[char]);
+            $bust(charPos).loadBitmap('face', charPortrait[chara]);
 
             for (i = 1; i <= charAmount; i++) {
                 if (i === 1) {
@@ -262,7 +290,8 @@ function VN() {
                             $bust(i).moveTo(charXVal, i === activeChar ? charY : charY + charInc);
                         }
                         $bust(i).fadeIn();
-                        if (char === char.STARAPPRENTICE) {
+                        if (chara === char.STARAPPRENTICE) {
+                            console.log("?")
                             $bust(i).mirror();
                         }
                     } else {
@@ -273,7 +302,7 @@ function VN() {
                 i === activeChar ? $bust(i).light() : $bust(i).dim();
             }
         }
-        currentChars[charPos] = char;
+        currentChars[charPos] = chara;
         VN.showName($gameSystem.characterNamePlates[currentChars[activeChar]]);
     }
     VN.addJeeves = function() {
@@ -430,6 +459,9 @@ function VN() {
             $bust(i).dim();
         }
         $gameSwitches.setValue(4, true);
+        charXs = [];
+        currentChars = [];
+        prevChars = [];
     }
     VN.forceEnd = function() {
         for (i = 1; i <= charXs.length; i++) {
@@ -437,6 +469,9 @@ function VN() {
             $bust(i).clear();
         }
         $gameSwitches.setValue(4, true);
+        charXs = [];
+        currentChars = [];
+        prevChars = [];
     }
 
 }());
