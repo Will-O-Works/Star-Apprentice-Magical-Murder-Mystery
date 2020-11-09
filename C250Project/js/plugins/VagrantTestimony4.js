@@ -42,6 +42,7 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.aimingAngle = 0;
+        this.bulletParams=params.bullet;
         if (params != null) {
             this.angle = params.angle || this.angle;
             this.aim = params.aim || this.aim;
@@ -50,12 +51,10 @@ var BHell = (function (my) {
             this.aimY = params.aim_y || this.aimY;
         }
     };
-
     /**
      * Shoots a single bullet towards this.angle or this.angle + angle between player and emitter.
      */
     BHell_Emitter_Homing.prototype.shoot = function () {
-        
         var bullet;
         if (this.aim) {
             if (this.alwaysAim || this.oldShooting === false) {
@@ -63,13 +62,11 @@ var BHell = (function (my) {
                 var dy = my.player.y - this.y + this.aimY;
                 this.aimingAngle = Math.atan2(dy, dx);
             }
-
             bullet = new my.BHell_HomingBullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
         }
         else {
             bullet = new my.BHell_HomingBullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
         }
-
         this.parent.addChild(bullet);
         this.bulletList.push(bullet);
     };
@@ -136,9 +133,7 @@ var BHell = (function (my) {
             }
             animationSpeed = params.animation_speed || animationSpeed;
         }
-    
         my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
-    
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
         this.rotation = angle + Math.PI / 2;

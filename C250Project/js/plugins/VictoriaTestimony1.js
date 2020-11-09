@@ -8,7 +8,7 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony1_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VictoriaTestimony1_p1.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p1;
 	BHell_Enemy_VictoriaTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 45;//change to adjust Line HP
+        params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
         params.hitbox_w = 410; // change to adjust hitbox width
         params.hitbox_h = 80; // change to adjust hitbox heights
@@ -199,7 +199,7 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony1_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_VictoriaTestimony1_p2.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p2;
 	BHell_Enemy_VictoriaTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 45;//change to adjust Line HP
+        params.hp = 25;//change to adjust Line HP
         params.speed = 3.5; // change to adjust speed of boss moving 
         params.hitbox_w = 410; // change to adjust hitbox width
         params.hitbox_h = 80; // change to adjust hitbox heights
@@ -248,9 +248,9 @@ var BHell = (function (my) {
         }
     };
     BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function () {
-        this.spawnNumber=27;
+        this.spawnNumber=18;
         this.spawnCounter = 0;
-        this.lineNum=3;
+        this.lineNum=2;
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function () {
@@ -262,7 +262,7 @@ var BHell = (function (my) {
             params.speed =3;
             params.hp = 12;
             params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
-            params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+            params.posY=this.y+120-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             params.bullet = {};
             params.bullet.sprite="$VictoriaBullets1"
             params.bullet.direction=4;

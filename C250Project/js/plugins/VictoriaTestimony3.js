@@ -60,10 +60,15 @@ var BHell = (function (my) {
         this.emitters[2].offsetX=300;
         this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[3].offsetX=-300;
+        this.firstpause =true;
     };
     BHell_Enemy_VictoriaTestimony3_p1.prototype.updateZaWarudo = function() {
         if(this.frameCounter==270){
-            AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+            if(this.firstpause==true){
+                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                this.firstpause=false;
+            }
+            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
             my.player.Timestop=true;
         }
         if(this.frameCounter%20 == 0&&my.player.Timestop==true&&this.frameCounter<370)
@@ -230,6 +235,7 @@ var BHell = (function (my) {
     };
     BHell_Enemy_VictoriaTestimony3_p2.prototype.updateZaWarudo = function() {
         if(this.frameCounter==240){
+            AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
             my.player.Timestop=true;
         }
         if(this.frameCounter%15 == 0&&my.player.Timestop==true&&this.frameCounter<340){
@@ -363,6 +369,7 @@ var BHell = (function (my) {
     };
     BHell_Enemy_VictoriaTestimony3_p3.prototype.updateZaWarudo = function() {
         if(this.frameCounter==60){
+            AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
             my.player.Timestop=true;
         }
         if(this.frameCounter%20 == 0&&my.player.Timestop==true&&this.frameCounter<120){

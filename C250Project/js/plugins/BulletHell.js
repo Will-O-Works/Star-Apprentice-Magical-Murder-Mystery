@@ -1845,7 +1845,6 @@ var BHell = (function (my) {
         this.dt = 0;
         this.radius = 0;
         this.theta = 0;
-
         if (params != null) {
             this.dt = params.dt || this.dt;
             this.radius = params.radius || this.radius;
@@ -2513,7 +2512,9 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
 	this.flash = true; 
 	this.prev_hp = this.hp; 
 	this.full_hp = this.hp; 
-	this.bombedWrong = false; 
+    this.bombedWrong = false; 
+    //added variable to make flash longer
+    this.holdFlash=0;
 
     if (this.boss) {
         my.bossMaxHp += this.hp;
@@ -2551,12 +2552,13 @@ BHell_Enemy_Base.prototype.update = function () {
 		if (this.prev_hp == this.hp) {
 			if (this.bombedWrong == true) {
 				this.setColorTone([255, 0, 0, 1]);
-			} else {
+			} else if(this.holdFlash<=0){
 				this.setColorTone([0, 0, 0, 1]);
-			}
+            }
 		} else {
-			this.setColorTone([255, 255, 0, 1]);
-		}
+            this.holdFlash=60;//change to adjust lenght of hit flash
+        }
+        if (this.holdFlash>0){console.log("holding");this.setColorTone([255, 255, 0, 1]);}
 		
 	}
 	

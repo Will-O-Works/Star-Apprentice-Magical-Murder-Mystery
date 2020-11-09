@@ -61,6 +61,7 @@ var BHell = (function (my) {
     };
     BHell_Enemy_SuperFanTestimony3_p1.prototype.updateZaWarudo = function() {
         if(this.frameCounter==240){
+            AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
             my.player.Timestop=true;
         }
         if(this.frameCounter%15 == 0&&my.player.Timestop==true&&this.frameCounter<340){
