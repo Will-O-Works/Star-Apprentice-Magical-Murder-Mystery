@@ -208,7 +208,7 @@ Window_Options.prototype.processOk = function() {
         if (symbol === 'lives') {
             $gameSwitches.setValue(59, !$gameSwitches.value(59));
         }
-        this.changeValue(symbol, !value);
+        this.changeValue(symbol, $gameSwitches.value(59));
     }
 };
 
@@ -220,9 +220,9 @@ Window_Options.prototype.cursorRight = function(wrap) {
         // Overwritten in update    
     } else {
         if (symbol === 'lives') {
-            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+            $gameSwitches.setValue(59, true);
         }
-        this.changeValue(symbol, true);
+        this.changeValue(symbol, $gameSwitches.value(59));
     }
 };
 
@@ -234,9 +234,9 @@ Window_Options.prototype.cursorLeft = function(wrap) {
         // Overwritten in update   
     } else {
         if (symbol === 'lives') {
-            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+            $gameSwitches.setValue(59, false);
         }
-        this.changeValue(symbol, false);
+        this.changeValue(symbol, $gameSwitches.value(59));
     }
 };
 
