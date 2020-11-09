@@ -221,7 +221,7 @@ var BHell = (function (my) {
         this.initializeDolla(parent);
 
 		// set player.can_bomb to true by V.L.
-        my.player.can_bomb = false;
+        my.player.can_bomb = true;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.initializeDolla = function (parent) {
@@ -365,7 +365,7 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_VictoriaTestimony2_p2.prototype.destroy = function() {
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(8);
+        my.player.nextMap = Number(38);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.update = function () {
@@ -392,8 +392,11 @@ var BHell = (function (my) {
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
 			}
-			if (my.player.bombed == true) {
-				this.destroy(); 
+			if (my.player.bombed == true && this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
 			}
 			if (this.state !== "dying") {
                 this.move();
@@ -409,7 +412,22 @@ var BHell = (function (my) {
 				break;
 			case "dying": // die.
 				this.destroy();
-				break;
+                break;
+            case "bombed":  
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                console.log(this.timer);
+                if (this.timer > 70) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    console.log("boom");
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
+            break; 
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
