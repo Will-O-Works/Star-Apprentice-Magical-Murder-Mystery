@@ -13,8 +13,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 500; // hitbox width
-        params.hitbox_h = 68; // hitbox heights
+        params.hitbox_w = 348; // hitbox width
+        params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
@@ -240,8 +240,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 3; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hitbox_w = 407; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
@@ -355,8 +355,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 3; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hitbox_w = 144; // hitbox width
+        params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 

@@ -10,8 +10,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 410; // change to adjust hitbox width
-        params.hitbox_h = 80; // change to adjust hitbox heights
+        params.hitbox_w = 488; // change to adjust hitbox width
+        params.hitbox_h = 83; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
@@ -201,8 +201,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 3.5; // change to adjust speed of boss moving 
-        params.hitbox_w = 410; // change to adjust hitbox width
-        params.hitbox_h = 80; // change to adjust hitbox heights
+        params.hitbox_w = 360; // change to adjust hitbox width
+        params.hitbox_h = 72; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
@@ -435,8 +435,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 45;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 410; // change to adjust hitbox width
-        params.hitbox_h = 80; // change to adjust hitbox heights
+        params.hitbox_w = 458; // change to adjust hitbox width
+        params.hitbox_h = 72; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
