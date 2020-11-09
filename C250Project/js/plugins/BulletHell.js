@@ -6275,7 +6275,8 @@ BHell_Spriteset.prototype.update = function () {
 
 BHell_Spriteset.prototype.createParallax = function () {
     this._BGImageIndex = 0;
-    this._BGAnimSpeed = 1/3.6;
+    //this._BGAnimSpeed = 1/3.6;
+    this._BGAnimSpeed = 8/60;
     this._BGFrames = 16;
     this._parallax = new TilingSprite();
     this._parallax.move(0, 0, Graphics.width, Graphics.height);

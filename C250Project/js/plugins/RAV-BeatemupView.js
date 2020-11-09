@@ -11,13 +11,13 @@
 
 var charPortrait = [
     'Nothing',
-    'StarApprentice_Portrait[Exp3x3]',
-    'Detective_Portrait',
+    'StarApprentice_Portrait[Exp4x3]',
+    'Detective_Portrait[Exp3x2]',
     'Vagrant_Portrait[Exp3x3]',
-    'Fan_Portrait',
-    'Black_Portrait',
-    'White_Portrait',
-    'Tycoon_Portrait',
+    'Fan_Portrait[Exp4x3]',
+    'Black_Portrait[Exp3x2]',
+    'White_Portrait[Exp3x2]',
+    'Tycoon_Portrait[Exp3x2]',
     'Jeeves_Portrait'
 ];
 
