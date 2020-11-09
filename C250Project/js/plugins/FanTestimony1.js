@@ -293,19 +293,20 @@ var BHell = (function (my) {
 
     BHell_Enemy_FanTestimony1_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_FanTestimony1_p1.prototype.constructor = BHell_Enemy_FanTestimony1_p1;
-
+	
+	
 	BHell_Enemy_FanTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 400;
-        params.hitbox_h = 81;
+        params.hitbox_w = 388;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-		this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 15; 
-		emitterParams.type = 1; 
+		emitterParams.period = 2; 
+		emitterParams.type = 2; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
@@ -350,18 +351,19 @@ var BHell = (function (my) {
     BHell_Enemy_FanTestimony1_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_FanTestimony1_p2.prototype.constructor = BHell_Enemy_FanTestimony1_p2;
 
+	
 	BHell_Enemy_FanTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 388;
-        params.hitbox_h = 72;
+        params.hitbox_w = 400;
+        params.hitbox_h = 81;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 2; 
-		emitterParams.type = 2; 
+		emitterParams.period = 15; 
+		emitterParams.type = 1; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
@@ -376,8 +378,8 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Fan_T1(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
-
-        BHell_Enemy_FanTestimony1_p2.prototype.destroy = function() {
+	
+	BHell_Enemy_FanTestimony1_p2.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
@@ -388,6 +390,9 @@ var BHell = (function (my) {
         /* inherit destroy function from BHell_Enemy_Base by V.L. */
     };
 	
+
+
+
     return my;
 } (BHell || {}));
 
