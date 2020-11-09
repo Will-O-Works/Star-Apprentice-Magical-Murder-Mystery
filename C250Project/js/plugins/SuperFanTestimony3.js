@@ -616,6 +616,19 @@ var BHell = (function (my) {
 		// Update the time counter and reset it every 20 seconds.
 		this.frameCounter = (this.frameCounter + 1) % 1200;
 	}
+	
+	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.bombed = true;
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(4);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
     return my;
 } (BHell || {}));
 
