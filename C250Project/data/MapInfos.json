@@ -43,5 +43,6 @@ null,
 {"id":41,"expanded":true,"name":"Victoria Testimony 4","order":33,"parentId":14,"scrollX":811,"scrollY":1563},
 {"id":42,"expanded":true,"name":"Victoria Finisher","order":34,"parentId":14,"scrollX":588.3636363636364,"scrollY":433.09090909090907},
 {"id":43,"expanded":true,"name":"Victoria Discussions","order":35,"parentId":14,"scrollX":594.1818181818181,"scrollY":334.90909090909093},
-{"id":44,"expanded":false,"name":"Finale","order":12,"parentId":28,"scrollX":594.1818181818181,"scrollY":334.90909090909093}
+{"id":44,"expanded":false,"name":"Finale","order":12,"parentId":28,"scrollX":594.1818181818181,"scrollY":334.90909090909093}, 
+{"id":45,"expanded":true,"name":"True Fan Discussions","order":43,"parentId":30,"scrollX":819,"scrollY":453}
 ]
