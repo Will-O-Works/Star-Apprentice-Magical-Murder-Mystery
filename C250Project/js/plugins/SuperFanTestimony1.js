@@ -35,8 +35,9 @@ var BHell = (function (my) {
 		var emitterParams = {};
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
         emitterParams.alwaysAim = false;
-        emitterParams.bullet = {};
-		emitterParams.bullet.direction = 6;
+		emitterParams.bullet = {};
+		emitterParams.bullet.sprite="$FanBullets";
+		emitterParams.bullet.direction = 8;
 
 		//emitterParams.shoot_x = Graphics.width / 4 + Math.random() * Graphics.width / 2;
 
@@ -52,7 +53,9 @@ var BHell = (function (my) {
 		var emitterParams = {};
 		emitterParams.bullet = {};
 		emitterParams.bullet.speed=2;
-		emitterParams.bullet.direction = 2;//change to adjust bullet sprite
+		emitterParams.bullet.sprite="$FanBullets";
+		emitterParams.bullet.animated = true;
+		emitterParams.bullet.direction = 8;
         emitterParams.a = 6.5;//a: Arc's initial angle (in radians),
         emitterParams.b = 9.2;//b: Arc's final angle (in radians),
         emitterParams.n = 15;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
@@ -61,8 +64,10 @@ var BHell = (function (my) {
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
         emitterParams.alwaysAim = false;
 		emitterParams.bullet = {};
-		emitterParams.bullet.speed=5;
+		emitterParams.bullet.sprite="$EyeBullets";
 		emitterParams.bullet.direction = 2;
+		emitterParams.bullet.speed=5;
+		emitterParams.bullet.direction = 4;
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets,false)); // initialize the emmiter, check BHell_Emmiter
@@ -75,18 +80,18 @@ var BHell = (function (my) {
 		this.emitters[5].angle = (Math.PI)-0.99;//change to adjust emitter angle
 		this.emitters[6].angle = 0.99;//change to adjust emitter angle
 		this.emitters[7].angle = (Math.PI)-0.99;//change to adjust emitter angle
-		this.emitters[4].offsetX = -480;//change to adjust emitter angle
-		this.emitters[5].offsetX = 480;
-		this.emitters[6].offsetX = -480;
-		this.emitters[7].offsetX = 480;
+		this.emitters[4].offsetX = -500;//change to adjust emitter angle
+		this.emitters[5].offsetX = 500;
+		this.emitters[6].offsetX = -500;
+		this.emitters[7].offsetX = 500;
 		this.emitters[4].offsetY = 100;
 		this.emitters[5].offsetY = 100;
-		this.emitters[6].offsetY = 130;
-		this.emitters[7].offsetY = 130;
+		this.emitters[6].offsetY = 160;
+		this.emitters[7].offsetY = 160;
 		this.emitters[8].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[9].angle = (Math.PI)/2;//change to adjust emitter angle
-		this.emitters[8].offsetX = 270;
-		this.emitters[9].offsetX = -270;
+		this.emitters[8].offsetX = 290;
+		this.emitters[9].offsetX = -290;
 		this.emitters[10].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[11].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[10].offsetX = 255;
@@ -94,7 +99,7 @@ var BHell = (function (my) {
 		
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.updateEmitters = function () {
-		if(this.frameCounter%10 === 0){
+		if(this.frameCounter%4 === 0){
 			//"var x = amplitude * sin(TWO_PI * frameCount / period" reffer to this for harmonic oscillations: https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
 			var x=170 * Math.sin(2*Math.PI * this.frameCounter / 120);
 			var y=0;
@@ -125,9 +130,10 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initializeHoming = function (parent) {
         var emitterParams = {};
-        emitterParams.bullet = {};
-        emitterParams.bullet.speed = 7
-        emitterParams.bullet.index = 0;
+		emitterParams.bullet = {};
+		emitterParams.sprite="$EyeBullets";////FIX THIS PART U DUMBASS MAKE SURE TO ALLOW PASSABLE PARAMS
+        emitterParams.bullet.speed = 7;
+        emitterParams.bullet.index = 2;
         emitterParams.bullet.frame = 2;
         emitterParams.bullet.direction = 8;
         emitterParams.period = 0;

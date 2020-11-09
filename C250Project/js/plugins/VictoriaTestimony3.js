@@ -63,6 +63,7 @@ var BHell = (function (my) {
     };
     BHell_Enemy_VictoriaTestimony3_p1.prototype.updateZaWarudo = function() {
         if(this.frameCounter==270){
+            AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
             my.player.Timestop=true;
         }
         if(this.frameCounter%20 == 0&&my.player.Timestop==true&&this.frameCounter<370)
