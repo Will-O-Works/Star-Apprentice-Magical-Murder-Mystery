@@ -144,8 +144,8 @@ var BHell = (function (my) {
 	BHell_Enemy_FanTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 300;
-        params.hitbox_h = 100;
+        params.hitbox_w = 144;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -198,8 +198,8 @@ var BHell = (function (my) {
 	BHell_Enemy_FanTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 300;
-        params.hitbox_h = 100;
+        params.hitbox_w = 380;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -253,7 +253,7 @@ var BHell = (function (my) {
         params.hp = 75;
         params.speed = 25;
         params.hitbox_w = 300;
-        params.hitbox_h = 100;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
