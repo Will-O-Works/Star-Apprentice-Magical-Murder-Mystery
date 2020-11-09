@@ -118,11 +118,9 @@ function VN() {
         }
         $gameSwitches.setValue(3, true);
         $gameMap._interpreter.wait(21);
-        if (charXs === undefined) {
-            charXs = [];
-            currentChars = [];
-            prevChars = [];
-        }
+        var prevChars = Array.from(charXs);
+        charXs = [];
+        currentChars = [];
         if (typeof currentActiveChar === "object") {
             activeChars = currentActiveChar;
         } else {
@@ -134,7 +132,7 @@ function VN() {
         var playerWidth = 280; // 280 is Minnie's max width
         var accessibleRes = fullRes - (playerWidth/2); // /2 to account for the buffer room on the ends 
         var startingPoint = fullRes - accessibleRes;
-        var prevChars = Array.from(charXs);
+        
         for (i = 1; i <= charAmount; i++) {
             if (i === 1) {
                 if (chars[i - 1] != undefined) {
