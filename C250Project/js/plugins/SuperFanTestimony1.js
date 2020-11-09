@@ -17,6 +17,7 @@ var BHell = (function (my) {
         params.hitbox_h = 68; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -237,6 +238,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -351,6 +353,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -445,6 +448,7 @@ var BHell = (function (my) {
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
+
 	//main update loop
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.update = function () {
 		
@@ -487,18 +491,20 @@ var BHell = (function (my) {
 	}
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.destroy = function() {
 
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.bombed = true;
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(31);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}
+			
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-    };
+	};
     return my;
 } (BHell || {}));
 //=============================================================================

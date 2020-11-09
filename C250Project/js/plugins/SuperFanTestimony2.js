@@ -132,6 +132,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
@@ -202,6 +203,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
@@ -258,6 +260,7 @@ var BHell = (function (my) {
         params.hitbox_h = 100;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 		this.count = 0; 
 
@@ -299,18 +302,17 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_SuperFanTestimony2_p3.prototype.update = function() {
+	BHell_Enemy_SuperFanTestimony2_p3.prototype.destroy = function() {
 
-		if (this.bombedWrong == true) {
-			// Write the bombedWrong penalty in here
-			//this.emitters[0].attack_between = 125; 
-			// this.emitters[0].num_bullet = 4; 
-		}
-		
-		/* inherit update function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.update.call(this);
-		/* inherit update function from BHell_Enemy_Base by V.L. */
-	} 
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.bombed = true;
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(32);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));

@@ -5207,7 +5207,7 @@ var BHell = (function (my) {
 			case 31: 
 			case 32: 
 			my.currentFace = ImageManager.loadFace("Fan_Portrait", 0);
-			my.discussionMap = 18;
+			my.discussionMap = 45;
 			break; 
 			
 			// Tutorial Testimony
