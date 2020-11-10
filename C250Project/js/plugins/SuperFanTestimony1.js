@@ -25,7 +25,7 @@ var BHell = (function (my) {
 		this.initializeHoming(parent);
 
 		// set player.can_bomb to true by V.L.
-		this.p = 151; 
+		this.p = 81; 
 		this.bombedWrong = false; 
 		my.player.can_bomb = false; 
 		this.can_die = false;
@@ -132,7 +132,7 @@ var BHell = (function (my) {
         var emitterParams = {};
 		emitterParams.bullet = {};
 		emitterParams.sprite="$EyeBullets";////FIX THIS PART U DUMBASS MAKE SURE TO ALLOW PASSABLE PARAMS
-        emitterParams.bullet.speed = 7;
+        emitterParams.bullet.speed = 8;
         emitterParams.bullet.index = 2;
         emitterParams.bullet.frame = 2;
         emitterParams.bullet.direction = 8;
@@ -141,6 +141,7 @@ var BHell = (function (my) {
 		emitterParams.aim = true; 
 		emitterParams.bullet.hitboxshape = "circle";
 		emitterParams.bullet.hitboxradius=100;
+		emitterParams.bullet.repeat = 1; 
 		this.emitters.push(new my.BHell_Emitter_Homing(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.emitters.push(new my.BHell_Emitter_Homing(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.emitters[12].offsetX=250;
@@ -265,7 +266,7 @@ var BHell = (function (my) {
         emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
         emitterParams.n = 4;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
 		this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
-		this.increment=0.2;
+		this.increment=0.3;
 		emitterParams.bullet = {};
 		emitterParams.bullet.speed=4;
 		emitterParams.bullet.direction = 4;
@@ -278,7 +279,7 @@ var BHell = (function (my) {
 	};
 	//initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.updateEmitters = function () {
-		if(this.frameCounter%6==0){
+		if(this.frameCounter%10==0){
 			this.emitters[0].shoot(this.emitters,true)
 			this.emitters[0].a+=this.increment;
 			this.emitters[0].b+=this.increment;
@@ -293,8 +294,8 @@ var BHell = (function (my) {
 			this.emitters[2].offsetY = (-x)*Math.sin(this.angle2)+(y)*Math.cos(this.angle2);
 			this.emitters[2].shoot(this.emitters,true);
 		}
-		if(this.emitters[0].a>4.5){this.increment= -0.2;}
-		if(this.emitters[0].a<0){this.increment= 0.2;}
+		if(this.emitters[0].a>4.5){this.increment= -0.3;}
+		if(this.emitters[0].a<0){this.increment= 0.3;}
 	};
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.die = function() {
 		this.state = "dying";
@@ -397,14 +398,14 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.updateEmitters = function () {
 		if(this.frameCounter%6==0){
 			//"var x = amplitude * sin(TWO_PI * frameCount / period" reffer to this for harmonic oscillations: https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
-			var x=125 * Math.sin(2*Math.PI * this.frameCounter / 120);
+			var x=250 * Math.sin(2*Math.PI * this.frameCounter / 120);
 			var y=0;
 			//reffer to the this for 3D rotations : https://math.stackexchange.com/questions/17246/is-there-a-way-to-rotate-the-graph-of-a-function
 			this.emitters[0].offsetX = 500+((x)*Math.cos(this.angle1)-(y)*Math.sin(this.angle1));//last part is just random number generator
-			this.emitters[0].offsetY = 200+(x)*Math.sin(this.angle1)+(y)*Math.cos(this.angle1);
+			this.emitters[0].offsetY = 75 + (x)*Math.sin(this.angle1)+(y)*Math.cos(this.angle1);
 			this.emitters[0].shoot(this.emitters,true);
 			this.emitters[1].offsetX = -500+((-x)*Math.cos(this.angle2)-(y)*Math.sin(this.angle2));//last part is just random number generator
-			this.emitters[1].offsetY = 200+(-x)*Math.sin(this.angle2)+(y)*Math.cos(this.angle2);
+			this.emitters[1].offsetY = 75 + (-x)*Math.sin(this.angle2)+(y)*Math.cos(this.angle2);
 			this.emitters[1].shoot(this.emitters,true);
 		}
 		// if(this.frameCounter%41==0){

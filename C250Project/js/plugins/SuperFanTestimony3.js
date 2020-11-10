@@ -630,8 +630,7 @@ var BHell = (function (my) {
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}
-			
-			
+
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */

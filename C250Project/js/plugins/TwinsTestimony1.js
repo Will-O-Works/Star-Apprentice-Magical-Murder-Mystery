@@ -631,7 +631,7 @@ var BHell = (function (my) {
 		this.bulletParams.phase = 1; 
 		
 		this.num_bullet = 24; 
-		this.angle = Math.PI - Math.PI / 4; 
+		this.angle = Math.PI - Math.PI / 3; 
 		this.baseSpeed = 0; 
 		this.timer = 0; 
 		
@@ -652,7 +652,7 @@ var BHell = (function (my) {
     BHell_Emitter_Ring.prototype.shoot = function () {
 		
 		for (var n = 0; n < this.num_bullet; n++) {
-			this.aimingAngle = this.angle + 3/2 * Math.PI / this.num_bullet * n;
+			this.aimingAngle = this.angle + 4/3 * Math.PI / this.num_bullet * n;
 				
 			var bullet = new my.BHell_Marching_Bullet(this.center_x, this.center_y, this.aimingAngle, this.bulletParams, this.bulletList);
 			this.parent.addChild(bullet);

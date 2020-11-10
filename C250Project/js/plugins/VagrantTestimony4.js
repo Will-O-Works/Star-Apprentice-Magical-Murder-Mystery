@@ -121,6 +121,7 @@ var BHell = (function (my) {
         this.hitboxheight = 0;
         this.hitboxwidth = 0;
         this.hitboxradius = 2;
+		this.repeat = 5; 
     
         if (params != null) {
             speed = params.speed || speed;
@@ -132,6 +133,7 @@ var BHell = (function (my) {
                 animated = true;
             }
             animationSpeed = params.animation_speed || animationSpeed;
+			repeat = params.repeat || repeat; 
         }
         my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
         this.anchor.x = 0.5;
@@ -149,6 +151,7 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.spotted = false
+		this.repeat = repeat; 
         seeks = 0
     };
     
@@ -158,24 +161,31 @@ var BHell = (function (my) {
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
 		this.counter = this.counter +1;
-        if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
-            var dx = my.player.x - this.x + this.aimX;
-            var dy = my.player.y - this.y + this.aimY;
-            this.angle = Math.atan2(dy, dx);
-            this.spotted = true;
-        }
-        if (this.spotted === true){
-            if(this.counter>65)////change to adjust pause
-            {
-                seeks = seeks+1;
-                this.counter = 0;
-                this.spotted=false;
-            }
-        }
-        else{
-            this.x += Math.cos(this.angle) * this.speed;
-            this.y += Math.sin(this.angle) * this.speed;
-        }
+		if (this.repeat > 0) {
+			if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
+				var dx = my.player.x - this.x + this.aimX;
+				var dy = my.player.y - this.y + this.aimY;
+				this.angle = Math.atan2(dy, dx);
+				this.spotted = true;
+			}
+			if (this.spotted === true){
+				if(this.counter>65)////change to adjust pause
+				{
+					seeks = seeks+1;
+					this.counter = 0;
+					this.repeat -= 1; 
+					this.spotted=false;
+				}
+			}
+			else{
+				this.x += Math.cos(this.angle) * this.speed;
+				this.y += Math.sin(this.angle) * this.speed;
+			}
+		} else{
+			this.x += Math.cos(this.angle) * this.speed;
+			this.y += Math.sin(this.angle) * this.speed;
+		}
+
         
 
         if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {

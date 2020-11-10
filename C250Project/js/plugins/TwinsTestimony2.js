@@ -359,7 +359,7 @@ var BHell = (function (my) {
         this.bulletParams.direction = 8; //this.params.direction;
 		
 		this.angle = 0; 
-		this.angle_change = Math.PI/18; 
+		this.angle_change = Math.PI/36; 
 		this.radius = 2 * Graphics.width / 3; 
 		this.center_x = Graphics.width / 2; 
 		this.center_y = Graphics.height / 2; 
