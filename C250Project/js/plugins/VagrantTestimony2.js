@@ -12,7 +12,7 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 410; // change to adjust hitbox width
+        params.hitbox_w = 314; // change to adjust hitbox width
         params.hitbox_h = 80; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -213,8 +213,8 @@ var BHell = (function (my) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 450; // hitbox width
-        params.hitbox_h = 70; // hitbox heights
+        params.hitbox_w = 454; // hitbox width
+        params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
@@ -401,8 +401,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 500; // hitbox width
-        params.hitbox_h = 68; // hitbox heights
+        params.hitbox_w = 352; // hitbox width
+        params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
