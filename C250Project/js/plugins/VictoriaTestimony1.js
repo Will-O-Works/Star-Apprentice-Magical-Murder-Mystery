@@ -11,7 +11,7 @@ var BHell = (function (my) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
         params.hitbox_w = 488; // change to adjust hitbox width
-        params.hitbox_h = 83; // change to adjust hitbox heights
+        params.hitbox_h = 80; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
