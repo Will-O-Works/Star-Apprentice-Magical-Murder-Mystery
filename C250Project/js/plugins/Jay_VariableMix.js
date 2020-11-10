@@ -66,11 +66,14 @@ Game_Interpreter.prototype.pluginCommand = function(command, args) {
 
 Game_Interpreter.prototype.loadVariableMixBGM = function(args) {
 	var oldBgm = AudioManager._currentBgm;
+	var useVolume = oldBgm != undefined ? oldBgm.volume : 90;
+	var usePitch = oldBgm != undefined ? oldBgm.pitch : 100;
+	var usePan = oldBgm != undefined ? oldBgm.pan: 0;
 	var bgm = {
 		name: args[0],
-		volume: Number(args[2]) || oldBgm.volume,
-		pitch: oldBgm.pitch,
-		pan: Number(args[3]) || oldBgm.pan,
+		volume: Number(args[2]) || useVolume,
+		pitch: usePitch,
+		pan: Number(args[3]) || usePan,
 		tempoRatio: args[1] || 1.0
 	}
 	AudioManager.loadVariableBgm(bgm);
@@ -88,7 +91,9 @@ AudioManager.playVariableBgm = function(fadeIn=1, posOverride=-1) {
 		return;
 	}
 	var bgmPos = AudioManager.saveBgm();
-	this._bgmBuffer.fadeOut(1);
+	if (this._bgmBuffer) {
+		this._bgmBuffer.fadeOut(1);
+	}
 	if(this._spareBuffer) {
 		this._spareBuffer.stop();
 	}
