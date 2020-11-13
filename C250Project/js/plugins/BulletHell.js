@@ -2553,7 +2553,7 @@ BHell_Enemy_Base.prototype.update = function () {
 			
 		if (this.prev_hp == this.hp) {
 			if (this.bombedWrong == true) {
-				this.setColorTone([255, 0, 0, 1]);
+				this.setColorTone([0, -160, -160, 1]);
 			} else if(this.holdFlash <= 0){
 				this.setColorTone([0, 0, 0, 1]);
             }
@@ -2561,7 +2561,7 @@ BHell_Enemy_Base.prototype.update = function () {
             this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
         }
         if (this.holdFlash > 0){
-            this.setColorTone([255, 255, 0, 1]);
+            this.setColorTone([0, 0, -160, 1]);
         }
 		
 	}

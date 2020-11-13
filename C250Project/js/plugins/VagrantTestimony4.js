@@ -116,13 +116,14 @@ var BHell = (function (my) {
         var frame = 0;
         var animated = false;
         var animationSpeed = 15;
+		var repeat; 
         //variable added to allow adjustable hitboxs YA 2020/10/26
         this.hitboxshape = "circle";
         this.hitboxheight = 0;
         this.hitboxwidth = 0;
         this.hitboxradius = 2;
-		this.repeat = 5; 
-    
+		repeat = 10; 
+
         if (params != null) {
             speed = params.speed || speed;
             sprite = params.sprite || sprite;
