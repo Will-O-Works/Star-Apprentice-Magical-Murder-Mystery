@@ -5601,7 +5601,7 @@ var BHell = (function (my) {
         }
 		
 		// Update bomb image when there's no bomb V.L. 10/20/2020 
-		if (my.player.bombs == 0) {
+		if (my.player.bombs == 0 && my.player.bombed == false) {
 			sx = 0; 
 			sy = 0; 
 			w = 160; 
@@ -5611,18 +5611,19 @@ var BHell = (function (my) {
 			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
 		}
 		
-		if (my.player.bombed == true && my.player.h_index < 23) {
+		this.b_frame = 34; 
+		if (my.player.bombed == true && my.player.h_index < this.b_frame - 1) {
 			
 			// Heavy Attack image V.L. 10/20/2020 
-			sx = this.heavyattack.width / 24 * (Math.round(my.player.h_index % 24)); 
+			sx = this.heavyattack.width / this.b_frame * (Math.round(my.player.h_index % this.b_frame)); 
 			sy = 0; 
-			w = this.heavyattack.width / 24;
+			w = this.heavyattack.width / this.b_frame;
 			h = this.heavyattack.height;
 			x = 0; //Graphics.width / 2;
 			y = 0; //Graphics.height / 2; 
 			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x, y, w, h);
 			
-			if (my.player.h_index < 23) {
+			if (my.player.h_index < this.b_frame - 1) {
 				my.player.h_index += 1/4; 
 			}
 			

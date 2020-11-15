@@ -631,7 +631,7 @@ var BHell = (function (my) {
 		this.bulletParams.phase = 1; 
 		
 		this.num_bullet = 24; 
-		this.angle = Math.PI - Math.PI / 3; 
+		this.angle = 3 * Math.PI / 4; 
 		this.baseSpeed = 0; 
 		this.timer = 0; 
 		
@@ -651,6 +651,12 @@ var BHell = (function (my) {
 
     BHell_Emitter_Ring.prototype.shoot = function () {
 		
+		if (my.player.immortal == true) {
+			this.angle = 5 * Math.PI / 6; 
+		} else {
+			this.angle += Math.PI / this.num_bullet; 
+		}
+		
 		for (var n = 0; n < this.num_bullet; n++) {
 			this.aimingAngle = this.angle + 4/3 * Math.PI / this.num_bullet * n;
 				
@@ -659,9 +665,7 @@ var BHell = (function (my) {
 			this.bulletList.push(bullet);
 				
 		}
-			
-		this.angle += Math.PI / this.num_bullet; 
-		
+
     };
 
 
