@@ -1746,6 +1746,7 @@ var BHell = (function (my) {
         var frame = 0;
         var animated = false;
         var animationSpeed = 25;
+        var bullettype = false;
 
         // Override default parameters with values taken from params.
         if (params != null) {
@@ -1760,8 +1761,8 @@ var BHell = (function (my) {
             frame = params.frame || frame;
             animated = params.animated || animated;
             animationSpeed = params.animation_speed || animationSpeed;
+            bullettype = params.bullettype || bullettype;
         }
-
         // Initialize the emitter.
         my.BHell_Sprite.prototype.initialize.call(this, charset, index, direction, frame, animated, animationSpeed);
         this.parent = parent;
@@ -1771,6 +1772,7 @@ var BHell = (function (my) {
         this.bulletList = bulletList;
         this.x = x;
         this.y = y;
+        this.bullettype=bullettype;
     };
 
     /**
@@ -1797,7 +1799,15 @@ var BHell = (function (my) {
      * Spawns a single bullet moving upwards. Bullet's speed and appearance are determined by this.bulletParams.
      */
     BHell_Emitter_Base.prototype.shoot = function () {
-        var bullet = new my.BHell_Bullet(this.x, this.y, 3 * Math.PI / 2, this.bulletParams, this.bulletList);
+        switch(this.bullettype){
+            case false:
+                var bullet = new my.BHell_Bullet(this.x, this.y, 3 * Math.PI / 2, this.bulletParams, this.bulletList);
+                break;
+            case "vagrant":
+                console.log("using vagrant bullets");
+                var bullet = new my.BHell_Vagrant_Bullet(this.x, this.y, 3 * Math.PI / 2, this.bulletParams, this.bulletList);
+                break;
+        }        
         this.parent.addChild(bullet);
         this.bulletList.push(bullet);
     };
@@ -2249,11 +2259,25 @@ var BHell = (function (my) {
                 var dy = my.player.y - this.y + this.aimY;
                 this.aimingAngle = Math.atan2(dy, dx);
             }
-
-            bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+            switch(this.bullettype){
+                case false:
+                    bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+                    break;
+                case "vagrant":
+                    bullet = new my.BHell_Vagrant_Bullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+                    break;
+            }  
+            
         }
         else {
-            bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+            switch(this.bullettype){
+                case false:
+                    bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+                    break;
+                case "vagrant":
+                    bullet = new my.BHell_Vagrant_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
+                    break;
+            } 
         }
 
         this.parent.addChild(bullet);

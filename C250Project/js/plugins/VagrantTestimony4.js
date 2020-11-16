@@ -122,8 +122,7 @@ var BHell = (function (my) {
         this.hitboxheight = 0;
         this.hitboxwidth = 0;
         this.hitboxradius = 2;
-		repeat = 10; 
-
+		var repeat = 5; 
         if (params != null) {
             speed = params.speed || speed;
             sprite = params.sprite || sprite;

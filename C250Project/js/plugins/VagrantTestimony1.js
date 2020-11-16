@@ -1,4 +1,88 @@
 //=============================================================================
+// VagrantLineBullet
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_Vagrant_Bullet = my.BHell_Vagrant_Bullet = function() {
+        this.initialize.apply(this, arguments);
+    };
+    BHell_Vagrant_Bullet.prototype = Object.create(my.BHell_Sprite.prototype);
+    BHell_Vagrant_Bullet.prototype.constructor = BHell_Vagrant_Bullet;
+    BHell_Vagrant_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
+        var speed = 4;
+        var sprite = my.defaultBullet;
+        var index = 0;
+        var direction = 2;
+        var frame = 0;
+        var animated = false;
+        var animationSpeed = 15;
+        this.hitboxshape = "dot";
+        this.hitboxheight = 0;
+        this.hitboxwidth = 0;
+        this.hitboxradius = 0;    
+        if (params != null) {
+            speed = params.speed || speed;
+            sprite = params.sprite || sprite;
+            index = params.index || index;
+            direction = params.direction || direction;
+            frame = params.frame || frame;
+            if (params.animated !== false) {
+                animated = true;
+            }
+            animationSpeed = params.animation_speed || animationSpeed;
+        }
+        my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
+        this.anchor.x = 0.5;
+        this.anchor.y = 0.5;
+        this.rotation = angle - Math.PI / 2;
+        this.x = x;
+        this.y = y;
+        this.z = 15;
+        this.angle = angle;
+        this.speed = speed;
+        this.bulletList = bulletList;
+        this.outsideMap = false;
+        this.counter = 0
+        this.aimX = 0;
+        this.aimY = 0;
+        this.frameCounter=0;
+    };
+    
+    /**
+     * Updates the bullet's position. If it leaves the screen, it's destroyed.
+     */
+    BHell_Vagrant_Bullet.prototype.update = function () {
+        my.BHell_Sprite.prototype.update.call(this);
+        //var y= Math.sin(this.angle) * this.speed;
+        var y = Math.sin(this.angle) * this.speed;
+        var x = (2 * Math.sin(2*Math.PI * this.frameCounter / 50));
+        
+        this.x += (x)*Math.cos(this.rotation)-(y)*Math.sin(this.rotation);
+        this.y += (x)*Math.sin(this.rotation)+(y)*Math.cos(this.rotation);
+        if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+        this.outsideMap = true;}
+        this.frameCounter++;
+    };
+    // Add effects on bullet hit by V.L.
+    BHell_Vagrant_Bullet.prototype.hit_effect = function() {
+        my.effects.push(new my.BHell_Hit_Effect(this.x, this.y, this.sprite, this.index, this.parent, my.effects));
+    };
+    BHell_Vagrant_Bullet.prototype.isOutsideMap = function () {
+        return this.outsideMap;
+    };
+    
+    /**
+     * Removes the bullet from the screen and from its container.
+     */
+    BHell_Vagrant_Bullet.prototype.destroy = function() {
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.bulletList.splice(this.bulletList.indexOf(this), 1);
+    };
+    
+    return my;
+} (BHell || {}));
+//=============================================================================
 // VagrantLine1 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
@@ -32,11 +116,12 @@ var BHell = (function (my) {
 		var emitterParams = {};
 		emitterParams.period = 10; // period for the emitter to activate
 		emitterParams.aim = true; // if aims at player 
-        emitterParams.alwaysAim = false;
-        emitterParams.angle = 0;
+        emitterParams.alwaysAim = true;
+        //emitterParams.angle = Math.PI/2;
         emitterParams.bullet = {};
         emitterParams.bullet.direction = 4;
         emitterParams.bullet.speed = 4;
+        emitterParams.bullettype="vagrant";
         this.trackingCounter = 0; //adjust to change length of bullets
         
         
@@ -128,7 +213,7 @@ var BHell = (function (my) {
                 case "active": // Shoot.
                     if(this.frameCounter%5 === 0)
                     {    
-                        if (this.trackingCounter<3){this.updateTracking();}//change if comparator to adjust amout of bullets per wave
+                        if (this.trackingCounter<4){this.updateTracking();}//change if comparator to adjust amout of bullets per wave
                         else if(this.frameCounter%40 === 0){this.trackingCounter=0;}//change mod to ajust gap between waves
                     }
                     if(this.frameCounter%150 === 0){
@@ -499,3 +584,92 @@ var BHell = (function (my) {
         }
     };
 } (BHell || {}));
+
+
+//stair case bullets lol
+// var BHell = (function (my) {
+//     var BHell_Vagrant_Bullet = my.BHell_Vagrant_Bullet = function() {
+//         this.initialize.apply(this, arguments);
+//     };
+//     BHell_Vagrant_Bullet.prototype = Object.create(my.BHell_Sprite.prototype);
+//     BHell_Vagrant_Bullet.prototype.constructor = BHell_Vagrant_Bullet;
+//     BHell_Vagrant_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
+//         var speed = 4;
+//         var sprite = my.defaultBullet;
+//         var index = 0;
+//         var direction = 2;
+//         var frame = 0;
+//         var animated = false;
+//         var animationSpeed = 15;
+//         this.hitboxshape = "dot";
+//         this.hitboxheight = 0;
+//         this.hitboxwidth = 0;
+//         this.hitboxradius = 0;    
+//         if (params != null) {
+//             speed = params.speed || speed;
+//             sprite = params.sprite || sprite;
+//             index = params.index || index;
+//             direction = params.direction || direction;
+//             frame = params.frame || frame;
+//             if (params.animated !== false) {
+//                 animated = true;
+//             }
+//             animationSpeed = params.animation_speed || animationSpeed;
+//         }
+//         my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
+//         this.anchor.x = 0.5;
+//         this.anchor.y = 0.5;
+//         this.rotation = angle + Math.PI / 2;
+//         this.x = x;
+//         this.y = y;
+//         this.z = 15;
+//         this.angle = angle;
+//         this.speed = speed;
+//         this.bulletList = bulletList;
+//         this.outsideMap = false;
+//         this.counter = 0
+//         this.aimX = 0;
+//         this.aimY = 0;
+//         this.frameCounter=0;
+//     };
+    
+//     /**
+//      * Updates the bullet's position. If it leaves the screen, it's destroyed.
+//      */
+//     BHell_Vagrant_Bullet.prototype.update = function () {
+//         my.BHell_Sprite.prototype.update.call(this);
+//         //var y= Math.sin(this.angle) * this.speed;
+        
+//         if(this.frameCounter<=10){
+            
+//             var x= (5 * Math.sin(2*Math.PI * this.frameCounter / 20));
+//             this.x += x;
+//         }
+//         else{
+//             var y= Math.sin(this.angle) * this.speed;
+//             this.y += y;
+//         }
+//         if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+//         this.outsideMap = true;}
+//         this.frameCounter=(this.frameCounter+1)%20;
+//     };
+//     // Add effects on bullet hit by V.L.
+//     BHell_Vagrant_Bullet.prototype.hit_effect = function() {
+//         my.effects.push(new my.BHell_Hit_Effect(this.x, this.y, this.sprite, this.index, this.parent, my.effects));
+//     };
+//     BHell_Vagrant_Bullet.prototype.isOutsideMap = function () {
+//         return this.outsideMap;
+//     };
+    
+//     /**
+//      * Removes the bullet from the screen and from its container.
+//      */
+//     BHell_Vagrant_Bullet.prototype.destroy = function() {
+//         if (this.parent != null) {
+//             this.parent.removeChild(this);
+//         }
+//         this.bulletList.splice(this.bulletList.indexOf(this), 1);
+//     };
+    
+//     return my;
+// } (BHell || {}));
