@@ -36,6 +36,8 @@ var BHell = (function (my) {
 			this.type = params.type || this.type;
 			this.center_x = params.center_x || this.center_x;
 			this.speed = params.speed || this.speed;
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
+			this.bulletParams.direction = params.bullet.direction || this.bulletParams.direction; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.

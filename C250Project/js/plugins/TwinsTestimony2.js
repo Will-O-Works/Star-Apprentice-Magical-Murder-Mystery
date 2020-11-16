@@ -146,6 +146,8 @@ var BHell = (function (my) {
             this.num_waves = params.num_waves || this.num_waves;
 			this.num_bullet = params.num_bullet || this.num_bullet;
 			this.attack_between = params.attack_between || this.attack_between;
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
+			this.bulletParams.direction = params.bullet.direction || this.bulletParams.direction; 
         }
 		
 		this.baseSpeed = 1; 
@@ -231,6 +233,7 @@ var BHell = (function (my) {
 			this.space_angle = params.space_angle || this.space_angle; 
 			this.bullet_count = params.bullet_count || this.bullet_count; 
 			this.speed = params.speed || this.speed; 
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
 		this.bulletParams.speed = this.speed; 
@@ -302,6 +305,7 @@ var BHell = (function (my) {
 			this.center_y = params.center_y || this.center_y;
 			this.count = params.count || this.count; 
 			this.speed = params.speed || this.speed; 
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
@@ -439,6 +443,7 @@ var BHell = (function (my) {
 		if (params != null) {
 			this.count = params.count || this.count;
 			this.speed = params.speed || this.speed;
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 	
 		

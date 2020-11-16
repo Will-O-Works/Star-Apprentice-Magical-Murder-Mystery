@@ -558,6 +558,10 @@ var BHell = (function (my) {
 		this.angle = Math.PI / 2; 
 		this.count = 1; 
 		
+		if (params != null) {
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
+        }
+		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
@@ -642,6 +646,7 @@ var BHell = (function (my) {
 			this.num_bullet = params.num_bullet || this.num_bullet;
 			this.attack_between = params.attack_between || this.attack_between;
 			this.type = params.type || this.type; 
+			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.

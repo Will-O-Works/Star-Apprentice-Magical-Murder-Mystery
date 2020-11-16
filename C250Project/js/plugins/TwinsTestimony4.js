@@ -31,7 +31,7 @@ BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
     var hitboxshape = "circle";
     var hitboxheight = 0;
     var hitboxwidth = 0;
-    var hitboxradius = 11;
+    var hitboxradius = 8;
 
 
     if (params != null) {
@@ -72,6 +72,21 @@ BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
     this.hitboxradius = hitboxradius;
     this.hitboxheight = hitboxheight;
     this.hitboxwidth = hitboxwidth;
+	
+	if (this.type == "b") {
+		if (this.x >= Graphics.width / 2) {
+			this.direction = 2; 
+		} else {
+			this.direction = 6; 
+		}
+		
+	} else {
+		if (this.x < Graphics.width / 2) {
+			this.direction = 4; 
+		} else {
+			this.direction = 8; 
+		}
+	}
 };
 
 /**
@@ -96,6 +111,20 @@ BHell_BW_Bullet.prototype.update = function () {
 			this.bounce = 0; 
 		} 
     }
+	if (this.type == "b") {
+		if (this.x >= Graphics.width / 2) {
+			this.direction = 2; 
+		} else {
+			this.direction = 6; 
+		}
+		
+	} else {
+		if (this.x < Graphics.width / 2) {
+			this.direction = 4; 
+		} else {
+			this.direction = 8; 
+		}
+	}
 	
 	my.BHell_Sprite.prototype.update.call(this);
 
@@ -201,7 +230,7 @@ var BHell = (function (my) {
 				if ((j % 2 == 1 && this.swap == 1) || (j % 2 == 0 && this.swap == 0)) {
 					this.angle = Math.PI / 2; 
 					this.bulletParams.type = "w"; 
-					this.b_x = this.count * this.attack_between + j * this.space; 
+					this.b_x = 10 + this.count * this.attack_between + j * this.space; 
 					this.bulletParams.sprite = "$TwinsBulletsBW";
 					this.bulletParams.direction = 4; 
 				
@@ -213,7 +242,7 @@ var BHell = (function (my) {
 				} else {
 					this.angle = - Math.PI / 2; 
 					this.bulletParams.type = "b"; 
-					this.b_x = this.count * this.attack_between + j * this.space; 
+					this.b_x = 10 + this.count * this.attack_between + j * this.space; 
 					this.bulletParams.sprite = "$TwinsBulletsBW";
 					this.bulletParams.direction = 2; 
 					
