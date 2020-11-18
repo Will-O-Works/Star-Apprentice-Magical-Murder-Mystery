@@ -108,12 +108,12 @@ var BHell = (function (my) {
 		my.player.can_bomb = false; 
 		my.player.currentLine = 0;
 		
-		emitterParams.baseSpeed = 2; 
+		emitterParams.baseSpeed = 2.5; 
 		emitterParams.num_bullet = 10; 
 		this.emitters.push(new my.BHell_Emitter_Marching(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
 		emitterParams.period = 5; 
-		emitterParams.bullet_count = 3; 
+		emitterParams.bullet_count = 4; 
 		emitterParams.space_angle = Math.PI/18; 
 		emitterParams.center_x = 1; 
 		this.emitters.push(new my.BHell_Emitter_Spin(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -179,9 +179,11 @@ var BHell = (function (my) {
 		
 		emitterParams.period = 1; 
 		emitterParams.attack_between = 250; 
+		emitterParams.bullet.direction = 2;
 		this.emitters.push(new my.BHell_Emitter_Flower(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 		emitterParams.period = 150; 
+		emitterParams.bullet.direction = 4;
 		this.emitters.push(new my.BHell_Emitter_Heart_Drop(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
@@ -223,6 +225,24 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = true; 
+		my.player.currentLine = 2;
+		
+		var emitterParams = {};
+		emitterParams.period = 6; // 40; 
+		emitterParams.type = "a"; 
+		emitterParams.aim = true;
+		emitterParams.alwaysAim = true;
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 6;
+		emitterParams.bullet.sprite = "$TwinsBulletsBlack";
+        emitterParams.bullet.index = 0;
+		
+		this.emitters.push(new my.BHell_Emitter_Stair(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		// this.emitters.push(new my.BHell_Emitter_Cross(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		
+		
 		var emitterParams = {};
 		emitterParams.period = 75; 
 		emitterParams.aim = true;
@@ -231,14 +251,8 @@ var BHell = (function (my) {
         emitterParams.bullet.direction = 6;
 		emitterParams.bullet.sprite = "$TwinsBulletsWhite";
         emitterParams.bullet.index = 0;
-
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
-		my.player.currentLine = 2;
 		
-		this.emitters.push(new my.BHell_Emitter_Cross(this.x, this.y, emitterParams, parent, my.enemyBullets));
-		
-		emitterParams.speed = 1; 
+		emitterParams.speed = 2; 
 		this.emitters.push(new my.BHell_Emitter_Go_Home(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 		emitterParams.period = 80; 

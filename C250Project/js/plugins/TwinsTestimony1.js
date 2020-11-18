@@ -98,9 +98,14 @@ BHell_Marching_Bullet.prototype.update = function () {
 		}
 		
 	}
+	
+	if (this.a != "s") {
+		this.x += Math.cos(this.angle) * this.speed;
+		this.y += Math.sin(this.angle) * this.speed;
+	}
 
-    this.x += Math.cos(this.angle) * this.speed;
-    this.y += Math.sin(this.angle) * this.speed;
+
+    
 	
 	if (this.type == "h") {
 		 if (this.x < -this.width || this.x > Graphics.width + this.width) { // V.L.
@@ -142,6 +147,33 @@ BHell_Marching_Bullet.prototype.update = function () {
 	if (this.type == "t") {
 		this.angle += 0.015; 
 	}
+	
+	if (this.a == "s") {  // stair
+		if(this.count <= 40){
+			var x= (5 * Math.sin(2*Math.PI * this.count / 80));
+			this.x += this.speed;
+		}
+		else{
+			var y= Math.sin(this.angle) * this.speed;
+			this.y += this.speed;
+		}
+		
+		this.count = (this.count+1) % 80;
+	} 
+	
+	if (this.a == "a") {
+		if(this.count <= 40){
+			var x= (5 * Math.sin(2*Math.PI * this.count / 80));
+			this.x += this.speed;
+		}
+		else{
+			var y= Math.sin(this.angle) * this.speed;
+			this.y += this.speed;
+		}
+		
+		this.count = (this.count+1) % 80;
+	} 
+
 };
 
 BHell_Marching_Bullet.prototype.isOutsideMap = function () {
@@ -171,6 +203,82 @@ BHell_Marching_Bullet.prototype.destroy = function() {
 return my;
 } (BHell || {}));
 
+
+//=============================================================================
+// Stair Bullet Emitters
+//=============================================================================
+
+var BHell = (function (my) {
+	
+	var BHell_Emitter_Stair = my.BHell_Emitter_Stair = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Stair.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Stair.prototype.constructor = BHell_Emitter_Stair;
+	
+    BHell_Emitter_Stair.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = "$TwinsBulletsBlack";
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		
+		this.num_bullet = 6; // number of bullets in a Testimony
+				
+		this.baseSpeed = 3; 
+		this.angle = 3 * Math.PI / 4; 
+		this.type = "s"; 
+		
+		if (params != null) {
+            this.num_waves = params.num_waves || this.num_waves;
+			this.num_bullet = params.num_bullet || this.num_bullet;
+			this.attack_between = params.attack_between || this.attack_between;
+			this.baseSpeed = params.baseSpeed || this.baseSpeed; 
+			this.type = params.type || this.type; 
+        }
+
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+		
+		this.count = 0; 
+    };
+
+    BHell_Emitter_Stair.prototype.shoot = function () {
+		
+		if (this.count < 8) {
+		
+			this.attack_between = Graphics.width / this.num_bullet; // time between two major attacks
+			
+			for (var j = -5; j < this.num_bullet + 5; j++) {
+				this.bulletParams.speed = this.baseSpeed; 
+				this.bulletParams.type = "v"; 
+				this.bulletParams.a = this.type; 
+				this.b_x = j * this.attack_between; 
+				
+				var bullet = new my.BHell_Marching_Bullet(this.b_x, 0, this.angle, this.bulletParams, this.bulletList);
+				// console.log(bullet.type);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+			}
+		} else if (this.count > 16) {
+			this.count = 0; 
+		}
+		
+		this.count += 1; 
+		
+		// console.log("shooting...");
+    };
+
+
+    return my;
+} (BHell || {}));
 
 //=============================================================================
 // Linear Bullet Emitters
@@ -393,7 +501,7 @@ var BHell = (function (my) {
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
-		this.num_bullet = 25; // number of bullets in a Testimony
+		this.num_bullet = 36; // number of bullets in a Testimony
 		this.add_bullet = 5; 
 		this.attack_between = Graphics.height / this.num_bullet; // time between two major attacks
 
@@ -413,18 +521,18 @@ var BHell = (function (my) {
 
     BHell_Emitter_Opposite.prototype.shoot = function () {
 		
-		this.random_y = Math.random() * this.attack_between * this.add_bullet; 
+		this.random_y = Math.random() * 2 * this.attack_between * this.add_bullet; 
 		
-		for (var j = -this.add_bullet; j < this.num_bullet; j++) {
+		for (var j = 0; j < this.num_bullet + this.add_bullet; j++) {
 			
-			if ((j + this.add_bullet) % 10 >= 4) {
+			if ((j + this.add_bullet) % 15 >= 8) {
 				this.angle = 0; 
 			
 				this.bulletParams.speed = this.baseSpeed; 
 				this.bulletParams.type = "h"; 
 				this.b_y = j * this.attack_between; 
 			
-				var bullet = new my.BHell_Marching_Bullet(0, this.random_y + this.b_y, this.angle, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_Marching_Bullet(0, -this.add_bullet * this.attack_between+ this.random_y + this.b_y, this.angle, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 			}
@@ -435,7 +543,7 @@ var BHell = (function (my) {
 		
 		for (var j = -this.add_bullet; j < this.num_bullet; j++) {
 			
-			if ((j + this.add_bullet) % 10 >= 4) {
+			if ((j + this.add_bullet) % 15 >= 8) {
 				this.angle = Math.PI; 
 			
 				this.bulletParams.speed = this.baseSpeed; 
@@ -481,8 +589,8 @@ var BHell = (function (my) {
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
 		
-		this.num_bullet = 6; // number of bullets in a Testimony
-		this.add_bullet = 15; 
+		this.num_bullet = 5; // number of bullets in a Testimony
+		this.add_bullet = 10; 
 		this.attack_between = Graphics.height / this.num_bullet; // time between two major attacks
 
 		this.baseSpeed = 2; 
@@ -700,7 +808,7 @@ var BHell = (function (my) {
 		this.bombedWrong = false; 
 
 		var emitterParams = {};
-		emitterParams.period = 40; 
+		emitterParams.period = 6; // 40; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
@@ -712,7 +820,7 @@ var BHell = (function (my) {
 		my.player.can_bomb = true; 
 		my.player.currentLine = 0;
 		
-		this.emitters.push(new my.BHell_Emitter_Marching(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		this.emitters.push(new my.BHell_Emitter_Stair(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 		emitterParams.period = 60; 
 		emitterParams.aim_type = 1; 
@@ -820,7 +928,7 @@ var BHell = (function (my) {
 		this.bombedWrong = false; 
 
 		var emitterParams = {};
-		emitterParams.period = 75; 
+		emitterParams.period = 100; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};

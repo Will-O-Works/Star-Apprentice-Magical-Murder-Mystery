@@ -3957,9 +3957,9 @@ var BHell = (function (my) {
 			}
 			if (this.radius > 320) {
 				this.radius -= 1; 
-			} else {
+			} else if (this.radius > 160) {
 				this.radius -= 0.2; 
-				this.rotate_speed = 540
+				this.rotate_speed = 540; 
 			}
 			
 			/*if (this.rotate_speed < 360) 

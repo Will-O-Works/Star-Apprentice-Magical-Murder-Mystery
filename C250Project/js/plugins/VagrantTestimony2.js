@@ -133,19 +133,30 @@ var BHell = (function (my) {
 	//main update loop
 	BHell_Enemy_VagrantTestimony2_p1.prototype.update = function () {
 		// Update line color V.L. 11/08/2020
-			if (this.prev_hp == this.hp) {
-				if (this.bombedWrong == true) {
-					this.setColorTone([255, 0, 0, 1]);
+			if (this.flash == true) {
+					
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
 				} else {
-					this.setColorTone([0, 0, 0, 1]);
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
 				}
-			} else {
-				this.setColorTone([255, 255, 0, 1]);
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
 			}
 			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
+
 			this.prev_hp = this.hp; 
-		
-		my.BHell_Sprite.prototype.update.call(this);
+			
+			my.BHell_Sprite.prototype.update.call(this);
 		
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
@@ -315,18 +326,30 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony2_p2.prototype.update = function () {
 		
 		// Update line color V.L. 11/08/2020
-			if (this.prev_hp == this.hp) {
-				if (this.bombedWrong == true) {
-					this.setColorTone([255, 0, 0, 1]);
+			if (this.flash == true) {
+					
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
 				} else {
-					this.setColorTone([0, 0, 0, 1]);
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
 				}
-			} else {
-				this.setColorTone([255, 255, 0, 1]);
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
 			}
 			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
+
 			this.prev_hp = this.hp; 
-		
+			
+			my.BHell_Sprite.prototype.update.call(this);
 		my.BHell_Sprite.prototype.update.call(this);
 		
 		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
@@ -487,19 +510,30 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony2_p3.prototype.update = function () {
 		
 		// Update line color V.L. 11/08/2020
-			if (this.prev_hp == this.hp) {
-				if (this.bombedWrong == true) {
-					this.setColorTone([255, 0, 0, 1]);
+			if (this.flash == true) {
+					
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
 				} else {
-					this.setColorTone([0, 0, 0, 1]);
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
 				}
-			} else {
-				this.setColorTone([255, 255, 0, 1]);
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
 			}
 			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
+
 			this.prev_hp = this.hp; 
-		
-		my.BHell_Sprite.prototype.update.call(this);
+			
+			my.BHell_Sprite.prototype.update.call(this);
 		
 			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 

@@ -368,7 +368,7 @@ var BHell = (function (my) {
 		this.center_x = Graphics.width / 2; 
 		this.center_y = Graphics.height / 2; 
 		this.count = 12; 
-		this.speed = 1.5; 
+		this.speed = 2; 
 		
 		if (params != null) {
 			this.count = params.count || this.count;
@@ -616,6 +616,7 @@ var BHell = (function (my) {
 		this.emitters.push(new my.BHell_Emitter_Spin(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		
 		emitterParams.period = 1; 
+		emitterParams.bullet.direction = 2;
 		this.emitters.push(new my.BHell_Emitter_Flower(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
