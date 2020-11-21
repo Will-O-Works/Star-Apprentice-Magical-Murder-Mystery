@@ -203,7 +203,6 @@ BHell_Marching_Bullet.prototype.destroy = function() {
 return my;
 } (BHell || {}));
 
-
 //=============================================================================
 // Stair Bullet Emitters
 //=============================================================================
@@ -962,4 +961,84 @@ var BHell = (function (my) {
 	} 
 	
     return my;
+} (BHell || {}));
+
+//=============================================================================
+// Geometry Shape Emitters
+//=============================================================================
+
+var BHell = (function (my) {
+	/** 
+	 * Geometry emitter by V.L.
+	 */ 
+	var BHell_Emitter_Geometry = my.BHell_Emitter_Geometry = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Geometry.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Geometry.prototype.constructor = BHell_Emitter_Geometry;
+
+	BHell_Emitter_Geometry.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = this.params.sprite;
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = this.params.direction;
+		
+		this.angle = Math.PI/4; //initial direction
+		this.speed = 3; //speed 
+		this.num_bullet = 8; //bullets per side
+		this.shape = 4; //Geometry (3-triangle, 4-square, etc.)
+		
+		if (params != null) {
+			this.angle = params.angle || this.angle;
+			this.num_bullet = params.num_bullet || this.num_bullet;
+			this.shape = params.shape || this.shape; 
+			this.speed = params.speed || this.speed; 
+        }
+		
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Geometry.prototype.shoot = function () {
+		var dir = this.angle; 
+		var n = this.num_bullet - 1; 
+
+		for(var j=1; j <= this.shape; j++){
+
+			var v = this.speed; 
+			var d = (Math.PI-(2 * Math.PI/this.shape))/2; 
+			var k = 2 * v * Math.cos(d); 
+			
+			this.bulletParams.speed = v; 
+			var bullet = new my.BHell_Bullet(this.x, this.y, dir, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+
+			for(var i=1; i < n; i++){
+				var vv = Math.abs(Math.sqrt(Math.pow(v, 2) + Math.pow(k*i/n, 2)-2*v*(k*i/n)*Math.cos(d))); 
+				this.bulletParams.speed = vv; 
+				// I HATE MATH
+				var dd = dir + Math.acos((Math.pow(v, 2)+Math.pow(vv, 2)-Math.pow(k*i/n, 2)) / (2*v*(vv))); 
+				var bullet = new my.BHell_Bullet(this.x, this.y, dd, this.bulletParams, this.bulletList);
+				this.parent.addChild(bullet);
+				this.bulletList.push(bullet);
+				
+				if(i == n-1){
+					dir += 2 * Math.PI/this.shape; 
+				}
+			}
+		}
+		
+		this.angle += Math.PI/12; // Appley angle change
+		
+    };
+return my;
 } (BHell || {}));
