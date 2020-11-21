@@ -112,14 +112,14 @@ BHell_BW_Bullet.prototype.update = function () {
 		} 
     }
 	if (this.type == "b") {
-		if (this.x >= Graphics.width / 2) {
+		if (my.player.x >= Graphics.width / 2 ) { // && this.x >= Graphics.width / 2
 			this.direction = 2; 
 		} else {
 			this.direction = 6; 
 		}
 		
 	} else {
-		if (this.x < Graphics.width / 2) {
+		if (my.player.x < Graphics.width / 2 ) { // && this.x < Graphics.width / 2
 			this.direction = 4; 
 		} else {
 			this.direction = 8; 
