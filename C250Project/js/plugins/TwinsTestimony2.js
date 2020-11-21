@@ -373,6 +373,7 @@ var BHell = (function (my) {
 		if (params != null) {
 			this.count = params.count || this.count;
 			this.speed = params.speed || this.speed;
+			this.center_y = params.center_y || this.center_y; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.

@@ -64,7 +64,7 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// FanTestimony1 Pattern 1
+// Tutorial Pattern 1
 //=============================================================================
 var BHell = (function (my) {
 
@@ -137,7 +137,7 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// FanTestimony1 Pattern 2
+// Tutorial Pattern 2
 //=============================================================================
 var BHell = (function (my) {
 
@@ -186,7 +186,7 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// TutorialTestimony1 Pattern 3
+// Tutorial Pattern 3
 //=============================================================================
 var BHell = (function (my) {
 
@@ -341,7 +341,7 @@ var BHell = (function (my) {
 
 
 //=============================================================================
-// FanTestimony1 Pattern 1
+// Practice Pattern 1
 //=============================================================================
 var BHell = (function (my) {
 
@@ -393,7 +393,7 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// FanTestimony1 Pattern 2
+// Practice Pattern 2
 //=============================================================================
 var BHell = (function (my) {
 
@@ -447,7 +447,7 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// PracticeTestimony1 Pattern 3
+// Practice Pattern 3
 //=============================================================================
 var BHell = (function (my) {
 
@@ -490,7 +490,7 @@ var BHell = (function (my) {
 
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.PhaseOver = true;
-		my.player.nextMap = Number(36);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		my.player.nextMap = Number(46);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 			
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);

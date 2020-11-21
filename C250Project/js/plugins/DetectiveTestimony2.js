@@ -208,7 +208,7 @@ var BHell = (function (my) {
 		this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 150; 
+		emitterParams.period = 75; 
 		emitterParams.type = 2; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;

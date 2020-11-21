@@ -5248,6 +5248,7 @@ var BHell = (function (my) {
 			// Tutorial Testimony
 			case 33: 
 			case 35: 
+			case 46: 
 			my.currentFace = ImageManager.loadFace("Empty", 0);
 			my.discussionMap = 39;
 			break; 
@@ -5661,6 +5662,8 @@ var BHell = (function (my) {
 			x = -120; 
 		} else if (my.player.finisherImage == "$VictoriaSentence") {
 			x = -80; 
+		} else if (my.player.finisherImage == "$TutorialSentence") {
+			x = -120; 
 		}
 		
 

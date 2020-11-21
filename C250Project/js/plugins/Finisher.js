@@ -156,6 +156,28 @@ var BHell = (function (my) {
 					this.hitboxH = 34; // hitbox height
 				break; 
 			}
+		} else if (image.characterName == "$TutorialSentence") {
+			switch (this.dir) {
+				case 0: 
+					this.hitboxW = 68; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 1: 
+					this.hitboxW = 86; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 2: 
+					this.hitboxW = 312; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+				
+				case 3: 
+					this.hitboxW = 221; // hitbox width
+					this.hitboxH = 30; // hitbox height
+				break; 
+			}
 		} 
 
 		
@@ -175,6 +197,13 @@ var BHell = (function (my) {
 		my.player.wordsList.push([this.dir, this.hitboxW, this.hitboxH]);
 		
 		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0});
+		
+		// Tutorial Finisher V.L. 11/21/2020
+		if (my.player.finisherImage == "$TutorialSentence") {
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(36);
+		}
+
 		if (this.parent != null) {
 			this.parent.removeChild(this);
 		}

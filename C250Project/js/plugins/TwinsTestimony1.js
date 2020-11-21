@@ -247,6 +247,7 @@ var BHell = (function (my) {
         this.j = 0; // Frame counter. Used for state switching.
 		
 		this.count = 0; 
+		this.random_x = Math.random() * 60; 
     };
 
     BHell_Emitter_Stair.prototype.shoot = function () {
@@ -259,7 +260,7 @@ var BHell = (function (my) {
 				this.bulletParams.speed = this.baseSpeed; 
 				this.bulletParams.type = "v"; 
 				this.bulletParams.a = this.type; 
-				this.b_x = j * this.attack_between; 
+				this.b_x = j * this.attack_between - this.random_x; 
 				
 				var bullet = new my.BHell_Marching_Bullet(this.b_x, 0, this.angle, this.bulletParams, this.bulletList);
 				// console.log(bullet.type);
@@ -268,6 +269,7 @@ var BHell = (function (my) {
 			}
 		} else if (this.count > 16) {
 			this.count = 0; 
+			this.random_x = Math.random() * 60; 
 		}
 		
 		this.count += 1; 
@@ -753,6 +755,7 @@ var BHell = (function (my) {
 			this.num_bullet = params.num_bullet || this.num_bullet;
 			this.attack_between = params.attack_between || this.attack_between;
 			this.type = params.type || this.type; 
+			this.center_y = params.center_y || this.center_y; 
 			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
