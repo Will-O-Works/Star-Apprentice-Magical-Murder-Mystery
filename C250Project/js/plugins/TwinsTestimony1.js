@@ -989,20 +989,27 @@ var BHell = (function (my) {
         this.params = params;
 		
         this.bulletParams = {};
-        this.bulletParams.sprite = this.params.sprite;
-        this.bulletParams.index = this.params.index;
-        this.bulletParams.direction = this.params.direction;
+        this.bulletParams.sprite = this.params.bullet.sprite;
+        this.bulletParams.index = this.params.bullet.index;
+		this.bulletParams.direction = this.params.bullet.direction;
+		this.bulletParams.dif = this.params.bullet.dif;
+        this.bulletParams.n = this.params.bullet.n;
+        this.bulletParams.moveTime = this.params.bullet.moveTime;
 		
 		this.angle = Math.PI/4; //initial direction
 		this.speed = 3; //speed 
 		this.num_bullet = 8; //bullets per side
 		this.shape = 4; //Geometry (3-triangle, 4-square, etc.)
+		this.rotate="false";
 		
-		if (params != null) {
+		if (this.bulletParams != null) {
 			this.angle = params.angle || this.angle;
 			this.num_bullet = params.num_bullet || this.num_bullet;
 			this.shape = params.shape || this.shape; 
-			this.speed = params.speed || this.speed; 
+			this.speed = params.speed || this.speed;
+			this.num_bullet = params.num_bullet || this.num_bullet;
+			this.shape = params.shape || this.shape;
+			this.rotate = params.rotate || this.rotate; 
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
@@ -1013,15 +1020,14 @@ var BHell = (function (my) {
     BHell_Emitter_Geometry.prototype.shoot = function () {
 		var dir = this.angle; 
 		var n = this.num_bullet - 1; 
-
+		console.log(this.speed);
 		for(var j=1; j <= this.shape; j++){
-
 			var v = this.speed; 
 			var d = (Math.PI-(2 * Math.PI/this.shape))/2; 
 			var k = 2 * v * Math.cos(d); 
 			
 			this.bulletParams.speed = v; 
-			var bullet = new my.BHell_Bullet(this.x, this.y, dir, this.bulletParams, this.bulletList);
+			var bullet = new my.BHell_TimeStop_Bullet(this.x, this.y, dir, this.bulletParams, this.bulletList);
 			this.parent.addChild(bullet);
 			this.bulletList.push(bullet);
 
@@ -1030,7 +1036,7 @@ var BHell = (function (my) {
 				this.bulletParams.speed = vv; 
 				// I HATE MATH
 				var dd = dir + Math.acos((Math.pow(v, 2)+Math.pow(vv, 2)-Math.pow(k*i/n, 2)) / (2*v*(vv))); 
-				var bullet = new my.BHell_Bullet(this.x, this.y, dd, this.bulletParams, this.bulletList);
+				var bullet = new my.BHell_TimeStop_Bullet(this.x, this.y, dd, this.bulletParams, this.bulletList);
 				this.parent.addChild(bullet);
 				this.bulletList.push(bullet);
 				
@@ -1039,8 +1045,13 @@ var BHell = (function (my) {
 				}
 			}
 		}
+		if(this.rotate=="clockwise"){
+			this.angle += Math.PI/4; // Appley angle change
+		}
+		if(this.rotate=="counterclockwise"){
+			this.angle -= Math.PI/4; // Appley angle change
+		}
 		
-		this.angle += Math.PI/12; // Appley angle change
 		
     };
 return my;

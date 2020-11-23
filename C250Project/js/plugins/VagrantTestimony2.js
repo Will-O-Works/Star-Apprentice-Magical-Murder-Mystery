@@ -36,6 +36,7 @@ var BHell = (function (my) {
 		emitterParamsDrunk.bullet = {};
 		emitterParamsDrunk.bullet.direction = 2;//change to adjust bullet sprite
 		emitterParamsDrunk.bullet.speed = 4;//change to adjust bullet speed for next emitter
+		emitterParamsDrunk.bullettype="vagrant";
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParamsDrunk, parent, my.enemyBullets,false));
 		this.emitters[0].angle = Math.PI/2;//change to adjust emitter angle

@@ -1495,7 +1495,9 @@ var BHell = (function (my) {
 						}
 						if (!this.playerHit && my.player.checkCollision(b.hitboxshape,b.hitboxheight,b.hitboxwidth,b.hitboxradius,b.x,b.y)) {
 							this.playerHit = true; // If a bullet has already hit the player during this frame, ignore every other collision (because the player is either dead or has thrown an autobomb).
-							b.destroy();
+                            if(my.player.Timestop==false){
+                                b.destroy();
+                            }
 							my.player.die(true);
 							i--;
 						} else if (!b.grazed && my.player.checkGrazing(b.x, b.y)) {
@@ -1804,7 +1806,6 @@ var BHell = (function (my) {
                 var bullet = new my.BHell_Bullet(this.x, this.y, 3 * Math.PI / 2, this.bulletParams, this.bulletList);
                 break;
             case "vagrant":
-                console.log("using vagrant bullets");
                 var bullet = new my.BHell_Vagrant_Bullet(this.x, this.y, 3 * Math.PI / 2, this.bulletParams, this.bulletList);
                 break;
         }        
@@ -1920,7 +1921,7 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.aimingAngle = 0;
-        this.rotating=false;
+        this.bullettype="default";
         if (params != null) {
             this.n = params.n || this.n;
             this.a = params.a || this.a;
@@ -1930,7 +1931,7 @@ var BHell = (function (my) {
             this.rotating = params.rotating || this.rotating;
             this.aimX = params.aim_x || this.aimX;
             this.aimY = params.aim_y || this.aimY;
-            this.rotating = params.rotating || this.rotating;
+            this.bullettype=params.bullettype||this.bullettype;
         }
     };
 
@@ -1940,16 +1941,46 @@ var BHell = (function (my) {
     BHell_Emitter_Spray.prototype.shoot = function () {
         for (var k = 0; k < this.n; k++) {
             var bullet;
-            if (this.aim) {
-                if (this.alwaysAim || this.oldShooting === false) {
-                    var dx = my.player.x - this.x + this.aimX;
-                    var dy = my.player.y - this.y + this.aimY;
-                    this.aimingAngle = Math.atan2(dy, dx);
-                }
-                bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
-            }
-            else {
-                bullet = new my.BHell_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+            switch(this.bullettype){
+                case "default":
+                    if (this.aim) {
+                        if (this.alwaysAim || this.oldShooting === false) {
+                            var dx = my.player.x - this.x + this.aimX;
+                            var dy = my.player.y - this.y + this.aimY;
+                            this.aimingAngle = Math.atan2(dy, dx);
+                        }
+                        bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    else {
+                        bullet = new my.BHell_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    break;
+                case "vic1":
+                    if (this.aim) {
+                        if (this.alwaysAim || this.oldShooting === false) {
+                            var dx = my.player.x - this.x + this.aimX;
+                            var dy = my.player.y - this.y + this.aimY;
+                            this.aimingAngle = Math.atan2(dy, dx);
+                        }
+                        bullet = new my.BHell_TimeStop_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    else {
+                        bullet = new my.BHell_TimeStop_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    break;
+                case "vic2":
+                    if (this.aim) {
+                        if (this.alwaysAim || this.oldShooting === false) {
+                            var dx = my.player.x - this.x + this.aimX;
+                            var dy = my.player.y - this.y + this.aimY;
+                            this.aimingAngle = Math.atan2(dy, dx);
+                        }
+                        bullet = new my.BHell_TimeStopR_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    else {
+                        bullet = new my.BHell_TimeStopR_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    break;
             }
             this.parent.addChild(bullet);
             this.bulletList.push(bullet);
@@ -2325,6 +2356,7 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.aimingAngle = 0;
+        this.bullettype=false;
 
         if (params != null) {
             this.angle = params.angle || this.angle;
@@ -2334,6 +2366,7 @@ var BHell = (function (my) {
             this.alwaysAim = params.always_aim || this.alwaysAim;
             this.aimX = params.aim_x || this.aimX;
             this.aimY = params.aim_y || this.aimY;
+            this.bullettype=params.bullettype||this.bullettype;
         }
     };
 
@@ -2343,27 +2376,51 @@ var BHell = (function (my) {
     BHell_Emitter_Burst.prototype.shoot = function () {
         var offX = 0;
         var offY = 0;
+        this.bulletParams.reverse=1;
 
         for (var k = 0; k < this.shots; k++) {
             // Create a shot randomly inside the dispersion circle.
-            var r = Math.random() * this.dispersion / 2;
-            var phi = Math.random() * 2 * Math.PI;
-            offX = r * Math.cos(phi);
-            offY = r * Math.sin(phi);
-            var bullet;
-            if (this.aim) {
-                if (this.alwaysAim || this.oldShooting === false) {
-                    var dx = my.player.x - this.x + this.aimX;
-                    var dy = my.player.y - this.y + this.aimY;
-                    this.aimingAngle = Math.atan2(dy, dx);
+            if (this.bullettype=false){
+                var r = Math.random() * this.dispersion / 2;
+                var phi = Math.random() * 2 * Math.PI;
+                offX = r * Math.cos(phi);
+                offY = r * Math.sin(phi);
+                var bullet;
+                if (this.aim) {
+                    if (this.alwaysAim || this.oldShooting === false) {
+                        var dx = my.player.x - this.x + this.aimX;
+                        var dy = my.player.y - this.y + this.aimY;
+                        this.aimingAngle = Math.atan2(dy, dx);
+                    }
+                    bullet = new my.BHell_Bullet(this.x + offX, this.y + offY, this.aimingAngle, this.bulletParams, this.bulletList);
                 }
-                bullet = new my.BHell_Bullet(this.x + offX, this.y + offY, this.aimingAngle, this.bulletParams, this.bulletList);
+                else {
+                    bullet = new my.BHell_Bullet(this.x + offX, this.y + offY, this.angle, this.bulletParams, this.bulletList);
+                }
+                this.parent.addChild(bullet);
+                this.bulletList.push(bullet);
             }
-            else {
-                bullet = new my.BHell_Bullet(this.x + offX, this.y + offY, this.angle, this.bulletParams, this.bulletList);
+            if (this.bullettype="vagrant"){
+                var r = Math.random() * this.dispersion / 2;
+                var phi = Math.random() * 2 * Math.PI;
+                offX = r * Math.cos(phi);
+                offY = r * Math.sin(phi);
+                var bullet;
+                if (this.aim) {
+                    if (this.alwaysAim || this.oldShooting === false) {
+                        var dx = my.player.x - this.x + this.aimX;
+                        var dy = my.player.y - this.y + this.aimY;
+                        this.aimingAngle = Math.atan2(dy, dx);
+                    }
+                    bullet = new my.BHell_Vagrant_Bullet(this.x + offX, this.y + offY, this.aimingAngle, this.bulletParams, this.bulletList);
+                }
+                else {
+                    bullet = new my.BHell_Vagrant_Bullet(this.x + offX, this.y + offY, this.angle, this.bulletParams, this.bulletList);
+                }
+                this.parent.addChild(bullet);
+                this.bulletList.push(bullet);
             }
-            this.parent.addChild(bullet);
-            this.bulletList.push(bullet);
+            
         }
     };
 
@@ -3935,7 +3992,6 @@ var BHell = (function (my) {
      */
     BHell_Mover_Finisher.prototype.move = function (oldX, oldY, speed) {
         var ret = [];
-
 		if (my.player.justSpawned) {
             ret.push(oldX);
             ret.push(oldY);
@@ -4356,6 +4412,7 @@ var BHell = (function (my) {
         this.justSpawned = true;
         this.lives = $gameSwitches.value(59) ? -1 : 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
+        this.immortalityTimer=63;//more za warudo stuff
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
@@ -4516,15 +4573,21 @@ var BHell = (function (my) {
         // Make the immortality last 5 seconds, jk, only 1 seconds by V.L. 10/11/2020
         if (this.immortal && this.immortalTimeout >= 0) {
             this.immortalTimeout++;
-
-            if (this.immortalTimeout > 60) {
+            if (this.immortalTimeout > my.player.immortalityTimer) {
                 this.immortal = false;
                 this.immortalTimeout = -1;
                 this.opacity = 255;
+                this.immortalityTimer=65;
             }
         }
-
-        this.updateBonusLives();
+        //added immortality during za warudo
+        else if(my.player.Timestop==true){
+            this.bulletTimeout = 0;
+            this.immortal = true;
+            this.immortalTimeout = 0;
+            this.opacity = 140;
+            this.immortalityTimer=80;
+        }
     };
 
     /**
@@ -4608,7 +4671,7 @@ var BHell = (function (my) {
         this.index = 0;
         if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
-			// Nope that's a lie. Don't clear the bullets on screen. by V.L. 10/11/2020
+            // Nope that's a lie. Don't clear the bullets on screen. by V.L. 10/11/2020
             if (true) { // (my.enemyBullets.length === 0) {
                 var dy = Graphics.height * 0.9 - this.y;
 
@@ -4636,20 +4699,20 @@ var BHell = (function (my) {
             }
         }
         else if (this.won === true) {
-			
-			 // no more flying into the sunset 10/16/2020 V.L.
-			if (this.finisher_start == true) { 
-				if (this.finisher_correct == false && this.finisher_start == true) {
-					messageStarted = true;
-					messageTimer = 0;
-					$gameMessage.add("\\w[" + String(windowStartupTime) + "]Hmm that doesn't sound right. "); 
-					$gameMessage.newPage(); 
-					$gameMessage.add("I should try again. "); 
-					SceneManager.goto(my.Scene_BHell_Init); 
-				} else {
-					my.playing = false;
-				}
-			} else if (this.bombed == false) {
+            
+            // no more flying into the sunset 10/16/2020 V.L.
+            if (this.finisher_start == true) { 
+                if (this.finisher_correct == false && this.finisher_start == true) {
+                    messageStarted = true;
+                    messageTimer = 0;
+                    $gameMessage.add("\\w[" + String(windowStartupTime) + "]Hmm that doesn't sound right. "); 
+                    $gameMessage.newPage(); 
+                    $gameMessage.add("I should try again. "); 
+                    SceneManager.goto(my.Scene_BHell_Init); 
+                } else {
+                    my.playing = false;
+                }
+            } else if (this.bombed == false) {
                     messageStarted = true;
                     messageTimer = 0;
                     $gameMessage.add("\\w[" + String(windowStartupTime) + "]I have to find the contradiction in their\n words. "); 
@@ -4657,11 +4720,11 @@ var BHell = (function (my) {
                     $gameMessage.add("I should keep looking. "); 
                     SceneManager.goto(my.Scene_BHell_Init); 
             } else { 
-				my.playing = false;
-			}
+                my.playing = false;
+            }
                     
         }
-        else { // Otherwise move towards the destination.
+        else if(my.player.Timestop==false){ // Otherwise move towards the destination.
             var angle = Math.atan2(this.dy, this.dx);
 
             if (this.dx > 0) {
