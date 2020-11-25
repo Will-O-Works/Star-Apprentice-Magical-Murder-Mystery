@@ -424,8 +424,8 @@ var BHell = (function (my) {
                 my.controller.enemies[my.controller.enemies.length-1].destroy();
             }
             else{
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+300, this.y+300, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-300, this.y+300, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+250, this.y-30, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-250, this.y-30, image, params, this.parent, my.controller.enemies));
             }
         }  
     };
