@@ -1031,7 +1031,6 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     }
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
-
     this.anchor.x = 0.5;
     this.anchor.y = 0.5;
     this.rotation = angle + Math.PI / 2;
@@ -1066,7 +1065,7 @@ BHell_Bullet.prototype.update = function () {
     if(my.player.Timestop==false){
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
-        if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+        if (this.y < (-this.height-200) || this.y > (Graphics.height + this.height+200) || this.x < (-this.width-200) || this.x > (Graphics.width + this.width+200)) {
         this.outsideMap = true;
         }
     }
@@ -1075,9 +1074,9 @@ BHell_Bullet.prototype.update = function () {
         if(this.frameCounter<(this.moveTime-(10*this.num))){
             this.x += Math.cos(this.angle) * this.speed;
             this.y += Math.sin(this.angle) * this.speed;
-            if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
-            this.outsideMap = true;
-        }
+            if (this.y < (-this.height-200) || this.y > (Graphics.height + this.height+200) || this.x < (-this.width-200) || this.x > (Graphics.width + this.width+200)) {
+                this.outsideMap = true;
+            }
         else{this.stoppable=="true"};
         }
     }
@@ -4586,7 +4585,7 @@ var BHell = (function (my) {
             this.immortal = true;
             this.immortalTimeout = 0;
             this.opacity = 140;
-            this.immortalityTimer=80;
+            this.immortalityTimer=90;
         }
     };
 

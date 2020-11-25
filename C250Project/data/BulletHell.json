@@ -996,6 +996,33 @@
     }
   },
   {
+	  "name": "VictoriaTestimony4_p1",
+	  "class": "BHell_Enemy_VictoriaTestimony4_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "VictoriaTestimony4_p2",
+	  "class": "BHell_Enemy_VictoriaTestimony4_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "VictoriaTestimony4_p3",
+	  "class": "BHell_Enemy_VictoriaTestimony4_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
 	  "name": "FanTestimony1_p1",
 	  "class": "BHell_Enemy_FanTestimony1_p1",
 	  "params": {

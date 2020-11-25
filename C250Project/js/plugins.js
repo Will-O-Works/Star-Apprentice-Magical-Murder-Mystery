@@ -41,6 +41,7 @@ var $plugins =
 {"name":"VictoriaTestimony1","status":true,"description":"","parameters":{}},
 {"name":"VictoriaTestimony2","status":true,"description":"","parameters":{}},
 {"name":"VictoriaTestimony3","status":true,"description":"","parameters":{}},
+{"name":"VictoriaTestimony4","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony1","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony2","status":true,"description":"","parameters":{}},
 {"name":"TwinsTestimony3","status":true,"description":"","parameters":{}},
