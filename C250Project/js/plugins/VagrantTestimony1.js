@@ -111,7 +111,6 @@ var BHell = (function (my) {
         this.frameCounter=0;
         this.bulletParams=params;
         this.burstcount=params.burstcount;
-        console.log(this.burstcount);
     }
     BHell_Vagrant_Bullet2.prototype.update = function () {
         var a=0;
@@ -383,7 +382,7 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantTestimony1_p1.prototype.constructor = BHell_Enemy_VagrantTestimony1_p1;
 
 	BHell_Enemy_VagrantTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 1;
+        params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 386; // hitbox width
         params.hitbox_h = 75; // hitbox height
@@ -594,7 +593,7 @@ var BHell = (function (my) {
 
 	BHell_Enemy_VagrantTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 1;
-        params.hp = 1;
+        params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 408; // hitbox width
         params.hitbox_h = 72; // hitbox height
@@ -669,7 +668,7 @@ var BHell = (function (my) {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(8);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -898,7 +897,7 @@ var BHell = (function (my) {
 
         //adding these to the correct line allow it to transition to a different phase
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+        my.player.nextMap = Number(8);//the 3 here is the map number change this to whatever map number u want to transition there on victory
         
         /* inherit destroy function from BHell_Enemy_Base by V.L. */
         my.BHell_Enemy_Base.prototype.destroy.call(this);

@@ -1440,9 +1440,12 @@ var BHell = (function (my) {
 
                         if (e.hasCrashed(my.player)) {
                             my.player.die(false);
-							// fixed the kamikaze thing V.L. 11/09/2020
-                            // e.crash();
-                            // i--;
+                            // fixed the kamikaze thing V.L. 11/09/2020
+                            if(e.isCat==true){
+                                e.crash();
+                                i--;
+                            }
+                            
                         }
                     }
                 }
@@ -2509,6 +2512,8 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
     this.killScore = 100;
     this.boss = false;
     this.suppressWarning = false;
+    this.violent="true";
+    this.isCat=false;
 
     // Overrides default parameters with params content.
     if (params != null) {
@@ -2587,6 +2592,8 @@ BHell_Enemy_Base.prototype.initialize = function (x, y, image, params, parent, e
         if (params.bullet != null) {
             this.bullet = Object.assign({}, params.bullet);
         }
+        this.violent=params.violent||this.violent;
+        this.isCat=params.isCat||this.isCat;
     }
 
 	// Store the boss hp value by V.L. 
@@ -2690,13 +2697,13 @@ BHell_Enemy_Base.prototype.update = function () {
 	} 
 	
 
-    this.emitters.forEach(e => { // If not shooting, change the angle
+    if(this.violent=="true"){this.emitters.forEach(e => { // If not shooting, change the angle
         if (this.aim === false && this.rnd === true) {
             e.angle = Math.random() * 2 * Math.PI;
         }
 
         e.update();
-    });
+    });}
 };
 
 /**
