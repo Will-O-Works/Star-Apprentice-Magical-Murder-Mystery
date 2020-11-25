@@ -1185,8 +1185,8 @@
     }
   },
     {
-	  "name": "SuperFanTestimony3_p1",
-	  "class": "BHell_Enemy_SuperFanTestimony3_p1",
+	  "name": "SuperFanTestimony4_p1",
+	  "class": "BHell_Enemy_SuperFanTestimony4_p1",
 	  "params": {
         "bullet": {
           "direction": 6
