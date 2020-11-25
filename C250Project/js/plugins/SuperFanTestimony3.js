@@ -661,6 +661,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
 
 		my.player.bombed = true;
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(47);
 
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {

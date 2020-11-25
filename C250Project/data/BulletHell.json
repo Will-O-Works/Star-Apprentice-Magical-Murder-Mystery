@@ -1184,6 +1184,33 @@
         }
     }
   },
+    {
+	  "name": "SuperFanTestimony3_p1",
+	  "class": "BHell_Enemy_SuperFanTestimony3_p1",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "SuperFanTestimony4_p2",
+	  "class": "BHell_Enemy_SuperFanTestimony4_p2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
+	  "name": "SuperFanTestimony4_p3",
+	  "class": "BHell_Enemy_SuperFanTestimony4_p3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
   {
 	  "name": "Tutorial_p1",
 	  "class": "BHell_Enemy_Tutorial_p1",

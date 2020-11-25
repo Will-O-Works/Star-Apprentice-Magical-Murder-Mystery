@@ -1031,6 +1031,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     }
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
+
     this.anchor.x = 0.5;
     this.anchor.y = 0.5;
     this.rotation = angle + Math.PI / 2;
@@ -1704,6 +1705,72 @@ var BHell = (function (my) {
 
         return ret;
     };
+	
+	
+	
+	// Create Magic Circal Emitter image
+
+
+	/**
+	 * Magic Circle class for emitters by V.L. 10/16/2020 
+	 * @constructor
+	 * @memberOf BHell
+	 * @extends BHell.BHell_Sprite
+	 */
+	var BHell_Magic_Circle = my.BHell_Magic_Circle = function() {
+		this.initialize.apply(this, arguments);
+	};
+
+	BHell_Magic_Circle.prototype = Object.create(my.BHell_Sprite.prototype);
+	BHell_Magic_Circle.prototype.constructor = BHell_Magic_Circle;
+
+	BHell_Magic_Circle.prototype.initialize = function (target, parent, effectList) {
+		var sprite = "$MagicCircle";
+		var index = index;
+		var direction = 2;
+		var frame = 0;
+
+		my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, true, 15);
+
+		this.anchor.x = 0.5;
+		this.anchor.y = 0.5;
+		this.rotation = 0; 
+		
+		this.z = 10;
+
+		this.speed = 0;
+		this.target = target; 
+
+		this.j = 0;
+
+		this.effectList = effectList;
+		this.parent = parent;
+
+		this.parent.addChild(this);
+	};
+
+	BHell_Magic_Circle.prototype.update = function () {
+		my.BHell_Sprite.prototype.update.call(this);
+
+		var ret = false;
+		this.rotation += 0.05;
+		this.x = this.target.x; 
+		this.y = this.target.y; 
+
+		return ret;
+	};
+
+	/**
+	 * Removes the explosion from the screen and its container.
+	 */
+	BHell_Magic_Circle.prototype.destroy = function() {
+		if (this.parent != null) {
+			this.parent.removeChild(this);
+		}
+
+		this.effectList.splice(this.effectList.indexOf(this), 1);
+	};
+
 
     /**
      * Emitter base class. Spawns a bullet at a given frequency.
@@ -1744,13 +1811,15 @@ var BHell = (function (my) {
         this.offsetX = 0;
         this.offsetY = 0;
         this.period = 1;
-        var charset = "$MagicCircle";
+        var charset = null; // "$MagicCircle";
         var index = 0;
         var direction = 2;
         var frame = 0;
         var animated = false;
         var animationSpeed = 25;
         var bullettype = false;
+		
+		this.magic_circle = []
 
         // Override default parameters with values taken from params.
         if (params != null) {
@@ -1767,6 +1836,7 @@ var BHell = (function (my) {
             animationSpeed = params.animation_speed || animationSpeed;
             bullettype = params.bullettype || bullettype;
         }
+
         // Initialize the emitter.
         my.BHell_Sprite.prototype.initialize.call(this, charset, index, direction, frame, animated, animationSpeed);
         this.parent = parent;
@@ -1777,6 +1847,9 @@ var BHell = (function (my) {
         this.x = x;
         this.y = y;
         this.bullettype=bullettype;
+		
+		// Apply magic circle
+		this.magic_circle.push(new my.BHell_Magic_Circle(this, this.parent, this.magic_circle));
     };
 
     /**
@@ -1823,6 +1896,13 @@ var BHell = (function (my) {
     BHell_Emitter_Base.prototype.move = function (x, y) {
         this.x = x + this.offsetX;
         this.y = y + this.offsetY;
+    };
+	
+	BHell_Emitter_Base.prototype.destroy = function () {
+		this.magic_circle.forEach(m => {
+			m.destroy();
+		});
+        this.magic_circle = []; 
     };
 
     /**
@@ -2810,6 +2890,10 @@ BHell_Enemy_Base.prototype.die = function() {
 	this.dying = true; 
 	my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
 	
+	this.emitters.forEach(e => { // Destroy the magic circle
+		e.destroy();
+	});
+	
 	// V.L. 11/07/2020
 	my.player.bombs = 0;
 };
@@ -2820,6 +2904,10 @@ BHell_Enemy_Base.prototype.die = function() {
 BHell_Enemy_Base.prototype.destroy = function() {
 	
 	my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+	
+	this.emitters.forEach(e => { // Destroy the magic circle
+		e.destroy();
+	});
 	
 	// Explosion sound by V.L. 10/20/2020
 	if (my.player.bombed == true) {
@@ -5310,6 +5398,8 @@ var BHell = (function (my) {
 			case 30: 
 			case 31: 
 			case 32: 
+			case 47: 
+			case 48: 
 			my.currentFace = ImageManager.loadFace("Super_Fan_Portrait", 0);
 			my.discussionMap = 45;
 			break; 
@@ -5732,6 +5822,8 @@ var BHell = (function (my) {
 		} else if (my.player.finisherImage == "$VictoriaSentence") {
 			x = -80; 
 		} else if (my.player.finisherImage == "$TutorialSentence") {
+			x = -80; 
+		} else if (my.player.finisherImage == "$SuperFanSentence") {
 			x = -120; 
 		}
 		

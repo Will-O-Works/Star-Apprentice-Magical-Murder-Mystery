@@ -52,6 +52,7 @@ var $plugins =
 {"name":"SuperFanTestimony1","status":true,"description":"","parameters":{}},
 {"name":"SuperFanTestimony2","status":true,"description":"","parameters":{}},
 {"name":"SuperFanTestimony3","status":true,"description":"","parameters":{}},
+{"name":"SuperFanTestimony4","status":true,"description":"","parameters":{}},
 {"name":"DetectiveTestimony1","status":true,"description":"","parameters":{}},
 {"name":"DetectiveTestimony2","status":true,"description":"","parameters":{}},
 {"name":"VagrantTestimony4","status":true,"description":"","parameters":{}},

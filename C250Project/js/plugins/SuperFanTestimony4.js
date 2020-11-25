@@ -126,7 +126,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony2_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p1;
 
 	BHell_Enemy_SuperFanTestimony2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 324;
         params.hitbox_h = 72;
@@ -183,7 +183,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony2_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p2;
 
 	BHell_Enemy_SuperFanTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 125;
         params.hitbox_w = 506;
         params.hitbox_h = 82;
@@ -229,7 +229,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony2_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p3;
 
 	BHell_Enemy_SuperFanTestimony2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 296;
         params.hitbox_h = 72;
@@ -285,7 +285,7 @@ var BHell = (function (my) {
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;
 		my.player.PhaseOver = true;
-		my.player.nextMap = Number(32);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		my.player.nextMap = Number(48);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 			
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);

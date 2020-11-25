@@ -178,6 +178,28 @@ var BHell = (function (my) {
 					this.hitboxH = 30; // hitbox height
 				break; 
 			}
+		} else if (image.characterName == "$SuperFanSentence") {
+			switch (this.dir) {
+				case 0: 
+					this.hitboxW = 174; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 1: 
+					this.hitboxW = 170; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 2: 
+					this.hitboxW = 204; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+				
+				case 3: 
+					this.hitboxW = 152; // hitbox width
+					this.hitboxH = 34; // hitbox height
+				break; 
+			}
 		} 
 
 		
