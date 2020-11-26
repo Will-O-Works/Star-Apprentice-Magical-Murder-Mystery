@@ -5804,6 +5804,21 @@ var BHell = (function (my) {
 			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
 		}
 		
+		if (this.go_refute == true) {
+			// Refute image V.L. 11/25/2020 
+			sx = 0; 
+			sy = 0; 
+			w = this.refute.width;
+			h = this.refute.height;
+			x = this.refute_x;
+			y = 0; 
+			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x, y, w, h);
+			
+			if (this.refute_x < 0) {
+				this.refute_x += Graphics.width/8; 
+			}
+		}
+		
 		this.b_frame = 34; 
 		if (my.player.bombed == true && my.player.h_index < this.b_frame - 1) {
 			
@@ -5818,10 +5833,15 @@ var BHell = (function (my) {
 			
 			if (my.player.h_index < this.b_frame - 1) {
 				my.player.h_index += 1/4; 
-			}
+			} 
 			
-		}
+		} 
 		
+		if (my.player.h_index == 26) {
+			this.go_refute = true; 
+			this.refute_x = -Graphics.width; 
+		}
+
 		// draw sentence as it forms (Ohi)
 		var wordsX = 0;
 		if (my.player.finisherImage == "$VagrantSentence") {
@@ -5930,6 +5950,8 @@ var BHell = (function (my) {
         this.bomb = ImageManager.loadSystem(player.bomb.icon, 0);
 		this.nobomb = ImageManager.loadSystem("NoBomb", 0);
 		this.heavyattack = ImageManager.loadSystem("HeavyAttack", 0);
+		this.refute = ImageManager.loadSystem("Refute", 0);
+		this.go_refute = false; 
         this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
         this.testimonyHUD3 = ImageManager.loadPicture("Testimony3", 0);
         this.pauseTimerMax = 21;
