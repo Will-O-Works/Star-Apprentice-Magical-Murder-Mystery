@@ -484,6 +484,7 @@ var BHell = (function (my) {
         emitterParams.a = 3;//a: Arc's initial angle (in radians),
         emitterParams.b = 2 * Math.PI+3;//b: Arc's final angle (in radians),
 		emitterParams.n = 40;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
+		emitterParams.bullet.speed = 2;
 		this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
 		var emitterParams = {};
 		emitterParams.bullet = {};
