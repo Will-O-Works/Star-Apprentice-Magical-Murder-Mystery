@@ -114,18 +114,18 @@ var BHell = (function (my) {
 
 
 //=============================================================================
-// SuperFanTestimony2 Pattern 1
+// SuperFanTestimony4 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
 
-    var BHell_Enemy_SuperFanTestimony2_p1 = my.BHell_Enemy_SuperFanTestimony2_p1 = function() {
+    var BHell_Enemy_SuperFanTestimony4_p1 = my.BHell_Enemy_SuperFanTestimony4_p1 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_SuperFanTestimony2_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_SuperFanTestimony2_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p1;
+    BHell_Enemy_SuperFanTestimony4_p1.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_SuperFanTestimony4_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony4_p1;
 
-	BHell_Enemy_SuperFanTestimony2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_SuperFanTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 324;
@@ -171,18 +171,18 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// SuperFanTestimony2 Pattern 2
+// SuperFanTestimony4 Pattern 2
 //=============================================================================
 var BHell = (function (my) {
 
-    var BHell_Enemy_SuperFanTestimony2_p2 = my.BHell_Enemy_SuperFanTestimony2_p2 = function() {
+    var BHell_Enemy_SuperFanTestimony4_p2 = my.BHell_Enemy_SuperFanTestimony4_p2 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_SuperFanTestimony2_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_SuperFanTestimony2_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p2;
+    BHell_Enemy_SuperFanTestimony4_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_SuperFanTestimony4_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony4_p2;
 
-	BHell_Enemy_SuperFanTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_SuperFanTestimony4_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 150;
         params.speed = 125;
         params.hitbox_w = 506;
@@ -217,18 +217,18 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
-// SuperFanTestimony2 Pattern 3
+// SuperFanTestimony4 Pattern 3
 //=============================================================================
 var BHell = (function (my) {
 
-    var BHell_Enemy_SuperFanTestimony2_p3 = my.BHell_Enemy_SuperFanTestimony2_p3 = function() {
+    var BHell_Enemy_SuperFanTestimony4_p3 = my.BHell_Enemy_SuperFanTestimony4_p3 = function() {
         this.initialize.apply(this, arguments);
     };
 
-    BHell_Enemy_SuperFanTestimony2_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_SuperFanTestimony2_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony2_p3;
+    BHell_Enemy_SuperFanTestimony4_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_SuperFanTestimony4_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony4_p3;
 
-	BHell_Enemy_SuperFanTestimony2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+	BHell_Enemy_SuperFanTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 150;
         params.speed = 25;
         params.hitbox_w = 296;
@@ -280,7 +280,7 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_SuperFanTestimony2_p3.prototype.destroy = function() {
+	BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;

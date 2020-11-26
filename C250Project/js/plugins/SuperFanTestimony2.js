@@ -140,6 +140,7 @@ var BHell = (function (my) {
 		emitterParams.after_period = 50; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
+		emitterParams.still = false; 
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 6;
 		emitterParams.bullet.sprite = "$FanBulletsBlack";

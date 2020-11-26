@@ -226,13 +226,15 @@ var BHell = (function (my) {
 		this.center_x = Graphics.width / 2; 
 		this.center_y = Graphics.height / 2; 
 		this.speed = 2; 
+		this.still = true; 
 		
 		if (params != null) {
             this.center_x = params.center_x || this.center_x;
 			this.center_y = params.center_y || this.center_y;
 			this.space_angle = params.space_angle || this.space_angle; 
 			this.bullet_count = params.bullet_count || this.bullet_count; 
-			this.speed = params.speed || this.speed; 
+			this.speed = params.still || this.still; 
+			
 			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
@@ -241,6 +243,13 @@ var BHell = (function (my) {
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
+		
+		this.x = this.center_x; 
+		this.y = this.center_y; 
+		this.still = true; 
+		
+		// Apply magic circle
+		this.magic_circle.push(new my.BHell_Magic_Circle(this, this.parent, this.magic_circle));
     };
 
     BHell_Emitter_Spin.prototype.shoot = function () {

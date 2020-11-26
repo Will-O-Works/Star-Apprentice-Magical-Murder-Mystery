@@ -762,6 +762,13 @@ var BHell = (function (my) {
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
+		
+		this.x = this.center_x; 
+		this.y = this.center_y; 
+		this.still = true; 
+		
+		// Apply magic circle
+		this.magic_circle.push(new my.BHell_Magic_Circle(this, this.parent, this.magic_circle));
     };
 
     BHell_Emitter_Ring.prototype.shoot = function () {
