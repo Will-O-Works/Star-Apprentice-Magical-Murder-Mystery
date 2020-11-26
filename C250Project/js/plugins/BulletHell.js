@@ -1819,6 +1819,7 @@ var BHell = (function (my) {
         var animationSpeed = 25;
         var bullettype = false;
 		var still = false; 
+		var circle_on = false; 
 		
 		this.magic_circle = []
 
@@ -1837,6 +1838,7 @@ var BHell = (function (my) {
             animationSpeed = params.animation_speed || animationSpeed;
             bullettype = params.bullettype || bullettype;
 			still = params.still || still;
+			circle_on = params.circle_on || circle_on;
         }
 
         // Initialize the emitter.
@@ -1851,6 +1853,10 @@ var BHell = (function (my) {
         this.bullettype=bullettype;
 		this.still = still; 
 		
+		if (circle_on == true) {
+			// Apply magic circle
+			this.magic_circle.push(new my.BHell_Magic_Circle(this, this.parent, this.magic_circle));
+		}
     };
 
     /**

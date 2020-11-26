@@ -233,8 +233,8 @@ var BHell = (function (my) {
 			this.center_y = params.center_y || this.center_y;
 			this.space_angle = params.space_angle || this.space_angle; 
 			this.bullet_count = params.bullet_count || this.bullet_count; 
-			this.speed = params.still || this.still; 
-			
+			this.speed = params.speed || this.speed; 
+			this.still = params.still || this.still; 
 			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
         }
 		
