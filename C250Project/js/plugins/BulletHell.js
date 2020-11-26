@@ -4559,7 +4559,7 @@ var BHell = (function (my) {
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 		
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
-		this.win_limit = 90; 
+		this.win_limit = 120; 
 		this.win_count = this.win_limit; 
 		
 		// Added player_speed prameter by V.L.
@@ -5804,19 +5804,20 @@ var BHell = (function (my) {
 			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
 		}
 		
-		if (this.go_refute == true) {
+		this.r_frame = 17; 
+		if (this.go_refute == true && this.r_index < this.r_frame - 1) {
 			// Refute image V.L. 11/25/2020 
-			sx = 0; 
+			sx = this.refute.width / this.r_frame * (Math.round(this.r_index % this.r_frame)); 
 			sy = 0; 
-			w = this.refute.width;
+			w = this.refute.width / this.r_frame;
 			h = this.refute.height;
-			x = this.refute_x;
+			x = 0; 
 			y = 0; 
 			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x, y, w, h);
 			
-			if (this.refute_x < 0) {
-				this.refute_x += Graphics.width/8; 
-			}
+			if (this.r_index < this.r_frame - 1) {
+				this.r_index += 15/60; 
+			} 
 		}
 		
 		this.b_frame = 34; 
@@ -5832,14 +5833,15 @@ var BHell = (function (my) {
 			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x, y, w, h);
 			
 			if (my.player.h_index < this.b_frame - 1) {
-				my.player.h_index += 1/4; 
+				my.player.h_index += 15/60; 
 			} 
 			
 		} 
 		
-		if (my.player.h_index == 26) {
+		if (my.player.h_index == this.b_frame - 1) {
 			this.go_refute = true; 
-			this.refute_x = -Graphics.width; 
+			this.r_index = 0; 
+			my.player.h_index = this.b_frame; 
 		}
 
 		// draw sentence as it forms (Ohi)
