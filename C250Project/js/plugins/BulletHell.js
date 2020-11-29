@@ -2913,6 +2913,7 @@ BHell_Enemy_Base.prototype.die = function() {
 BHell_Enemy_Base.prototype.destroy = function() {
 	
 	my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+	my.player.screen_shake = true;  // 11/29/2020
 	
 	this.emitters.forEach(e => { // Destroy the magic circle
 		e.destroy();
@@ -4603,7 +4604,23 @@ var BHell = (function (my) {
 		
 		// V.L. 11/07/2020
 		this.use_mouse = false; 
+		// V.L. 11/29/2020
+		this.screen_shake = false; 
+		this.shake_timer = 0; 
     };
+	
+	// Shake screen 11/29/2020
+	 BHell_Player.prototype.shakeScreen = function (shape,height,width,radius,x,y) {
+		 
+		 if (this.shake_timer < 10) {
+			 this.shake_timer += 1; 
+		 } else {
+			 this.screen_shake = false; 
+			 this.shake_timer = 0; 
+		 }
+		 
+		
+	}
 
     /**
      * Checks if the player collides at given coordinates.
@@ -4672,6 +4689,10 @@ var BHell = (function (my) {
         if (this.bomb != null) {
             this.bomb.update();
         }
+		
+		if (this.screen_shake == true) {
+			this.shakeScreen(); 
+		}
 
         // Make the immortality last 5 seconds, jk, only 1 seconds by V.L. 10/11/2020
         if (this.immortal && this.immortalTimeout >= 0) {
@@ -4920,6 +4941,7 @@ var BHell = (function (my) {
                 this.launchBomb();
                 this.bombs = 0;
             }*/ // V.L.
+			 this.screen_shake = true; 
              if (true) {
                 this.lives--;
 				AudioManager.playSe({name: "player_hit", volume: 100, pitch: 100, pan: 0});
@@ -4967,6 +4989,8 @@ var BHell = (function (my) {
         this.immortalTimeout = -1;
         this.opacity = 100;
     };
+	
+	
 
     return my;
 }(BHell || {}));
@@ -5747,6 +5771,16 @@ var BHell = (function (my) {
         var x;
         var y;
         var i;
+		
+		// Screen shake by V.L. 11/29/2020
+		var shakeX = 0; 
+		var shakeY = 0; 
+		var shake = 10; 
+		
+		if (my.player.screen_shake == true) {
+			shakeX = -shake + 2 * shake * Math.random(); 
+			shakeY = -shake + 2 * shake * Math.random(); 
+		}
 
 		// Credits V.L. 11/08/2020 
 		if (my.map == 4) {
@@ -5764,7 +5798,7 @@ var BHell = (function (my) {
 				this.credit_y += 1; 
 			}
 			
-			this.hud.bitmap.blt(this.credit, sx, sy, w, h, x, y, w, h);
+			this.hud.bitmap.blt(this.credit, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 
 		} else {
 
@@ -5776,7 +5810,7 @@ var BHell = (function (my) {
         for (i = 0; i < my.player.lives; i++) { // slightly change in variables V.L. 10/18/2020
             x = i * w + 10; // i * w/2 + 10;
             y = Graphics.height - h - 10;
-            this.hud.bitmap.blt(this.life.bitmap, sx, sy, w, h, x, y, w, h);
+            this.hud.bitmap.blt(this.life.bitmap, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
         }
 
 		// Update bomb image index V.L. 10/20/2020 
@@ -5787,7 +5821,7 @@ var BHell = (function (my) {
         for (i = 0; i < my.player.bombs; i++) { // slightly change in variables V.L. 10/18/2020
             x = i * w + 10;
             y = Graphics.height - 120; // Graphics.height - h - 10 - this.life.height;
-            this.hud.bitmap.blt(this.bomb, sx, sy, w, h, x, y, w, h);
+            this.hud.bitmap.blt(this.bomb, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
         }
         if (!my.controller.paused) {
 		  my.player.b_index += 1/10; 
@@ -5801,7 +5835,7 @@ var BHell = (function (my) {
 			h = 68; 
 			x = 10;
 			y = Graphics.height - 120; 
-			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x, y, w, h);
+			this.hud.bitmap.blt(this.nobomb, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 		}
 		
 		this.r_frame = 17; 
@@ -5813,7 +5847,7 @@ var BHell = (function (my) {
 			h = this.refute.height;
 			x = 0; 
 			y = 0; 
-			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x, y, w, h);
+			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
 			if (this.r_index < this.r_frame - 1) {
 				this.r_index += 15/60; 
@@ -5830,7 +5864,7 @@ var BHell = (function (my) {
 			h = this.heavyattack.height;
 			x = 0; //Graphics.width / 2;
 			y = 0; //Graphics.height / 2; 
-			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x, y, w, h);
+			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
 			if (my.player.h_index < this.b_frame - 1) {
 				my.player.h_index += 15/60; 
@@ -5882,7 +5916,7 @@ var BHell = (function (my) {
 				this.credit_y += 1; 
 			}
 			
-			this.hud.bitmap.blt(this.finisher, sx, sy, w, h, x, y, w, h);
+			this.hud.bitmap.blt(this.finisher, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
 			x += my.player.wordsList[i][1] / 2 + 30; 
 		}
@@ -6581,7 +6615,20 @@ BHell_Spriteset.prototype.updateParallax = function () {
         }
     }
     if (this._parallax.bitmap) {
-        this._parallax.origin.y = 540 * Math.floor(this._BGImageIndex);
+		
+		// Screen shake by V.L. 11/29/2020
+		var shakeX = 0; 
+		var shakeY = 0; 
+		var shake = 25; 
+		
+		if (my.player.screen_shake == true) {
+			shakeX = -shake + 2 * shake * Math.random(); 
+			shakeY = -shake + 2 * shake * Math.random(); 
+		}
+		
+		this._parallax.origin.x = shakeX;
+        this._parallax.origin.y = 540 * Math.floor(this._BGImageIndex) + shakeY;
+		
         this._BGImageIndex += this._BGAnimSpeed;
         if (this._BGImageIndex >= this._BGFrames) {
             this._BGImageIndex = 0;
@@ -6590,8 +6637,19 @@ BHell_Spriteset.prototype.updateParallax = function () {
 };
 
 BHell_Spriteset.prototype.updateTilemap = function () {
-    this._tilemap.origin.x = my.stage.displayX() * my.stage.tileWidth();
-    this._tilemap.origin.y = my.stage.displayY() * my.stage.tileHeight();
+	
+
+		var shakeX = 0; 
+		var shakeY = 0; 
+		var shake = 25; 
+		
+		if (my.player.screen_shake == true) {
+			shakeX = -shake + 2 * shake * Math.random(); 
+			shakeY = -shake + 2 * shake * Math.random(); 
+		}
+	
+    this._tilemap.origin.x = my.stage.displayX() * my.stage.tileWidth() + shakeX;
+    this._tilemap.origin.y = my.stage.displayY() * my.stage.tileHeight() + shakeY;
 };
 
 return my;
