@@ -4514,7 +4514,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = $gameSwitches.value(59) ? -1 : 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = -1; // $gameSwitches.value(59) ? -1 : 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
         this.immortalityTimer=63;//more za warudo stuff
         //YA some variables to allow phases
@@ -4530,6 +4530,7 @@ var BHell = (function (my) {
 		this.finisherImage = "$VagrantSentence"; 
         //variable for ZaWarudo
         this.Timestop = false;
+		this.Twinsmap = false; 
 		// Determine if the player should use bomb or not by V.L.
         this.can_bomb = false; 
         this.bombed = false;
@@ -6608,11 +6609,25 @@ BHell_Spriteset.prototype.updateParallax = function () {
         }
     }
     if (my.map === 32) {
-        if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final_') {
+        if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final_Frozen') {
             my.stage.changeParallax('BulletHell_Final_Frozen', 0, 0, 0, 0);
         } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final') {
             my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
         }
+    }
+	// Twins background in FFF
+	if (my.map === 47) {
+        if (my.player.Twinsmap) {
+			if (my.stage.parallaxName() != 'BulletHell_Twins') {
+				my.stage.changeParallax('BulletHell_Twins', 0, 0, 0, 0);
+			}
+        } else if (my.player.Timestop ) {
+			if (my.stage.parallaxName() != 'BulletHell_Final_Frozen') {
+				my.stage.changeParallax('BulletHell_Final_Frozen', 0, 0, 0, 0);
+			}
+        } else if (my.stage.parallaxName() != 'BulletHell_Final') {
+            my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
+        } 
     }
     if (this._parallax.bitmap) {
 		

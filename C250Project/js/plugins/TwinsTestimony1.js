@@ -27,6 +27,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	var type = "n"; 
 	var timer = 60; 
 	var a = 0; 
+	var b = 0; 
 	
 	//variable added to allow adjustable hitboxs YA 2020/10/26
     var hitboxshape = "dot";
@@ -49,6 +50,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 		type = params.type || type; 
 		timer = params.timer || timer; 
 		a = params.a || a; 
+		b = params.b || b; 
     }
 
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
@@ -70,6 +72,7 @@ BHell_Marching_Bullet.prototype.initialize = function (x, y, angle, params, bull
 	this.timer = timer; 
 	this.count = 0; 
 	this.a = a; 
+	this.b = b; 
 	
 	this.hitboxshape = hitboxshape;
     this.hitboxradius = hitboxradius;
@@ -103,9 +106,6 @@ BHell_Marching_Bullet.prototype.update = function () {
 		this.x += Math.cos(this.angle) * this.speed;
 		this.y += Math.sin(this.angle) * this.speed;
 	}
-
-
-    
 	
 	if (this.type == "h") {
 		 if (this.x < -this.width || this.x > Graphics.width + this.width) { // V.L.
@@ -141,11 +141,48 @@ BHell_Marching_Bullet.prototype.update = function () {
 	}
 	
 	if (this.type == "a") {  // for emitter linear
-		this.speed += this.a; 
+		
+		if (this.b != 0) {
+			this.speed += this.a; 
+			this.a += this.b; 
+		} else {
+			this.speed += this.a; 
+		}
 	}
 	
 	if (this.type == "t") {
 		this.angle += 0.015; 
+	}
+	
+	// Super fan testimony 1 
+	if (this.type == "y1") {  
+		if (this.count < this.timer) {
+			this.count += 1; 
+			this.speed = 0.98 * this.speed; 
+		} else {
+			this.destroy(); 
+		}
+	}
+	
+	if (this.type == "y2") {  
+		if (this.count < this.timer) {
+			this.speed = 1.02 * this.speed; 
+			this.count += 1; 
+			this.angle += 2 * Math.PI / 180; 
+		} else {
+			this.destroy(); 
+		}
+	}
+	
+	// Super fan testimony 2
+	if (this.type == "x") {  
+		if (this.count < 50) {
+			this.speed = 0; 
+			this.count += 1; 
+		} else {
+			this.angle = this.b; 
+			this.speed += this.a; 
+		}
 	}
 	
 	if (this.a == "s") {  // stair
