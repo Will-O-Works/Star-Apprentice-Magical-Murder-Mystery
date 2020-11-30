@@ -154,9 +154,11 @@ var BHell = (function (my) {
     BHell_Emitter_Split.prototype.initialize = function (x, y, params, parent, bulletList) {
         my.BHell_Emitter_Spray.prototype.initialize.call(this, x, y, params, parent, bulletList);  
         this.type = params.type||"angle"; 
+        this.frameCounter=0;
     };
 
     BHell_Emitter_Split.prototype.shoot = function () {
+        this.frameCounter=(this.frameCounter+1)%1200;
         switch(this.type){
             case "angle":
                 if (this.aim) {
@@ -196,6 +198,26 @@ var BHell = (function (my) {
                     }
                     this.parent.addChild(bullet);
                     this.bulletList.push(bullet);
+                }
+             break;
+             case "final":
+                if(this.frameCounter%150==0){
+                    for (var k = 0; k < this.n; k++) {
+                        var bullet;
+                        if (this.aim) {
+                            if (this.alwaysAim || this.oldShooting === false) {
+                                var dx = my.player.x - this.x + this.aimX;
+                                var dy = my.player.y - this.y + this.aimY;
+                                this.aimingAngle = Math.atan2(dy, dx);
+                            }
+                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                            }
+                        else {
+                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        }
+                        this.parent.addChild(bullet);
+                        this.bulletList.push(bullet);
+                    }
                 }
              break;
         }
