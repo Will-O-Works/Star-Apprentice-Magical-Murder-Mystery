@@ -1,117 +1,86 @@
-
 //=============================================================================
-// Shape Bullet Emitters
+// Final Boss Heart
 //=============================================================================
-
 var BHell = (function (my) {
-	
-	var BHell_Emitter_Shape = my.BHell_Emitter_Shape = function () {
+
+    var BHell_Enemy_Heart = my.BHell_Enemy_Heart = function() {
         this.initialize.apply(this, arguments);
     };
-	
-	BHell_Emitter_Shape.prototype = Object.create(my.BHell_Emitter_Base.prototype);
-    BHell_Emitter_Shape.prototype.constructor = BHell_Emitter_Shape;
-	
-    BHell_Emitter_Shape.prototype.initialize = function (x, y, params, parent, bulletList) {
-        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
-		
-		this.i = 0;
-        this.parent = parent;
-        this.params = params;
-		
-        this.bulletParams = {};
-		this.bulletParams.speed = 0; 
-        this.bulletParams.index = this.params.index;
-		
-		this.speed = 1; 
-		this.add = 0; 
-		this.angle = 0; 
-		this.type = 0; 
-		
-		this.count = 0; 
-		this.first_count = 30; 
-		this.second_count = 75; 
-		this.final_count = 200; 
-		
-		this.center_x = Graphics.width / 2; 
-		this.center_y = Graphics.height / 2; 
-		
-		if (params != null) {
-			this.angle = params.angle || this.angle;
-			this.speed = params.speed || this.speed;
-			this.type = params.type || this.type;
-        }
-		
-		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
-        this.oldShooting = false; // Previous shooting state.
-        this.j = 0; // Frame counter. Used for state switching.
-    };
 
-    BHell_Emitter_Shape.prototype.shoot = function () {
+    BHell_Enemy_Heart.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Heart.prototype.constructor = BHell_Enemy_Heart;
+
+	BHell_Enemy_Heart.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 1;
+        params.speed = 25;
+        params.hitbox_w = 48;
+        params.hitbox_h = 48;
+        params.animated = true;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, Graphics.height / 2, 0, this.hitboxW, this.hitboxH);
 		
-		this.center_x += Math.cos(this.angle) * (this.speed + this.add);
-		this.center_y += Math.sin(this.angle) * (this.speed + this.add);
+		this.testimony = my.parse(params.t, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+
+		var emitterParams = {};
+		emitterParams.period = 100; 
+		emitterParams.aim = true;
+		emitterParams.alwaysAim = true;
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 2;
+		emitterParams.bullet.sprite = "$FanBullets";
+        emitterParams.bullet.index = 0;
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+
+		this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Heart.prototype.update = function () {
 		
-		if (this.type == 1) {
-			this.bulletParams.sprite = "$FanBulletsBlack";
-			this.bulletParams.direction = 2; // this.params.direction;
-		} else {
-			this.bulletParams.sprite = "$FanBulletsWhite";
-			this.bulletParams.direction = 6; // this.params.direction;
-		}
-		
-		if (this.count % 5 == 0) {
-			this.bulletParams.type = "s"; 
-			this.bulletParams.timer = this.type; 
-			var bullet = new my.BHell_Marching_Bullet(this.center_x, this.center_y, this.angle, this.bulletParams, this.bulletList);
-			this.parent.addChild(bullet);
-			this.bulletList.push(bullet);
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= this.testimony) {
 			
-			if (this.count == this.first_count) {
-				this.add = 0; 
-				
-				if (this.type == 1) {
-					this.angle -= Math.PI / 2; 
-				} else {
-					this.angle += Math.PI / 2; 
-				}
-				
-			} else if (this.count == this.second_count) {
-				this.add = 0; 
-				
-				if (this.type == 1) {
-					this.angle -= Math.PI / 2; 
-				} else {
-					this.angle += Math.PI / 2; 
-				}
-			} else if (this.count == this.final_count) {
-				this.add = 0; 
-				
-				if (this.type == 1) {
-					this.type = 0; 
-					this.angle -= Math.PI / 2; 
-					this.center_x = Graphics.width / 2; 
-					this.center_y = Graphics.height / 2; 
-				} else {
-					this.type = 1; 
-					this.angle += Math.PI / 2; 
-					this.center_x = Graphics.width / 2; 
-					this.center_y = Graphics.height / 2; 
-				}
-				
-				this.count = -1; 
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
 			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
 		}
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
+	
+	BHell_Enemy_Heart.prototype.destroy = function() {
 
-		this.add += 0.2; 
-		this.count += 1; 
-
-    };
-
+		$gameVariables.setValue(11, this.testimony)
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
     return my;
 } (BHell || {}));
-
-
 
 //=============================================================================
 // SuperFanTestimony4 Pattern 1

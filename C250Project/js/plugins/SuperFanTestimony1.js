@@ -11,13 +11,15 @@ var BHell = (function (my) {
 
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 0;
-        params.hp = 75;
+        params.hp = 1;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 348; // hitbox width
         params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
+
+		
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -30,8 +32,12 @@ var BHell = (function (my) {
 		my.player.can_bomb = false; 
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
+
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initializeVL4P1Emitter = function (parent) {
+		
+		console.log("wtf"); 
+		
 		var emitterParams = {};
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
         emitterParams.alwaysAim = false;
@@ -163,6 +169,29 @@ var BHell = (function (my) {
 	//main update loop
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.update = function () {
 		
+				
+		// Destroy itself if testimony = 1 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 1) {
+
+			console.log("destroyed"); 
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
 		// Update line color V.L. 11/08/2020
 			if (this.flash == true) {
 					
@@ -250,13 +279,14 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p2;
 
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 1;
         params.speed = 3; // speed of boss moving 
         params.hitbox_w = 407; // hitbox width
         params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
+		
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -267,6 +297,7 @@ var BHell = (function (my) {
 		my.player.can_bomb = false; 
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
+		
 	};
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.initializeVL4P1Emitter = function (parent) {
 		var emitterParams = {};
@@ -315,6 +346,28 @@ var BHell = (function (my) {
 	};
 	//main update loop
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.update = function () {
+		
+		// Destroy itself if testimony = 1 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 1) {
+			
+			console.log("destroyed"); 
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
 		
 		// Update line color V.L. 11/08/2020
 			if (this.flash == true) {
@@ -378,13 +431,14 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p3;
 
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 1;
         params.speed = 3; // speed of boss moving 
         params.hitbox_w = 144; // hitbox width
         params.hitbox_h = 72; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
+		
 		//some variables needed to change states a counter to keep track of time, state etc
         this.frameCounter = 0;
 		this.state = "started";
@@ -484,6 +538,33 @@ var BHell = (function (my) {
 	//main update loop
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.update = function () {
 		
+		// Destroy itself if testimony = 1 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 1) {
+			
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
 		// Update line color V.L. 11/08/2020
 			if (this.flash == true) {
 					
@@ -533,7 +614,7 @@ var BHell = (function (my) {
 		// Update the time counter and reset it every 20 seconds.
 		this.frameCounter = (this.frameCounter + 1) % 1200;
 	}
-	BHell_Enemy_SuperFanTestimony1_p3.prototype.destroy = function() {
+	/*BHell_Enemy_SuperFanTestimony1_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;
@@ -545,10 +626,8 @@ var BHell = (function (my) {
 			my.controller.enemies[1].destroy();
 		}
 			
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-	};
+	};*/
     return my;
 } (BHell || {}));
 //=============================================================================

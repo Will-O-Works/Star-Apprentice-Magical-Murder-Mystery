@@ -1212,6 +1212,15 @@
     }
   },
   {
+	  "name": "FinalBossHeart",
+	  "class": "BHell_Enemy_Heart",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
 	  "name": "Tutorial_p1",
 	  "class": "BHell_Enemy_Tutorial_p1",
 	  "params": {

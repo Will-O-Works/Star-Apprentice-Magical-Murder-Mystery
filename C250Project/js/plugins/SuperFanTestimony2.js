@@ -168,6 +168,38 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_SuperFanTestimony2_p1.prototype.update = function () {
+		
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 2) {
+			
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
+	
     return my;
 } (BHell || {}));
 
@@ -213,6 +245,38 @@ var BHell = (function (my) {
 		
 
     };
+	
+	BHell_Enemy_SuperFanTestimony2_p2.prototype.update = function () {
+		
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 2) {
+			
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
 	
     return my;
 } (BHell || {}));
@@ -281,17 +345,48 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_SuperFanTestimony2_p3.prototype.destroy = function() {
+	BHell_Enemy_SuperFanTestimony2_p3.prototype.update = function () {
+		
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 2) {
+			
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
+	
+	/* BHell_Enemy_SuperFanTestimony2_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;
 		my.player.PhaseOver = true;
 		my.player.nextMap = Number(32);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 			
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-	};
+		
+	};*/ 
 	
     return my;
 } (BHell || {}));
