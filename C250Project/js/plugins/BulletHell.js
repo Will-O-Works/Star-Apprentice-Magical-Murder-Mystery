@@ -4612,7 +4612,7 @@ var BHell = (function (my) {
 	// Shake screen 11/29/2020
 	 BHell_Player.prototype.shakeScreen = function (shape,height,width,radius,x,y) {
 		 
-		 if (this.shake_timer < 10) {
+		 if (this.shake_timer < 8) {
 			 this.shake_timer += 1; 
 		 } else {
 			 this.screen_shake = false; 
@@ -5775,7 +5775,7 @@ var BHell = (function (my) {
 		// Screen shake by V.L. 11/29/2020
 		var shakeX = 0; 
 		var shakeY = 0; 
-		var shake = 10; 
+		var shake = 6; 
 		
 		if (my.player.screen_shake == true) {
 			shakeX = -shake + 2 * shake * Math.random(); 
@@ -6619,7 +6619,7 @@ BHell_Spriteset.prototype.updateParallax = function () {
 		// Screen shake by V.L. 11/29/2020
 		var shakeX = 0; 
 		var shakeY = 0; 
-		var shake = 25; 
+		var shake = 8; 
 		
 		if (my.player.screen_shake == true) {
 			shakeX = -shake + 2 * shake * Math.random(); 
@@ -6641,7 +6641,7 @@ BHell_Spriteset.prototype.updateTilemap = function () {
 
 		var shakeX = 0; 
 		var shakeY = 0; 
-		var shake = 25; 
+		var shake = 8; 
 		
 		if (my.player.screen_shake == true) {
 			shakeX = -shake + 2 * shake * Math.random(); 
