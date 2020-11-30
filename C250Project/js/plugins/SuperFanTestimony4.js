@@ -11,7 +11,7 @@ var BHell = (function (my) {
     BHell_Enemy_Heart.prototype.constructor = BHell_Enemy_Heart;
 
 	BHell_Enemy_Heart.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 1;
+        params.hp = 50;
         params.speed = 25;
         params.hitbox_w = 48;
         params.hitbox_h = 48;
@@ -30,6 +30,8 @@ var BHell = (function (my) {
         emitterParams.bullet.direction = 2;
 		emitterParams.bullet.sprite = "$FanBullets";
         emitterParams.bullet.index = 0;
+		emitterParams.center_x = -1; 
+		emitterParams.center_y = -1; 
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 

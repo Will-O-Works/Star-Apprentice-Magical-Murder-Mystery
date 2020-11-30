@@ -308,6 +308,7 @@ var BHell = (function (my) {
 		this.center_y = Graphics.height / 2; 
 		this.count = 24; 
 		this.speed = 4; 
+		this.follow = false; 
 		
 		if (params != null) {
             this.center_x = params.center_x || this.center_x;
@@ -315,7 +316,12 @@ var BHell = (function (my) {
 			this.count = params.count || this.count; 
 			this.speed = params.speed || this.speed; 
 			this.bulletParams.sprite = params.bullet.sprite || this.bulletParams.sprite; 
+			// this.bulletParams.direction = params.bullet.direction || 4;
         }
+		
+		if (this.center_x == -1 && this.center_y == -1) {
+			this.follow = true; 
+		}
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
@@ -324,6 +330,11 @@ var BHell = (function (my) {
 
     BHell_Emitter_Heart.prototype.shoot = function () {
 		this.dir = this.angle; 
+		
+		if (this.follow == true) {
+			this.center_x = this.x; 
+			this.center_y = this.y; 
+		}
 
 		for (var num = 0; num < this.count; num ++) {
 			var dx = (16 * Math.sin(this.dir) * Math.sin(this.dir) * Math.sin(this.dir)); 
