@@ -11,7 +11,7 @@ var BHell = (function (my) {
 
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 0;
-        params.hp = 1;
+        params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 348; // hitbox width
         params.hitbox_h = 72; // hitbox heights
@@ -35,8 +35,6 @@ var BHell = (function (my) {
 
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initializeVL4P1Emitter = function (parent) {
-		
-		console.log("wtf"); 
 		
 		var emitterParams = {};
 		emitterParams.aim = false; // if aims at player, need to add more stuff in BHell_Emitter_Sine for it to work 
@@ -279,7 +277,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p2.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p2;
 
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 1;
+        params.hp = 75;
         params.speed = 3; // speed of boss moving 
         params.hitbox_w = 407; // hitbox width
         params.hitbox_h = 82; // hitbox heights
@@ -431,7 +429,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p3;
 
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 1;
+        params.hp = 75;
         params.speed = 3; // speed of boss moving 
         params.hitbox_w = 144; // hitbox width
         params.hitbox_h = 72; // hitbox heights
