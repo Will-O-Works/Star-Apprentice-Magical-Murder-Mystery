@@ -1,4 +1,72 @@
 //=============================================================================
+// Beat Emitter
+//=============================================================================
+var BHell = (function (my) {
+	var BHell_Emitter_Beat = my.BHell_Emitter_Beat = function () {
+        this.initialize.apply(this, arguments);       
+    };
+
+    BHell_Emitter_Beat.prototype = Object.create(my.BHell_Emitter_Spray.prototype);
+    BHell_Emitter_Beat.prototype.constructor = BHell_Emitter_Beat;
+
+    BHell_Emitter_Beat.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Spray.prototype.initialize.call(this, x, y, params, parent, bulletList);  
+        this.type = params.type||"default"; 
+        this.frameCounter=1;
+    };
+
+    BHell_Emitter_Beat.prototype.shoot = function () {
+		//if(this.frameCounter>80){
+			switch(this.type){
+            case "default":
+                if(this.frameCounter%65==0){
+					console.log(this.a);
+					AudioManager.playSe({name: "heartbeat", volume: 100, pitch: 100, pan: 0});
+                    for (var k = 0; k < this.n; k++) {
+                        var bullet;
+                        if (this.aim) {
+                            if (this.alwaysAim || this.oldShooting === false) {
+                                var dx = my.player.x - this.x + this.aimX;
+                                var dy = my.player.y - this.y + this.aimY;
+                                this.aimingAngle = Math.atan2(dy, dx);
+                            }
+                            bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                            }
+                        else {
+                            bullet = new my.BHell_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        }
+                        this.parent.addChild(bullet);
+                        this.bulletList.push(bullet);
+                    }
+				}
+				if(this.frameCounter%80==0){
+                    for (var k = 0; k < this.n; k++) {
+                        var bullet;
+                        if (this.aim) {
+                            if (this.alwaysAim || this.oldShooting === false) {
+                                var dx = my.player.x - this.x + this.aimX;
+                                var dy = my.player.y - this.y + this.aimY;
+                                this.aimingAngle = Math.atan2(dy, dx);
+                            }
+                            bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                            }
+                        else {
+                            bullet = new my.BHell_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        }
+                        this.parent.addChild(bullet);
+                        this.bulletList.push(bullet);
+                    }
+				}
+				this.a+=Math.PI/200;
+				this.b+=Math.PI/200;
+			break;
+		}//}
+		this.frameCounter++;
+		if(this.frameCounter%85==0){this.frameCounter=1;}
+    };
+    return my;
+} (BHell || {}));
+//=============================================================================
 // Final Boss Heart
 //=============================================================================
 var BHell = (function (my) {
@@ -23,25 +91,24 @@ var BHell = (function (my) {
 		this.testimony = my.parse(params.t, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
 
 		var emitterParams = {};
-		emitterParams.period = 100; 
-		emitterParams.aim = true;
-		emitterParams.alwaysAim = true;
 		emitterParams.bullet = {};
         emitterParams.bullet.direction = 2;
 		emitterParams.bullet.sprite = "$FanBullets";
         emitterParams.bullet.index = 0;
 		emitterParams.center_x = -1; 
-		emitterParams.center_y = -1; 
+		emitterParams.center_y = -1;
+		emitterParams.a = 0;
+		emitterParams.b=2*Math.PI;
+		emitterParams.n = 20;
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-
-		this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		this.emitters.push(new my.BHell_Emitter_Beat(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
     };
 	
 	BHell_Enemy_Heart.prototype.update = function () {
-		
 		// Destroy itself if testimony = 2 by V.L. 11/29/2020
 		if ($gameVariables.value(11) >= this.testimony) {
 			
