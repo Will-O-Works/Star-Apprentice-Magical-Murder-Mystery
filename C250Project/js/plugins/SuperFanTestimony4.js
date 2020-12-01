@@ -969,14 +969,53 @@ var BHell = (function (my) {
 		my.player.currentLine = 0;
 
 		this.emitters.push(new my.BHell_Emitter_Yoyuko(this.x, this.y, emitterparams, parent, my.enemyBullets));
-
+		
+		this.parent = parent; 
+		this.frameCounter = 0; 
     };
 
 
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.shoot = function (t) {
-		this.emitters.forEach(e => {
+
+		if (this.frameCounter == 0) {
+			this.swap=false;
+			var emitterParams = {};
+			emitterParams.aim=false;
+			emitterParams.alwaysAim=false;
+			emitterParams.bullet = {};
+			emitterParams.bullet.sprite="$VictoriaBulletsBW"
+			emitterParams.bullet.direction = 4;
+			emitterParams.bullet.speed=5;
+			var emitterTotal=10;
+			this.updateRate =100;
+			
+			for (let index = 2; index < emitterTotal; index+=2) {
+				this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, this.parent, my.enemyBullets));
+				this.emitters[index].angle= (Math.PI*1.32);
+				this.emitters[index].offsetX= -250-((index/2)*40);
+				this.emitters[index].offsetY= 430;
+				this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, this.parent, my.enemyBullets));
+				this.emitters[index+1].angle= (Math.PI*1.68);
+				this.emitters[index+1].offsetX= 250+((index/2)*40);
+				this.emitters[index+1].offsetY= 430;
+			}
+		}
+
+        if(this.frameCounter%10==0 && my.player.Timestop==false && t){
+            for (let index = 2; index < 10; index++) {
+                this.emitters[index].shoot(true);
+            }
+        }
+		
+        this.frameCounter += 1; 
+
+		for (let index = 0; index < 2; index++) {
+            this.emitters[index].shooting = t;
+        }
+		
+		/*this.emitters.forEach(e => {
 			e.shooting = t;
-		});
+		});*/
 	};
 	
 	
@@ -992,6 +1031,7 @@ var BHell = (function (my) {
 	
     return my;
 } (BHell || {}));
+
 
 
 //=============================================================================
