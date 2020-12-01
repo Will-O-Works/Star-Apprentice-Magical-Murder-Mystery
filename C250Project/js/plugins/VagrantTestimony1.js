@@ -201,7 +201,7 @@ var BHell = (function (my) {
                 }
              break;
              case "final":
-                if(this.frameCounter%150==0){
+                if(this.frameCounter%250==0){
                     for (var k = 0; k < this.n; k++) {
                         var bullet;
                         if (this.aim) {
