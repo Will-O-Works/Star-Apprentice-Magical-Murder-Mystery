@@ -114,7 +114,7 @@ var BHell = (function (my) {
 		} else {
 			this.bulletParams.direction = 2; 
 		}*/
-		this.bulletParams.sprite = "$Bullets"; 
+		this.bulletParams.sprite = "$FanBulletsVagrant"; 
 		this.bulletParams.direction = 8; 
 		this.bulletParams.type = "a"; 
 		this.bulletParams.a = 0.0025; 
@@ -214,7 +214,7 @@ var BHell = (function (my) {
 		this.bulletParams.speed = 2; // 5; 
         this.bulletParams.index = this.params.index;
 		
-		this.bulletParams.sprite = "$TwinsBulletsBW"; 
+		this.bulletParams.sprite = "$FanBulletsBW"; 
 		this.bulletParams.direction = 2; 
 		this.bulletParams.type = "b"; 
 		
@@ -277,7 +277,7 @@ var BHell = (function (my) {
         this.bulletParams = {};
 		this.bulletParams.speed = 0; 
         this.bulletParams.index = this.params.index;
-		this.bulletParams.sprite = "$Bullets"; 
+		this.bulletParams.sprite = "$FinalFanBullets"; 
 		this.bulletParams.direction = 6; 
 		this.bulletParams.timer = this.period; // 120; 
 		
@@ -305,7 +305,6 @@ var BHell = (function (my) {
 		}
 		
 		if (this.count % 5 == 1) {
-			this.bulletParams.sprite = "$Bullets"; 
 			this.bulletParams.direction = 6; 
 				
 			var dx = my.player.x - this.x;
@@ -337,7 +336,6 @@ var BHell = (function (my) {
 			var bp = this.bulletParams; 
 			bp.speed = 0.5; 
 			bp.type = "y2"; 
-			bp.sprite = "$TwinsBulletsWhite"; 
 			bp.direction = 2; 
 			
 			for (var b = 0; b < this.bulletList.length; b ++) {
@@ -357,9 +355,8 @@ var BHell = (function (my) {
 		}
 		
 		if (this.count % 5 == 3) {
-			
-			this.bulletParams.sprite = "$TwinsBulletsBlack"; 
-			this.bulletParams.direction = 8; 
+
+			this.bulletParams.direction = 4; 
 			
 			for (var b = 0; b < this.bulletList.length; b ++) {
 
@@ -415,8 +412,8 @@ var BHell = (function (my) {
         this.bulletParams = {};
 		this.bulletParams.speed = 0; 
         this.bulletParams.index = this.params.index;
-		this.bulletParams.sprite = "$VictoriaBullets2"; 
-		this.bulletParams.direction = 2; 
+		this.bulletParams.sprite = "$FinalFanBullets"; 
+		this.bulletParams.direction = 8; 
 		this.bulletParams.type = "x"; 
 		this.bulletParams.a = 0.01; 
 		this.bulletParams.b = 0; 
@@ -871,7 +868,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony4_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony4_p3;
 
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        params.hp = 100;
         params.speed = 125;
         params.hitbox_w = 506;
         params.hitbox_h = 82;
@@ -916,7 +913,7 @@ var BHell = (function (my) {
 	};
 	
 	
-	/*BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {
+	BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.bombed = true;
@@ -924,7 +921,7 @@ var BHell = (function (my) {
 		my.player.nextMap = Number(48);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 			
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
-	};*/
+	};
 	
     return my;
 } (BHell || {}));
