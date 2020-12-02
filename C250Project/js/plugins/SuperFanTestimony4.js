@@ -679,6 +679,57 @@ var BHell = (function (my) {
 } (BHell || {}));
 
 //=============================================================================
+// Final Split Emitter
+//=============================================================================
+var BHell = (function (my) {
+	var BHell_Emitter_SplitFinal = my.BHell_Emitter_SplitFinal = function () {
+        this.initialize.apply(this, arguments);       
+    };
+
+    BHell_Emitter_SplitFinal.prototype = Object.create(my.BHell_Emitter_Spray.prototype);
+    BHell_Emitter_SplitFinal.prototype.constructor = BHell_Emitter_SplitFinal;
+
+
+    BHell_Emitter_SplitFinal.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Spray.prototype.initialize.call(this, x, y, params, parent, bulletList);  
+        this.type = params.type||"default"; 
+        this.frameCounter=0;
+        this.punishV=0;
+        this.punish = params.punish||"false";
+    };
+
+    BHell_Emitter_SplitFinal.prototype.shoot = function () {
+        this.frameCounter++;
+        if(this.punish == "true"){
+            this.punishV=30;
+        }
+        this.frameCounter=this.frameCounter+1%1200;
+        switch(this.type){
+             case "default":
+                if(this.frameCounter%200==0){
+                    for (var k = 0; k < this.n; k++) {
+                        var bullet;
+                        if (this.aim) {
+                            if (this.alwaysAim || this.oldShooting === false) {
+                                var dx = my.player.x - this.x + this.aimX;
+                                var dy = my.player.y - this.y + this.aimY;
+                                this.aimingAngle = Math.atan2(dy, dx);
+                            }
+                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                            }
+                        else {
+                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        }
+                        this.parent.addChild(bullet);
+                        this.bulletList.push(bullet);
+                    }
+                }
+             break;
+        }
+    };
+    return my;
+} (BHell || {}));
+//=============================================================================
 // SuperFanTestimony4 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
@@ -728,10 +779,9 @@ var BHell = (function (my) {
         emitterParams.bullet.direction = 6;
 		emitterParams.bullet.sprite = "$FanBulletsVagrant";
         emitterParams.bullet.burstcount = 4;
-        emitterParams.type = "final";
-        this.emitters.push(new my.BHell_Emitter_Split(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters.push(new my.BHell_Emitter_SplitFinal(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[1].offsetX= 150;
-        this.emitters.push(new my.BHell_Emitter_Split(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.emitters.push(new my.BHell_Emitter_SplitFinal(this.x, this.y, emitterParams, parent, my.enemyBullets));
         this.emitters[2].offsetX= -150;
 		
 		var emitterParams = {};

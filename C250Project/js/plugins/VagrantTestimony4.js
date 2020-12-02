@@ -169,7 +169,7 @@ var BHell = (function (my) {
 				this.spotted = true;
 			}
 			if (this.spotted === true){
-				if(this.counter>65)////change to adjust pause
+				if(this.counter>70)////change to adjust pause
 				{
 					seeks = seeks+1;
 					this.counter = 0;
@@ -212,7 +212,6 @@ var BHell = (function (my) {
     
     return my;
 } (BHell || {}));
-
 //=============================================================================
 // VagrantLine4 Pattern1 coat
 //=============================================================================
@@ -226,14 +225,15 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;
+        my.player.currentLine = 2;
+        params.hp = 85;
         params.speed = 4;
-        params.hitbox_w = 288;
+        params.hitbox_w = 404;
         params.hitbox_h = 68;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
-		my.player.can_bomb = true; 
+		my.player.can_bomb = false; 
 
         //for multiple emitters initalize them here:
         this.initializeCoat(parent);
@@ -245,14 +245,16 @@ var BHell = (function (my) {
         this.bulletcounter = 0;
 
         //initalize the mover function which dictaes the movement pattern here:
-        this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
     };
 
     BHell_Enemy_VagrantTestimony4_p1.prototype.initializeCoat = function (parent) {
+		
+		this.p = 160; 
+		
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 7
-        coatParams.bullet.index = 0;
+        coatParams.bullet.speed = 7;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
         coatParams.period = 0;
@@ -260,56 +262,78 @@ var BHell = (function (my) {
         coatParams.aim = true; 
         this.coatEmitters = [];
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
-        this.coatEmitters[0].offsetX = 100;
+        this.coatEmitters[0].offsetX = 150;
+        this.coatEmitters[0].offsetY = 50;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[1].offsetX = -100;
-        //fine tune aiming here
-        this.coatEmitters[1].aimX;
-        this.coatEmitters[1].alwaysAim = false;
+        this.coatEmitters[1].offsetX = -150;
+        this.coatEmitters[1].offsetY = 50;
+        this.coatEmitters[1].aimX = -100;
+        this.coatEmitters[1].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[2].offsetY = -50;
+        this.coatEmitters[2].offsetX = -150;
+        this.coatEmitters[2].aimX = -100;
+        this.coatEmitters[2].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[3].offsetY = -50;
+        this.coatEmitters[3].offsetX = 150;
+        this.coatEmitters[3].aimX = -100;
+        this.coatEmitters[3].alwaysAim = true;
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 4;
-        coatParams.bullet.direction = 2;
-        coatParams.a = 0;
-        coatParams.b = 2 * Math.PI;
-        coatParams.n = 10;
+        coatParams.bullet.direction = 4;
+        coatParams.alwaysAim = true;
+        coatParams.aim = true; 
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[4].offsetX=-180;
+        this.coatEmitters[4].aimX = -300;
+        this.coatEmitters[4].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[5].offsetX=180;
+        this.coatEmitters[5].aimX = 300;
+        this.coatEmitters[5].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[6].offsetX=-220;
+        this.coatEmitters[6].aimX = -340;
+        this.coatEmitters[6].alwaysAim = true;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[7].offsetX=220;
+        this.coatEmitters[7].aimX = 340;
+        this.coatEmitters[7].alwaysAim = true;
+        var coatParams = {};
+        // coatParams.a = 0;//a: Arc's initial angle (in radians),
+        // coatParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
+        // coatParams.n = 8;
+        // coatParams.type = "circle";
+        // coatParams.bullet = {};
+        // coatParams.bullet.burstcount = 6;
+        // coatParams.bullet.direction = 6;
+        coatParams.a = 0;//a: Arc's initial angle (in radians),
+        coatParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
+        coatParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
+        //this.coatEmitters.push(new my.BHell_Emitter_Split(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[3].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
-        this.coatEmitters[3].alwaysAim = false;//change to adjust angles of straight lines
-        this.coatEmitters[3].offsetX = -250;//change to adjust horizontal offset
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[4].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
-        this.coatEmitters[4].alwaysAim = false;//change to adjust angles of straight lines
-        this.coatEmitters[4].offsetX = 250;//change to adjust horizontal offset
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[5].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
-        this.coatEmitters[5].alwaysAim = false;//change to adjust angles of straight lines
-        this.coatEmitters[5].offsetX = -220;//change to adjust horizontal offset
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[6].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
-        this.coatEmitters[6].alwaysAim = false;//change to adjust angles of straight lines
-        this.coatEmitters[6].offsetX = 220;//change to adjust horizontal offset
     };
 
     BHell_Enemy_VagrantTestimony4_p1.prototype.updateCoat = function() {
-        if (this.frameCounter % 125 == 0){
+        if (this.frameCounter % 200 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
+            //this.coatEmitters[2].shoot(this.coatEmitters,true);
+            //this.coatEmitters[3].shoot(this.coatEmitters,true);
         }
-        if (this.frameCounter % 150 == 0){
-            this.coatEmitters[2].shoot(this.coatEmitters,true);
-        }
-        if (this.frameCounter % 8 == 0){
-            this.coatEmitters[3].shoot(this.coatEmitters,true);
+        if (this.frameCounter % 15 == 0){
             this.coatEmitters[4].shoot(this.coatEmitters,true);
             this.coatEmitters[5].shoot(this.coatEmitters,true);
             this.coatEmitters[6].shoot(this.coatEmitters,true);
+            this.coatEmitters[7].shoot(this.coatEmitters,true);
+        } 
+        if (this.frameCounter % this.p == 0){
+            this.coatEmitters[8].shoot(this.coatEmitters,true);
         }
-        
     };
 
     BHell_Enemy_VagrantTestimony4_p1.prototype.move = function () {
@@ -320,18 +344,6 @@ var BHell = (function (my) {
         }
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
-
-	BHell_Enemy_VagrantTestimony4_p1.prototype.destroy = function() {
-
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-    };
-	
 
     BHell_Enemy_VagrantTestimony4_p1.prototype.update = function () {
 		
@@ -361,24 +373,36 @@ var BHell = (function (my) {
 			
 			my.BHell_Sprite.prototype.update.call(this);
 		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
+        /* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+                this.p = 60; 
+                this.coatEmitters[2].bulletParams.speed=5;
+			}
+			
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+			/* Copy and paste this code into update function for not-for-bomb lines V.L. */	
+		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
+		if (my.player.bombed == true) {
+			this.destroy(); 
 		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
-		
-		/* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-
         switch (this.state) {
             case "started":
-                this.state = "pattern 1";
-                this.updateCoat();
+                if(this.mover.inPosition==true){
+                    this.state = "pattern 1";
+                }
                 break;
             case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
                 this.updateCoat();
@@ -388,24 +412,6 @@ var BHell = (function (my) {
                     this.destroy();
                 }
                 break;
-				
-			/* Added bombed case if bomb is casted on the line by V.L. */
-			case "bombed":  
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				
-				if (this.timer > 70) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
-				break; 
-			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
 
         // Update the received damage counter for the stunned state.
@@ -447,7 +453,7 @@ var BHell = (function (my) {
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         my.player.currentLine = 1;
-        params.hp = 75;
+        params.hp = 85;
         params.speed = 4;
         params.hitbox_w = 412;
         params.hitbox_h = 78;
@@ -470,7 +476,7 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantTestimony4_p2.prototype.initializeCoat = function (parent) {
-		this.p = 10; 
+		this.p = 13; 
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 7;
@@ -504,16 +510,31 @@ var BHell = (function (my) {
         this.coatEmitters[3].angle=Math.PI/2;
         this.coatEmitters[3].alwaysAim = false;
         this.coatEmitters[3].offsetX= 150;
-        this.angl1=-(Math.PI/20);
-        this.angl2=(Math.PI/20);
+        this.angl1=-(Math.PI/40);
+        this.angl2=(Math.PI/40);
         this.flip=false;
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 4;
+        coatParams.bullettype="vagrant";
+        coatParams.bullet.amp=4;
+        coatParams.bullet.period=60;
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 4;
+        coatParams.bullettype="vagrant";
+        coatParams.bullet.amp=4;
+        coatParams.bullet.period=60;
+        coatParams.bullet.reverse=-1;
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
         this.coatEmitters[5].angle=Math.PI/2;
         this.coatEmitters[5].alwaysAim = false;
-        this.coatEmitters[5].offsetX = -300;
+        this.coatEmitters[5].offsetX = 280;
         this.coatEmitters[4].angle=Math.PI/2;
         this.coatEmitters[4].alwaysAim = false;
         this.coatEmitters[4].offsetX= 300;
@@ -522,7 +543,7 @@ var BHell = (function (my) {
         this.coatEmitters[6].offsetX = -280;
         this.coatEmitters[7].angle=Math.PI/2;
         this.coatEmitters[7].alwaysAim = false;
-        this.coatEmitters[7].offsetX= 280;
+        this.coatEmitters[7].offsetX= -300;
     };
 
     BHell_Enemy_VagrantTestimony4_p2.prototype.updateCoat = function() {
@@ -592,7 +613,6 @@ var BHell = (function (my) {
 			this.prev_hp = this.hp; 
 			
 			my.BHell_Sprite.prototype.update.call(this);
-		
 		/* Copy and paste this code into update function for not-for-bomb lines V.L. */
 			// Added bomb wrong case 
 			if (my.player.false_bomb == true && this.bombedWrong == false) {
@@ -602,9 +622,9 @@ var BHell = (function (my) {
 			
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
-				this.coatEmitters[2].bulletParams.speed = 6; 
-				this.coatEmitters[3].bulletParams.speed = 6; 
-				this.p = 5; 
+				this.coatEmitters[2].bulletParams.speed = 5; 
+				this.coatEmitters[3].bulletParams.speed = 5; 
+				this.p = 8; 
 			}
 			
 			if (my.player.bombed == true) {
@@ -618,8 +638,10 @@ var BHell = (function (my) {
 
         switch (this.state) {
             case "started":
-                this.state = "pattern 1";
-                this.updateCoat();
+                if(this.mover.inPosition==true){
+                    this.state = "pattern 1";
+                }
+                //this.updateCoat();
                 break;
             case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
                 this.updateCoat();
@@ -698,15 +720,14 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentLine = 2;
-        params.hp = 75;
+        params.hp = 85;
         params.speed = 4;
-        params.hitbox_w = 404;
+        params.hitbox_w = 388;
         params.hitbox_h = 68;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
 
         //for multiple emitters initalize them here:
         this.initializeCoat(parent);
@@ -722,12 +743,10 @@ var BHell = (function (my) {
     };
 
     BHell_Enemy_VagrantTestimony4_p3.prototype.initializeCoat = function (parent) {
-		
-		this.p = 160; 
-		
         var coatParams = {};
         coatParams.bullet = {};
-        coatParams.bullet.speed = 7;
+        coatParams.bullet.speed = 7
+        coatParams.bullet.index = 0;
         coatParams.bullet.frame = 2;
         coatParams.bullet.direction = 8;
         coatParams.period = 0;
@@ -735,68 +754,74 @@ var BHell = (function (my) {
         coatParams.aim = true; 
         this.coatEmitters = [];
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
+        //fine tune aiming here
         this.coatEmitters[0].aimX = 100;
         this.coatEmitters[0].alwaysAim = true;
-        this.coatEmitters[0].offsetX = 150;
-        this.coatEmitters[0].offsetY = 50;
+        this.coatEmitters[0].offsetX = 100;
         this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[1].offsetX = -150;
-        this.coatEmitters[1].offsetY = 50;
-        this.coatEmitters[1].aimX = -100;
-        this.coatEmitters[1].alwaysAim = true;
-        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[2].offsetY = -50;
-        this.coatEmitters[2].offsetX = -150;
-        this.coatEmitters[2].aimX = -100;
-        this.coatEmitters[2].alwaysAim = true;
-        this.coatEmitters.push(new my.BHell_Emitter_Homing(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[3].offsetY = -50;
-        this.coatEmitters[3].offsetX = 150;
-        this.coatEmitters[3].aimX = -100;
-        this.coatEmitters[3].alwaysAim = true;
+        this.coatEmitters[1].offsetX = -100;
+        //fine tune aiming here
+        this.coatEmitters[1].aimX;
+        this.coatEmitters[1].alwaysAim = false;
         var coatParams = {};
         coatParams.bullet = {};
         coatParams.bullet.speed = 4;
         coatParams.bullet.direction = 2;
-        coatParams.alwaysAim = true;
-        coatParams.aim = true; 
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[4].offsetX=-180;
-        this.coatEmitters[4].aimX = -300;
-        this.coatEmitters[4].alwaysAim = true;
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[5].offsetX=180;
-        this.coatEmitters[5].aimX = 300;
-        this.coatEmitters[5].alwaysAim = true;
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[6].offsetX=-220;
-        this.coatEmitters[6].aimX = -340;
-        this.coatEmitters[6].alwaysAim = true;
-        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
-        this.coatEmitters[7].offsetX=220;
-        this.coatEmitters[7].aimX = 340;
-        this.coatEmitters[7].alwaysAim = true;
         coatParams.a = 0;//a: Arc's initial angle (in radians),
         coatParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),
-        coatParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom update
-        this.coatEmitters.push(new my.BHell_Emitter_Spray(this.x, this.y, coatParams, parent, my.enemyBullets));
+        coatParams.n = 8;
+        coatParams.type = "circle";
+        coatParams.bullet = {};
+        coatParams.bullet.burstcount = 6;
+        coatParams.bullet.direction = 6;
+        this.coatEmitters.push(new my.BHell_Emitter_Split(this.x, this.y, coatParams, parent, my.enemyBullets));
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 4;
+        coatParams.bullettype="vagrant";
+        coatParams.bullet.amp=4;
+        coatParams.bullet.period=60;
+        coatParams.bullet.reverse=-1;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[3].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
+        this.coatEmitters[3].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[3].offsetX = -250;//change to adjust horizontal offset
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[4].angle= (3*Math.PI/4)-0.4;//change to adjust angle of straight lines
+        this.coatEmitters[4].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[4].offsetX = -220;//change to adjust horizontal offset
+        var coatParams = {};
+        coatParams.bullet = {};
+        coatParams.bullet.speed = 4;
+        coatParams.bullet.direction = 4;
+        coatParams.bullettype="vagrant";
+        coatParams.bullet.amp=4;
+        coatParams.bullet.period=60;
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[5].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
+        this.coatEmitters[5].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[5].offsetX = 250;//change to adjust horizontal offset
+        this.coatEmitters.push(new my.BHell_Emitter_Angle(this.x, this.y, coatParams, parent, my.enemyBullets));
+        this.coatEmitters[6].angle= (Math.PI/4)+0.4;//change to adjust angle of straight lines
+        this.coatEmitters[6].alwaysAim = false;//change to adjust angles of straight lines
+        this.coatEmitters[6].offsetX = 220;//change to adjust horizontal offset
+        this.p=125;   
     };
 
     BHell_Enemy_VagrantTestimony4_p3.prototype.updateCoat = function() {
-        if (this.frameCounter % 200 == 0){
+        if (this.frameCounter % 125 == 0){
             this.coatEmitters[0].shoot(this.coatEmitters,true);
             this.coatEmitters[1].shoot(this.coatEmitters,true);
-            this.coatEmitters[2].shoot(this.coatEmitters,true);
-            this.coatEmitters[3].shoot(this.coatEmitters,true);
         }
-        if (this.frameCounter % 15 == 0){
+        if (this.frameCounter % this.p == 0){
+            this.coatEmitters[2].shoot(this.coatEmitters,true);
+        }
+        if (this.frameCounter % 8 == 0){
+            this.coatEmitters[3].shoot(this.coatEmitters,true);
             this.coatEmitters[4].shoot(this.coatEmitters,true);
             this.coatEmitters[5].shoot(this.coatEmitters,true);
             this.coatEmitters[6].shoot(this.coatEmitters,true);
-            this.coatEmitters[7].shoot(this.coatEmitters,true);
-        } 
-        if (this.frameCounter % this.p == 0){
-            this.coatEmitters[8].shoot(this.coatEmitters,true);
         }
     };
 
@@ -808,6 +833,18 @@ var BHell = (function (my) {
         }
         this.coatEmitters.forEach(e => {e.move(this.x, this.y);});
     };
+
+	BHell_Enemy_VagrantTestimony4_p3.prototype.destroy = function() {
+
+        //adding these to the correct line allow it to transition to a different phase
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(5);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+		
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+    };
+	
 
     BHell_Enemy_VagrantTestimony4_p3.prototype.update = function () {
 		
@@ -835,42 +872,26 @@ var BHell = (function (my) {
 
 			this.prev_hp = this.hp; 
 			
-			my.BHell_Sprite.prototype.update.call(this);
-		
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				this.coatEmitters[8].bulletParams.speed = 6; 
-				this.p = 40; 
-			}
-			
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			
-			if (this.state !== "dying") {
-                this.move();
-            }
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-		
-		// Add this line in update function so the line is destroyed when a bomb is used by V.L.
-		if (my.player.bombed == true) {
-			this.destroy(); 
+            my.BHell_Sprite.prototype.update.call(this);
+            /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
+		if (my.player.bombed == true  && this.state !== "bombed") {
+			my.controller.destroyEnemyBullets(); 
+			this.timer = 0; 
+			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+			this.state = "bombed";
 		}
-
-        if (this.state !== "dying") {
+		
+        if (this.state !== "dying" && this.state !== "bombed") {
             this.move();
         }
+		
+        /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
         switch (this.state) {
             case "started":
-                this.state = "pattern 1";
-                this.updateCoat();
+                if(this.mover.inPosition === true){
+                    this.state = "pattern 1";
+                    this.speed =3;
+                }
                 break;
             case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
                 this.updateCoat();
@@ -880,6 +901,24 @@ var BHell = (function (my) {
                     this.destroy();
                 }
                 break;
+				
+			/* Added bombed case if bomb is casted on the line by V.L. */
+			case "bombed":  
+				this.timer = (this.timer + 1) % 1200;
+				this.shoot(false);
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break; 
+			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
 
         // Update the received damage counter for the stunned state.
