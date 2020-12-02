@@ -50,6 +50,21 @@ BHell_BW_Bullet.prototype.initialize = function (x, y, angle, params, bulletList
 		bounce = params.bounce || bounce; 
     }
 
+	if (this.type == "b") {
+		if (my.player.x >= Graphics.width / 2 && my.player.justSpawned == false) { // && this.x >= Graphics.width / 2
+			this.direction = 2; 
+		} else {
+			this.direction = 6; 
+		}
+		
+	} else {
+		if (my.player.x < Graphics.width / 2 && my.player.justSpawned == false) { // && this.x < Graphics.width / 2
+			this.direction = 4; 
+		} else {
+			this.direction = 8; 
+		}
+	}
+
     my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
 
     this.anchor.x = 0.5;
