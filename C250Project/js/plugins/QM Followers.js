@@ -109,7 +109,12 @@ Imported.QMFollowers = '1.0.2';
         return;
       }
     }
-    this.setMoveSpeed(move[2]);
+
+    if (this._diagonal) {
+      this.setMoveSpeed(move[2] - 0.75);
+    } else {
+      this.setMoveSpeed(move[2]);
+    }
     this.setDirection(move[3]);
     this._realPX = this._px;
     this._realPY = this._py;
@@ -132,7 +137,7 @@ Imported.QMFollowers = '1.0.2';
   };
 
   Game_Follower.prototype.defaultColliderConfig = function() {
-    return QMovement.playerCollider;
+    return QMovement.presets["fan"]
   };
 
   //-----------------------------------------------------------------------------
