@@ -13,10 +13,15 @@ var BHell = (function (my) {
         my.BHell_Emitter_Spray.prototype.initialize.call(this, x, y, params, parent, bulletList);  
         this.type = params.type||"default"; 
         this.frameCounter=1;
+		this.start = 0; 
     };
 
     BHell_Emitter_Beat.prototype.shoot = function () {
 		//if(this.frameCounter>80){
+		if (this.start < 40) {
+			this.start += 1; 
+			return; 
+		}
 			switch(this.type){
             case "default":
                 if(this.frameCounter%65==0){
@@ -706,7 +711,7 @@ var BHell = (function (my) {
         this.frameCounter=this.frameCounter+1%1200;
         switch(this.type){
              case "default":
-                if(this.frameCounter%200==0){
+                if(this.frameCounter%250==0){
                     for (var k = 0; k < this.n; k++) {
                         var bullet;
                         if (this.aim) {
