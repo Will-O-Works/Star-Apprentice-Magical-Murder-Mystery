@@ -43,11 +43,20 @@ var BHell = (function (my) {
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
+		
+		this.start = 0; 
     };
 
     BHell_Emitter_Detective.prototype.shoot = function () {
 		
+		// if (this.type == 1) {
+		
 		if (this.type == 1) {
+			
+			if (this.start == 0) {
+				this.start += 1; 
+				return; 
+			}
 			
 			for (var n = 0; n < this.num_bullet; n++) {
 				this.aimingAngle = this.angle + 2 * Math.PI / this.num_bullet * n;
@@ -73,6 +82,11 @@ var BHell = (function (my) {
 			
 		} else if (this.type == 2) {
 			
+			if (this.start == 0) {
+				this.start += 1; 
+				return; 
+			}
+			
 			for (var j = 0; j < 5; j ++) {
 				
 				var dx = my.player.x - this.x;
@@ -97,6 +111,11 @@ var BHell = (function (my) {
 			} 
 			
 		} else if (this.type == 3) {
+			
+			if (this.start < 6) {
+				this.start += 1; 
+				return; 
+			}
 			
 			this.num_bullet = 4; 
 			
@@ -208,7 +227,7 @@ var BHell = (function (my) {
 		this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 75; 
+		emitterParams.period = 50; 
 		emitterParams.type = 2; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;

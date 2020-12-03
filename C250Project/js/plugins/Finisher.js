@@ -31,6 +31,7 @@ var BHell = (function (my) {
 		// or inherit prameters from the enemy class
 		 if (params != null) {
             this.angle = params.angle || this.angle;
+			this.noshoot = params.noshoot || false;
         }
 		
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
@@ -39,6 +40,11 @@ var BHell = (function (my) {
     };
 
     BHell_Emitter_Sample.prototype.shoot = function () {
+		
+		if (this.noshoot == true) {
+			return; 
+		}
+		
 		this.bulletParams.speed = 5; //give the bullet a speed. you can do this in sample.js as well 
 		// create bullet by new my.BHell_Bullet(x, y, direction(0 is to the right), this.bulletParams(this includes speed, see sample.js), this.bulletList);
 		var bullet = new my.BHell_Bullet(this.x, this.y, this.angle, this.bulletParams, this.bulletList);
@@ -80,12 +86,16 @@ var BHell = (function (my) {
         params.hitbox_w = 100; // hitbox width
         params.hitbox_h = 30; // hitbox height
         params.animated = false; // if true, you need 3 frames of animation for the boss
+		
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
 		var emitterParams = {};
 		emitterParams.period = 15; // period for the emitter to activate
 		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
         emitterParams.alwaysAim = true;
+		if (image.characterName == "$TutorialSentence") {
+			emitterParams.noshoot = true; 
+		}
 		
 		this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
 		

@@ -29,6 +29,8 @@ var BHell = (function (my) {
 		this.attack_between = 50; 
 		this.angry = false; 
 		
+		this.start = 0; 
+		
 		if (params != null) {
 			this.num_bullet = params.num_bullet || this.num_bullet;
 			this.attack_between = params.attack_between || this.attack_between;
@@ -43,6 +45,10 @@ var BHell = (function (my) {
     BHell_Emitter_Tutorial.prototype.shoot = function () {
 		
 		// if (this.type == 1) {
+		if (this.start == 0) {
+			this.start = 1; 
+			return; 
+		}
 			
 			for (var n = 0; n < this.num_bullet; n++) {
 				this.aimingAngle = this.angle + 2 * Math.PI / this.num_bullet * n;
@@ -282,11 +288,18 @@ var BHell = (function (my) {
 		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
         this.oldShooting = false; // Previous shooting state.
         this.j = 0; // Frame counter. Used for state switching.
+		
+		this.start = 0; 
     };
 
     BHell_Emitter_Practice.prototype.shoot = function () {
 		
 		if (this.type == 1) {
+			
+			if (this.start < 2) {
+				this.start += 1; 
+				return; 
+			}
 			
 			for (var n = 0; n < this.num_bullet; n++) {
 				this.aimingAngle = this.angle + 2 * Math.PI / this.num_bullet * n;
@@ -300,6 +313,11 @@ var BHell = (function (my) {
 			this.angle += Math.PI / (this.num_bullet + 1); 
 			
 		} else if (this.type == 2) {
+			
+			if (this.start == 0) {
+				this.start += 1; 
+				return; 
+			}
 			
 			for (var j = 0; j < 5; j ++) {
 				
@@ -317,6 +335,11 @@ var BHell = (function (my) {
 			} 
 			
 		} else if (this.type == 3) {
+			
+			if (this.start < 11) {
+				this.start += 1; 
+				return; 
+			}
 			
 			this.num_bullet = 4; 
 			
@@ -414,7 +437,7 @@ var BHell = (function (my) {
 		this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
-		emitterParams.period = 100; 
+		emitterParams.period = 50; 
 		emitterParams.type = 2; 
 		emitterParams.aim = true;
 		emitterParams.alwaysAim = true;
