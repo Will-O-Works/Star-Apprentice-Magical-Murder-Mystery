@@ -69,6 +69,7 @@ var BHell = (function (my) {
                 params.dif=20;
                 params.period=25;
                 params.waveNum=4;
+                params.bulletspeed=2;
             }
             this.spawnCounter+=1;
             if(this.spawnCounter==1)
@@ -252,6 +253,7 @@ var BHell = (function (my) {
             params.period=25;
             params.waveNum=3;
             params.type=2;
+            params.bulletspeed=2;
             this.spawnCounter+=1;
             if(this.punish==true){
                 params.moveTime=100;
@@ -570,6 +572,7 @@ var BHell = (function (my) {
         this.period= 30;
         this.waveNum=1000;
         this.wavecounter=0;
+        this.bulletspeed=1.5;
         if (params != null) {
             type =  params.type||type;
             moveTime =  params.moveTime||moveTime;
@@ -577,6 +580,7 @@ var BHell = (function (my) {
             type =  params.type||type;
             this.period =  params.period||this.period;
             this.waveNum =  params.waveNum||this.waveNum;
+            this.bulletspeed =  params.bulletspeed||this.bulletspeed;
         }   
         var emitterParams={};
         emitterParams.a = 0;
@@ -585,7 +589,7 @@ var BHell = (function (my) {
         emitterParams.bullet = {};
         emitterParams.bullet.sprite="$VictoriaBullets1"
         emitterParams.bullet.direction = 2;
-        emitterParams.bullet.speed = 1.5;
+        emitterParams.bullet.speed = this.bulletspeed;
         emitterParams.bullet.num = 0;
         emitterParams.bullet.stoppable="false";
         emitterParams.bullet.moveTime=moveTime;
