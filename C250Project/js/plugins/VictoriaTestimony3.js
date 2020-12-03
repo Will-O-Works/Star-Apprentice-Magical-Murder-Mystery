@@ -66,7 +66,7 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.updateWall = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
+            var image = {"characterName":"$JeevesSmall","direction":8,"pattern":0,"characterIndex":0};
             var params = {};
             params.animated = false;
             params.frame = 0;
@@ -75,7 +75,7 @@ var BHell = (function (my) {
             params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
             params.posY=this.y+120-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             params.bullet = {};
-            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.sprite="$JeevesSmall"
             params.bullet.direction=4;
             params.bullet.speed=3;//+(Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             my.controller.enemies.push(new my.BHell_Enemy_Brick(this.x, this.y, image, params, this.parent, my.controller.enemies));
@@ -368,7 +368,7 @@ var BHell = (function (my) {
             params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
             params.posY=this.y+120-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));;
             params.bullet = {};
-            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.sprite="$JeevesSmall"
             params.bullet.direction=4;
             params.bullet.speed=3;//+(Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             my.controller.enemies.push(new my.BHell_Enemy_Brick(this.x, this.y, image, params, this.parent, my.controller.enemies));
@@ -562,7 +562,7 @@ var BHell = (function (my) {
             params.speed =5;
             params.hp = 8;
             params.bullet = {};
-            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.sprite="$JeevesSmall"
             params.bullet.direction=4;
             //params.posX = this.x+125-(50*(this.spawnCounter-1));
             params.posX = this.x;
@@ -580,7 +580,7 @@ var BHell = (function (my) {
             params.speed =5;
             params.hp = 8;
             params.bullet = {};
-            params.bullet.sprite="$VictoriaBullets1"
+            params.bullet.sprite="$JeevesSmall"
             params.bullet.direction=4;
             params.posX = this.x;
             params.num=this.spawnCounter;
@@ -732,7 +732,7 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.destroy.call(this);
         my.player.PhaseOver = true;
         //my.player.nextMap = Number(37);
-        my.player.nextMap = Number(41);
+        my.player.nextMap = Number(52);
         
     };	
 	//main update loop
@@ -812,7 +812,8 @@ var BHell = (function (my) {
             break; 
         };
         this.frameCounter++;
-        if(this.frameCounter%700==0){
+        console.log(this.frameCounter);
+        if(this.frameCounter%470==0){
             this.frameCounter=0;
             this.stopcounter=0;
         } 
@@ -844,21 +845,25 @@ var BHell = (function (my) {
         emitterParams.period = this.period;
         emitterParams.aim = true;
         emitterParams.alwaysAim =true;
-        emitterParams.a = 0;//a: Arc's initial angle (in radians),change to adjust
-        emitterParams.b = 2 * Math.PI;//b: Arc's final angle (in radians),change to adjust
-        emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
         emitterParams.bullet = Object.assign({}, this.bullet);
         this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.spritechanger=2;
+        this.firstBreak=false;
+        this.secondBreak=false;
     };
     BHell_Enemy_Brick.prototype.hit = function () {
         my.BHell_Enemy_Base.prototype.hit.call(this);
         if (this.frameCounter%2===0)
         {
             this.emitters[0].shoot(true);
+            this.emitters[0].bulletParams.direction+=this.spritechanger;
+            this.spritechanger=-(this.spritechanger);
         }
     };
     BHell_Enemy_Brick.prototype.die = function() {
         this.emitters[0].shoot(true);
+        this.emitters[0].bulletParams.direction+=this.spritechanger;
+        this.spritechanger=-(this.spritechanger);
         this.destroy(); 
     };
     BHell_Enemy_Brick.prototype.destroy = function() {  
@@ -871,6 +876,20 @@ var BHell = (function (my) {
         my.BHell_Sprite.prototype.update.call(this);
         this.move();
         this.frameCounter =(this.frameCounter+1)%1200;
+        if(this.hp==5&&this.firstBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.firstBreak=true;
+        }
+        if(this.hp==3&&this.secondBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.secondBreak=true;
+        }
      }
     return my;
 } (BHell || {}));
@@ -960,25 +979,31 @@ var BHell = (function (my) {
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.mover = new my.BHell_Mover_SOrbit(this.radius, counterclockwise, params.posX,params.posY,params.num);
     
-        var emitterParams={};
-        emitterParams.bullet = Object.assign({}, this.bullet);
+        var emitterParams = {};
+        emitterParams.x = 0;
+        emitterParams.y = 0;
+        emitterParams.period = this.period;
         emitterParams.aim = true;
-        emitterParams.alwaysAim = true;
-        //emitterParams.angle=Math.PI/2;
-        // emitterParams.a = 7;
-        // emitterParams.b = 7.5;
-        // emitterParams.n = 6;
-        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        emitterParams.alwaysAim =true;
+        emitterParams.bullet = Object.assign({}, this.bullet);
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.spritechanger=2;
+        this.firstBreak=false;
+        this.secondBreak=false;
     };
     BHell_Enemy_BrickOrbit.prototype.hit = function () {
         my.BHell_Enemy_Base.prototype.hit.call(this);
         if (this.frameCounter%3===0)
         {
             this.emitters[0].shoot(true);
+            this.emitters[0].bulletParams.direction+=this.spritechanger;
+            this.spritechanger=-(this.spritechanger);
         }
     };
     BHell_Enemy_BrickOrbit.prototype.die = function() {
         this.emitters[0].shoot(true);
+        this.emitters[0].bulletParams.direction+=this.spritechanger;
+        this.spritechanger=-(this.spritechanger);
         this.destroy(); 
     };
     BHell_Enemy_BrickOrbit.prototype.destroy = function() {  
@@ -990,6 +1015,20 @@ var BHell = (function (my) {
     BHell_Enemy_BrickOrbit.prototype.update = function() {
         my.BHell_Sprite.prototype.update.call(this);
         this.move();
+        if(this.hp==5&&this.firstBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.firstBreak=true;
+        }
+        if(this.hp==3&&this.secondBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.secondBreak=true;
+        }
         this.frameCounter =(this.frameCounter+1)%1200;
      }
     return my;

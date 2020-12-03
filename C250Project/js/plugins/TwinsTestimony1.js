@@ -1040,6 +1040,8 @@ var BHell = (function (my) {
         this.bulletParams.n = this.params.bullet.n;
 		this.bulletParams.moveTime = this.params.bullet.moveTime;
 		this.bulletParams.num =this.params.bullet.num = 0;
+		this.bulletParams.test4 =this.params.bullet.test4||"false";
+		this.bulletParams.speed =this.params.bullet.speed||3;
 		
 		this.angle = Math.PI/4; //initial direction
 		this.speed = 3; //speed 

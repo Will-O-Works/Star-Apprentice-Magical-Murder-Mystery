@@ -10,6 +10,364 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;//change to adjust boss HP
         params.speed = 4; //change to adjust speed of boss moving 
+        params.hitbox_w = 504; //change to adjust hitbox width
+        params.hitbox_h = 82; //change to adjust hitbox height
+        params.animated = false;
+        this.frameCounter =1;
+        this.state = "started";
+        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.initializeZaWarudo(parent);
+        this.initializeBrick(parent);
+		// set player.can_bomb to true by V.L.
+        my.player.can_bomb = false;
+		my.player.currentLine = 2;
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+    };
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeZaWarudo = function (parent) {
+        this.firstpause =true;
+    };
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeBrick = function () {
+        this.spawnNumber=1;
+        this.spawnCounter = 0;
+        this.lineNum=2;
+        this.punish=false;
+	};
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.updateZaWarudo = function() {
+        if(this.frameCounter==100){
+            if(this.firstpause==true){
+                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                this.firstpause=false;
+            }
+            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
+            my.player.Timestop=true;
+            this.spawnCounter = 0;
+        }
+        if(this.frameCounter%10 == 0&&my.player.Timestop==true&&this.frameCounter<370)
+        {
+            this.updateBrick();
+        }
+        if(this.frameCounter==200){
+            my.player.Timestop=false;
+        }
+    };
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.updateBrick = function () {
+        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
+            var params = {};
+            params.animated = false;
+            params.frame = 0;
+            params.speed =4;
+            params.hp = 8;
+            params.moveTime=70;
+            params.dif=20;
+            params.period=25;
+            params.waveNum=3;
+            params.type=3;
+            if(this.punish==true){
+                params.moveTime=100;
+                params.dif=20;
+                params.period=25;
+                params.waveNum=4;
+            }
+            this.spawnCounter+=1;
+            if(this.spawnCounter==1)
+            {
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies[1].destroy();
+            }
+            else{
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y+100, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-300, this.y+250, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+300, this.y+250, image, params, this.parent, my.controller.enemies));
+            }
+        }  
+	};
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.die = function() {
+		this.state = "dying";
+		this.frameCounter = 1;
+		my.controller.destroyEnemyBullets();
+	};
+	BHell_Enemy_VictoriaTestimony1_p1.prototype.destroy = function() {
+        my.player.PhaseOver = true;
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+    };
+    BHell_Enemy_VictoriaTestimony1_p1.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+			if (this.flash == true) {
+					
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
+				} else {
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
+				}
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
+			}
+			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
+
+			this.prev_hp = this.hp; 
+		
+		my.BHell_Sprite.prototype.update.call(this);
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+                this.hp = this.full_hp;
+                this.punish=true;
+			}
+			if (this.bombedWrong == true) {
+			}
+			if (my.player.bombed == true) {
+				this.destroy(); 
+			}
+			if (this.state !== "dying") {
+                this.move();
+            }
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
+				}
+				break;
+			case "active": // Shoot.
+                this.updateZaWarudo();
+                //this.updateSwipe();
+				break;
+			case "dying": // die.
+				this.destroy();
+				break;
+		}; 
+		// Update the emitter's position.
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = ((this.frameCounter) % 240)+1;
+	};
+    return my;
+} (BHell || {}));
+// =============================================================================
+// VictoriaTestimony3 Pattern 2 Test
+// =============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_VictoriaTestimony1_p2 = my.BHell_Enemy_VictoriaTestimony1_p2 = function() {
+        this.initialize.apply(this, arguments);
+    };
+    BHell_Enemy_VictoriaTestimony1_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p2;
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;//change to adjust boss HP
+        params.speed = 4; //change to adjust speed of boss moving 
+        params.hitbox_w = 530; //change to adjust hitbox width
+        params.hitbox_h = 84; //change to adjust hitbox height
+        params.animated = false;
+        this.frameCounter =1;
+        this.state = "started";
+        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.initializeZaWarudo(parent);
+        this.initializeBrick(parent);
+		// set player.can_bomb to true by V.L.
+        my.player.can_bomb = false;
+		my.player.currentLine = 0;
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+    };
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeZaWarudo = function (parent) {
+        this.firstpause =true;
+        var emitterParams = {};
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.speed = 4;
+        emitterParams.a = 0;
+        emitterParams.b = 2*Math.PI;
+        emitterParams.n = 8;
+        emitterParams.bullet.speed = 2.5;
+        emitterParams.bullet.num = 0;
+        emitterParams.bullet.moveTime=90;
+        emitterParams.bullet.dif=4;
+        emitterParams.bullettype = "vic1";
+        this.emitters.push(new my.BHell_Emitter_Animism(this.x, this.y, emitterParams, parent, my.enemyBullets));
+    };
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function () {
+        this.spawnNumber=1;
+        this.spawnCounter = 0;
+        this.lineNum=2;
+        this.punish=false;
+	};
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.updateZaWarudo = function() {
+        if(this.punish==true){
+            this.emitters[0].bulletParams.speed=3.5;
+            this.emitters[0].bulletParams.moveTime=100;
+        }
+        if(this.frameCounter==100){
+            if(this.firstpause==true){
+                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                this.firstpause=false;
+            }
+            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
+            my.player.Timestop=true;
+            this.spawnCounter = 0;
+            this.emitters[0].bulletParams.num=0;
+        }
+        if(this.frameCounter%10 == 0&&my.player.Timestop==true&&this.frameCounter<370)
+        {
+            this.updateBrick();
+        }
+        if(this.frameCounter%3 == 0&&my.player.Timestop==true&&this.frameCounter<160){
+            if(this.frameCounter<130){
+                this.emitters[0].a-=(Math.PI/60)
+                this.emitters[0].b-=(Math.PI/60)
+                this.emitters[0].shoot(this.emitters,true);
+            }
+            else if(this.frameCounter>140){
+                this.emitters[0].a+=(Math.PI/60);
+                this.emitters[0].b+=(Math.PI/60);
+                this.emitters[0].shoot(this.emitters,true);
+            }
+            this.emitters[0].bulletParams.num++;
+        }
+        if(this.frameCounter==210){
+            my.player.Timestop=false;
+        }
+    };
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function () {
+        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
+            var params = {};
+            params.animated = false;
+            params.frame = 0;
+            params.speed =5;
+            params.hp = 8;
+            params.moveTime=80;
+            params.dif=15;
+            params.period=25;
+            params.waveNum=3;
+            params.type=2;
+            this.spawnCounter+=1;
+            if(this.punish==true){
+                params.moveTime=100;
+                params.waveNum=4;
+            }
+            if(this.spawnCounter==1)
+            {
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies[1].destroy();
+            }
+            else{
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+400, this.y+200, image, params, this.parent, my.controller.enemies));
+                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-400, this.y+200, image, params, this.parent, my.controller.enemies));
+            }
+        }  
+	};
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.die = function() {
+		this.state = "dying";
+		this.frameCounter = 1;
+		my.controller.destroyEnemyBullets();
+	};
+	BHell_Enemy_VictoriaTestimony1_p2.prototype.destroy = function() {
+        my.player.PhaseOver = true;
+        my.player.nextMap = Number(37);
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+    };
+    BHell_Enemy_VictoriaTestimony1_p2.prototype.update = function () {
+		// Update line color V.L. 11/08/2020
+			if (this.flash == true) {
+					
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
+				} else {
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
+				}
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
+			}
+			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
+
+			this.prev_hp = this.hp; 
+		
+		my.BHell_Sprite.prototype.update.call(this);
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+				this.punish=true; 
+			}
+			if (my.player.bombed == true&& this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
+			}
+			if (this.state !== "dying") {
+                this.move();
+            }
+		switch (this.state) {
+			case "started":
+				if (this.mover.inPosition === true) {
+					this.state = "active";
+				}
+				break;
+			case "active": // Shoot.
+                this.updateZaWarudo();
+				break;
+			case "dying": // die.
+				this.destroy();
+                break;
+            case "bombed":  
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
+            break;
+		}; 
+		// Update the emitter's position.
+		this.emitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter ++;
+        if(this.frameCounter>=280){this.frameCounter=0;}
+	};
+    return my;
+} (BHell || {}));
+// =============================================================================
+// VictoriaTestimony3 Pattern 3 Test
+// =============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_VictoriaTestimony1_p3 = my.BHell_Enemy_VictoriaTestimony1_p3 = function() {
+        this.initialize.apply(this, arguments);
+    };
+    BHell_Enemy_VictoriaTestimony1_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p3;
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 75;//change to adjust boss HP
+        params.speed = 4; //change to adjust speed of boss moving 
         params.hitbox_w = 530; //change to adjust hitbox width
         params.hitbox_h = 84; //change to adjust hitbox height
         params.animated = false;
@@ -24,13 +382,13 @@ var BHell = (function (my) {
 		my.player.currentLine = 0;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeZaWarudo = function (parent) {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.initializeZaWarudo = function (parent) {
         this.firstpause =true;
         var emitterParams = {};
         emitterParams.angle = 0;
         emitterParams.bullet = {};
-        emitterParams.bullet.sprite="$VictoriaBullets1"
-        emitterParams.bullet.direction = 2;
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction = 6;
         emitterParams.bullet.speed = 3;
         emitterParams.a = 0;
         emitterParams.b = 2*Math.PI;
@@ -42,12 +400,12 @@ var BHell = (function (my) {
         emitterParams.bullettype = "vic2";
         this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeBrick = function () {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.initializeBrick = function () {
         this.spawnNumber=1;
         this.spawnCounter = 0;
         this.lineNum=2;
 	};
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.updateZaWarudo = function() {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.updateZaWarudo = function() {
         if(this.frameCounter==100){
             if(this.firstpause==true){
                 AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
@@ -67,13 +425,13 @@ var BHell = (function (my) {
                 this.emitters[0].bulletParams.num++;
                 this.emitters[0].shoot(this.emitters,true);
             }
-            
+           
         }
         if(this.frameCounter==250){
             my.player.Timestop=false;
         }
     };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.updateBrick = function () {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.updateBrick = function () {
         if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
             var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
             var params = {};
@@ -81,8 +439,8 @@ var BHell = (function (my) {
             params.frame = 0;
             params.speed =5;
             params.hp = 8;
-            params.moveTime=50;
-            params.dif=10;
+            params.moveTime=80;
+            params.dif=20;
             params.period=25;
             params.waveNum=3;
             params.type=3;
@@ -98,18 +456,18 @@ var BHell = (function (my) {
             }
         }  
 	};
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.die = function() {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 1;
 		my.controller.destroyEnemyBullets();
 	};
-	BHell_Enemy_VictoriaTestimony1_p1.prototype.destroy = function() {
+	BHell_Enemy_VictoriaTestimony1_p3.prototype.destroy = function() {
         my.player.PhaseOver = true;
         //my.player.nextMap = Number(42);
-        my.player.nextMap = Number(37);
+        my.player.nextMap = Number(50);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
-    BHell_Enemy_VictoriaTestimony1_p1.prototype.update = function () {
+    BHell_Enemy_VictoriaTestimony1_p3.prototype.update = function () {
 		// Update line color V.L. 11/08/2020
 			if (this.flash == true) {
 					
@@ -189,350 +547,6 @@ var BHell = (function (my) {
 	};
     return my;
 } (BHell || {}));
-// =============================================================================
-// VictoriaTestimony3 Pattern 2 Test
-// =============================================================================
-var BHell = (function (my) {
-    var BHell_Enemy_VictoriaTestimony1_p2 = my.BHell_Enemy_VictoriaTestimony1_p2 = function() {
-        this.initialize.apply(this, arguments);
-    };
-    BHell_Enemy_VictoriaTestimony1_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p2;
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;//change to adjust boss HP
-        params.speed = 4; //change to adjust speed of boss moving 
-        params.hitbox_w = 530; //change to adjust hitbox width
-        params.hitbox_h = 84; //change to adjust hitbox height
-        params.animated = false;
-        this.frameCounter =1;
-        this.state = "started";
-        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
-        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.initializeZaWarudo(parent);
-        this.initializeBrick(parent);
-		// set player.can_bomb to true by V.L.
-        my.player.can_bomb = true;
-		my.player.currentLine = 0;
-        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
-    };
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeZaWarudo = function (parent) {
-        this.firstpause =true;
-        var emitterParams = {};
-        emitterParams.angle = 0;
-        emitterParams.bullet = {};
-        emitterParams.bullet.sprite="$VictoriaBullets1"
-        emitterParams.bullet.direction = 2;
-        emitterParams.bullet.speed = 4;
-        emitterParams.a = 0;
-        emitterParams.b = 2*Math.PI;
-        emitterParams.n = 8;
-        emitterParams.bullet.speed = 2.5;
-        emitterParams.bullet.num = 0;
-        emitterParams.bullet.moveTime=90;
-        emitterParams.bullet.dif=4;
-        emitterParams.bullettype = "vic1";
-        this.emitters.push(new my.BHell_Emitter_Animism(this.x, this.y, emitterParams, parent, my.enemyBullets));
-    };
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function () {
-        this.spawnNumber=1;
-        this.spawnCounter = 0;
-        this.lineNum=2;
-	};
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.updateZaWarudo = function() {
-        if(this.frameCounter==100){
-            if(this.firstpause==true){
-                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
-                this.firstpause=false;
-            }
-            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
-            my.player.Timestop=true;
-            this.spawnCounter = 0;
-            this.emitters[0].bulletParams.num=0;
-        }
-        if(this.frameCounter%10 == 0&&my.player.Timestop==true&&this.frameCounter<370)
-        {
-            this.updateBrick();
-        }
-        if(this.frameCounter%3 == 0&&my.player.Timestop==true&&this.frameCounter<160){
-            if(this.frameCounter<130){
-                this.emitters[0].a-=(Math.PI/60)
-                this.emitters[0].b-=(Math.PI/60)
-                this.emitters[0].shoot(this.emitters,true);
-            }
-            else if(this.frameCounter>140){
-                this.emitters[0].a+=(Math.PI/60);
-                this.emitters[0].b+=(Math.PI/60);
-                this.emitters[0].shoot(this.emitters,true);
-            }
-            this.emitters[0].bulletParams.num++;
-        }
-        if(this.frameCounter==210){
-            my.player.Timestop=false;
-        }
-    };
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function () {
-        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
-            var params = {};
-            params.animated = false;
-            params.frame = 0;
-            params.speed =5;
-            params.hp = 8;
-            params.moveTime=80;
-            params.dif=15;
-            params.period=25;
-            params.waveNum=3;
-            params.type=2;
-            this.spawnCounter+=1;
-            if(this.spawnCounter==1)
-            {
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies[1].destroy();
-            }
-            else{
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+400, this.y+200, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-400, this.y+200, image, params, this.parent, my.controller.enemies));
-            }
-        }  
-	};
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.die = function() {
-		this.state = "dying";
-		this.frameCounter = 1;
-		my.controller.destroyEnemyBullets();
-	};
-	BHell_Enemy_VictoriaTestimony1_p2.prototype.destroy = function() {
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(37);
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-    };
-    BHell_Enemy_VictoriaTestimony1_p2.prototype.update = function () {
-		// Update line color V.L. 11/08/2020
-			if (this.flash == true) {
-					
-				if (this.prev_hp == this.hp) {
-					if (this.bombedWrong == true) {
-						this.setColorTone([0, -160, -160, 1]);
-					} else if(this.holdFlash <= 0){
-						this.setColorTone([0, 0, 0, 1]);
-					}
-				} else {
-					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
-				}
-				if (this.holdFlash > 0){
-					this.setColorTone([0, 0, -160, 1]);
-				}
-				
-			}
-			
-			if (this.holdFlash > 0) {
-				this.holdFlash--;
-			}
-
-			this.prev_hp = this.hp; 
-		
-		my.BHell_Sprite.prototype.update.call(this);
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-				this.p = 8; 
-				this.emitters[2].bulletParams.speed = 6; 
-				this.emitters[3].bulletParams.speed = 6; 
-			}
-			if (my.player.bombed == true&& this.state !== "bombed") {
-				my.controller.destroyEnemyBullets(); 
-				this.timer = 0; 
-				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-				this.state = "bombed";
-			}
-			if (this.state !== "dying") {
-                this.move();
-            }
-		switch (this.state) {
-			case "started":
-				if (this.mover.inPosition === true) {
-					this.state = "active";
-				}
-				break;
-			case "active": // Shoot.
-                this.updateZaWarudo();
-				break;
-			case "dying": // die.
-				this.destroy();
-                break;
-            case "bombed":  
-                this.timer = (this.timer + 1) % 1200;
-                this.shoot(false);
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
-            break;
-		}; 
-		// Update the emitter's position.
-		this.emitters.forEach(e => {e.update()});
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter ++;
-        if(this.frameCounter>=280){this.frameCounter=0;}
-	};
-    return my;
-} (BHell || {}));
-// =============================================================================
-// VictoriaTestimony3 Pattern 3 Test
-// =============================================================================
-var BHell = (function (my) {
-    var BHell_Enemy_VictoriaTestimony1_p3 = my.BHell_Enemy_VictoriaTestimony1_p3 = function() {
-        this.initialize.apply(this, arguments);
-    };
-    BHell_Enemy_VictoriaTestimony1_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.constructor = BHell_Enemy_VictoriaTestimony1_p3;
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 75;//change to adjust boss HP
-        params.speed = 4; //change to adjust speed of boss moving 
-        params.hitbox_w = 504; //change to adjust hitbox width
-        params.hitbox_h = 82; //change to adjust hitbox height
-        params.animated = false;
-        this.frameCounter =1;
-        this.state = "started";
-        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
-        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-        this.initializeZaWarudo(parent);
-        this.initializeBrick(parent);
-		// set player.can_bomb to true by V.L.
-        my.player.can_bomb = false;
-		my.player.currentLine = 2;
-        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
-    };
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.initializeZaWarudo = function (parent) {
-        this.firstpause =true;
-    };
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.initializeBrick = function () {
-        this.spawnNumber=1;
-        this.spawnCounter = 0;
-        this.lineNum=2;
-	};
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.updateZaWarudo = function() {
-        if(this.frameCounter==100){
-            if(this.firstpause==true){
-                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
-                this.firstpause=false;
-            }
-            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
-            my.player.Timestop=true;
-            this.spawnCounter = 0;
-        }
-        if(this.frameCounter%10 == 0&&my.player.Timestop==true&&this.frameCounter<370)
-        {
-            this.updateBrick();
-        }
-        if(this.frameCounter==200){
-            my.player.Timestop=false;
-        }     
-    };
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.updateBrick = function () {
-        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$JeevesSmall","direction":2,"pattern":0,"characterIndex":0};
-            var params = {};
-            params.animated = false;
-            params.frame = 0;
-            params.speed =4;
-            params.hp = 8;
-            params.moveTime=70;
-            params.dif=20;
-            params.period=25;
-            params.waveNum=3;
-            params.type=3;
-            this.spawnCounter+=1;
-            if(this.spawnCounter==1)
-            {
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies[1].destroy();
-            }
-            else{
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x, this.y+100, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x-300, this.y+250, image, params, this.parent, my.controller.enemies));
-                my.controller.enemies.push(new my.BHell_Enemy_TSBrick(this.x+300, this.y+250, image, params, this.parent, my.controller.enemies));
-            }
-        }  
-	};
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.die = function() {
-		this.state = "dying";
-		this.frameCounter = 1;
-		my.controller.destroyEnemyBullets();
-	};
-	BHell_Enemy_VictoriaTestimony1_p3.prototype.destroy = function() {
-        my.player.PhaseOver = true;
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-    };
-    BHell_Enemy_VictoriaTestimony1_p3.prototype.update = function () {
-		
-		// Update line color V.L. 11/08/2020
-			if (this.flash == true) {
-					
-				if (this.prev_hp == this.hp) {
-					if (this.bombedWrong == true) {
-						this.setColorTone([0, -160, -160, 1]);
-					} else if(this.holdFlash <= 0){
-						this.setColorTone([0, 0, 0, 1]);
-					}
-				} else {
-					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
-				}
-				if (this.holdFlash > 0){
-					this.setColorTone([0, 0, -160, 1]);
-				}
-				
-			}
-			
-			if (this.holdFlash > 0) {
-				this.holdFlash--;
-			}
-
-			this.prev_hp = this.hp; 
-		
-		my.BHell_Sprite.prototype.update.call(this);
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			if (this.bombedWrong == true) {
-			}
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			if (this.state !== "dying") {
-                this.move();
-            }
-		switch (this.state) {
-			case "started":
-				if (this.mover.inPosition === true) {
-					this.state = "active";
-				}
-				break;
-			case "active": // Shoot.
-                this.updateZaWarudo();
-                //this.updateSwipe();
-				break;
-			case "dying": // die.
-				this.destroy();
-				break;
-		}; 
-		// Update the emitter's position.
-        // Update the time counter and reset it every 20 seconds.
-        this.frameCounter = ((this.frameCounter) % 240)+1;
-	};
-    return my;
-} (BHell || {}));
-
 
 
 
@@ -637,7 +651,6 @@ var BHell = (function (my) {
             this.destroy();
         }
         this.frameCounter =(this.frameCounter+1)%1200;
-
      }
     return my;
 } (BHell || {}));
@@ -744,7 +757,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// TimeStop Bullet
+// TimeStop Bullet(i dont know why there are two and im too scared to delete em)
 //=============================================================================
 var BHell = (function (my) {
     var BHell_TimeStop_Bullet = my.BHell_TimeStop_Bullet = function() {
@@ -892,27 +905,35 @@ var BHell = (function (my) {
     BHell_DC_Bullet.prototype.constructor = BHell_DC_Bullet;
     BHell_DC_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         my.BHell_TimeStop_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
+        this.type="default";
+        if(params!=null){
+            this.type=params.type||this.ype;
+        }
     };
     BHell_DC_Bullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-        if(my.player.Timestop==false){
-            this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
-            this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
-            if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
-            this.outsideMap = true;
-            }
-        }
-        else if(this.stoppable=="false"&&my.player.Timestop==true){
-            this.frameCounter++;
-
-            if(this.frameCounter<(this.moveTime-(this.dif*this.num))){
-                this.x += Math.cos(this.angle) * this.speed;
-                this.y += Math.sin(this.angle) * this.speed;
+        switch(this.type){
+            case"default":
+            if(my.player.Timestop==false){
+                this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
+                this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
                 if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
                 this.outsideMap = true;
+                }
             }
-            else{this.stoppable=="true"};
+            else if(this.stoppable=="false"&&my.player.Timestop==true){
+                this.frameCounter++;
+
+                if(this.frameCounter<(this.moveTime-(this.dif*this.num))){
+                    this.x += Math.cos(this.angle) * this.speed;
+                    this.y += Math.sin(this.angle) * this.speed;
+                    if (this.y < -this.height || this.y > Graphics.height + this.height || this.x < -this.width || this.x > Graphics.width + this.width) {
+                    this.outsideMap = true;
+                }
+                else{this.stoppable=="true"};
+                }
             }
+            break;
         }
     };
     return my;

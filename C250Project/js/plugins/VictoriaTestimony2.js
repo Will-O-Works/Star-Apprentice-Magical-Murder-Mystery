@@ -196,8 +196,6 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
     };
 	BHell_Enemy_VictoriaTestimony2_p1.prototype.destroy = function() {
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(8);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
     BHell_Enemy_VictoriaTestimony2_p1.prototype.update = function () {
@@ -483,7 +481,7 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_VictoriaTestimony2_p2.prototype.destroy = function() {
         my.player.PhaseOver = true;
-        my.player.nextMap = Number(38);
+        my.player.nextMap = Number(51);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.update = function () {
@@ -786,8 +784,6 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_VictoriaTestimony2_p3.prototype.destroy = function() {
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(8);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
     };
     BHell_Enemy_VictoriaTestimony2_p3.prototype.update = function () {
