@@ -109,8 +109,10 @@ var BHell = (function (my) {
     BHell_Vagrant_Bullet2.prototype.initialize = function (x, y, angle, params, bulletList) {
         my.BHell_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
         this.frameCounter=0;
-        this.bulletParams=params;
+        this.bullet2Params=params;
         this.burstcount=params.burstcount;
+        this.special=params.special
+        this.distance= params.distance||60;
     }
     BHell_Vagrant_Bullet2.prototype.update = function () {
         var a=0;
@@ -121,16 +123,16 @@ var BHell = (function (my) {
         if (this.y < (-this.height-200) || this.y > (Graphics.height + this.height+200) || this.x < (-this.width-200) || this.x > (Graphics.width + this.width+200)) {
         this.outsideMap = true;
         }
-        if(this.frameCounter==60){
+        if(this.frameCounter==this.distance){
             for (var k = 0; k < this.burstcount; k++) {
                 var bullet;
-                this.bulletParams.direction=2;
-                this.bulletParams.speed-=1;
-                bullet = new my.BHell_Bullet(this.x, this.y, a + (b - a) / this.burstcount * (k + 0.5), this.bulletParams, this.bulletList);
+                this.bullet2Params.direction=2;
+                this.bullet2Params.speed-=1;
+                bullet = new my.BHell_Bullet(this.x, this.y, a + (b - a) / this.burstcount * (k + 0.5), this.bullet2Params, this.bulletList);
                 this.parent.addChild(bullet);
                 this.bulletList.push(bullet);
-                this.bulletParams.direction=6;
-                this.bulletParams.speed+=1;
+                this.bullet2Params.direction=6;
+                this.bullet2Params.speed+=1;
             }
             this.destroy();
         }

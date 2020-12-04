@@ -56,6 +56,7 @@ var BHell = (function (my) {
      */
     BHell_Emitter_Homing.prototype.shoot = function () {
         var bullet;
+        console.log(this.bulletParams.sprite);
         if (this.aim) {
             if (this.alwaysAim || this.oldShooting === false) {
                 var dx = my.player.x - this.x + this.aimX;
@@ -121,8 +122,10 @@ var BHell = (function (my) {
         this.hitboxshape = "circle";
         this.hitboxheight = 0;
         this.hitboxwidth = 0;
-        this.hitboxradius = 2;
-		var repeat = 5; 
+        this.hitboxradius = 4;
+        var repeat = 10;
+        this.trackerRefresh =30;
+        this.pauseTime=60;
         if (params != null) {
             speed = params.speed || speed;
             sprite = params.sprite || sprite;
@@ -133,7 +136,8 @@ var BHell = (function (my) {
                 animated = true;
             }
             animationSpeed = params.animation_speed || animationSpeed;
-			repeat = params.repeat || repeat; 
+            this.trackerRefresh = params.trackerRefresh || this.trackerRefresh; 
+            this.pauseTime = params.pauseTime || this.pauseTime; 
         }
         my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
         this.anchor.x = 0.5;
@@ -151,8 +155,8 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.spotted = false
-		this.repeat = repeat; 
-        seeks = 0
+        this.repeat = repeat; 
+        this.seeks = 0
     };
     
     /**
@@ -162,16 +166,16 @@ var BHell = (function (my) {
         my.BHell_Sprite.prototype.update.call(this);
 		this.counter = this.counter +1;
 		if (this.repeat > 0) {
-			if (this.counter%40 === 0){////////change to adjust tracking rate ie: how many times it logs the players position
+			if (this.counter%this.trackerRefresh === 0){////////change to adjust tracking rate ie: how many times it logs the players position
 				var dx = my.player.x - this.x + this.aimX;
 				var dy = my.player.y - this.y + this.aimY;
 				this.angle = Math.atan2(dy, dx);
 				this.spotted = true;
 			}
 			if (this.spotted === true){
-				if(this.counter>70)////change to adjust pause
+				if(this.counter>this.pauseTime)////change to adjust pause
 				{
-					seeks = seeks+1;
+					this.seeks = this.seeks+1;
 					this.counter = 0;
 					this.repeat -= 1; 
 					this.spotted=false;
