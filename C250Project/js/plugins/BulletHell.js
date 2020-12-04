@@ -1320,6 +1320,8 @@ var BHell = (function (my) {
         var b;
         var m;
         if (Input.isTriggered("#f7")) {
+            $gameBHellResult.won = true;
+            $gameSwitches.setValue(23, true);
             $gameMap._mapId = $gameVariables.value(12);
             $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
             $gameSelfSwitches.clear();
