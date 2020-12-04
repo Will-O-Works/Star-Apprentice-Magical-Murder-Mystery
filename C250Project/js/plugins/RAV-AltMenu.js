@@ -58,6 +58,7 @@ var leftHeld = 0;
 var volumeCooldown = 0;
 var maxVolumeCooldown = 3;
 var optionsAmount = 3;
+var maxLifeCount = 9;
 
 // SFX change
 Scene_Map.prototype.callMenu = function() {
@@ -224,7 +225,7 @@ Window_Options.prototype.processOk = function() {
         this.changeValue(symbol, value);
     } else {
         if (symbol === 'lives') {
-            if (value < 8) {
+            if (value < maxLifeCount - 1) {
                 value += 2;
             } else {
                 value = 1;
@@ -248,7 +249,7 @@ Window_Options.prototype.cursorRight = function(wrap) {
         // Overwritten in update    
     } else {
         if (symbol === 'lives') {
-            if (value < 9) {
+            if (value < maxLifeCount) {
                 value++;
             } else {
                 value = 1;
@@ -275,7 +276,7 @@ Window_Options.prototype.cursorLeft = function(wrap) {
             if (value > 1) {
                 value--;
             } else {
-                value = 9;
+                value = maxLifeCount;
             }
             this.changeValue(symbol, value);
             $gameVariables.setValue(13, value);
