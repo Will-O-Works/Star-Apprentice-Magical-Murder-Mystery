@@ -994,6 +994,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var stoppable = "true";///variable used to deccide if it is affected by Timestop YA
     var num=0;
     var moveTime = moveTime;
+    this.test4="false";
 
     if (params != null) {
         speed = params.speed || speed;
@@ -1001,6 +1002,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         index = params.index || index;
         direction = params.direction || direction;
         frame = params.frame || frame;
+        this.test4=params.test4||this.test4;
         hitboxshape = params.hitboxshape || hitboxshape;
         if (params.animated !== false) {
             animated = true;
@@ -1097,7 +1099,7 @@ BHell_Bullet.prototype.hit_effect = function() {
  */
 BHell_Bullet.prototype.destroy = function() {
 	/*var bullet_effect = new my.BHell_Bullet(this.x, this.y, -Math.PI * Math.random(), this.bulletParams, this.bulletList);
-    this.bulletList.push(bullet_effect); 
+    this.bulletList.push(bullet_effect); hell yea 
     this.parent.addChild(bullet_effect);*/
     if (this.parent != null) {
         this.parent.removeChild(this);
@@ -4698,7 +4700,7 @@ var BHell = (function (my) {
         // Make the immortality last 5 seconds, jk, only 1 seconds by V.L. 10/11/2020
         if (this.immortal && this.immortalTimeout >= 0) {
             this.immortalTimeout++;
-            if (this.immortalTimeout > my.player.immortalityTimer) {
+            if (this.immortalTimeout > this.immortalityTimer) {
                 this.immortal = false;
                 this.immortalTimeout = -1;
                 this.opacity = 255;
@@ -4706,12 +4708,12 @@ var BHell = (function (my) {
             }
         }
         //added immortality during za warudo
-        else if(my.player.Timestop==true){
+        if(my.player.Timestop==true){
             this.bulletTimeout = 0;
             this.immortal = true;
             this.immortalTimeout = 0;
             this.opacity = 140;
-            this.immortalityTimer=90;
+            this.immortalityTimer=40;
         }
     };
 

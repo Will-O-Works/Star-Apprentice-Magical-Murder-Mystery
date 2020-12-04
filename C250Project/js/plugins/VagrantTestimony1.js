@@ -223,7 +223,6 @@ var BHell = (function (my) {
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
 	};
-	
 	BHell_Enemy_VagrantTestimony1_p1.prototype.destroy = function() {
 
         //adding these to the correct line allow it to transition to a different phase
@@ -234,7 +233,6 @@ var BHell = (function (my) {
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
     };
-	
 	//main update loop
 	BHell_Enemy_VagrantTestimony1_p1.prototype.update = function () {
 		
