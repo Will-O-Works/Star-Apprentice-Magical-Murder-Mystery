@@ -5789,7 +5789,7 @@ var BHell = (function (my) {
 		var shakeY = 0; 
 		var shake = 6; 
 		
-		if (my.player.screen_shake == true) {
+		if (my.player.screen_shake == true && !my.controller.paused) {
 			shakeX = -shake + 2 * shake * Math.random(); 
 			shakeY = -shake + 2 * shake * Math.random(); 
 		}

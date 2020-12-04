@@ -1,4 +1,76 @@
 //=============================================================================
+// Final Lines coming down from screen
+//=============================================================================
+var BHell = (function (my) {
+
+    var BHell_Enemy_Final_Lines = my.BHell_Enemy_Final_Lines = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines.prototype.constructor = BHell_Enemy_Final_Lines;
+
+	BHell_Enemy_Final_Lines.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 100; // hitbox width
+        params.hitbox_h = 30; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines.prototype.update = function () {
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= this.testimony) {
+			
+			console.log("destroyed"); 
+			
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
+	
+    return my;
+} (BHell || {}));
+
+
+//=============================================================================
 // Beat Emitter
 //=============================================================================
 var BHell = (function (my) {

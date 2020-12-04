@@ -1185,6 +1185,15 @@
     }
   },
     {
+	  "name": "Final_Lines",
+	  "class": "BHell_Enemy_Final_Lines",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+    {
 	  "name": "SuperFanTestimony4_p1",
 	  "class": "BHell_Enemy_SuperFanTestimony4_p1",
 	  "params": {
