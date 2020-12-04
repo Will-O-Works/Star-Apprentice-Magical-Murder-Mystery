@@ -1,5 +1,5 @@
 // =============================================================================
-// VictoriaTestimony3 Pattern 1 Test
+// VictoriaTestimony1 Pattern 1 Test
 // =============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony1_p1 = my.BHell_Enemy_VictoriaTestimony1_p1 = function() {
@@ -155,7 +155,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 // =============================================================================
-// VictoriaTestimony3 Pattern 2 Test
+// VictoriaTestimony1 Pattern 2 Test
 // =============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony1_p2 = my.BHell_Enemy_VictoriaTestimony1_p2 = function() {
@@ -197,6 +197,21 @@ var BHell = (function (my) {
         emitterParams.bullet.dif=4;
         emitterParams.bullettype = "vic1";
         this.emitters.push(new my.BHell_Emitter_Animism(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        var emitterParams = {};
+        emitterParams.angle = 0;
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction = 6;
+        emitterParams.bullet.speed = 2;
+        emitterParams.a = 0;
+        emitterParams.b = 2*Math.PI;
+        emitterParams.n = 11;
+        emitterParams.bullet.speed = 2;
+        emitterParams.bullet.num = 0;
+        emitterParams.bullet.moveTime=75;
+        emitterParams.bullet.dif=15;
+        emitterParams.bullettype = "vic2";
+		this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeBrick = function () {
         this.spawnNumber=1;
@@ -235,9 +250,16 @@ var BHell = (function (my) {
                 this.emitters[0].shoot(this.emitters,true);
             }
             this.emitters[0].bulletParams.num++;
+            if(this.emitters[1].bulletParams.num<1){
+                this.emitters[1].x=my.player.x;
+                this.emitters[1].y=my.player.y;
+                this.emitters[1].bulletParams.num++;
+                this.emitters[1].shoot(this.emitters,true);
+            }
         }
         if(this.frameCounter==210){
             my.player.Timestop=false;
+            this.emitters[1].bulletParams.num=0;
         }
     };
     BHell_Enemy_VictoriaTestimony1_p2.prototype.updateBrick = function () {
@@ -359,7 +381,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 // =============================================================================
-// VictoriaTestimony3 Pattern 3 Test
+// VictoriaTestimony1 Pattern 3 Test
 // =============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony1_p3 = my.BHell_Enemy_VictoriaTestimony1_p3 = function() {

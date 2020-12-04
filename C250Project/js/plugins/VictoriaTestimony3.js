@@ -1,5 +1,5 @@
 //=============================================================================
-// VictoriaTestimony1 Pattern 1
+// VictoriaTestimony3 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony3_p1 = my.BHell_Enemy_VictoriaTestimony3_p1 = function() {
@@ -24,7 +24,7 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
 
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = false;
+		my.player.can_bomb = true;
         my.player.currentLine = 1;
 		
 		this.p = 16; 
@@ -104,9 +104,10 @@ var BHell = (function (my) {
         this.angl1= +(Math.PI/20);
         this.angl2= -(Math.PI/20);
         this.flip=false;
+        this.punish=false
     };
     BHell_Enemy_VictoriaTestimony3_p1.prototype.updateSwipe = function() {
-        if (this.frameCounter % 20 == 0&&my.player.Timestop==false){
+        if (this.frameCounter % 20 == 0&&my.player.Timestop==false&&this.punish==false){
             this.emitters[10].shoot(true);
             this.emitters[11].shoot(true);
             if(this.emitters[10].angle>=Math.PI||this.emitters[11].angle<=0)
@@ -120,7 +121,24 @@ var BHell = (function (my) {
             }
             this.emitters[10].angle-=this.angl1;
             this.emitters[11].angle-=this.angl1;
-        } 
+        }
+        if (this.frameCounter % 6 == 0&&my.player.Timestop==false&&this.punish==true){
+            this.emitters[10].bulletParams.speed=4;
+            this.emitters[11].bulletParams.speed=4;
+            this.emitters[10].shoot(true);
+            this.emitters[11].shoot(true);
+            if(this.emitters[10].angle>=Math.PI||this.emitters[11].angle<=0)
+            {
+                this.flip=true;
+            }
+            if(this.flip==true)
+            {
+                this.angl1= -(this.angl1);
+                this.flip = false;
+            }
+            this.emitters[10].angle-=this.angl1;
+            this.emitters[11].angle-=this.angl1;
+        }
     };
     BHell_Enemy_VictoriaTestimony3_p1.prototype.initializeBrick = function () {
         this.WspawnNumber=1;
@@ -179,10 +197,15 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
     };	
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.destroy = function() {
+        //adding these to the correct line allow it to transition to a different phase
+        //the 3 here is the map number change this to whatever map number u want to transition there on victory
         while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}	
         my.BHell_Enemy_Base.prototype.destroy.call(this);
+        my.player.PhaseOver = true;
+        //my.player.nextMap = Number(37);
+        my.player.nextMap = Number(52);
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.update = function () {
@@ -212,17 +235,24 @@ var BHell = (function (my) {
 			this.prev_hp = this.hp; 
 			
 			my.BHell_Sprite.prototype.update.call(this);
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-			}
-			if (my.player.bombed == true) {
-				this.destroy(); 
+			// /* Copy and paste this code into update function for not-for-bomb lines V.L. */
+			// // Added bomb wrong case 
+			// if (my.player.false_bomb == true && this.bombedWrong == false) {
+			// 	this.bombedWrong = true; 
+			// 	this.hp = this.full_hp; 
+			// }
+			// if (this.bombedWrong == true) {
+            //     // Write the bombedWrong penalty in here
+            //     this.punish=true;
+			// }
+			// if (my.player.bombed == true) {
+			// 	this.destroy(); 
+            // }
+            if (my.player.bombed == true&& this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
 			}
 			if (this.state !== "dying") {
                 this.move();
@@ -270,7 +300,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VictoriaTestimony1 Pattern 2
+// VictoriaTestimony3 Pattern 2
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony3_p2 = my.BHell_Enemy_VictoriaTestimony3_p2 = function() {
@@ -470,7 +500,7 @@ var BHell = (function (my) {
 				this.hp = this.full_hp; 
 			}
 			if (this.bombedWrong == true) {
-				this.punish=15; 
+				this.punish=20; 
 			}
 			if (my.player.bombed == true) {
 				this.destroy(); 
@@ -518,7 +548,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VictoriaTestimony1 Pattern 3
+// VictoriaTestimony3 Pattern 3
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony3_p3 = my.BHell_Enemy_VictoriaTestimony3_p3 = function() {
@@ -541,7 +571,7 @@ var BHell = (function (my) {
         this.initializeZaWarudo(parent);
         this.initializeBrick(parent);
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = true; 
+		my.player.can_bomb = false; 
 		my.player.currentLine = 2;
 		
         this.p = 16; 
@@ -605,6 +635,7 @@ var BHell = (function (my) {
         emitterParams.bullet.speed=5;
         var emitterTotal=10;
         this.updateRate =100;
+        this.punish=false;
         for (let index = 0; index < emitterTotal; index+=2) {
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
             this.emitters[index].angle= (Math.PI*1.32);
@@ -635,7 +666,10 @@ var BHell = (function (my) {
                 this.emitters[index].shoot(true);
             }
         }
-        if(this.frameCounter%180==0){
+        if(this.frameCounter%180==0&&this.punish==false){
+            this.emitters[10].shoot(true);
+        }
+        if(this.frameCounter%45==0&&this.punish==true){
             this.emitters[10].shoot(true);
         }
     };
@@ -730,9 +764,6 @@ var BHell = (function (my) {
 			my.controller.enemies[1].destroy();
 		}	
         my.BHell_Enemy_Base.prototype.destroy.call(this);
-        my.player.PhaseOver = true;
-        //my.player.nextMap = Number(37);
-        my.player.nextMap = Number(52);
         
     };	
 	//main update loop
@@ -770,13 +801,12 @@ var BHell = (function (my) {
 				this.hp = this.full_hp; 
 			}
 			if (this.bombedWrong == true) {
+                // Write the bombedWrong penalty in here
+                this.punish=true;
 			}
-			if (my.player.bombed == true&& this.state !== "bombed") {
-				my.controller.destroyEnemyBullets(); 
-				this.timer = 0; 
-				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-				this.state = "bombed";
-			}
+			if (my.player.bombed == true) {
+				this.destroy(); 
+            }
 			if (this.state !== "dying") {
                 this.move();
             }

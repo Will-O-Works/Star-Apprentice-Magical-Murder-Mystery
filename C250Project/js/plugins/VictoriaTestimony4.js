@@ -1,5 +1,5 @@
 //=============================================================================
-// VictoriaTestimony1 Pattern 1
+// VictoriaTestimony4 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony4_p1 = my.BHell_Enemy_VictoriaTestimony4_p1 = function() {
@@ -237,7 +237,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VictoriaTestimony1 Pattern 2
+// VictoriaTestimony4 Pattern 2
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony4_p2 = my.BHell_Enemy_VictoriaTestimony4_p2 = function() {
@@ -327,13 +327,18 @@ var BHell = (function (my) {
         emitterParams.n = 11;
         emitterParams.bullet.speed = 2;
         emitterParams.bullet.num = 0;
-        emitterParams.bullet.moveTime=75;
+        emitterParams.bullet.moveTime=85;
         emitterParams.bullet.dif=15;
         emitterParams.bullettype = "vic2";
 		this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.punish=false;
+		this.wavecount=2;
 	};
 	BHell_Enemy_VictoriaTestimony4_p2.prototype.updateZaWarudo = function() {
+		if(this.punish==true){
+			this.wavecount=4;
+			this.emitters[3].bulletParams.speed=3;
+		}
         if(this.frameCounter==65){
             if(this.firstpause==true){
                 AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
@@ -358,7 +363,7 @@ var BHell = (function (my) {
 				}
 			}
 			this.change+=this.angle;          
-            if(this.emitters[3].bulletParams.num<2){
+            if(this.emitters[3].bulletParams.num<this.wavecount){
                 this.emitters[3].x=my.player.x;
                 this.emitters[3].y=my.player.y;
                 this.emitters[3].bulletParams.num++;
@@ -451,7 +456,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VictoriaTestimony1 Pattern 3
+// VictoriaTestimony4 Pattern 3
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony4_p3 = my.BHell_Enemy_VictoriaTestimony4_p3 = function() {
@@ -474,7 +479,7 @@ var BHell = (function (my) {
 		this.initializeEmitter(parent);
 		this.initializeZaWarudo(parent);
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true;
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
 	};
@@ -612,6 +617,12 @@ var BHell = (function (my) {
 			}
 			this.prev_hp = this.hp; 
 			my.BHell_Sprite.prototype.update.call(this);
+			if (my.player.bombed == true&& this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
+			}
 		if (this.state !== "dying") {
 			this.move();
 		}
@@ -629,6 +640,21 @@ var BHell = (function (my) {
 			case "dying": // die.
 				this.destroy();
 				break;
+			case "bombed":  
+			this.timer = (this.timer + 1) % 1200;
+			this.shoot(false);
+			
+			if (this.timer > 70) {
+				// Clear screen after count down V.L. 10/20/2020
+				my.controller.generators = [];
+				my.controller.activeGenerators = [];
+				
+				this.destroy();
+			}
+			else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+				my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+			}
+			break; 
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
@@ -641,6 +667,8 @@ var BHell = (function (my) {
 			my.controller.enemies[1].destroy();
 		}
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(42);
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 	};
