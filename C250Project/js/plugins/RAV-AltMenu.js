@@ -206,9 +206,9 @@ Window_Options.prototype.processOk = function() {
         this.changeValue(symbol, value);
     } else {
         if (symbol === 'lives') {
-            $gameSwitches.setValue(59, !$gameSwitches.value(59));
+            $gameSwitches.setValue(59, !value);
         }
-        this.changeValue(symbol, $gameSwitches.value(59));
+        this.changeValue(symbol, !value);
     }
 };
 
@@ -222,7 +222,7 @@ Window_Options.prototype.cursorRight = function(wrap) {
         if (symbol === 'lives') {
             $gameSwitches.setValue(59, true);
         }
-        this.changeValue(symbol, $gameSwitches.value(59));
+        this.changeValue(symbol, true);
     }
 };
 
@@ -236,7 +236,7 @@ Window_Options.prototype.cursorLeft = function(wrap) {
         if (symbol === 'lives') {
             $gameSwitches.setValue(59, false);
         }
-        this.changeValue(symbol, $gameSwitches.value(59));
+        this.changeValue(symbol, false);
     }
 };
 
@@ -293,6 +293,14 @@ Window_Options.prototype.update = function() {
             }
             o_unravelled_timer++;
         } else {
+            // Makes infinite lives display properly
+            var symbol = 'lives'
+            var value =  $gameSwitches.value(59)
+            var lastValue = this.getConfigValue(symbol);
+            if (lastValue !== value) {
+                this.setConfigValue(symbol, value);
+                this.redrawItem(this.findSymbol(symbol));
+            }
             this.drawAllItems();
         }
     }
