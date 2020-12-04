@@ -675,9 +675,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
-
-
 /*var BHell = (function (my) {
     var BHell_Enemy_VictoriaTestimony4_p2 = my.BHell_Enemy_VictoriaTestimony4_p2 = function() {
         this.initialize.apply(this, arguments);

@@ -254,7 +254,7 @@ var BHell = (function (my) {
                 this.emitters[1].x=my.player.x;
                 this.emitters[1].y=my.player.y;
                 this.emitters[1].bulletParams.num++;
-                this.emitters[1].shoot(this.emitters,true);
+                //this.emitters[1].shoot(this.emitters,true);
             }
         }
         if(this.frameCounter==210){
