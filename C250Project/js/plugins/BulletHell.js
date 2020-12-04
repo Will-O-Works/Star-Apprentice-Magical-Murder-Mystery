@@ -4525,7 +4525,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = -1; //$gameSwitches.value(59) ? -1 : $gameVariables.value(13); // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = $gameSwitches.value(59) ? -1 : $gameVariables.value(13); // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
         this.immortalityTimer=63;//more za warudo stuff
         //YA some variables to allow phases

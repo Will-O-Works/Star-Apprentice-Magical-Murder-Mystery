@@ -185,12 +185,30 @@ Window_MenuCommand.prototype.drawAllItems = function () {
 // Deletes useless general options
 Window_Options.prototype.addGeneralOptions = function() {
     this.addCommand('Infinite Lives', 'inf_lives');
+    this.addCommand('Lives', 'lives');
+    if (this.getConfigValue('lives') === undefined) {
+        this.setConfigValue('lives', 3);
+        $gameVariables.setValue(13, 3);
+    }
 };
 
 // Deletes useless sound options
 Window_Options.prototype.addVolumeOptions = function() {
     this.addCommand(TextManager.bgmVolume, 'bgmVolume');
     this.addCommand(TextManager.seVolume, 'seVolume');
+};
+
+Window_Options.prototype.statusText = function(index) {
+    var symbol = this.commandSymbol(index);
+    var value = this.getConfigValue(symbol);
+    if (this.isVolumeSymbol(symbol)) {
+        return this.volumeStatusText(value);
+    } else {
+        if (symbol === 'lives') {
+            return value;
+        }
+        return this.booleanStatusText(value);
+    }
 };
 
 Window_Options.prototype.processOk = function() {
@@ -206,9 +224,19 @@ Window_Options.prototype.processOk = function() {
         this.changeValue(symbol, value);
     } else {
         if (symbol === 'lives') {
-            $gameSwitches.setValue(59, !value);
+            if (value < 8) {
+                value += 2;
+            } else {
+                value = 1;
+            }
+            this.changeValue(symbol, value);
+            $gameVariables.setValue(13, value);
+        } else {
+            if (symbol === 'inf_lives') {
+                $gameSwitches.setValue(59, !value);
+            }
+            this.changeValue(symbol, !value);
         }
-        this.changeValue(symbol, !value);
     }
 };
 
@@ -219,10 +247,20 @@ Window_Options.prototype.cursorRight = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update    
     } else {
-        if (symbol === 'inf_lives') {
-            $gameSwitches.setValue(59, true);
+        if (symbol === 'lives') {
+            if (value < 9) {
+                value++;
+            } else {
+                value = 1;
+            }
+            this.changeValue(symbol, value);
+            $gameVariables.setValue(13, value);
+        } else {
+            if (symbol === 'inf_lives') {
+                $gameSwitches.setValue(59, true);
+            }
+            this.changeValue(symbol, true);
         }
-        this.changeValue(symbol, true);
     }
 };
 
@@ -233,10 +271,20 @@ Window_Options.prototype.cursorLeft = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update   
     } else {
-        if (symbol === 'inf_lives') {
-            $gameSwitches.setValue(59, false);
+        if (symbol === 'lives') {
+            if (value > 1) {
+                value--;
+            } else {
+                value = 9;
+            }
+            this.changeValue(symbol, value);
+            $gameVariables.setValue(13, value);
+        } else {
+            if (symbol === 'inf_lives') {
+                $gameSwitches.setValue(59, false);
+            }
+            this.changeValue(symbol, false);
         }
-        this.changeValue(symbol, false);
     }
 };
 
@@ -251,7 +299,7 @@ Scene_Options.prototype.create = function() {
 Scene_Options.prototype.createOptionsWindow = function() {
     this._optionsWindow = new Window_Options();
     this._optionsWindow.setHandler('cancel', this.popScene.bind(this));
-    var offset = 96;
+    var offset = 66;
     var menuHeight = 388;
     this._optionsWindow.y = offset + menuHeight/2 - this._optionsWindow.itemHeight() * (optionsAmount/2);
     this.addWindow(this._optionsWindow);
@@ -295,11 +343,18 @@ Window_Options.prototype.update = function() {
         } else {
             // Makes infinite lives display properly
             var symbol = 'inf_lives'
-            var value =  $gameSwitches.value(59)
+            var value =  $gameSwitches.value(59);
             var lastValue = this.getConfigValue(symbol);
             if (lastValue !== value) {
                 this.setConfigValue(symbol, value);
                 this.redrawItem(this.findSymbol(symbol));
+            }
+            var v_symbol = 'lives'
+            var v_value =  $gameVariables.value(13);
+            var v_lastValue = this.getConfigValue(v_symbol);
+            if (v_lastValue !== v_value) {
+                this.setConfigValue(v_symbol, v_value);
+                this.redrawItem(this.findSymbol(v_symbol));
             }
             this.drawAllItems();
         }
