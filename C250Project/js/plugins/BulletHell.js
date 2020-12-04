@@ -1320,9 +1320,9 @@ var BHell = (function (my) {
         var b;
         var m;
         if (Input.isTriggered("#f7")) {
-            $gameBHellResult.won = true;
             $gameSwitches.setValue(23, true);
             $gameMap._mapId = $gameVariables.value(12);
+            $gameBHellResult.won = true;
             $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
             $gameSelfSwitches.clear();
             $gamePlayer.requestMapReload();
@@ -4525,7 +4525,7 @@ var BHell = (function (my) {
         this.emitters = [];
         this.immortal = true;
         this.justSpawned = true;
-        this.lives = -1; // $gameSwitches.value(59) ? -1 : 3; // lives;  // set to unlimited with value -1 by V.L.10/20/2020
+        this.lives = -1; //$gameSwitches.value(59) ? -1 : $gameVariables.value(13); // lives;  // set to unlimited with value -1 by V.L.10/20/2020
         this.focusMode = false;
         this.immortalityTimer=63;//more za warudo stuff
         //YA some variables to allow phases

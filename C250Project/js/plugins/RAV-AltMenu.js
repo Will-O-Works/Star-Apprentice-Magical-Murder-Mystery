@@ -184,7 +184,7 @@ Window_MenuCommand.prototype.drawAllItems = function () {
 
 // Deletes useless general options
 Window_Options.prototype.addGeneralOptions = function() {
-    this.addCommand('Infinite Lives', 'lives');
+    this.addCommand('Infinite Lives', 'inf_lives');
 };
 
 // Deletes useless sound options
@@ -219,7 +219,7 @@ Window_Options.prototype.cursorRight = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update    
     } else {
-        if (symbol === 'lives') {
+        if (symbol === 'inf_lives') {
             $gameSwitches.setValue(59, true);
         }
         this.changeValue(symbol, true);
@@ -233,7 +233,7 @@ Window_Options.prototype.cursorLeft = function(wrap) {
     if (this.isVolumeSymbol(symbol)) {
         // Overwritten in update   
     } else {
-        if (symbol === 'lives') {
+        if (symbol === 'inf_lives') {
             $gameSwitches.setValue(59, false);
         }
         this.changeValue(symbol, false);
@@ -294,7 +294,7 @@ Window_Options.prototype.update = function() {
             o_unravelled_timer++;
         } else {
             // Makes infinite lives display properly
-            var symbol = 'lives'
+            var symbol = 'inf_lives'
             var value =  $gameSwitches.value(59)
             var lastValue = this.getConfigValue(symbol);
             if (lastValue !== value) {
