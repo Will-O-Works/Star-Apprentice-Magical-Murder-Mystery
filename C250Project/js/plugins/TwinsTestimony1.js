@@ -184,6 +184,15 @@ BHell_Marching_Bullet.prototype.update = function () {
 			this.speed += this.a; 
 		}
 	}
+	if (this.type == "sfv") {  
+		if (this.count < 50) {
+			this.speed = 0; 
+			this.count += 1; 
+		} else if(my.player.Timestop==false){
+			this.angle = this.b; 
+			this.speed += this.a; 
+		}
+	}
 	
 	if (this.a == "s") {  // stair
 		if(this.count <= 40){

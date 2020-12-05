@@ -562,8 +562,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
-
 //=============================================================================
 // TimeStop Jeeves
 //=============================================================================
@@ -885,26 +883,52 @@ var BHell = (function (my) {
     BHell_TimeStopDC_Bullet.prototype.constructor = BHell_TimeStopDC_Bullet;
     BHell_TimeStopDC_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         my.BHell_TimeStop_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
+        this.type="default";
+        this.type = params.type || this.type;
     };
     BHell_TimeStopDC_Bullet.prototype.update = function () {
-        my.BHell_Sprite.prototype.update.call(this);
-        if(my.player.Timestop==false){
-            this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
-            this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
-            if (this.y < -this.height-200 || this.y > Graphics.height + this.height+200 || this.x < -this.width-200 || this.x > Graphics.width+200 + this.width) {
-            this.outsideMap = true;
-            }
-        }
-        else if(this.stoppable=="false"&&my.player.Timestop==true){
-            this.frameCounter++;
-
-            if(this.frameCounter<(this.moveTime-(this.dif*this.num))){
-                this.x += Math.cos(this.angle) * this.speed;
-                this.y += Math.sin(this.angle) * this.speed;
+        if(this.type="default"){
+            my.BHell_Sprite.prototype.update.call(this);
+            if(my.player.Timestop==false){
+                this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
+                this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
                 if (this.y < -this.height-200 || this.y > Graphics.height + this.height+200 || this.x < -this.width-200 || this.x > Graphics.width+200 + this.width) {
                 this.outsideMap = true;
+                }
             }
-            else{this.stoppable=="true"};
+            else if(this.stoppable=="false"&&my.player.Timestop==true){
+                this.frameCounter++;
+
+                if(this.frameCounter<(this.moveTime-(this.dif*this.num))){
+                    this.x += Math.cos(this.angle) * this.speed;
+                    this.y += Math.sin(this.angle) * this.speed;
+                    if (this.y < -this.height-200 || this.y > Graphics.height + this.height+200 || this.x < -this.width-200 || this.x > Graphics.width+200 + this.width) {
+                    this.outsideMap = true;
+                }
+                else{this.stoppable=="true"};
+                }
+            }
+        }
+        if(this.type="sf"){
+            my.BHell_Sprite.prototype.update.call(this);
+            if(my.player.Timestop==false){
+                this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
+                this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
+                if (this.y < -this.height-200 || this.y > Graphics.height + this.height+200 || this.x < -this.width-200 || this.x > Graphics.width+200 + this.width) {
+                this.outsideMap = true;
+                }
+            }
+            else if(this.stoppable=="false"&&my.player.Timestop==true){
+                this.frameCounter++;
+
+                if(this.frameCounter<(this.moveTime-(this.dif*this.num))){
+                    this.x += Math.cos(this.angle) * this.speed;
+                    this.y += Math.sin(this.angle) * this.speed;
+                    if (this.y < -this.height-200 || this.y > Graphics.height + this.height+200 || this.x < -this.width-200 || this.x > Graphics.width+200 + this.width) {
+                    this.outsideMap = true;
+                }
+                else{this.stoppable=="true"};
+                }
             }
         }
     };
@@ -972,6 +996,7 @@ var BHell = (function (my) {
         this.frameCounter=0;
         this.a=this.angle;
         this.s=this.speed;
+        this.flip=0
     };
     BHell_SDC_Bullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
@@ -1000,6 +1025,44 @@ var BHell = (function (my) {
                 this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
                 if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
                     this.outsideMap = true;
+                }
+            }
+            break;
+            case"p3":
+            if(my.player.Timestop==true){
+                this.frameCounter++;
+                if(this.frameCounter%20==0){
+                    this.angle+=Math.PI/4;
+                }
+                this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
+                this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
+                if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
+                    this.outsideMap = true;
+                }
+                this.flip=this.frameCounter;
+            }
+            else if(my.player.Timestop==false){
+                //this.angle=this.a;
+                //this.speed=(-this.speed);
+                if(this.frameCounter==this.flip+80){
+                    this.speed=(-this.speed);
+                    this.type="stoppable";
+                }
+                this.frameCounter++;
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
+                this.outsideMap = true;
+                }
+            }
+            break;
+            case"stoppable":
+            if(my.player.Timestop==false){
+                this.frameCounter++;
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
+                this.outsideMap = true;
                 }
             }
             break;
@@ -1044,7 +1107,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// Animism Emitter(kinda used mostly just a spray emitter with some of the above custom bullets wanted to do more with it but time wont let me :')
+// Animism Emitter(kinda used mostly just a spray emitter with some of the above custom bullets wanted to do more with it but time wont let me, EDIT:it does alot now)
 //=============================================================================
 var BHell = (function (my) {
 	var BHell_Emitter_Animism = my.BHell_Emitter_Animism = function () {

@@ -1219,8 +1219,8 @@ var BHell = (function (my) {
         if (this.inPosition&&(this.frameCounter>60)) {
             var destX = oldX + Math.cos(this.angle) * speed * this.signX;
             var destY = oldY + Math.sin(this.angle) * speed * this.signY;
-            if (destX < (this.w+(120*(this.wallSize-this.Xposition))/ 2)+300) {
-                destX = (this.w+(120*(this.wallSize-this.Xposition))/ 2)+300;
+            if (destX < (this.w+(120*(this.wallSize-this.Xposition))/ 2)+350) {
+                destX = (this.w+(120*(this.wallSize-this.Xposition))/ 2)+350;
                 this.signX = -this.signX;
             }
             else if (destX > (Graphics.width - (this.w+(120*this.Xposition) / 2))) {
