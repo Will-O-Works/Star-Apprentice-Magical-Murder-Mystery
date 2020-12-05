@@ -923,7 +923,7 @@ var BHell = (function (my) {
         my.BHell_TimeStop_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
         this.type="default";
         if(params!=null){
-            this.type=params.type||this.ype;
+            this.type=params.type||this.type;
         }
     };
     BHell_DC_Bullet.prototype.update = function () {
@@ -947,6 +947,59 @@ var BHell = (function (my) {
                     this.outsideMap = true;
                 }
                 else{this.stoppable=="true"};
+                }
+            }
+            break;
+        }
+    };
+    return my;
+} (BHell || {}));
+//=============================================================================
+// SupeDirection ChangeBullet
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_SDC_Bullet = my.BHell_SDC_Bullet = function() {
+        this.initialize.apply(this, arguments);
+    };
+    BHell_SDC_Bullet.prototype = Object.create(my.BHell_TimeStop_Bullet.prototype);
+    BHell_SDC_Bullet.prototype.constructor = BHell_SDC_Bullet;
+    BHell_SDC_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
+        my.BHell_TimeStop_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
+        this.type="default";
+        if(params!=null){
+            this.type=params.type||this.type;
+        }
+        this.frameCounter=0;
+        this.a=this.angle;
+        this.s=this.speed;
+    };
+    BHell_SDC_Bullet.prototype.update = function () {
+        my.BHell_Sprite.prototype.update.call(this);
+        switch(this.type){
+            case"default":
+            if(my.player.Timestop==false){
+                this.frameCounter++;
+                if(this.frameCounter==60){
+                    this.speed=-this.speed;
+                }
+                if(this.frameCounter==90){
+                    this.speed=0;
+                }
+                if(this.frameCounter==180){
+                    this.speed=this.s-2;
+                }
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
+                this.outsideMap = true;
+                }
+            }
+            if(my.player.Timestop==true){
+                this.speed=this.s-2;
+                this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
+                this.y += Math.sin(this.angle+(Math.PI/2)) * this.speed;
+                if (this.y < -this.height-300 || this.y > Graphics.height + this.height+300 || this.x < -this.width -300|| this.x > Graphics.width + this.width+300) {
+                    this.outsideMap = true;
                 }
             }
             break;
@@ -1035,6 +1088,19 @@ var BHell = (function (my) {
                     }
                     else {
                         bullet = new my.BHell_TimeStopDC_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    break;
+                case "SF3":
+                    if (this.aim) {
+                        if (this.alwaysAim || this.oldShooting === false) {
+                            var dx = my.player.x - this.x + this.aimX;
+                            var dy = my.player.y - this.y + this.aimY;
+                            this.aimingAngle = Math.atan2(dy, dx);
+                        }
+                        bullet = new my.BHell_SDC_Bullet(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                    }
+                    else {
+                        bullet = new my.BHell_SDC_Bullet(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
                     }
                     break;
             }

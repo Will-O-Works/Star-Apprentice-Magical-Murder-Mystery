@@ -1834,7 +1834,8 @@ var BHell = (function (my) {
 		var still = false; 
 		var circle_on = false; 
 		
-		this.magic_circle = []
+        this.magic_circle = []
+        this.static = "false";
 
         // Override default parameters with values taken from params.
         if (params != null) {
@@ -1851,7 +1852,8 @@ var BHell = (function (my) {
             animationSpeed = params.animation_speed || animationSpeed;
             bullettype = params.bullettype || bullettype;
 			still = params.still || still;
-			circle_on = params.circle_on || circle_on;
+            circle_on = params.circle_on || circle_on;
+            this.static = params.static || this.static;
         }
 
         // Initialize the emitter.
@@ -1863,6 +1865,8 @@ var BHell = (function (my) {
         this.bulletList = bulletList;
         this.x = x;
         this.y = y;
+        this.staticx=x;
+        this.staticy=y;
         this.bullettype=bullettype;
 		this.still = still; 
 		
@@ -1914,8 +1918,16 @@ var BHell = (function (my) {
      * @param y New y coordinate.
      */
     BHell_Emitter_Base.prototype.move = function (x, y) {
-        this.x = x + this.offsetX;
-        this.y = y + this.offsetY;
+        if(this.static=="false"){
+            this.x = x + this.offsetX;
+            this.y = y + this.offsetY;
+        }
+        else{
+            this.x = this.staticx + this.offsetX;
+            this.y = this.staticy + this.offsetY;
+
+        }
+        
     };
 	
 	BHell_Emitter_Base.prototype.destroy = function () {
