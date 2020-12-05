@@ -188,9 +188,7 @@ var BHell = (function (my) {
 	BHell_Enemy_Heart.prototype.update = function () {
 		// Destroy itself if testimony = 2 by V.L. 11/29/2020
 		if ($gameVariables.value(11) >= this.testimony) {
-			
-			console.log("destroyed"); 
-			
+
 			// kill the cats V.L.
 			while (my.controller.enemies[1] != null) {
 				my.controller.enemies[1].destroy();
@@ -214,6 +212,10 @@ var BHell = (function (my) {
 		}
 		
 		my.BHell_Enemy_Base.prototype.update.call(this);
+		
+		if (this.dying == true) { 
+			this.destroy(); 
+		}
 	}; 
 
 	BHell_Enemy_Heart.prototype.destroy = function() {
