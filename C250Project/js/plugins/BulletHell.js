@@ -4605,6 +4605,11 @@ var BHell = (function (my) {
 		// Add bomb and heavy attack sprite count 10/20/2020
 		this.b_index = 0; 
 		this.h_index = 0; 
+		
+		// rrrrr 12/05/2020
+		this.refute_type = "none"; 
+		this.r_index = 0; 
+		this.r_timer = 0; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -5853,6 +5858,116 @@ var BHell = (function (my) {
 		  my.player.b_index += 1/10; 
         }
 		
+		// EVERYBODY REFUTE 12/05/2020
+		this.refute_type = my.player.refute_type; 
+		
+		// console.log(this.refute_type)
+		
+		if (this.refute_type != "none") {
+			my.player.r_index = 0; 
+			
+			switch (this.refute_type) {
+				case "detective":  // detective: you can't do dat to me ;-;
+					this.refute_image = this.detective_r; 
+					this.refute_count = 17; 
+					
+					this.r_timer = my.player.win_limit + 1; 
+					my.player.win_limit = 190; 
+					my.player.win_count = my.player.win_limit; 
+					
+				break; 
+				
+				case "fan":  // fan's injustice bomb 
+					this.refute_image = this.fan_r;
+					this.refute_count = 17; 
+					my.player.h_index = this.b_frame;  // Skip normal minnie refute
+					
+					this.r_timer = 1; 
+					my.player.win_limit = 120; 
+					my.player.win_count = my.player.win_limit; 
+					
+				break; 
+				
+				case "laser":  // laser on the heart 
+					this.refute_image = this.laser_r;
+					this.refute_count = 17; 
+					my.player.h_index = this.b_frame;  // Skip normal minnie refute
+					
+					this.r_timer = 1; 
+					my.player.win_limit = 120; 
+					my.player.win_count = my.player.win_limit; 
+					
+				break; 
+				
+				case "minnie":  // go minnie go!!!
+					this.refute_image = this.minnie_r;
+					this.refute_count = 23; 
+					my.player.h_index = this.b_frame;  // Skip normal minnie refute
+					
+					this.r_timer = 1; 
+					my.player.win_limit = 120; 
+					my.player.win_count = my.player.win_limit; 
+
+				break; 
+			} 
+			
+			my.player.refute_type = "none"; 
+			
+		}
+
+		if (this.r_timer != null){
+			if (this.r_timer > 1) {
+				this.r_timer -= 1; 
+			} else {
+				this.r_timer = null; 
+				this.start_refute = true; 
+			}
+		}
+
+		if (this.start_refute == true) {
+			
+			if (this.refute_image == this.laser_r) {
+				
+				if (my.player.r_index < this.refute_count - 1) {
+
+					sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+					sy = 0; 
+					w = this.refute_image.width / this.refute_count;
+					h = this.refute_image.height;
+					x = Graphics.width / 2 - this.refute_image.width / this.refute_count / 2;
+					y = -50; 
+					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+						
+					if (my.player.r_index < this.refute_count - 1) {
+						my.player.r_index += 15/60; 
+					} 
+									
+				} else {
+					this.start_refute = false; 
+				}
+				
+			} else if (my.player.r_index < this.refute_count - 1) {
+
+				sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+				sy = 0; 
+				w = this.refute_image.width / this.refute_count;
+				h = this.refute_image.height;
+				x = 0;
+				y = 0; 
+				this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+					
+				if (my.player.r_index < this.refute_count - 1) {
+					my.player.r_index += 15/60; 
+				} 
+								
+			} else {
+				this.start_refute = false; 
+			}
+			
+		}
+
+		
+		
 		// Update bomb image when there's no bomb V.L. 10/20/2020 
 		if (my.player.bombs == 0 && my.player.bombed == false) {
 			sx = 0; 
@@ -5903,7 +6018,7 @@ var BHell = (function (my) {
 			this.r_index = 0; 
 			my.player.h_index = this.b_frame; 
 		}
-
+		
 		// draw sentence as it forms (Ohi)
 		var wordsX = 0;
 		if (my.player.finisherImage == "$VagrantSentence") {
@@ -6017,6 +6132,13 @@ var BHell = (function (my) {
         this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
         this.testimonyHUD3 = ImageManager.loadPicture("Testimony3", 0);
         this.pauseTimerMax = 21;
+		
+		
+		// refutes! 12/05/2020
+		this.detective_r = ImageManager.loadSystem("DetectiveRefute", 0);
+		this.fan_r = ImageManager.loadSystem("FanRefute", 0);
+		this.minnie_r = ImageManager.loadSystem("minnieSuperMasterSpark", 0);
+		this.laser_r = ImageManager.loadSystem("heartInLaser", 0);
 
         my.scoreAccumulator = 0;
         this.hud = new Sprite(new Bitmap(Graphics.width, Graphics.height));

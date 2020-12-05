@@ -215,11 +215,20 @@ var BHell = (function (my) {
 		
 		my.BHell_Enemy_Base.prototype.update.call(this);
 	}; 
-	
+
 	BHell_Enemy_Heart.prototype.destroy = function() {
 
-		$gameVariables.setValue(11, this.testimony)
-			
+		$gameVariables.setValue(11, this.testimony); 
+		
+		console.log(this.testimony)
+		
+		if (this.testimony == 3) {
+			my.player.refute_type = "fan"; 
+			my.player.bombed = true; 
+		} else {
+			my.player.refute_type = "laser"; 
+		}
+		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */

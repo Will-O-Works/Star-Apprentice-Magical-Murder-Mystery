@@ -295,5 +295,14 @@ var BHell = (function (my) {
 
     };
 	
+	BHell_Enemy_Detective_p3.prototype.destroy = function() {
+
+		my.player.refute_type = "detective"; 
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
     return my;
 } (BHell || {}));

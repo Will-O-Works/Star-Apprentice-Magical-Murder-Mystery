@@ -235,6 +235,13 @@ var BHell = (function (my) {
 			my.player.PhaseOver = true;
 			my.player.nextMap = Number(36);
 		}
+		
+		if (my.player.finisherImage == "$SuperFanSentence") {
+			if (this.dir == 3 && my.player.finisher_count == 4 && my.player.finisher_correct == true) {
+				my.player.refute_type = "minnie"; 
+				my.player.bombed = true; 
+			}
+		} 
 
 		if (this.parent != null) {
 			this.parent.removeChild(this);
