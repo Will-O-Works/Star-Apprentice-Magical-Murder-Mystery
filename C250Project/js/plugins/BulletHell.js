@@ -994,7 +994,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
     var stoppable = "true";///variable used to deccide if it is affected by Timestop YA
     var num=0;
     var moveTime = moveTime;
-    this.test4="false";
+    this.static="false"
 
     if (params != null) {
         speed = params.speed || speed;
@@ -1003,6 +1003,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
         direction = params.direction || direction;
         frame = params.frame || frame;
         this.test4=params.test4||this.test4;
+        this.static=params.static||this.static;
         hitboxshape = params.hitboxshape || hitboxshape;
         if (params.animated !== false) {
             animated = true;
@@ -1065,6 +1066,7 @@ BHell_Bullet.prototype.initialize = function (x, y, angle, params, bulletList) {
  */
 BHell_Bullet.prototype.update = function () {
     my.BHell_Sprite.prototype.update.call(this);
+    if(this.static=="true"){this.speed=0};
     if(my.player.Timestop==false){
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed;
