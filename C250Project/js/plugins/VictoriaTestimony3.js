@@ -278,17 +278,9 @@ var BHell = (function (my) {
 			case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];  
+                this.destroy();
             break; 
 		}; 
 		// Update the emitter's position.
@@ -528,17 +520,9 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];    
+                this.destroy();
             break; 
 		}; 
 		// Update the time counter and reset it every 20 seconds.
@@ -830,15 +814,9 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];
+                this.destroy();
             break; 
         };
         this.frameCounter++;
@@ -988,6 +966,77 @@ var BHell = (function (my) {
         //     this.emitters[1].shoot(true);
         // }
         this.frameCounter =(this.frameCounter+1)%1200;
+     }
+    return my;
+} (BHell || {}));
+//=============================================================================
+// Brick Emitter
+//=============================================================================
+var BHell = (function (my) {
+    var BHell_Enemy_LBBrick = my.BHell_Enemy_LBBrick = function() {
+        this.initialize.apply(this, arguments);
+    };
+    
+    BHell_Enemy_LBBrick.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_LBBrick.prototype.constructor = BHell_Enemy_LBBrick;
+    
+    BHell_Enemy_LBBrick.prototype.initialize = function (x, y, image, params, parent, enemyList) {
+        this.frameCounter =0;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        //x, y, angle, w, h,Xposition,frameCounter,wallSize
+        this.mover = new my.LimitedBounce(params.posX, params.posY, 0, this.hitboxW, this.hitboxH,params.Xposition,this.frameCounter,params.wallSize,params.movedirection);
+    
+        var emitterParams = {};
+        emitterParams.x = 0;
+        emitterParams.y = 0;
+        emitterParams.period = this.period;
+        emitterParams.aim = true;
+        emitterParams.alwaysAim =true;
+        emitterParams.bullet = Object.assign({}, this.bullet);
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+        this.spritechanger=2;
+        this.firstBreak=false;
+        this.secondBreak=false;
+    };
+    BHell_Enemy_LBBrick.prototype.hit = function () {
+        my.BHell_Enemy_Base.prototype.hit.call(this);
+        if (this.frameCounter%2===0)
+        {
+            this.emitters[0].shoot(true);
+            this.emitters[0].bulletParams.direction+=this.spritechanger;
+            this.spritechanger=-(this.spritechanger);
+        }
+    };
+    BHell_Enemy_LBBrick.prototype.die = function() {
+        this.emitters[0].shoot(true);
+        this.emitters[0].bulletParams.direction+=this.spritechanger;
+        this.spritechanger=-(this.spritechanger);
+        this.destroy(); 
+    };
+    BHell_Enemy_LBBrick.prototype.destroy = function() {  
+        if (this.parent != null) {
+            this.parent.removeChild(this);
+        }
+        this.enemyList.splice(this.enemyList.indexOf(this), 1);
+    };
+    BHell_Enemy_LBBrick.prototype.update = function() {
+        my.BHell_Sprite.prototype.update.call(this);
+        this.move();
+        this.frameCounter =(this.frameCounter+1)%1200;
+        if(this.hp==5&&this.firstBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.firstBreak=true;
+        }
+        if(this.hp==3&&this.secondBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.secondBreak=true;
+        }
      }
     return my;
 } (BHell || {}));
@@ -1148,13 +1197,13 @@ var BHell = (function (my) {
     LimitedBounce.prototype = Object.create(my.BHell_Mover_Base.prototype);
     LimitedBounce.prototype.constructor = LimitedBounce;
 
-	LimitedBounce.prototype.initialize = function(x, y, angle, w, h,Xposition,frameCounter,wallSize) {
+	LimitedBounce.prototype.initialize = function(x, y, angle, w, h,Xposition,frameCounter,wallSize,movedirection) {
         my.BHell_Mover_Base.prototype.initialize.call(this);
-        this.Xposition=Xposition;
+        this.Xposition=Xposition+1;
         this.inPosition = false;
         this.initX = x;
         this.initY = y;
-        this.signX = +1;
+        this.signX = +1*movedirection;
         this.signY = +1;
         this.angle = angle;
         this.w = w;
@@ -1162,6 +1211,7 @@ var BHell = (function (my) {
         this.wallSize =wallSize;
         this.frameCounter=frameCounter;
         this.limit = 80;
+        this.movedirection=movedirection;
     };
 
     LimitedBounce.prototype.move = function (oldX, oldY, speed) {
@@ -1169,13 +1219,14 @@ var BHell = (function (my) {
         if (this.inPosition&&(this.frameCounter>60)) {
             var destX = oldX + Math.cos(this.angle) * speed * this.signX;
             var destY = oldY + Math.sin(this.angle) * speed * this.signY;
-            if (destX < (this.w+(100*(this.wallSize-this.Xposition))/ 2)+this.limit) {
-                destX = (this.w+(100*(this.wallSize-this.Xposition))/ 2)+this.limit;
+            if (destX < (this.w+(120*(this.wallSize-this.Xposition))/ 2)+300) {
+                destX = (this.w+(120*(this.wallSize-this.Xposition))/ 2)+300;
                 this.signX = -this.signX;
             }
-            else if (destX > (Graphics.width - (this.w+(100*this.Xposition) / 2))-this.limit) {
-                destX = (Graphics.width - (this.w+(100*this.Xposition) / 2))-this.limit;
+            else if (destX > (Graphics.width - (this.w+(120*this.Xposition) / 2))) {
+                destX = (Graphics.width - (this.w+(120*this.Xposition) / 2));
                 this.signX = -this.signX;
+                console.log(destX);
             }
             if (destY < this.h / 2) {
                 destY = this.h / 2;

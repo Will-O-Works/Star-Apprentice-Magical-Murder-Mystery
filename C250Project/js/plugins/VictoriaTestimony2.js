@@ -544,15 +544,10 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+                // Clear screen after count down V.L. 10/20/2020
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];
+                this.destroy();
             break; 
 		}; 
 		// Update the emitter's position.

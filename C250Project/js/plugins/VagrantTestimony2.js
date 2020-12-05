@@ -106,13 +106,14 @@ var BHell = (function (my) {
     };
     BHell_Vagrant_Bullet2.prototype = Object.create(my.BHell_Bullet.prototype);
     BHell_Vagrant_Bullet2.prototype.constructor = BHell_Vagrant_Bullet2;
-    BHell_Vagrant_Bullet2.prototype.initialize = function (x, y, angle, params, bulletList) {
-        my.BHell_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList);
+    BHell_Vagrant_Bullet2.prototype.initialize = function (x, y, angle, params, bulletList,supersplit) {
+        my.BHell_Bullet.prototype.initialize.call(this, x, y, angle, params, bulletList,);
         this.frameCounter=0;
         this.bullet2Params=params;
         this.burstcount=params.burstcount;
         this.special=params.special
         this.distance= params.distance||60;
+        this.supersplit=supersplit;
     }
     BHell_Vagrant_Bullet2.prototype.update = function () {
         var a=0;
@@ -123,12 +124,26 @@ var BHell = (function (my) {
         if (this.y < (-this.height-200) || this.y > (Graphics.height + this.height+200) || this.x < (-this.width-200) || this.x > (Graphics.width + this.width+200)) {
         this.outsideMap = true;
         }
-        if(this.frameCounter==this.distance){
+        if(this.frameCounter==this.distance&&this.supersplit==false){
             for (var k = 0; k < this.burstcount; k++) {
                 var bullet;
                 this.bullet2Params.direction=2;
                 this.bullet2Params.speed-=1;
                 bullet = new my.BHell_Bullet(this.x, this.y, a + (b - a) / this.burstcount * (k + 0.5), this.bullet2Params, this.bulletList);
+                this.parent.addChild(bullet);
+                this.bulletList.push(bullet);
+                this.bullet2Params.direction=6;
+                this.bullet2Params.speed+=1;
+            }
+            this.destroy();
+        }
+        else if(this.frameCounter==this.distance&&this.supersplit==true){
+            for (var k = 0; k < this.burstcount; k++) {
+                console.log("calling");
+                var bullet;
+                this.bullet2Params.speed-=1;
+                this.bullet2Params.burstcount = 4;
+                bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, a + (b - a) / this.burstcount * (k + 0.5), this.bullet2Params, this.bulletList,false);
                 this.parent.addChild(bullet);
                 this.bulletList.push(bullet);
                 this.bullet2Params.direction=6;
@@ -176,7 +191,7 @@ var BHell = (function (my) {
                             var dx = my.player.x - this.x + this.aimX;
                             var dy = my.player.y - this.y + this.aimY;
                             this.aimingAngle = Math.atan2(dy, dx);
-                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList,false);
                         }
                     }
                 }
@@ -185,7 +200,7 @@ var BHell = (function (my) {
                     var dx = my.player.x - this.x + this.aimX;
                     var dy = my.player.y - this.y + this.aimY;
                     this.aimingAngle = Math.atan2(dy, dx);
-                    bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+                    bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList,false);
                 }
                 this.parent.addChild(bullet);
                 this.bulletList.push(bullet);
@@ -199,42 +214,41 @@ var BHell = (function (my) {
                             var dy = my.player.y - this.y + this.aimY;
                             this.aimingAngle = Math.atan2(dy, dx);
                         }
-                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList,false);
                         }
                     else {
-                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList,false);
                     }
                     this.parent.addChild(bullet);
                     this.bulletList.push(bullet);
                 }
              break;
              case "final":
-                if(this.frameCounter%6==0){
-                    for (var k = 0; k < this.n; k++) {
-                        var bullet;
-                        if (this.aim) {
-                            if (this.alwaysAim || this.oldShooting === false) {
-                                var dx = my.player.x - this.x + this.aimX;
-                                var dy = my.player.y - this.y + this.aimY;
-                                this.aimingAngle = Math.atan2(dy, dx);
-                            }
-                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
-                            }
-                        else {
-                            bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList);
+                for (var k = 0; k < this.n; k++) {
+                    var bullet;
+                    this.bulletParams.type="supersplit";
+                    if (this.aim) {
+                        if (this.alwaysAim || this.oldShooting === false) {
+                            var dx = my.player.x - this.x + this.aimX;
+                            var dy = my.player.y - this.y + this.aimY;
+                            this.aimingAngle = Math.atan2(dy, dx);
                         }
-                        this.parent.addChild(bullet);
-                        this.bulletList.push(bullet);
+                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle - (this.b - this.a) / 2 + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList,false);
+                        }
+                    else {
+                        bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.a + (this.b - this.a) / this.n * (k + 0.5), this.bulletParams, this.bulletList,false);
                     }
+                    this.parent.addChild(bullet);
+                    this.bulletList.push(bullet);
                 }
-             break;
-             case "mix":
+            break;
+            case "mix":
                 if(this.frameCounter%66==0){
                     var bullet;
                     var dx = my.player.x - this.x + this.aimX;
                     var dy = my.player.y - this.y + this.aimY;
                     this.aimingAngle = Math.atan2(dy, dx);
-                    bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+                    bullet = new my.BHell_Vagrant_Bullet2(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList,false);
                     this.parent.addChild(bullet);
                     this.bulletList.push(bullet);
                 }
@@ -951,15 +965,9 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];
+                this.destroy()
                 break; 
             /* Added bombed case if bomb is casted on the line by V.L. */
         }; 

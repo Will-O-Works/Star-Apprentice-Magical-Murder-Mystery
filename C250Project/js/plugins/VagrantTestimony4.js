@@ -117,7 +117,6 @@ var BHell = (function (my) {
         var frame = 0;
         var animated = false;
         var animationSpeed = 15;
-		var repeat; 
         //variable added to allow adjustable hitboxs YA 2020/10/26
         this.hitboxshape = "circle";
         this.hitboxheight = 0;
@@ -126,6 +125,7 @@ var BHell = (function (my) {
         var repeat = 10;
         this.trackerRefresh =30;
         this.pauseTime=60;
+        this.nopause="false";
         if (params != null) {
             speed = params.speed || speed;
             sprite = params.sprite || sprite;
@@ -138,6 +138,9 @@ var BHell = (function (my) {
             animationSpeed = params.animation_speed || animationSpeed;
             this.trackerRefresh = params.trackerRefresh || this.trackerRefresh; 
             this.pauseTime = params.pauseTime || this.pauseTime; 
+            this.repeat = params.repeat || repeat;
+            this.nopause = params.nopause || this.nopause;
+            
         }
         my.BHell_Sprite.prototype.initialize.call(this, sprite, index, direction, frame, animated, animationSpeed);
         this.anchor.x = 0.5;
@@ -155,8 +158,11 @@ var BHell = (function (my) {
         this.aimX = 0;
         this.aimY = 0;
         this.spotted = false
-        this.repeat = repeat; 
-        this.seeks = 0
+        if(this.nopause=="true"){
+            this.pauseTime=0;
+        }
+        
+        //this.seeks = 0
     };
     
     /**
@@ -164,18 +170,18 @@ var BHell = (function (my) {
      */
     BHell_HomingBullet.prototype.update = function () {
         my.BHell_Sprite.prototype.update.call(this);
-		this.counter = this.counter +1;
+        this.counter = this.counter +1;
 		if (this.repeat > 0) {
 			if (this.counter%this.trackerRefresh === 0){////////change to adjust tracking rate ie: how many times it logs the players position
 				var dx = my.player.x - this.x + this.aimX;
 				var dy = my.player.y - this.y + this.aimY;
 				this.angle = Math.atan2(dy, dx);
-				this.spotted = true;
+                this.spotted = true;
 			}
 			if (this.spotted === true){
-				if(this.counter>this.pauseTime)////change to adjust pause
+                if(this.counter>this.pauseTime)////change to adjust pause
 				{
-					this.seeks = this.seeks+1;
+					//this.seeks = this.seeks+1;
 					this.counter = 0;
 					this.repeat -= 1; 
 					this.spotted=false;
@@ -910,17 +916,9 @@ var BHell = (function (my) {
 			case "bombed":  
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
-				
-				if (this.timer > 70) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
+				my.controller.generators = [];
+				my.controller.activeGenerators = [];
+				this.destroy();
 				break; 
 			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
