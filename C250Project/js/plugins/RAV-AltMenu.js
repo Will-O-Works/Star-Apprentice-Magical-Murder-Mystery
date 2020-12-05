@@ -823,11 +823,6 @@ Window_MenuActor.prototype.update = function(index) {
         this.drawText(selectedItemName, textDescX, textDescY);
         var unslicedDesc = selected_item.description;
         switch (selectedItemName) {
-            case "Old Tickets":
-                if ($gameSystem.evidenceLevel >= 1) {
-                    unslicedDesc += "\n ★ Roxie's tickets were bought\nbefore our original ones. She\ncouldn't have known which room\nwe were in!";
-                }
-                break;
             case "Open Window":
                 if ($gameSystem.evidenceLevel >= 2) {
                     unslicedDesc += "\n ★ The window is letting out the\nsmell of the ashes. They're\ntrying to cover something up!";

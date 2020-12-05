@@ -287,8 +287,8 @@
   },
   "Black": {
     "name": "Black",
-    "cols": 2,
-    "rows": 1,
+    "cols": 8,
+    "rows": 2,
     "anchorX": 0.5,
     "anchorY": 1,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBlack-OW.png",
@@ -316,13 +316,39 @@
         "pattern": [
           0
         ]
+      },
+      "move4": {
+        "name": "move4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      "move6": {
+        "name": "move6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
       }
     }
   },
   "White": {
     "name": "White",
-    "cols": 2,
-    "rows": 1,
+    "cols": 8,
+    "rows": 2,
     "anchorX": 0.5,
     "anchorY": 1,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWhite-OW.png",
@@ -349,6 +375,32 @@
         "adjust": false,
         "pattern": [
           0
+        ]
+      },
+      "move4": {
+        "name": "move4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ]
+      },
+      "move6": {
+        "name": "move6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
         ]
       }
     }
@@ -711,7 +763,7 @@
     "name": "WineBottle",
     "cols": 2,
     "rows": 1,
-    "anchorX": -0.9,
+    "anchorX": -2.6,
     "anchorY": 2.27,
     "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QWineBottle-OW.png",
     "poses": {
@@ -2174,6 +2226,94 @@
           27,
           28,
           29
+        ]
+      }
+    }
+  },
+  "MinnieChair": {
+    "name": "MinnieChair",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.16,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QMinnieChair-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "ChairDetective": {
+    "name": "ChairDetective",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.84,
+    "anchorY": 1,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QChairDetective-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
+  },
+  "Helper": {
+    "name": "Helper",
+    "cols": 5,
+    "rows": 1,
+    "anchorX": 0.5,
+    "anchorY": 0.92,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QHelper-OW.png",
+    "poses": {
+      "idle4": {
+        "name": "idle4",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "idle6": {
+        "name": "idle6",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    }
+  },
+  "LongTableTops2": {
+    "name": "LongTableTops2",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.48,
+    "anchorY": 1.47,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QLongTableTops2-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
         ]
       }
     }

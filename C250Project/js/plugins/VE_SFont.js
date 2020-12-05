@@ -470,6 +470,7 @@ VictorEngine.SFont = VictorEngine.SFont || {};
  * ------------------------------------------------------------------------------
  */
 
+ImageManager.loadBitmap('img/sfonts/', 'NanoPixel', 0, true);
 	
 (function() {
 	

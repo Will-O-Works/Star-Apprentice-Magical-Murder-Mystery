@@ -11,10 +11,10 @@
 
 var charPortrait = [
     'Nothing',
-    'StarApprentice_Portrait[Exp4x3]',
+    'StarApprentice_Portrait[Exp5x4]',
     'Detective_Portrait[Exp3x2]',
-    'Vagrant_Portrait[Exp3x3]',
-    'Fan_Portrait[Exp4x3]',
+    'Vagrant_Portrait[Exp4x3]',
+    'Fan_Portrait[Exp4x4]',
     'Black_Portrait[Exp3x2]',
     'White_Portrait[Exp3x2]',
     'Tycoon_Portrait[Exp3x2]',

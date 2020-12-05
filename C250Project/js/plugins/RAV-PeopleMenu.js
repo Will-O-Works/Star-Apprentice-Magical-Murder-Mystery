@@ -343,8 +343,11 @@ Character_Data.Texts = function(character, level) {
                 case 4:
                     return this.Texts(character, 3) + "\n ★ Whoever murdered him knew\n     about his abilities and what\n     room he would be in.";
                     break;
+                case 5:
+                    return this.Texts(character, 4) + "\n ★ No one should know any\n     details of the crime scene.";
+                    break;
                 default: 
-                    return this.Texts(character, 4);
+                    return this.Texts(character, 5);
                     break;
             }
             break;
@@ -363,17 +366,13 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 1) + "\n ★ The cat, Snowy, has been\n     found!";
                     break;
                 case 4:
-                    if ($gameSystem.characterLevels[character] < 10) {
-                        return this.Texts(character, 3) + "\n ★ Claims girl in the next car\n     saw her coming out of the\n     Detective's room."
-                    } else {
-                        return this.Texts(character, 3) + "\n ★ Claims girl in the next car\n     saw her coming out of the\n     Detective's room. The girl\n     turned out to be Charlotte.\n     Alibi confirmed."
-                    }
+                    return this.Texts(character, 3);
                     break;
                 case 5:
                     return this.Texts(character, 4) + "\n ★ She had some kind of history\n     with the Detective."
                     break;
                 case 6:
-                    return this.Texts(character, 5) + "\n ★ Her ticket was purchased\n     before the Detective's, plus\n     our room was changed, so she\n     couldn't have known where he\n     would be beforehand. But why\n     does she know when his ticket\n     was bought?"
+                    return this.Texts(character, 5);
                     break;
                 case 7:
                 case 8:
@@ -421,13 +420,13 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 2) + "\n ★ She is currently a rich\n     tycoon's bodyguard, so I\n     assume she is very good with\n     weapons.";
                     break;
                 case 4:
-                    return this.Texts(character, 3) + "\n ★ There's something weird about\n     her eyes ...";
+                    return this.Texts(character, 3) + "\n ★ There's something weird about\n     her eyes. Needs more\n     investigation.";
                     break;
                 case 5:
-                    return this.Texts(character, 4) + "\n ★ Claimed that the burnt ashes\n     in her room were from a\n     breakup letter.";
+                    return this.Texts(character, 4) + "\n ★ The twins say they've been\n     together the whole time on\n     the train.";
                     break;
                 case 6:
-                    return this.Texts(character, 5) + "\n ★ Sounds like the army was the\n     first place she ever fit in,\n     so why did she leave? Was\n     she discharged?";
+                    return this.Texts(character, 5) + "\n ★ The twins knew to block off\n     the lounge before the murder\n     occured.";
                     break;
                 default: 
                     return this.Texts(character, 6);
@@ -449,10 +448,16 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 2) + "\n ★ Weird eyes like her sister.";
                     break;
                 case 4:
-                    return this.Texts(character, 3) + "\n ★ Shockingly, was more popular\n     and generally accepted when\n     the twins were kids.";
+                    return this.Texts(character, 3) + "\n ★ Iris is Victoria's publicist,\n     but does many other tasks for\n     her as well.";
+                    break;
+                case 5:
+                    return this.Texts(character, 4) + "\n ★ The twins say they've been\n     together the whole time on\n     the train.";
+                    break;
+                case 6:
+                    return this.Texts(character, 5) + "\n ★ The twins knew to block off\n     the lounge before the murder\n     occured.";
                     break;
                 default: 
-                    return this.Texts(character, 4);
+                    return this.Texts(character, 6);
                     break;
             }
             break;
@@ -471,10 +476,13 @@ Character_Data.Texts = function(character, level) {
                     return this.Texts(character, 2) + "\n ★ She's an elitist, alright. I\n     can tell she's barely\n     controlling herself. A\n     combination like this is\n     explosive, especially over\n     something important to them.";
                     break;
                 case 4:
-                    return this.Texts(character, 3) + "\n ★ Has control over an ethereal\n     servant. That thing is big,\n     strong, and it can seemingly\n     disappear at will. The\n     perfect weapon.";
+                    return this.Texts(character, 3) + "\n ★ Victoria knows my name even\n     though we've never met! How?";
+                    break;
+                case 5:
+                    return this.Texts(character, 4) + "\n ★ Has control over an ethereal\n     servant. That thing is big,\n     strong, and it can seemingly\n     disappear at will. The\n     perfect weapon.";
                     break;
                 default: 
-                    return this.Texts(character, 4);
+                    return this.Texts(character, 5);
                     break;
             }
             break;
