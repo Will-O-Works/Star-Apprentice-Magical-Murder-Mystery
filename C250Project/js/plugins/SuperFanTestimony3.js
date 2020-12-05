@@ -620,7 +620,7 @@ var BHell = (function (my) {
         this.initializeZaWarudo(parent);
 
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = true;
+		my.player.can_bomb = false;
         my.player.currentLine = 1;
 		
 		this.p = 16; 
@@ -808,9 +808,6 @@ var BHell = (function (my) {
 			my.controller.enemies[1].destroy();
 		}	
         my.BHell_Enemy_Base.prototype.destroy.call(this);
-        my.player.PhaseOver = true;
-        //my.player.nextMap = Number(37);
-        my.player.nextMap = Number(52);
     };	
 	//main update loop
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.update = function () {
