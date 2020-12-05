@@ -48,9 +48,24 @@ var BHell = (function (my) {
             this.emitters[index+1].offsetX= -500;
             this.emitters[index+1].offsetY= 400-((index/2)*40);
         }
+        var emitterParams = {};
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets2"
+        emitterParams.bullet.direction = 2;
+        emitterParams.a = 0;
+        emitterParams.b = 2*Math.PI;
+        emitterParams.n = 20;
+        emitterParams.bullet.speed = 4;
+        emitterParams.bullettype = "SF3";
+        this.emitters.push(new my.BHell_Emitter_Animism(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_SuperFanTestimony3_p1.prototype.updateEmitters = function (parent) {
-        if(this.frameCounter%10==0){
+        if(this.frameCounter%30==0){
+            this.emitters[10].shoot(true);
+            this.emitters[10].a+=0.05;
+            this.emitters[10].b+=0.05;
+        }
+        if(this.frameCounter%6==0){
             for (let index = 0; index < 10; index++) {
                 this.emitters[index].shoot(true);
             }
@@ -507,89 +522,47 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
     BHell_Enemy_SuperFanTestimony3_p3.prototype.constructor = BHell_Enemy_SuperFanTestimony3_p3;
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 45;//change to adjust Line HP
-        params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 316; // change to adjust hitbox width
-        params.hitbox_h = 85; // change to adjust hitbox heights
+        params.hp = 20;//change to adjust Line HP
+        params.speed = 3.5; // change to adjust speed of boss moving 
+        params.hitbox_w = 360; // change to adjust hitbox width
+        params.hitbox_h = 72; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
-		my.player.bombs = 0; 
 		this.bombedWrong = false;
         this.frameCounter = 0;
 		this.state = "started";
-        this.initializeBrick(parent);
+        this.initializeWall(parent);
         this.initializeEmitters(parent);
-		
-		my.player.currentLine = 2; 
+        this.initializeZaWarudo(parent);
+
 		/* set player.can_bomb to true by V.L. */
-		my.player.can_bomb = false; 
-		/* set player.can_bomb to true by V.L. */
+		my.player.can_bomb = true;
+        my.player.currentLine = 1;
 		
 		this.p = 16; 
 		this.can_die = false;
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 100, 0, this.hitboxW, this.hitboxH);
-	};
-	BHell_Enemy_SuperFanTestimony3_p3.prototype.initializeBrick = function (parent) {
-        this.spawnNumber=8;
-        this.spawnCounter = 0;
+		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW+200, this.hitboxH);
     };
-    //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
-	BHell_Enemy_SuperFanTestimony3_p3.prototype.updateBrick = function () {
-        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
-            var image = {"characterName":"$JeevesSmallRed","direction":2,"pattern":2,"characterIndex":2};
-            var params = {};
-            params.animated = true;
-            params.frame = 2;
-            params.speed =5;
-            params.hp = 8;
-            params.bullet = {};
-            //params.posX = this.x+125-(50*(this.spawnCounter-1));
-            params.posX = this.x;
-            params.num=this.spawnCounter;
-            //params.posY=this.y+125;
-            params.posY=this.y;
-            //my.controller.enemies.push(new my.BHell_Enemy_BrickOrbit(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
-            //if(this.spawnCounter<15){
-            my.controller.enemies.push(new my.BHell_Enemy_BrickOrbit(this.x, this.y, -170, image, params, this.parent, my.controller.enemies));
-            //}
-            my.controller.enemies.push(new my.BHell_Enemy_BrickOrbit(this.x, this.y, -220,image, params, this.parent, my.controller.enemies));
-            this.spawnCounter+=1;
-            if(this.spawnCounter==1)
-            {
-            my.controller.enemies[1].destroy();
-            }
-        }  
-	};
     BHell_Enemy_SuperFanTestimony3_p3.prototype.initializeEmitters = function (parent) {
-        this.swap=false;
         var emitterParams = {};
         emitterParams.aim=false;
         emitterParams.alwaysAim=false;
-        emitterParams.bullet={};
-        emitterParams.bullet.speed=5;
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$VictoriaBullets1"
+        emitterParams.bullet.direction=6;
+        emitterParams.bullet.speed=-5;
+        emitterParams.static="true";
         var emitterTotal=10;
-        this.updateRate =100;
         for (let index = 0; index < emitterTotal; index+=2) {
-            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters.push(new my.BHell_Emitter_Angle(Graphics.width / 2, 125, emitterParams, parent, my.enemyBullets));
             this.emitters[index].angle= (Math.PI*1.32);
-            this.emitters[index].offsetX= -250-((index/2)*40);
-            this.emitters[index].offsetY= 430;
-            this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+            this.emitters[index].offsetX= -590;
+            this.emitters[index].offsetY= 0-((index/2)*40);
+            this.emitters.push(new my.BHell_Emitter_Angle(Graphics.width / 2, 125, emitterParams, parent, my.enemyBullets));
             this.emitters[index+1].angle= (Math.PI*1.68);
-            this.emitters[index+1].offsetX= 250+((index/2)*40);
-            this.emitters[index+1].offsetY= 430;
+            this.emitters[index+1].offsetX= 590;
+            this.emitters[index+1].offsetY= 0-((index/2)*40);
         }
-        var emitterParams = {};
-            emitterParams.x = 0;
-            emitterParams.y = 0;
-            emitterParams.aim = false;
-            emitterParams.alwaysAim =false;
-            emitterParams.a = 6.3;//a: Arc's initial angle (in radians),change to adjust
-            emitterParams.b = 9.3;//b: Arc's final angle (in radians),change to adjust
-            emitterParams.n = 20;//n: number of bullets for each shot tho this is irrelevant since were using a custom updatechange to adjust
-            emitterParams.bullet = {};
-            emitterParams.bullet.speed=4;
-            this.emitters.push(new my.BHell_Emitter_Spray(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
     BHell_Enemy_SuperFanTestimony3_p3.prototype.updateEmitters = function (parent) {
         if(this.frameCounter%10==0){
@@ -597,46 +570,76 @@ var BHell = (function (my) {
                 this.emitters[index].shoot(true);
             }
         }
-        if(this.updateRate<0){this.updateRate=100}
-        //if(this.frameCounter%2==0){this.updateRate--;}
-        if(this.frameCounter%this.updateRate==0){
-            this.emitters[10].shoot(true);
-            // if(this.swap==false){
-            //     this.emitters[10].a+= 0.4;
-            //     this.emitters[10].b+= 0.4;
-            //     this.swap=true;
-            // }
-            // else{
-            //     this.emitters[10].a-= 0.4;
-            //     this.emitters[10].b-= 0.4;
-            //     this.swap=false;
-            // }
-        }
-        console.log(this.updateRate);
     };
-    
-	
+    BHell_Enemy_SuperFanTestimony3_p3.prototype.initializeWall= function () {
+        this.spawnNumber=15;
+        this.spawnCounter = 0;
+        this.lineNum=2;
+        this.xpos=0;
+	};
+	BHell_Enemy_SuperFanTestimony3_p3.prototype.updateWall = function () {
+        if (this.spawnNumber>=this.spawnCounter) {//change to adjust brick spawn rate
+            this.xpos=(this.xpos+1%5);
+            var image = {"characterName":"$JeevesSmall","direction":8,"pattern":0,"characterIndex":0};
+            var params = {};
+            params.animated = false;
+            params.frame = 0;
+            params.speed =3;
+            params.hp = 8;
+            params.posX = this.x+350-(50*((this.spawnCounter-1)%(this.spawnNumber)));
+            params.posY=this.y+120;
+            params.bullet = {};
+            params.bullet.sprite="$JeevesSmall"
+            params.bullet.direction=4;
+            params.Xposition=this.xpos;
+            params.wallSize=5;
+            params.movedirection=1;
+            params.bullet.speed=3;//+(Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+            my.controller.enemies.push(new my.BHell_Enemy_Brick(Graphics.width / 2, 80, image, params, this.parent, my.controller.enemies));
+            this.spawnCounter+=1;
+            if(this.spawnCounter==1)
+            {
+                my.controller.enemies[1].destroy();
+            }
+        } 
+	};
+    BHell_Enemy_SuperFanTestimony3_p3.prototype.initializeZaWarudo = function (parent) {
+        this.firstpause =true;
+    };
+    BHell_Enemy_SuperFanTestimony3_p3.prototype.updateZaWarudo = function() {
+        if(this.frameCounter==180){
+            if(this.firstpause==true){
+                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                this.firstpause=false;
+            }
+            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
+            my.player.Timestop=true;
+            this.WspawnCounter = 0;
+        }
+        if(this.frameCounter%3 == 0&&my.player.Timestop==true&&this.frameCounter<450)
+        {            
+        }
+        if(this.frameCounter==290){
+            my.player.Timestop=false;
+            my.player.immorta
+        }
+    };
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
-	};	
-
+    };	
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
-
-		//adding these to the correct line allow it to transition to a different phase
-		my.player.bombed = true;
-			
-		while (my.controller.enemies[1] != null) {
+        //adding these to the correct line allow it to transition to a different phase
+        //the 3 here is the map number change this to whatever map number u want to transition there on victory
+        while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}	
-			
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-	};
-	
-	
+        my.BHell_Enemy_Base.prototype.destroy.call(this);
+        my.player.PhaseOver = true;
+        //my.player.nextMap = Number(37);
+        my.player.nextMap = Number(52);
+    };	
 	//main update loop
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.update = function () {
 		
@@ -665,67 +668,56 @@ var BHell = (function (my) {
 			this.prev_hp = this.hp; 
 			
 			my.BHell_Sprite.prototype.update.call(this);
-			
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
+            if (my.player.bombed == true&& this.state !== "bombed") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "bombed";
 			}
-			if (this.bombedWrong == true) {
-			}
-			if (my.player.bombed == true) {
-				this.destroy(); 
-			}
-			if (this.state !== "dying") {
+			if (this.state !== "dying"&&my.player.Timestop==false) {
                 this.move();
             }
 		switch (this.state) {
 			case "started":
 				if (this.mover.inPosition === true) {
 					this.state = "active";
-					this.frameCounter = 0;
+                    this.frameCounter = 0;
 				}
 				break;
 			case "active": // Shoot.
-                if(this.frameCounter%15===0){
-                    this.updateBrick();
-                } 
-                this.updateEmitters(); 
+                if(this.frameCounter%3===0){
+                    this.updateWall(this.frameCounter); 
+                }  
+                this.updateEmitters();
+                this.updateZaWarudo();
+                if(this.frameCounter==50){
+                    this.mover = new my.BHell_Mover_Bounce(Graphics.width / 2, 125, 0, this.hitboxW+60, this.hitboxH);
+                }
 				break;
 			case "dying": // die.
 				this.destroy();
                 break;
-            case "bombed":  
+			case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                my.controller.generators = [];
-                my.controller.activeGenerators = [];
-                this.destroy();
+                
+                if (this.timer > 70) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
             break; 
 		}; 
 		// Update the emitter's position.
-		this.emitters.forEach(e => {e.update()});
 		// Update the time counter and reset it every 20 seconds.
-		this.frameCounter = (this.frameCounter + 1) % 1200;
+		this.frameCounter ++;
+        if(this.frameCounter>=450){this.frameCounter=0;}
 	}
-	
-	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
-
-		my.player.bombed = true;
-		my.player.PhaseOver = true;
-		my.player.nextMap = Number(47);
-
-		// kill the cats V.L.
-		while (my.controller.enemies[1] != null) {
-			my.controller.enemies[1].destroy();
-		}
-
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-	};
-	
     return my;
 } (BHell || {}));
 
