@@ -336,16 +336,20 @@ var BHell = (function (my) {
 		this.emitters[9].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[8].offsetX = 290;
 		this.emitters[9].offsetX = -290;
+		this.emitters[8].offsetY = -150;
+		this.emitters[9].offsetY = -150;
 		this.emitters[10].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[11].angle = (Math.PI)/2;//change to adjust emitter angle
 		this.emitters[10].offsetX = 255;
 		this.emitters[11].offsetX = -255;
+		this.emitters[10].offsetY = -150;
+		this.emitters[11].offsetY = -150;
 		
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.updateEmitters = function () {
 		if(this.frameCounter%4 === 0){
 			//"var x = amplitude * sin(TWO_PI * frameCount / period" reffer to this for harmonic oscillations: https://www.khanacademy.org/computing/computer-programming/programming-natural-simulations/programming-oscillations/a/oscillation-amplitude-and-period
-			var x=170 * Math.sin(2*Math.PI * this.frameCounter / 120);
+			var x=130 * Math.sin(2*Math.PI * this.frameCounter / 120);
 			var y=0;
 			//reffer to the this for 3D rotations : https://math.stackexchange.com/questions/17246/is-there-a-way-to-rotate-the-graph-of-a-function
 			this.emitters[0].offsetX = (x)*Math.cos(this.angle1)-(y)*Math.sin(this.angle1);//last part is just random number generator
@@ -571,7 +575,7 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.updateEye = function() {
         // Spawn a suicide cat enemy every 3 seconds.
-        var image = {"characterName":"$Cat","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
+        var image = {"characterName":"$BigEyeBullets","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
         var params = {};
         params.animated = true;
         params.frame = 2;
