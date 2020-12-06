@@ -5976,7 +5976,7 @@ var BHell = (function (my) {
 
 		if (this.start_refute == true) {
 			
-			/*if (this.refute_image == this.minnie_r) {
+			if (this.refute_image == this.minnie_r) {
 				
 				this.refute_count = 23; 
 				
@@ -6018,7 +6018,7 @@ var BHell = (function (my) {
 									
 				} 
 				
-			} */if (this.refute_image == this.fan_r) {
+			} else if (this.refute_image == this.fan_r) {
 				
 				this.refute_count = 6; 
 				
