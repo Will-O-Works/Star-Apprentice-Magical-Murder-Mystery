@@ -209,7 +209,7 @@ var BHell = (function (my) {
         this.bullet2Params=params;
         this.burstcount=params.burstcount;
         this.special=params.special
-        this.distance= params.distance||60;
+        this.distance= params.distance||40;
         this.supersplit=supersplit;
     }
     BHell_FinalSplit.prototype.update = function () {
@@ -267,6 +267,7 @@ var BHell = (function (my) {
 		this.state = "started";
 		this.initializeVL4P1Emitter(parent);
 		this.initializeHoming(parent);
+		this.initializeWatcher(parent);
 
 		// set player.can_bomb to true by V.L.
 		this.p = 81; 
@@ -392,6 +393,9 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = true;
 		emitterParams.aim = true;
 		emitterParams.bullet.repeat = 5;
+		emitterParams.bullet.speed = 4;
+		emitterParams.bullet.hitboxshape ="circle";
+		emitterParams.bullet.hitboxradius =3;
 		this.emitters.push(new my.BHell_Emitter_Homing(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.emitters.push(new my.BHell_Emitter_Homing(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.emitters[12].offsetX=250;
@@ -413,6 +417,39 @@ var BHell = (function (my) {
 		this.state = "dying";
 		this.frameCounter = 0;
 		my.controller.destroyEnemyBullets();
+	};
+	BHell_Enemy_SuperFanTestimony1_p1.prototype.initializeWatcher = function (parent) {
+		var emitterParams = {};
+		emitterParams.angle=Math.PI/2;
+		emitterParams.bullet = {};
+        emitterParams.bullet.type = "static";
+		emitterParams.bullet.sprite="$BigEyeBullets";
+		emitterParams.bullet.direction=2;
+		emitterParams.bullet.static="true"
+		emitterParams.bullet.nopause = "true";
+		emitterParams.bullet.hitboxshape ="circle";
+		emitterParams.bullet.hitboxradius =16;
+		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters[1].offsetX=0;
+		//this.emitters[1].offsetY=-80;
+		this.count=0;
+		this.num=1;
+		this.a=Math.PI+0.46;
+		this.b=-0.46;
+	}
+	BHell_Enemy_SuperFanTestimony1_p1.prototype.updateWatcher = function () { 
+		if(this.frameCounter==1&&this.count<this.num){
+			this.n=3
+			for (var k = 0; k < this.n; k++) {
+				this.emitters[14].x=300+175*(k);
+				this.emitters[14].y=50;
+				//this.emitters[1].angle=this.a + (this.b - this.a)/ this.n  * (k + 0.5)-Math.PI/2;
+				console.log(this.a + (this.b - this.a)/ this.n  * (k + 0.5));
+				this.emitters[14].shoot(this.emitters,true);
+				console.log("pew");
+			}
+			this.count++;
+		}
 	};
 	//main update loop
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.update = function () {
@@ -498,6 +535,7 @@ var BHell = (function (my) {
 			case "active": // Shoot.
 				this.updateEmitters(); 
 				this.updateHoming(); 
+				this.updateWatcher(); 
 				break;
 			case "dying": // die.
 				this.destroy();
@@ -573,6 +611,7 @@ var BHell = (function (my) {
         this.spawnNumber=1;
         this.spawnCounter = 0;
 	};
+	
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.updateEye = function() {
         // Spawn a suicide cat enemy every 3 seconds.
         var image = {"characterName":"$BigEyeBullets","direction":2,"pattern":2,"characterIndex":2};//cat sprite is messed up fix later
@@ -606,7 +645,7 @@ var BHell = (function (my) {
                 my.controller.enemies[1].destroy();
             }
         }
-    };
+	};
     BHell_Enemy_SuperFanTestimony1_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
@@ -753,13 +792,15 @@ var BHell = (function (my) {
 		emitterParams.bullet.direction=2;
 		emitterParams.bullet.static="true"
 		emitterParams.bullet.nopause = "true";
+		emitterParams.bullet.hitboxshape ="circle";
+		emitterParams.bullet.hitboxradius =16;
 		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		//this.emitters[1].offsetX=0;
 		//this.emitters[1].offsetY=-80;
 		this.count=0;
 		this.num=1;
-		this.a=Math.PI+0.36;
-		this.b=-0.36;
+		this.a=Math.PI-0.26;
+		this.b=0.26;
     }
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
     BHell_Enemy_SuperFanTestimony1_p3.prototype.updatePOP = function () { 
@@ -769,10 +810,10 @@ var BHell = (function (my) {
 	};
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.updateWatcher = function () { 
 		if(this.frameCounter==1&&this.count<this.num){
-			this.n=10
+			this.n=5
 			for (var k = 0; k < this.n; k++) {
-				this.emitters[1].x=Math.cos(this.a + (this.b - this.a)/ this.n  * (k + 0.5))*350+Graphics.width/2;
-				this.emitters[1].y=Math.sin(this.a + (this.b - this.a)/ this.n  * (k + 0.5))*-350+Graphics.height/2+100;
+				this.emitters[1].x=Math.cos(this.a + (this.b - this.a)/ this.n  * (k + 0.5))*400+Graphics.width/2;
+				this.emitters[1].y=Math.sin(this.a + (this.b - this.a)/ this.n  * (k + 0.5))*-400+Graphics.height/2+160;
 				//this.emitters[1].angle=this.a + (this.b - this.a)/ this.n  * (k + 0.5)-Math.PI/2;
 				console.log(this.a + (this.b - this.a)/ this.n  * (k + 0.5));
 				this.emitters[1].shoot(this.emitters,true);
