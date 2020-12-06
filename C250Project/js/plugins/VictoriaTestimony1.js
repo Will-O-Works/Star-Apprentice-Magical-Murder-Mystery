@@ -692,6 +692,7 @@ var BHell = (function (my) {
         this.num=0;
         this.moveTime = 200;
         this.dif=10
+        
         if (params != null) {
             speed = params.speed || speed;
             sprite = params.sprite || sprite;
@@ -909,7 +910,7 @@ var BHell = (function (my) {
                 }
             }
         }
-        if(this.type="sf"){
+        if(this.type=="sf"){
             my.BHell_Sprite.prototype.update.call(this);
             if(my.player.Timestop==false){
                 this.x += Math.cos(this.angle+(Math.PI/2)) * this.speed;
