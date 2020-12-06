@@ -540,7 +540,7 @@ var BHell = (function (my) {
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
 				
-				if (this.timer > 70) {
+				if (this.timer > 0) {
 					// Clear screen after count down V.L. 10/20/2020
 					my.controller.generators = [];
 					my.controller.activeGenerators = [];

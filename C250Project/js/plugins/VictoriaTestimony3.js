@@ -267,9 +267,15 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                my.controller.generators = [];
-                my.controller.activeGenerators = [];    
-                this.destroy();
+                if (this.timer > 0) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
             break; 
         }; 
         // Update the time counter and reset it every 20 seconds.

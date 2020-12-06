@@ -2794,7 +2794,7 @@ BHell_Enemy_Base.prototype.update = function () {
 		this.timer = (this.timer + 1) % 1200;
 		this.shoot(false);
 		
-		if (this.timer > 70) {
+		if (this.timer > 0) {//changed to aline sound used to be >70 YA
 			
 			if (my.player.bombed == true) {
 				my.controller.generators = [];
@@ -2853,12 +2853,13 @@ BHell_Enemy_Base.prototype.hit = function () {
     this.hp--;
     $gameBHellResult.score += this.score;
 	
-	// if hp is less than 20%, change shooting sound by V.L. 10/20/2020 
-	if (this.hp > this.full_hp * 0.2) {  
-		AudioManager.playSe({name: "hit_single_1", volume: 100, pitch: 100, pan: 0});
-	} else {
-		AudioManager.playSe({name: "hit_single_2", volume: 100, pitch: 100, pan: 0});
-	}
+    // if hp is less than 20%, change shooting sound by V.L. 10/20/2020 
+    AudioManager.playSe({name: "hit_single_1", volume: 100, pitch: 100, pan: 0});//no more low hit sound YA
+	// if (this.hp > this.full_hp * 0.2) {  
+	// 	AudioManager.playSe({name: "hit_single_1", volume: 100, pitch: 100, pan: 0});
+	// } else {
+	// 	AudioManager.playSe({name: "hit_single_2", volume: 100, pitch: 100, pan: 0});
+	// }
 
     if (this.boss) {
         my.bossHp--;

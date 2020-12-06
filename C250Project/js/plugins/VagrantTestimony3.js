@@ -505,8 +505,8 @@ var BHell = (function (my) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 598;
-        params.hitbox_h = 82;
+        params.hitbox_w = 444;
+        params.hitbox_h = 118;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -938,7 +938,7 @@ var BHell = (function (my) {
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
 				
-				if (this.timer > 70) {
+				if (this.timer > 0) {
 					// Clear screen after count down V.L. 10/20/2020
 					my.controller.generators = [];
 					my.controller.activeGenerators = [];

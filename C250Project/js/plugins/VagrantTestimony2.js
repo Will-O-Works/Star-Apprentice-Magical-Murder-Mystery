@@ -562,7 +562,7 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantTest2 Pattern 1
+// VagrantTest2 Pattern 2
 //=============================================================================
 var BHell = (function (my) {
     var BHell_Enemy_VagrantTestimony2_p2 = my.BHell_Enemy_VagrantTestimony2_p2 = function() {
@@ -575,8 +575,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 596; // hitbox width
-        params.hitbox_h = 82; // hitbox height
+        params.hitbox_w = 406; // hitbox width
+        params.hitbox_h = 118; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
@@ -747,8 +747,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 600; // hitbox width
-        params.hitbox_h = 82; // hitbox height
+        params.hitbox_w = 444; // hitbox width
+        params.hitbox_h = 118; // hitbox height
         params.animated = false;
         this.frameCounter =0;
         this.state = "started";
@@ -928,11 +928,18 @@ var BHell = (function (my) {
             /* Added bombed case if bomb is casted on the line by V.L. */
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
-                this.shoot(false);
-                my.controller.generators = [];
-                my.controller.activeGenerators = [];
-                this.destroy()
-                break; 
+				this.shoot(false);
+                if (this.timer > 0) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break; 
             /* Added bombed case if bomb is casted on the line by V.L. */
         }; 
         // Update the received damage counter for the stunned state.

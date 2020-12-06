@@ -97,42 +97,43 @@ var BHell = (function (my) {
 		this.pressed = [0, 0, 0, 0]; 
 		this.count = 0; 
 		this.timer = 0; 
+		this.framcounter=0;
     };
 	
 		
 	BHell_Enemy_Tutorial_p1.prototype.update = function() {
-		
+		this.framcounter++;
 		this.hp = 999; 
-		
-		if (Input.isPressed('up')) {
-			this.pressed[0] = 1;
-        }
-        if (Input.isPressed('down')) {
-			this.pressed[1] = 1;
-        }
-        if (Input.isPressed('left')) {
-			this.pressed[2] = 1;
-        }
-		if (Input.isPressed('right')) {
-			this.pressed[3] = 1;
-        }
-
-		this.count = 0; 
-		
-		for (var j = 0; j < this.pressed.length; j ++) {
-			if (this.pressed[j] == 1) {
-				this.count += 1; 
+		if(this.framcounter>150){
+			if (Input.isPressed('up')) {
+				this.pressed[0] = 1;
+			}
+			if (Input.isPressed('down')) {
+				this.pressed[1] = 1;
+			}
+			if (Input.isPressed('left')) {
+				this.pressed[2] = 1;
+			}
+			if (Input.isPressed('right')) {
+				this.pressed[3] = 1;
+			}
+	
+			this.count = 0; 
+			
+			for (var j = 0; j < this.pressed.length; j ++) {
+				if (this.pressed[j] == 1) {
+					this.count += 1; 
+				}
+			}
+			
+			if (my.player.use_mouse == true && this.y == 125) {
+				this.count = 4; 
+			}
+			
+			if (this.count == 4) {
+				this.die(); 
 			}
 		}
-		
-		if (my.player.use_mouse == true && this.y == 125) {
-			this.count = 4; 
-		}
-		
-		if (this.count == 4) {
-			this.die(); 
-		}
-		
 		/* inherit update function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		/* inherit update function from BHell_Enemy_Base by V.L. */
