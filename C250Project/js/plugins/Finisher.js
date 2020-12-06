@@ -234,6 +234,8 @@ var BHell = (function (my) {
 		if (my.player.finisherImage == "$TutorialSentence") {
 			my.player.PhaseOver = true;
 			my.player.nextMap = Number(36);
+		} else {
+			$gameSwitches.setValue(23, true);
 		}
 		
 		if (this.parent != null) {

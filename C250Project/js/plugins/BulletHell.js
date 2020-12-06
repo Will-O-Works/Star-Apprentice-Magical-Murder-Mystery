@@ -5618,7 +5618,6 @@ var BHell = (function (my) {
                     $gameMap._mapId = my.discussionMap;
                 } else {
                     $gameMap._mapId = $gameVariables.value(12);
-                    $gameSwitches.setValue(23, true);
                 }
                 $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                 $gameSelfSwitches.clear();
