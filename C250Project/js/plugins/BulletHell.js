@@ -4300,6 +4300,58 @@ var BHell = (function (my) {
     };
 
 
+	var BHell_Mover_Jump = my.BHell_Mover_Jump = function () {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Mover_Jump.prototype = Object.create(BHell_Mover_Base.prototype);
+    BHell_Mover_Jump.prototype.constructor = BHell_Mover_Jump;
+
+    /**
+     * Constructor
+     * @param x X coordinate of the initial position.
+     * @param y Y coordinate of the initial position.
+     * @param angle Initial angle.
+     * @param w Width of the object to move.
+     * @param h Height of the object to move.
+     */
+    BHell_Mover_Jump.prototype.initialize = function (x, y, angle, w, h) {
+        BHell_Mover_Base.prototype.initialize.call(this);
+
+        this.inPosition = false;
+        this.initX = x;
+        this.initY = y;
+        this.signX = +1;
+        this.signY = +1;
+        this.angle = angle;
+        this.w = w;
+        this.h = h;
+    };
+
+    /**
+     * Moves to the starting position, then moves at this.angle, bouncing on the screen's borders.
+     * @param oldX Old x coordinate.
+     * @param oldY Old y coordinate.
+     * @param speed Movement speed. In pixels per frame.
+     * @returns {Array}
+     */
+    BHell_Mover_Jump.prototype.move = function (oldX, oldY, speed) {
+        var ret = [];
+
+        if (this.inPosition == false) {
+            this.inPosition = true;
+            ret.push(this.initX);
+            ret.push(this.initY);
+        } else {
+			this.x = oldX; 
+			this.y = oldY; 
+			ret.push(oldX);
+            ret.push(oldY);
+		}
+		return ret;
+    };
+
+
     /**
      * Bounce movement class. Moves to the starting position, then moves in a straight line at a given angle,
      * bouncing on the screen's borders.

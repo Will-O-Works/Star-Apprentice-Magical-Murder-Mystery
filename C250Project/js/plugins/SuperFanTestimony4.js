@@ -144,14 +144,14 @@ var BHell = (function (my) {
     BHell_Enemy_Heart.prototype.constructor = BHell_Enemy_Heart;
 
 	BHell_Enemy_Heart.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 1; //50;
+        params.hp = 50;
         params.speed = 25;
         params.hitbox_w = 96;
         params.hitbox_h = 96;
         params.animated = true;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, Graphics.height / 2, 0, this.hitboxW, this.hitboxH);
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, Graphics.height / 2, 0, this.hitboxW, this.hitboxH);
 		
 		this.testimony = my.parse(params.t, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
 
