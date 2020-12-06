@@ -18,6 +18,7 @@ var BHell = (function (my) {
         params.hitbox_h = 30; // hitbox height
         params.animated = false; // if true, you need 3 frames of animation for the boss
 		
+		
 		this.mover = new my.BHell_Mover_Chase();
 		
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -28,6 +29,9 @@ var BHell = (function (my) {
         emitterParams.alwaysAim = true;
 		emitterParams.noshoot = true; 
 
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -35,36 +39,20 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_Final_Lines.prototype.update = function () {
-		// Destroy itself if testimony = 2 by V.L. 11/29/2020
-		if ($gameVariables.value(11) >= this.testimony) {
+	BHell_Enemy_Final_Lines.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
 			
-			console.log("destroyed"); 
-			
-			// kill the cats V.L.
-			while (my.controller.enemies[1] != null) {
-				my.controller.enemies[1].destroy();
-			}
-			
-			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
-			
-			this.emitters.forEach(e => { // Destroy the magic circle
-				e.destroy();
-			});
-			
-			my.controller.destroyEnemyBullets();
-	
-			my.player.bombs = 0;
-			if (this.parent != null) {
-				this.parent.removeChild(this);
-			}
-			this.enemyList.splice(this.enemyList.indexOf(this), 1);
-			
-			return; 
-		}
-		
-		my.BHell_Enemy_Base.prototype.update.call(this);
-	}; 
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));
@@ -156,7 +144,7 @@ var BHell = (function (my) {
     BHell_Enemy_Heart.prototype.constructor = BHell_Enemy_Heart;
 
 	BHell_Enemy_Heart.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 50;
+        params.hp = 1; //50;
         params.speed = 25;
         params.hitbox_w = 96;
         params.hitbox_h = 96;
@@ -221,15 +209,17 @@ var BHell = (function (my) {
 	BHell_Enemy_Heart.prototype.destroy = function() {
 
 		$gameVariables.setValue(11, this.testimony); 
-		
-		console.log(this.testimony)
-		
+
 		if (this.testimony == 3) {
 			my.player.refute_type = "fan"; 
 			my.player.bombed = true; 
 		} else {
 			my.player.refute_type = "laser"; 
 		}
+		
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(31);
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -1162,6 +1152,10 @@ var BHell = (function (my) {
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.refute_type = "minnie"; 
 		my.player.bombed = true; 
+		
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(4);
 			
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 	};

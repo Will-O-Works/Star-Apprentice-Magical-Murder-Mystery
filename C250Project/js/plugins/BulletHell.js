@@ -5460,8 +5460,6 @@ var BHell = (function (my) {
 			case 30: 
 			case 31: 
 			case 32: 
-			case 47: 
-			case 48: 
 			my.currentFace = ImageManager.loadFace("Super_Fan_Portrait", 0);
 			my.discussionMap = 45;
 			break; 
