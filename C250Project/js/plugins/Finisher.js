@@ -152,17 +152,17 @@ var BHell = (function (my) {
 				break; 
 				
 				case 1: 
-					this.hitboxW = 170; // hitbox width
+					this.hitboxW = 174; // hitbox width
 					this.hitboxH = 34; // hitbox height
 				break; 
 				
 				case 2: 
-					this.hitboxW = 204; // hitbox width
+					this.hitboxW = 316; // hitbox width
 					this.hitboxH = 34; // hitbox height
 				break; 
 				
 				case 3: 
-					this.hitboxW = 152; // hitbox width
+					this.hitboxW = 156; // hitbox width
 					this.hitboxH = 34; // hitbox height
 				break; 
 			}
