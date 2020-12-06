@@ -4823,11 +4823,11 @@ var BHell = (function (my) {
     BHell_Player.prototype.moveTo = function (x, y) {
         this.dx = x - this.x;
         this.dy = y - this.y;
-        if ((this.dx > -my.player.player_speed && this.dx < my.player.player_speed) && (this.dy > -my.player.player_speed && this.dy < my.player.player_speed)) {
+        /*if ((this.dx > -my.player.player_speed && this.dx < my.player.player_speed) && (this.dy > -my.player.player_speed && this.dy < my.player.player_speed)) {
             this.focusMode = true;
         } else {
             this.focusMode = false;
-        }
+        }*/
     };
 
     /**
@@ -4838,11 +4838,11 @@ var BHell = (function (my) {
     BHell_Player.prototype.deltaTo = function (dx, dy) {
         this.dx = dx;
         this.dy = dy;
-        if ((this.dx > -5 && this.dx < 5) && (this.dy > -5 && this.dy < 5)) {
+        /*if ((this.dx > -5 && this.dx < 5) && (this.dy > -5 && this.dy < 5)) {
             this.focusMode = true;
         } else {
             this.focusMode = false;
-        }
+        }*/
     };
 
     /**
@@ -6895,6 +6895,13 @@ BHell_Spriteset.prototype.updateParallax = function () {
             my.stage.changeParallax('BulletHell_A', 0, 0, 0, 0);
         }
     }
+
+    if (my.map === 31) {
+        if (my.stage.parallaxName() != 'BulletHell_Anime') {
+            my.stage.changeParallax('BulletHell_Anime', 0, 0, 0, 0);
+        }
+    }
+
 	// Twins background in FFF
 	if (my.map === 32) {
         if (my.player.Twinsmap) {
