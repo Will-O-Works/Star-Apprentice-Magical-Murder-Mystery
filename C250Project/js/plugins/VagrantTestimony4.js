@@ -235,7 +235,7 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentLine = 2;
+        my.player.currentLine = 0;
         params.hp = 85;
         params.speed = 4;
         params.hitbox_w = 340;
@@ -730,6 +730,7 @@ var BHell = (function (my) {
 
     //initalize function. set sprite hitbox params here along with speed
     BHell_Enemy_VagrantTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        my.player.currentLine = 2;
         params.hp = 85;
         params.speed = 4;
         params.hitbox_w = 527;
