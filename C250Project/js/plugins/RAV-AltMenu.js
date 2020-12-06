@@ -188,8 +188,8 @@ Window_Options.prototype.addGeneralOptions = function() {
     this.addCommand('Infinite Lives', 'inf_lives');
     this.addCommand('Lives', 'lives');
     if (this.getConfigValue('lives') === undefined) {
-        this.setConfigValue('lives', 3);
-        $gameVariables.setValue(13, 3);
+        this.setConfigValue('lives', 5);
+        $gameVariables.setValue(13, 5);
     }
 };
 
