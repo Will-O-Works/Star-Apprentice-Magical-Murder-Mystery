@@ -5439,10 +5439,10 @@ var BHell = (function (my) {
 			break; 
 			
 			// Victoria Testimony
-			case 14: 
-			case 37: 
-			case 38: 
-			case 41: 
+			case 49: 
+			case 50: 
+			case 51: 
+			case 52: 
 			case 42:
 			my.currentFace = ImageManager.loadFace("Tycoon_Portrait", 0);
 			my.discussionMap = 43;
@@ -6744,7 +6744,7 @@ BHell_Spriteset.prototype.updateParallax = function () {
         }
         this._parallax.bitmap = ImageManager.loadParallax(this._parallaxName);
     }
-    if (my.map === 14 || my.map === 37 || my.map === 38 || my.map === 41) {
+    if (my.map ===99 || my.map === 99 || my.map === 99 || my.map === 99) {//changed for now cause text dissapears
         if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Frozen') {
             my.stage.changeParallax('BulletHell_Frozen', 0, 0, 0, 0);
         } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_A') {
