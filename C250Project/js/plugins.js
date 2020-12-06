@@ -15,6 +15,7 @@ var $plugins =
 {"name":"RAV-PeopleMenu","status":true,"description":"","parameters":{}},
 {"name":"GALV_AnimatedSplashScreens","status":true,"description":"(v.1.1) Set up animated splash screens that show before the title screen.","parameters":{"----- SPLASH SCREENS -----":"","Splash Images":"willoworksLogo0,40,999,0|willoworksLogo1,4,999,0|willoworksLogo2,8,999,0|willoworksLogo3,8,999,0|willoworksLogo4,4,999,0|willoworksLogo5,4,999,0|willoworksLogo6,8,999,0|willoworksLogo7,4,999,0|willoworksLogo8,4,999,0|willoworksLogo9,4,999,0|willoworksLogo10,4,999,0|willoworksLogo11,4,999,0|willoworksLogo12,4,999,0|willoworksLogo13,4,999,0|willoworksLogo14,4,999,0|willoworksLogo15,4,999,0|willoworksLogo16,4,999,0|willoworksLogo17,4,999,0|willoworksLogo18,40,999,0","Splash Background":"#0E0E11","Splash Skip":"ALL"}},
 {"name":"MrTS_NoItemCategories","status":true,"description":"Removes item categories from item menu scene and from shop scene.","parameters":{"Hide Menu":"True","Hide Shop":"True"}},
+{"name":"MrTS_ProgressTitleScreen","status":true,"description":"Changes title screen picture according to game progress.","parameters":{"Image List":"CCC,StarApprentice"}},
 {"name":"Olivia_AnimatedPictures","status":true,"description":"<AnimatedPictures> for RPG Maker MV version 1.6.1.","parameters":{"":"","ATTENTION!!!":"READ THE HELP FILE","Loop by Default":"false","Wait Frames Default":"4"}},
 {"name":"RAV-NoBlur","status":true,"description":"","parameters":{}},
 {"name":"RAV-BeatemupView","status":true,"description":"Beatemup View.","parameters":{}},
