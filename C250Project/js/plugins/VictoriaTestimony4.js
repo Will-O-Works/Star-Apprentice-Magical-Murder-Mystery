@@ -12,8 +12,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 3; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hitbox_w = 622; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
@@ -252,8 +252,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony4_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 3; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hitbox_w = 566; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
@@ -473,8 +473,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 3; // speed of boss moving 
-        params.hitbox_w = 400; // hitbox width
-        params.hitbox_h = 100; // hitbox heights
+        params.hitbox_w = 468; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc

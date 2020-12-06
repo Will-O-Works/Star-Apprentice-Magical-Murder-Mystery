@@ -206,7 +206,7 @@ var BHell = (function (my) {
 	BHell_Enemy_Tutorial_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 50;
         params.speed = 25;
-        params.hitbox_w = 112;
+        params.hitbox_w = 106;
         params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);

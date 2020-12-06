@@ -562,8 +562,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 386; // hitbox width
-        params.hitbox_h = 75; // hitbox height
+        params.hitbox_w = 408; // hitbox width
+        params.hitbox_h = 82; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
@@ -750,8 +750,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 386; // hitbox width
-        params.hitbox_h = 75; // hitbox height
+        params.hitbox_w = 144; // hitbox width
+        params.hitbox_h = 72; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;

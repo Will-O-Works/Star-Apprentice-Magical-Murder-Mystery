@@ -1,7 +1,6 @@
 //=============================================================================
 // Heart Emitters
 //=============================================================================
-
 var BHell = (function (my) {
 	
 	var BHell_Emitter_Heart_Drop = my.BHell_Emitter_Heart_Drop = function () {
@@ -72,8 +71,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
-
 //=============================================================================
 // TwinsTestimony3 Pattern 1
 //=============================================================================
@@ -89,8 +86,8 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 318;
-        params.hitbox_h = 73;
+        params.hitbox_w = 336;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -159,7 +156,7 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 388;
+        params.hitbox_w = 336;
         params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -208,7 +205,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
 //=============================================================================
 // TwinsTestimony3 Pattern 3
 //=============================================================================
@@ -224,8 +220,8 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 454;
-        params.hitbox_h = 82;
+        params.hitbox_w = 380;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);

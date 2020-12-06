@@ -10,8 +10,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 20;//change to adjust Line HP
         params.speed = 3.5; // change to adjust speed of boss moving 
-        params.hitbox_w = 360; // change to adjust hitbox width
-        params.hitbox_h = 72; // change to adjust hitbox heights
+        params.hitbox_w = 518; // change to adjust hitbox width
+        params.hitbox_h = 76; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
@@ -107,6 +107,7 @@ var BHell = (function (my) {
         this.punish=false
     };
     BHell_Enemy_VictoriaTestimony3_p1.prototype.updateSwipe = function() {
+        console.log("hello");
         if (this.frameCounter % 20 == 0&&my.player.Timestop==false&&this.punish==false){
             this.emitters[10].shoot(true);
             this.emitters[11].shoot(true);
@@ -209,88 +210,152 @@ var BHell = (function (my) {
     };	
 	//main update loop
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.update = function () {
-		
 		// Update line color V.L. 11/08/2020
-			if (this.flash == true) {
-					
-				if (this.prev_hp == this.hp) {
-					if (this.bombedWrong == true) {
-						this.setColorTone([0, -160, -160, 1]);
-					} else if(this.holdFlash <= 0){
-						this.setColorTone([0, 0, 0, 1]);
-					}
-				} else {
-					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
-				}
-				if (this.holdFlash > 0){
-					this.setColorTone([0, 0, -160, 1]);
-				}
-				
-			}
-			
-			if (this.holdFlash > 0) {
-				this.holdFlash--;
-			}
-
-			this.prev_hp = this.hp; 
-			
-			my.BHell_Sprite.prototype.update.call(this);
-			// /* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// // Added bomb wrong case 
-			// if (my.player.false_bomb == true && this.bombedWrong == false) {
-			// 	this.bombedWrong = true; 
-			// 	this.hp = this.full_hp; 
-			// }
-			// if (this.bombedWrong == true) {
-            //     // Write the bombedWrong penalty in here
-            //     this.punish=true;
-			// }
-			// if (my.player.bombed == true) {
-			// 	this.destroy(); 
-            // }
-            if (my.player.bombed == true) {
-				this.die(); 
-			}
-			
-			if (this.state !== "dying") {
-                this.move();
+        if (this.flash == true) {	
+            if (this.prev_hp == this.hp) {
+                if (this.bombedWrong == true) {
+                    this.setColorTone([0, -160, -160, 1]);
+                } else if(this.holdFlash <= 0){
+                    this.setColorTone([0, 0, 0, 1]);
+                }
+            } else {
+                this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
             }
-		switch (this.state) {
-			case "started":
-				if (this.mover.inPosition === true) {
-					this.state = "active";
-					this.frameCounter = 0;
-				}
-				break;
-			case "active": // Shoot.
+            if (this.holdFlash > 0){
+                this.setColorTone([0, 0, -160, 1]);
+            }
+            
+        }
+        if (this.holdFlash > 0) {
+            this.holdFlash--;
+        }
+        this.prev_hp = this.hp; 
+        my.BHell_Sprite.prototype.update.call(this);
+        /* Copy and paste this code into update function for not-for-bomb lines V.L. */
+        // Added bomb wrong case 
+        if (my.player.false_bomb == true && this.bombedWrong == false) {
+            this.bombedWrong = true; 
+            this.hp = this.full_hp; 
+        }
+        if (this.bombedWrong == true) {
+            this.punish=20; 
+        }
+        if (my.player.bombed == true) {
+            this.destroy(); 
+        }
+        if (this.state !== "dying") {
+            this.move();
+        }
+        switch (this.state) {
+            case "started":
+                if (this.mover.inPosition === true) {
+                    this.state = "active";
+                    this.frameCounter = 0;
+                }
+                break;
+            case "active": // Shoot.
                 if(this.frameCounter%3===0){
                     this.updateWall(this.frameCounter); 
                 }  
                 this.updateEmitters();
                 this.updateSwipe();
                 this.updateZaWarudo();
-				break;
-			case "dying": // die.
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				
-				if (this.timer > 70) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
-				break;
-		}; 
-		// Update the emitter's position.
-		this.emitters.forEach(e => {e.update()});
-		// Update the time counter and reset it every 20 seconds.
-		this.frameCounter ++;
+                break;
+            case "dying": // die.
+                this.destroy();
+                break;
+            case "bombed":  
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                my.controller.generators = [];
+                my.controller.activeGenerators = [];    
+                this.destroy();
+            break; 
+        }; 
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter ++;
         if(this.frameCounter>=450){this.frameCounter=0;}
+		// // Update line color V.L. 11/08/2020
+		// 	if (this.flash == true) {
+					
+		// 		if (this.prev_hp == this.hp) {
+		// 			if (this.bombedWrong == true) {
+		// 				this.setColorTone([0, -160, -160, 1]);
+		// 			} else if(this.holdFlash <= 0){
+		// 				this.setColorTone([0, 0, 0, 1]);
+		// 			}
+		// 		} else {
+		// 			this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
+		// 		}
+		// 		if (this.holdFlash > 0){
+		// 			this.setColorTone([0, 0, -160, 1]);
+		// 		}
+				
+		// 	}
+			
+		// 	if (this.holdFlash > 0) {
+		// 		this.holdFlash--;
+		// 	}
+
+		// 	this.prev_hp = this.hp; 
+			
+		// 	my.BHell_Sprite.prototype.update.call(this);
+		// 	// /* Copy and paste this code into update function for not-for-bomb lines V.L. */
+		// 	// // Added bomb wrong case 
+		// 	// if (my.player.false_bomb == true && this.bombedWrong == false) {
+		// 	// 	this.bombedWrong = true; 
+		// 	// 	this.hp = this.full_hp; 
+		// 	// }
+		// 	// if (this.bombedWrong == true) {
+        //     //     // Write the bombedWrong penalty in here
+        //     //     this.punish=true;
+		// 	// }
+		// 	// if (my.player.bombed == true) {
+		// 	// 	this.destroy(); 
+        //     // }
+        //     if (my.player.bombed == true) {
+		// 		this.die(); 
+		// 	}
+			
+		// 	if (this.state !== "dying") {
+        //         this.move();
+        //     }
+		// switch (this.state) {
+		// 	case "started":
+		// 		if (this.mover.inPosition === true) {
+		// 			this.state = "active";
+		// 			this.frameCounter = 0;
+		// 		}
+		// 		break;
+		// 	case "active": // Shoot.
+        //         if(this.frameCounter%3===0){
+        //             this.updateWall(this.frameCounter); 
+        //         }  
+        //         this.updateEmitters();
+        //         this.updateSwipe();
+        //         this.updateZaWarudo();
+		// 		break;
+		// 	case "dying": // die.
+		// 		this.timer = (this.timer + 1) % 1200;
+		// 		this.shoot(false);
+				
+		// 		if (this.timer > 70) {
+		// 			// Clear screen after count down V.L. 10/20/2020
+		// 			my.controller.generators = [];
+		// 			my.controller.activeGenerators = [];
+					
+		// 			this.destroy();
+		// 		}
+		// 		else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+		// 			my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+		// 		}
+		// 		break;
+		// }; 
+		// // Update the emitter's position.
+		// this.emitters.forEach(e => {e.update()});
+		// // Update the time counter and reset it every 20 seconds.
+		// this.frameCounter ++;
+        // if(this.frameCounter>=450){this.frameCounter=0;}
 	}
     return my;
 } (BHell || {}));
@@ -306,8 +371,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony3_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 488; // change to adjust hitbox width
-        params.hitbox_h = 80; // change to adjust hitbox heights
+        params.hitbox_w = 420; // change to adjust hitbox width
+        params.hitbox_h = 82; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
@@ -546,8 +611,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 458; // change to adjust hitbox width
-        params.hitbox_h = 72; // change to adjust hitbox heights
+        params.hitbox_w = 670; // change to adjust hitbox width
+        params.hitbox_h = 76; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;

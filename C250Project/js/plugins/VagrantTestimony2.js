@@ -345,8 +345,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony2_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 386; // hitbox width
-        params.hitbox_h = 75; // hitbox height
+        params.hitbox_w = 376; // hitbox width
+        params.hitbox_h = 82; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
@@ -356,6 +356,7 @@ var BHell = (function (my) {
 
         this.initializeVL1P1Emitter(parent);
         this.initializeCat();
+        console.log(params.sprite);
 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
@@ -471,12 +472,7 @@ var BHell = (function (my) {
             }
         }
     };
-    BHell_Enemy_VagrantTestimony2_p1.prototype.destroy = function() {
-
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
+    BHell_Enemy_VagrantTestimony2_p1.prototype.destroy = function() {		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
@@ -566,10 +562,9 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 //=============================================================================
-// VagrantTest2 Pattern 2
+// VagrantTest2 Pattern 1
 //=============================================================================
 var BHell = (function (my) {
-
     var BHell_Enemy_VagrantTestimony2_p2 = my.BHell_Enemy_VagrantTestimony2_p2 = function() {
         this.initialize.apply(this, arguments);
     };
@@ -578,21 +573,20 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantTestimony2_p2.prototype.constructor = BHell_Enemy_VagrantTestimony2_p2;
 
 	BHell_Enemy_VagrantTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 408; // hitbox width
-        params.hitbox_h = 72; // hitbox height
+        params.hitbox_w = 596; // hitbox width
+        params.hitbox_h = 82; // hitbox height
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.frameCounter =0;
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+        
 
         this.initializeVL1P2Emitter(parent);
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
-
+        my.player.can_bomb = false; 
 		this.circle_p = 100; // increase frequency for angry state
         this.radius = 200;
         this.counterclockwise = true;
@@ -636,7 +630,6 @@ var BHell = (function (my) {
         this.emitters[4].offsetX = -180;
         this.emitters[4].aimX= (Math.PI/4)-0.3;
     };
-
      //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
      BHell_Enemy_VagrantTestimony2_p2.prototype.updateAngle = function () { 
         if(this.frameCounter%6==0&&this.trackingCounter<6){
@@ -648,19 +641,13 @@ var BHell = (function (my) {
         else if(this.frameCounter%70==0){this.trackingCounter=0;}
     };
     BHell_Enemy_VagrantTestimony2_p2.prototype.updateSplit = function () { 
+        console.log("hello");
         this.emitters[3].shoot(this.emitters,true);
         this.emitters[4].shoot(this.emitters,true);
         this.emitters[5].shoot(this.emitters,true); 
     };
-    BHell_Enemy_VagrantTestimony2_p2.prototype.destroy = function() {
-
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(8);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+    BHell_Enemy_VagrantTestimony2_p2.prototype.destroy = function() {		
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
     };
     BHell_Enemy_VagrantTestimony2_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
@@ -670,59 +657,59 @@ var BHell = (function (my) {
     };
     //main update loop
     BHell_Enemy_VagrantTestimony2_p2.prototype.update = function () {
-		
-		// Update line color V.L. 11/08/2020
-        if (this.flash == true) {
+        
+       // Update line color V.L. 11/08/2020
+			if (this.flash == true) {
 					
-            if (this.prev_hp == this.hp) {
-                if (this.bombedWrong == true) {
-                    this.setColorTone([0, -160, -160, 1]);
-                } else if(this.holdFlash <= 0){
-                    this.setColorTone([0, 0, 0, 1]);
-                }
-            } else {
-                this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
-            }
-            if (this.holdFlash > 0){
-                this.setColorTone([0, 0, -160, 1]);
-            }
-            
-        }
-        
-        if (this.holdFlash > 0) {
-            this.holdFlash--;
-        }
+				if (this.prev_hp == this.hp) {
+					if (this.bombedWrong == true) {
+						this.setColorTone([0, -160, -160, 1]);
+					} else if(this.holdFlash <= 0){
+						this.setColorTone([0, 0, 0, 1]);
+					}
+				} else {
+					this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
+				}
+				if (this.holdFlash > 0){
+					this.setColorTone([0, 0, -160, 1]);
+				}
+				
+			}
+			
+			if (this.holdFlash > 0) {
+				this.holdFlash--;
+			}
 
-        this.prev_hp = this.hp; 
+			this.prev_hp = this.hp; 
+			
+			my.BHell_Sprite.prototype.update.call(this);
         
-        my.BHell_Sprite.prototype.update.call(this);
-		
-			/* Copy and paste this code into update function for not-for-bomb lines V.L. */
-			// Added bomb wrong case 
-			if (my.player.false_bomb == true && this.bombedWrong == false) {
-				this.bombedWrong = true; 
-				this.hp = this.full_hp; 
-			}
-			
-			if (this.bombedWrong == true) {
-				// Write the bombedWrong penalty in here
-                this.emitters[3].bulletParams.speed = 5;
-                this.emitters[4].bulletParams.speed = 5;
-                this.emitters[5].bulletParams.speed = 5;
-                this.emitters[3].punish = "true";
-                this.emitters[4].punish = "true";
-				this.emitters[5].punish = "true"; 
-			}
-			
-			if (my.player.bombed == true) {
-				this.die(); 
-			}
-			
-			if (this.state !== "dying") {
-                this.move();
-            }
-            /* Copy and paste this code into update function for not-for-bomb lines V.L. */
-            this.updateSplit();
+        /* Copy and paste this code into update function for not-for-bomb lines V.L. */
+        // Added bomb wrong case 
+        if (my.player.false_bomb == true && this.bombedWrong == false) {
+            this.bombedWrong = true; 
+            this.hp = this.full_hp; 
+        }
+        
+        if (this.bombedWrong == true) {
+            // Write the bombedWrong penalty in here
+            this.emitters[3].bulletParams.speed = 5;
+            this.emitters[4].bulletParams.speed = 5;
+            this.emitters[5].bulletParams.speed = 5;
+            this.emitters[3].punish = "true";
+            this.emitters[4].punish = "true";
+            this.emitters[5].punish = "true";
+        }
+        
+        if (my.player.bombed == true) {
+            this.destroy(); 
+        }
+        
+        if (this.state !== "dying") {
+            this.move();
+        }
+        this.updateSplit();
+        /* Copy and paste this code into update function for not-for-bomb lines V.L. */
         switch (this.state) {
             case "started":
                 if (this.mover.inPosition === true) {
@@ -732,29 +719,10 @@ var BHell = (function (my) {
                 break;
             case "active": // Shoot.
                 this.updateAngle();
-                // if(this.frameCounter%this.circle_p === 0){
-                //     this.updateSplit();
-                // }
-                // if(this.frameCounter==20){
-                //     this.updateSplit();
-                // }
                 break;
             case "dying": // die.
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				
-				if (this.timer > 70) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
-				break;
-			/* Added bombed case if bomb is casted on the line by V.L. */
+                this.destroy();
+                break;
         }; 
         // Update the emitter's position.
         this.emitters.forEach(e => {e.update()});
@@ -779,8 +747,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 306; // hitbox width
-        params.hitbox_h = 68; // hitbox height
+        params.hitbox_w = 600; // hitbox width
+        params.hitbox_h = 82; // hitbox height
         params.animated = false;
         this.frameCounter =0;
         this.state = "started";
@@ -792,6 +760,7 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = true; 
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+        console.log("hello i am running also");
     };
     BHell_Enemy_VagrantTestimony2_p3.prototype.initializeSwipe = function (parent) {
 		this.p = 2; 
@@ -973,7 +942,194 @@ var BHell = (function (my) {
     }
 } (BHell || {}));
 
+//=============================================================================
+// VagrantTest2 Pattern 2(cursed and never to be uncommented)
+//=============================================================================
+/*var BHell = (function (my) {
 
+    var BHell_Enemy_VagrantTestimony2_p2 = my.BHell_Enemy_VagrantTestimony2_p2 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_VagrantTestimony2_p2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_VagrantTestimony2_p2.prototype.constructor = BHell_Enemy_VagrantTestimony2_p2;
+
+	BHell_Enemy_VagrantTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        my.player.currentLine = 1;
+        params.hp = 75;
+        params.speed = 4; // speed of boss moving 
+        params.hitbox_w = 408; // hitbox width
+        params.hitbox_h = 72; // hitbox height
+        params.animated = false;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+        this.frameCounter =0;
+        this.state = "started";
+        this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+
+        this.initializeVL1P2Emitter(parent);
+		// set player.can_bomb to true by V.L.
+        my.player.can_bomb = false; 
+
+		this.circle_p = 100; // increase frequency for angry state
+        this.radius = 200;
+        this.counterclockwise = true;
+        this.dir = my.parse(params.dir, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
+        this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
+        //this.mover = new my.BHell_Mover_Finisher(this.dir,this.radius, this.counterclockwise,Graphics.width / 2,Graphics.height / 2-40); // initialize the enemy's movement, check BHell_Mover
+    }
+    BHell_Enemy_VagrantTestimony2_p2.prototype.initializeVL1P2Emitter = function (parent) {
+        var emitterParams = {};
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 4;
+        emitterParams.bullet.speed = 4;
+        emitterParams.bullettype="vagrant";
+        emitterParams.bullet.amp=4;
+        emitterParams.bullet.period=50;
+        this.trackingCounter = 0;
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter 
+        this.emitters[0].angle= (Math.PI/4)+0.3;
+        this.emitters[0].offsetX = 180;
+        this.emitters[1].angle= (3*Math.PI/4)-0.3;
+        this.emitters[1].offsetX = -180;
+        this.emitters[2].angle= Math.PI/2;
+        var emitterParamsC = {};
+        emitterParamsC.bullet = {};
+        emitterParamsC.bullet.speed = 3;
+        emitterParamsC.bullet.direction = 6;
+        emitterParamsC.period = 130;
+        emitterParamsC.a = 0;
+        emitterParamsC.b = 2 * Math.PI;
+        emitterParamsC.n = 10;
+        emitterParamsC.type = "mix";
+        emitterParamsC.bullet.burstcount = 8;
+        this.emitters.push(new my.BHell_Emitter_Split(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters.push(new my.BHell_Emitter_Split(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters.push(new my.BHell_Emitter_Split(this.x, this.y, emitterParamsC, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
+        this.emitters[3].aimX= (Math.PI/4)-0.3;
+        this.emitters[3].offsetX = 180;
+        this.emitters[4].aimX= -(Math.PI/4)+0.3;
+        this.emitters[4].offsetX = -180;
+        this.emitters[4].aimX= (Math.PI/4)-0.3;
+    };
+
+     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
+     BHell_Enemy_VagrantTestimony2_p2.prototype.updateAngle = function () { 
+        if(this.frameCounter%6==0&&this.trackingCounter<6){
+            this.emitters[0].shoot(this.emitters,true);
+            this.emitters[1].shoot(this.emitters,true);
+            this.emitters[2].shoot(this.emitters,true);  
+            this.trackingCounter++;
+        }
+        else if(this.frameCounter%70==0){this.trackingCounter=0;}
+    };
+    BHell_Enemy_VagrantTestimony2_p2.prototype.updateSplit = function () { 
+        this.emitters[3].shoot(this.emitters,true);
+        this.emitters[4].shoot(this.emitters,true);
+        this.emitters[5].shoot(this.emitters,true); 
+    };
+    BHell_Enemy_VagrantTestimony2_p2.prototype.destroy = function() {		
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+    };
+    BHell_Enemy_VagrantTestimony2_p2.prototype.die = function() {
+        $gameBHellResult.score += this.killScore;
+        this.state = "dying";
+        this.frameCounter = 0;
+        my.controller.destroyEnemyBullets();
+    };
+    //main update loop
+    BHell_Enemy_VagrantTestimony2_p2.prototype.update = function () {
+		
+		// Update line color V.L. 11/08/2020
+        if (this.flash == true) {
+					
+            if (this.prev_hp == this.hp) {
+                if (this.bombedWrong == true) {
+                    this.setColorTone([0, -160, -160, 1]);
+                } else if(this.holdFlash <= 0){
+                    this.setColorTone([0, 0, 0, 1]);
+                }
+            } else {
+                this.holdFlash = this.holdFlashTime;//change to adjust lenght of hit flash
+            }
+            if (this.holdFlash > 0){
+                this.setColorTone([0, 0, -160, 1]);
+            }
+            
+        }
+        
+        if (this.holdFlash > 0) {
+            this.holdFlash--;
+        }
+
+        this.prev_hp = this.hp; 
+        
+        my.BHell_Sprite.prototype.update.call(this);
+		
+			// Added bomb wrong case 
+			if (my.player.false_bomb == true && this.bombedWrong == false) {
+				this.bombedWrong = true; 
+				this.hp = this.full_hp; 
+			}
+			
+			if (this.bombedWrong == true) {
+				// Write the bombedWrong penalty in here
+                this.emitters[3].bulletParams.speed = 5;
+                this.emitters[4].bulletParams.speed = 5;
+                this.emitters[5].bulletParams.speed = 5;
+                this.emitters[3].punish = "true";
+                this.emitters[4].punish = "true";
+				this.emitters[5].punish = "true"; 
+			}
+			
+			if (my.player.bombed == true) {
+				this.die(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
+            this.updateSplit();
+        switch (this.state) {
+            case "started":
+                if (this.mover.inPosition === true) {
+                    this.state = "active";
+                    this.frameCounter = 0;
+                }
+                break;
+            case "active": // Shoot.
+                this.updateAngle();
+                // if(this.frameCounter%this.circle_p === 0){
+                //     this.updateSplit();
+                // }
+                // if(this.frameCounter==20){
+                //     this.updateSplit();
+                // }
+                break;
+            case "dying": // die.
+				this.timer = (this.timer + 1) % 1200;
+				this.shoot(false);
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break;
+        }; 
+        // Update the emitter's position.
+        this.emitters.forEach(e => {e.update()});
+        // Update the time counter and reset it every 20 seconds.
+        this.frameCounter = (this.frameCounter + 1) % 1200;
+    }
+    return my;
+} (BHell || {}));*/
 
 //stair case bullets lol
 // var BHell = (function (my) {

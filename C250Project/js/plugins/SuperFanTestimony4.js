@@ -14,8 +14,8 @@ var BHell = (function (my) {
 
         params.hp = 5;
         params.speed = 2; // speed of boss moving 
-        params.hitbox_w = 100; // hitbox width
-        params.hitbox_h = 30; // hitbox height
+        params.hitbox_w = 306; // hitbox width
+        params.hitbox_h = 34; // hitbox height
         params.animated = false; // if true, you need 3 frames of animation for the boss
 		
 		
@@ -57,10 +57,291 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
+var BHell = (function (my) {1
+
+    var BHell_Enemy_Final_Lines2 = my.BHell_Enemy_Final_Lines2 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines2.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines2.prototype.constructor = BHell_Enemy_Final_Lines2;
+
+	BHell_Enemy_Final_Lines2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 376; // hitbox width
+        params.hitbox_h = 72; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines2.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
+			
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
+var BHell = (function (my) {
+
+    var BHell_Enemy_Final_Lines3 = my.BHell_Enemy_Final_Lines3 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines3.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines3.prototype.constructor = BHell_Enemy_Final_Lines3;
+
+	BHell_Enemy_Final_Lines3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 364; // hitbox width
+        params.hitbox_h = 44; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines3.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
+			
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
+var BHell = (function (my) {
+
+    var BHell_Enemy_Final_Lines4 = my.BHell_Enemy_Final_Lines4 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines4.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines4.prototype.constructor = BHell_Enemy_Final_Lines4;
+
+	BHell_Enemy_Final_Lines4.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 302; // hitbox width
+        params.hitbox_h = 72; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines4.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
+			
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
+var BHell = (function (my) {
+
+    var BHell_Enemy_Final_Lines5 = my.BHell_Enemy_Final_Lines5 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines5.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines5.prototype.constructor = BHell_Enemy_Final_Lines5;
+
+	BHell_Enemy_Final_Lines5.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 264; // hitbox width
+        params.hitbox_h = 44; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines5.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
+			
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
+var BHell = (function (my) {
+
+    var BHell_Enemy_Final_Lines6 = my.BHell_Enemy_Final_Lines6 = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_Final_Lines6.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_Final_Lines6.prototype.constructor = BHell_Enemy_Final_Lines6;
+
+	BHell_Enemy_Final_Lines6.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+
+        params.hp = 5;
+        params.speed = 2; // speed of boss moving 
+        params.hitbox_w = 352; // hitbox width
+        params.hitbox_h = 34; // hitbox height
+        params.animated = false; // if true, you need 3 frames of animation for the boss
+		
+		
+		this.mover = new my.BHell_Mover_Chase();
+		
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+
+		var emitterParams = {};
+		emitterParams.period = 100; // period for the emitter to activate
+		emitterParams.aim = true; // if aims at player, need to add more stuff in BHell_Emitter_Sample for it to work 
+        emitterParams.alwaysAim = true;
+		emitterParams.noshoot = true; 
+
+		this.end = my.parse(params.end, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+		console.log(this.end); 
+	
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = false; 
+		this.emitters.push(new my.BHell_Emitter_Sample(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Final_Lines(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_Final_Lines6.prototype.destroy = function() {
+
+		if (this.end == 1) {
+			my.player.bombed = true; 
+			
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(32);
+		} 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
 
 //=============================================================================
 // Beat Emitter
 //=============================================================================
+
 var BHell = (function (my) {
 	var BHell_Emitter_Beat = my.BHell_Emitter_Beat = function () {
         this.initialize.apply(this, arguments);       
@@ -131,6 +412,7 @@ var BHell = (function (my) {
     };
     return my;
 } (BHell || {}));
+
 //=============================================================================
 // Final Boss Heart
 //=============================================================================
@@ -144,7 +426,7 @@ var BHell = (function (my) {
     BHell_Enemy_Heart.prototype.constructor = BHell_Enemy_Heart;
 
 	BHell_Enemy_Heart.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        params.hp = 50;
+        params.hp = 40;
         params.speed = 25;
         params.hitbox_w = 96;
         params.hitbox_h = 96;
@@ -226,7 +508,6 @@ var BHell = (function (my) {
 	
     return my;
 } (BHell || {}));
-
 
 //=============================================================================
 // Rain Bullet Emitters
@@ -757,6 +1038,7 @@ var BHell = (function (my) {
 //=============================================================================
 // Final Split Emitter
 //=============================================================================
+
 var BHell = (function (my) {
 	var BHell_Emitter_SplitFinal = my.BHell_Emitter_SplitFinal = function () {
         this.initialize.apply(this, arguments);       
@@ -1047,7 +1329,6 @@ var BHell = (function (my) {
     return my;
 } (BHell || {}));
 
-
 //=============================================================================
 // SuperFanTestimony4 Pattern 3
 //=============================================================================
@@ -1156,8 +1437,6 @@ var BHell = (function (my) {
 	
     return my;
 } (BHell || {}));
-
-
 
 //=============================================================================
 // Leftright marching Bullet Emitters

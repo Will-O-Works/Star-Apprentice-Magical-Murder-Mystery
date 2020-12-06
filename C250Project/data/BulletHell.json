@@ -1193,6 +1193,51 @@
         } 
     }
   },
+  {
+	  "name": "Final_Lines2",
+	  "class": "BHell_Enemy_Final_Lines2",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Final_Lines3",
+	  "class": "BHell_Enemy_Final_Lines3",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Final_Lines4",
+	  "class": "BHell_Enemy_Final_Lines4",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Final_Lines5",
+	  "class": "BHell_Enemy_Final_Lines5",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
+  {
+	  "name": "Final_Lines6",
+	  "class": "BHell_Enemy_Final_Lines6",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        } 
+    }
+  },
     {
 	  "name": "SuperFanTestimony4_p1",
 	  "class": "BHell_Enemy_SuperFanTestimony4_p1",

@@ -855,8 +855,8 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 600;
-        params.hitbox_h = 80;
+        params.hitbox_w = 406;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -916,8 +916,8 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony1_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 348;
-        params.hitbox_h = 75;
+        params.hitbox_w = 406;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -978,8 +978,8 @@ var BHell = (function (my) {
 	BHell_Enemy_TwinsTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 410;
-        params.hitbox_h = 83;
+        params.hitbox_w = 400;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);

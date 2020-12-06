@@ -256,8 +256,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 416;
-        params.hitbox_h = 68;
+        params.hitbox_w = 526;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
         this.bombedWrong = false; //VL change this variable to true if bomb is used incorrectly
@@ -505,8 +505,8 @@ var BHell = (function (my) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 342;
-        params.hitbox_h = 74;
+        params.hitbox_w = 598;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -764,8 +764,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 4;
-        params.hitbox_w = 400;
-        params.hitbox_h = 66;
+        params.hitbox_w = 348;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		

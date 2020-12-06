@@ -218,8 +218,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony2_p2.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 125;
-        params.hitbox_w = 506;
-        params.hitbox_h = 82;
+        params.hitbox_w = 302;
+        params.hitbox_h = 72;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
@@ -296,8 +296,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony2_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 296;
-        params.hitbox_h = 72;
+        params.hitbox_w = 504;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 

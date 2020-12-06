@@ -125,8 +125,8 @@ var BHell = (function (my) {
         my.player.currentLine = 1;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 454; // hitbox width
-        params.hitbox_h = 72; // hitbox heights
+        params.hitbox_w = 460; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
@@ -224,10 +224,6 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_VagrantTestimony1_p1.prototype.destroy = function() {
-
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(6);//the 3 here is the map number change this to whatever map number u want to transition there on victory
 		
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -332,8 +328,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
-        params.hitbox_w = 352; // hitbox width
-        params.hitbox_h = 72; // hitbox heights
+        params.hitbox_w = 412; // hitbox width
+        params.hitbox_h = 82; // hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		//some variables needed to change states a counter to keep track of time, state etc
@@ -509,8 +505,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VagrantTestimony1_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 314; // change to adjust hitbox width
-        params.hitbox_h = 80; // change to adjust hitbox heights
+        params.hitbox_w = 244; // change to adjust hitbox width
+        params.hitbox_h = 72; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;

@@ -238,8 +238,8 @@ var BHell = (function (my) {
         my.player.currentLine = 2;
         params.hp = 85;
         params.speed = 4;
-        params.hitbox_w = 404;
-        params.hitbox_h = 68;
+        params.hitbox_w = 340;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
@@ -465,8 +465,8 @@ var BHell = (function (my) {
         my.player.currentLine = 1;
         params.hp = 85;
         params.speed = 4;
-        params.hitbox_w = 412;
-        params.hitbox_h = 78;
+        params.hitbox_w = 410;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
@@ -732,8 +732,8 @@ var BHell = (function (my) {
     BHell_Enemy_VagrantTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 85;
         params.speed = 4;
-        params.hitbox_w = 388;
-        params.hitbox_h = 68;
+        params.hitbox_w = 527;
+        params.hitbox_h = 82;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		
