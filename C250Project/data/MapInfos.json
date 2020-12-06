@@ -2,7 +2,7 @@
 null,
 {"id":1,"expanded":true,"name":"Passenger Car 2","order":6,"parentId":28,"scrollX":588.3636363636364,"scrollY":329.09090909090907},
 {"id":2,"expanded":false,"name":"Body Search","order":9,"parentId":7,"scrollX":592,"scrollY":512.6666666666666},
-{"id":3,"expanded":true,"name":"Vagrant Testimonies (1)","order":19,"parentId":27,"scrollX":588.3636363636364,"scrollY":367.6363636363636},
+{"id":3,"expanded":true,"name":"Vagrant Testimonies (1)","order":19,"parentId":27,"scrollX":811,"scrollY":453},
 {"id":4,"expanded":true,"name":"Credits","order":52,"parentId":0,"scrollX":594.1818181818181,"scrollY":334.90909090909093},
 {"id":5,"expanded":true,"name":"Finisher","order":23,"parentId":3,"scrollX":588.3636363636364,"scrollY":433.09090909090907},
 {"id":6,"expanded":false,"name":"Testimony 2","order":20,"parentId":3,"scrollX":588.3636363636364,"scrollY":1375.6363636363637},

@@ -213,9 +213,7 @@ var BHell = (function (my) {
 		if (this.testimony == 3) {
 			my.player.refute_type = "fan"; 
 			my.player.bombed = true; 
-		} else {
-			my.player.refute_type = "laser"; 
-		}
+		} 
 		
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.PhaseOver = true;
