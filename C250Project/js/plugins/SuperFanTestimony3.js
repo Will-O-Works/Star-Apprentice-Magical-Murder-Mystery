@@ -386,6 +386,9 @@ var BHell = (function (my) {
         emitterParams.bullet.speed = 5;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
+        emitterParams.bullet.shape="rectangle";
+        emitterParams.bullet.hitboxheight=20;
+        emitterParams.bullet.hitboxwidth=20;
         this.totalWidth =20;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));

@@ -5925,10 +5925,10 @@ var BHell = (function (my) {
 			switch (this.refute_type) {
 				case "detective":  // detective: you can't do dat to me ;-;
 					this.refute_image = this.detective_r; 
-					this.refute_count = 17; 
+					this.refute_count = 23; 
 					
 					this.r_timer = my.player.win_limit + 1; 
-					my.player.win_limit = 190; 
+					my.player.win_limit = 200; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 

@@ -29,7 +29,7 @@ var BHell = (function (my) {
 		if(this.frameCounter%60==0){this.xpos=my.player.x;this.pause=true;}
 		if(this.frameCounter%6==0){
 			var bullet;
-			bullet = new my.BHell_Vagrant_Bullet(this.xpos+this.aimX, this.y, this.angle, this.bulletParams, this.bulletList,false);
+			bullet = new my.BHell_Vagrant_Bullet(this.xpos+this.aimX+20, this.y-150, this.angle, this.bulletParams, this.bulletList,false);
 			this.parent.addChild(bullet);
 			this.bulletList.push(bullet);
 		}
