@@ -5955,7 +5955,7 @@ var BHell = (function (my) {
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 300; 
+					my.player.win_limit = 120; 
 					my.player.win_count = my.player.win_limit; 
 
 				break; 
