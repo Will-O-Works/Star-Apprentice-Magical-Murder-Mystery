@@ -74,6 +74,7 @@ var BHell = (function (my) {
             params.hitbox_w = 412; // change to adjust hitbox width
             params.hitbox_h = 82; // change to adjust hitbox heights
             params.animated = false;
+            my.player.bombs = 0; 
             my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
             this.bombedWrong = false;
             this.frameCounter = 0;
@@ -83,8 +84,7 @@ var BHell = (function (my) {
             this.initializeZaWarudo(parent);
             this.initializeWatcher(parent);
     
-            my.player.can_bomb = true;
-            my.player.currentLine = 1;
+            my.player.can_bomb = false;
             
             this.p = 16; 
             this.can_die = false;
@@ -372,7 +372,6 @@ var BHell = (function (my) {
         this.initializeZaWarudo(parent);
         this.initializeWatcher(parent);
         
-		my.player.currentLine = 1; 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125+30, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
@@ -687,6 +686,7 @@ var BHell = (function (my) {
         params.hitbox_w = 106; // change to adjust hitbox width
         params.hitbox_h = 82; // change to adjust hitbox heights
 		params.animated = false;
+        my.player.bombs = 0; 
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;
         this.frameCounter = 0;
@@ -699,7 +699,6 @@ var BHell = (function (my) {
 
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = false;
-        my.player.currentLine = 1;
 		
 		this.p = 16; 
 		this.can_die = false;

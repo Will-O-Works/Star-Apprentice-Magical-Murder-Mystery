@@ -4598,7 +4598,7 @@ var BHell = (function (my) {
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
-        if ($gameVariables.value(11) >= 4) {
+        if ($gameVariables.value(11) >= 4 || my.map == 30) {
             this.currentLine = -1;
         } else {
             this.currentLine = 0;
@@ -4797,6 +4797,11 @@ var BHell = (function (my) {
             this.immortalTimeout = 0;
             this.opacity = 140;
             this.immortalityTimer=40;
+        }
+
+        if (my.map == 30) {
+            this.bombs = 0; 
+            this.currentLine = -1;
         }
     };
 

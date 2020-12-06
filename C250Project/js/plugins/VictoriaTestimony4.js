@@ -24,6 +24,7 @@ var BHell = (function (my) {
 		this.initializeZaWarudo(parent);
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+        my.player.currentLine = 0;
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
 	};
@@ -263,6 +264,7 @@ var BHell = (function (my) {
 		this.initializeZaWarudo(parent);
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+        my.player.currentLine = 1;
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
 	};
@@ -484,6 +486,7 @@ var BHell = (function (my) {
 		this.initializeZaWarudo(parent);
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true;
+        my.player.currentLine = 2;
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 200, 0, this.hitboxW, this.hitboxH);// initialize the enemy's movement, check BHell_Mover
 	};

@@ -252,7 +252,6 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony1_p1.prototype.constructor = BHell_Enemy_SuperFanTestimony1_p1;
 
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
-        my.player.currentLine = 0;
         params.hp = 75;
         params.speed = 4; // speed of boss moving 
         params.hitbox_w = 348; // hitbox width
@@ -569,6 +568,7 @@ var BHell = (function (my) {
         this.frameCounter =0;
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+        my.player.bombs = 0; 
         
 
 		this.initializeDrunk(parent);
@@ -774,6 +774,7 @@ var BHell = (function (my) {
         this.frameCounter =0;
         this.state = "started";
         this.bombedWrong =false; //VL change this variable to true if bomb is used incorrectly
+        my.player.bombs = 0; 
         
 
 		this.initializePOP(parent);

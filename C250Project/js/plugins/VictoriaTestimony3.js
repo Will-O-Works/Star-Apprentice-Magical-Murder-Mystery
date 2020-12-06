@@ -25,7 +25,7 @@ var BHell = (function (my) {
 
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = true;
-        my.player.currentLine = 1;
+        my.player.currentLine = 0;
 		
 		this.p = 16; 
 		this.can_die = false;
@@ -390,7 +390,7 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
 		/* set player.can_bomb to true by V.L. */
 		my.player.can_bomb = false; 
-		my.player.currentLine = 0;
+		my.player.currentLine = 1;
 		this.p = 16; 
 		this.can_die = false;
 		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
@@ -617,8 +617,8 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 25;//change to adjust Line HP
         params.speed = 4; // change to adjust speed of boss moving 
-        params.hitbox_w = 670; // change to adjust hitbox width
-        params.hitbox_h = 76; // change to adjust hitbox heights
+        params.hitbox_w = 406; // change to adjust hitbox width
+        params.hitbox_h = 110; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		this.bombedWrong = false;

@@ -148,7 +148,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Ring(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
@@ -236,7 +235,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		my.player.currentLine = 1;
 		this.emitters.push(new my.BHell_Emitter_Updown(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
 		emitterParams.bullet.sprite = "$FanBulletsWhite";
@@ -314,7 +312,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		my.player.currentLine = 2;
 		
 		for (var j = 0; j < 3; j ++) {
 			emitterParams.period = 1; 

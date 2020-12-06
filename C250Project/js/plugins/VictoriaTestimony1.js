@@ -21,7 +21,7 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
-		my.player.currentLine = 2;
+		my.player.currentLine = 0;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
     BHell_Enemy_VictoriaTestimony1_p1.prototype.initializeZaWarudo = function (parent) {
@@ -177,7 +177,7 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
-		my.player.currentLine = 0;
+		my.player.currentLine = 1;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
     BHell_Enemy_VictoriaTestimony1_p2.prototype.initializeZaWarudo = function (parent) {
@@ -392,7 +392,7 @@ var BHell = (function (my) {
         this.initializeBrick(parent);
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = true;
-		my.player.currentLine = 0;
+		my.player.currentLine = 2;
         this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH); // initialize the enemy's movement, check BHell_Mover
     };
     BHell_Enemy_VictoriaTestimony1_p3.prototype.initializeZaWarudo = function (parent) {

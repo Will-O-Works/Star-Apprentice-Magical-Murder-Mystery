@@ -1120,7 +1120,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
-		my.player.currentLine = 1;
 		this.emitters.push(new my.BHell_Emitter_Leftright(this.x, this.y, emitterParams, parent, my.enemyBullets));		
 		this.initializeWall(parent);
 		this.initializeCrcle(parent);
@@ -1366,7 +1365,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Go_Everywhere(this.x, this.y, emitterparams, parent, my.enemyBullets));
 		
@@ -1379,7 +1377,6 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		my.player.currentLine = 0;
 
 		this.emitters.push(new my.BHell_Emitter_Yoyuko(this.x, this.y, emitterparams, parent, my.enemyBullets));
 		
