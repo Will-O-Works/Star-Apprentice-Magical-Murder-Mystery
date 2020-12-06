@@ -1153,7 +1153,7 @@ var BHell = (function (my) {
 		
 		//adding these to the correct line allow it to transition to a different phase
 		my.player.PhaseOver = true;
-		my.player.nextMap = Number(44);
+		my.player.nextMap = Number(4);
 			
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 	};
