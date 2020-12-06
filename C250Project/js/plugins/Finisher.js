@@ -24,6 +24,7 @@ var BHell = (function (my) {
         this.bulletParams.sprite = this.params.sprite;
         this.bulletParams.index = this.params.index;
         this.bulletParams.direction = this.params.direction;
+        my.player.currentLine = -1;
 		//this.bulletParams.speed = this.params.speed; 
 		
 		// initialize your own variables 
