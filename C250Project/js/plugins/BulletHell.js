@@ -6754,15 +6754,8 @@ BHell_Spriteset.prototype.updateParallax = function () {
             my.stage.changeParallax('BulletHell_A', 0, 0, 0, 0);
         }
     }
-    if (my.map === 32) {
-        if (my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final_Frozen') {
-            my.stage.changeParallax('BulletHell_Final_Frozen', 0, 0, 0, 0);
-        } else if (!my.player.Timestop && my.stage.parallaxName() != 'BulletHell_Final') {
-            my.stage.changeParallax('BulletHell_Final', 0, 0, 0, 0);
-        }
-    }
 	// Twins background in FFF
-	if (my.map === 47) {
+	if (my.map === 32) {
         if (my.player.Twinsmap) {
 			if (my.stage.parallaxName() != 'BulletHell_Twins') {
 				my.stage.changeParallax('BulletHell_Twins', 0, 0, 0, 0);
