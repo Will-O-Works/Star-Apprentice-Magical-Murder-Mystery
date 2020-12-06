@@ -5003,8 +5003,6 @@ var BHell = (function (my) {
 			this.win_count -= 1; 
 		} else if (this.won === false) {
             this.won = true;
-			
-            $gameSwitches.setValue(23, true);
         }
     };
 
@@ -5620,6 +5618,7 @@ var BHell = (function (my) {
                     $gameMap._mapId = my.discussionMap;
                 } else {
                     $gameMap._mapId = $gameVariables.value(12);
+                    $gameSwitches.setValue(23, true);
                 }
                 $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
                 $gameSelfSwitches.clear();
