@@ -2317,5 +2317,23 @@
         ]
       }
     }
+  },
+  "BarTop": {
+    "name": "BarTop",
+    "cols": 1,
+    "rows": 1,
+    "anchorX": 0.615,
+    "anchorY": 2.67,
+    "sampleImg": "C:\\Users\\Blardow\\Documents\\Games\\C250-Game-Project\\C250Project\\img\\characters\\QBarTop-OW.png",
+    "poses": {
+      "default": {
+        "name": "default",
+        "speed": 10,
+        "adjust": false,
+        "pattern": [
+          0
+        ]
+      }
+    }
   }
 }
