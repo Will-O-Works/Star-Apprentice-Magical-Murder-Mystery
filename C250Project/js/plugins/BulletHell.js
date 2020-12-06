@@ -5518,7 +5518,6 @@ var BHell = (function (my) {
 			
 			// True Fan Testimony
 			case 30: 
-			case 31: 
 			case 32: 
 			my.currentFace = ImageManager.loadFace("Super_Fan_Portrait", 0);
 			my.discussionMap = 45;
@@ -5528,6 +5527,8 @@ var BHell = (function (my) {
 			case 33: 
 			case 35: 
 			case 46: 
+			// Anime moment
+			case 31: 
 			my.currentFace = ImageManager.loadFace("Empty", 0);
 			my.discussionMap = 39;
 			break; 
@@ -5928,7 +5929,7 @@ var BHell = (function (my) {
 					this.refute_count = 23; 
 					
 					this.r_timer = my.player.win_limit + 1; 
-					my.player.win_limit = 200; 
+					my.player.win_limit = 220; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 
@@ -5971,7 +5972,7 @@ var BHell = (function (my) {
 
 		if (this.start_refute == true) {
 			
-			if (this.refute_image == this.minnie_r) {
+			/*if (this.refute_image == this.minnie_r) {
 				
 				this.refute_count = 23; 
 				
@@ -6013,7 +6014,7 @@ var BHell = (function (my) {
 									
 				} 
 				
-			} if (this.refute_image == this.fan_r) {
+			} */if (this.refute_image == this.fan_r) {
 				
 				this.refute_count = 6; 
 				
@@ -6838,6 +6839,9 @@ BHell_Spriteset.prototype.createParallax = function () {
 	
     this._face = new Sprite(my.currentFace);
     this._face.move(Graphics.width/2 - my.currentFace._image.width/2, Graphics.height - my.currentFace._image.height);
+	
+	console.log(Graphics.width); 
+	console.log(Graphics.height); 
     this._face.setColorTone([-68, -68, -68, 0]);
     this._baseSprite.addChild(this._parallax);
     this._baseSprite.addChild(this._face);
