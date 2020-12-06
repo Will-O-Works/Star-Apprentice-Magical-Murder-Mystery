@@ -621,15 +621,13 @@ var BHell = (function (my) {
 			}
 			this.prev_hp = this.hp; 
 			my.BHell_Sprite.prototype.update.call(this);
-			if (my.player.bombed == true&& this.state !== "bombed") {
-				my.controller.destroyEnemyBullets(); 
-				this.timer = 0; 
-				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-				this.state = "bombed";
+			if (my.player.bombed == true) {
+				this.die(); 
 			}
-		if (this.state !== "dying") {
-			this.move();
-		}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
 		switch (this.state) {
 			case "started":
 				if (this.mover.inPosition === true) {
@@ -642,13 +640,20 @@ var BHell = (function (my) {
 				this.updateZaWarudo();
 				break;
 			case "dying": // die.
-				this.destroy();
-				break;
-			case "bombed":  
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
-				this.destroy();
-			break; 
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break;
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
