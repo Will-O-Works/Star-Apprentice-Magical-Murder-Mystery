@@ -6154,7 +6154,7 @@ var BHell = (function (my) {
 		} else if (my.player.finisherImage == "$TwinsSentence") {
 			x = -120; 
 		} else if (my.player.finisherImage == "$VictoriaSentence") {
-			x = -80; 
+			x = -130; 
 		} else if (my.player.finisherImage == "$TutorialSentence") {
 			x = -20; 
 		} else if (my.player.finisherImage == "$SuperFanSentence") {
