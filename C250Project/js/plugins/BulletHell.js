@@ -5935,22 +5935,11 @@ var BHell = (function (my) {
 				
 				case "fan":  // fan's injustice bomb 
 					this.refute_image = this.fan_r;
-					this.refute_count = 17; 
+					this.refute_count = 6; 
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 120; 
-					my.player.win_count = my.player.win_limit; 
-					
-				break; 
-				
-				case "laser":  // laser on the heart 
-					this.refute_image = this.laser_r;
-					this.refute_count = 17; 
-					my.player.h_index = this.b_frame;  // Skip normal minnie refute
-					
-					this.r_timer = 1; 
-					my.player.win_limit = 120; 
+					my.player.win_limit = 150; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 
@@ -6024,18 +6013,81 @@ var BHell = (function (my) {
 									
 				} 
 				
-			} else if (my.player.l_index < this.refute_count - 1) {
+			} if (this.refute_image == this.fan_r) {
+				
+				this.refute_count = 6; 
+				
+				if (my.player.r_index < this.refute_count - 1) {
 
-				sx = this.laser_r.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
+					sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+					sy = 0; 
+					w = this.refute_image.width / this.refute_count;
+					h = this.refute_image.height;
+					x = 0;
+					y = 0; 
+					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+						
+					if (my.player.r_index < this.refute_count - 1) {
+						my.player.r_index += 15/60; 
+					} 
+					
+					if (my.player.r_index == this.refute_count - 1) {
+						my.player.r_index = 8; 
+					}
+					
+					this.fan_rtimer = 20; 
+									
+				} else if (this.fan_rtimer > 0) {
+					
+					my.player.r_index = this.refute_count - 1
+					
+					sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+					sy = 0; 
+					w = this.refute_image.width / this.refute_count;
+					h = this.refute_image.height;
+					x = 0;
+					y = 0; 
+					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+						
+					if (my.player.r_index < this.refute_count - 1) {
+						my.player.r_index += 15/60; 
+					} 
+					
+					this.fan_rtimer -= 1; 
+					
+				} else if (my.player.l_index < this.refute_count - 1) {
+					
+					this.refute_image = this.fan_ra;
+					this.refute_count = 32; 
+					
+					sx = this.refute_image.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
+					sy = 0; 
+					w = this.refute_image.width / this.refute_count;
+					h = this.refute_image.height;
+					x = 0;
+					y = 0; 
+					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+						
+					if (my.player.l_index < this.refute_count - 1) {
+						my.player.l_index += 15/60; 
+					} 
+					
+				} 
+				
+			}
+			
+			else if (my.player.r_index < this.refute_count - 1) {
+
+				sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
 				sy = 0; 
-				w = this.laser_r.width / this.refute_count;
-				h = this.laser_r.height;
+				w = this.refute_image.width / this.refute_count;
+				h = this.refute_image.height;
 				x = 0;
 				y = 0; 
-				this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
+				this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 					
-				if (my.player.l_index < this.refute_count - 1) {
-					my.player.l_index += 15/60; 
+				if (my.player.r_index < this.refute_count - 1) {
+					my.player.r_index += 15/60; 
 				} 
 								
 			} else {
@@ -6216,6 +6268,7 @@ var BHell = (function (my) {
 		// refutes! 12/05/2020
 		this.detective_r = ImageManager.loadSystem("DetectiveRefute", 0);
 		this.fan_r = ImageManager.loadSystem("FanRefute", 0);
+		this.fan_ra = ImageManager.loadSystem("FanRefuteAnimated", 0);
 		this.minnie_r = ImageManager.loadSystem("minnieSuperMasterSpark", 0);
 		this.laser_r = ImageManager.loadSystem("heartInLaser", 0);
 
