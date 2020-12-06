@@ -591,7 +591,7 @@ var BHell = (function (my) {
 
         this.initializeVL1P2Emitter(parent);
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
 
 		this.circle_p = 100; // increase frequency for angry state
         this.radius = 200;
@@ -715,7 +715,7 @@ var BHell = (function (my) {
 			}
 			
 			if (my.player.bombed == true) {
-				this.destroy(); 
+				this.die(); 
 			}
 			
 			if (this.state !== "dying") {
@@ -740,11 +740,6 @@ var BHell = (function (my) {
                 // }
                 break;
             case "dying": // die.
-                this.destroy();
-                break;
-				
-			/* Added bombed case if bomb is casted on the line by V.L. */
-			case "bombed":  
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
 				
@@ -758,7 +753,7 @@ var BHell = (function (my) {
 				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
 					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
 				}
-				break; 
+				break;
 			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
         // Update the emitter's position.

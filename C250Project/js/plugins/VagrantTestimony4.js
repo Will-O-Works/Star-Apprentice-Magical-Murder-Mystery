@@ -884,16 +884,13 @@ var BHell = (function (my) {
 			
             my.BHell_Sprite.prototype.update.call(this);
             /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
-		if (my.player.bombed == true  && this.state !== "bombed") {
-			my.controller.destroyEnemyBullets(); 
-			this.timer = 0; 
-			this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
-			this.state = "bombed";
-		}
-		
-        if (this.state !== "dying" && this.state !== "bombed") {
-            this.move();
-        }
+		if (my.player.bombed == true) {
+				this.die(); 
+			}
+			
+			if (this.state !== "dying") {
+                this.move();
+            }
 		
         /* Copy and paste this code into update function for should-be-bombed lines by V.L. */
         switch (this.state) {
@@ -906,20 +903,21 @@ var BHell = (function (my) {
             case "pattern 1": // Shoots from the hands and the claws for 10 seconds, then switches to pattern 2
                 this.updateCoat();
                 break;
-            case "dying": // Spawns explosions for 5 seconds, then dies.
-                if (this.frameCounter > 30) {
-                    this.destroy();
-                }
-                break;
-				
-			/* Added bombed case if bomb is casted on the line by V.L. */
-			case "bombed":  
+            case "dying": // die.
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
-				my.controller.generators = [];
-				my.controller.activeGenerators = [];
-				this.destroy();
-				break; 
+				
+				if (this.timer > 70) {
+					// Clear screen after count down V.L. 10/20/2020
+					my.controller.generators = [];
+					my.controller.activeGenerators = [];
+					
+					this.destroy();
+				}
+				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+				}
+				break;
 			/* Added bombed case if bomb is casted on the line by V.L. */
         }; 
 
