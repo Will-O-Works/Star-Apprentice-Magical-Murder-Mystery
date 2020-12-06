@@ -4588,6 +4588,7 @@ var BHell = (function (my) {
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
 		this.win_limit = 120; 
 		this.win_count = this.win_limit; 
+		this.fade_out = 40; 
 		
 		// Added player_speed prameter by V.L.
         this.speed = playerParams.speed; 
@@ -4865,7 +4866,13 @@ var BHell = (function (my) {
                     $gameMessage.add("I should try again. "); 
                     SceneManager.goto(my.Scene_BHell_Init); 
                 } else {
-                    my.playing = false;
+					console.log(this.fade_out); 
+					
+					if (this.fade_out > 0) {
+						this.fade_out -= 1; 
+					} else {
+						my.playing = false;
+					}
                 }
             } else if (this.bombed == false) {
                     messageStarted = true;
@@ -6033,7 +6040,14 @@ var BHell = (function (my) {
 		for(var i = 0; i < my.player.wordsList.length; i++){
 			var finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
 			this.finisher = new Sprite(finisher);
-			this.finisher.setColorTone([-64, -64, -64, 0.6]);
+			
+			if (my.player.fade_out == 40) {
+				this.finisher.setColorTone([-64, -64, -64, 0.6]);
+			} else {
+				this.finisher.setColorTone([0, 0, 0, 0.6]);
+				this.fadeOutAll();
+			}
+			
 			
 			var w = this.finisher.width / 3; // Graphics.width;
 			var h = this.finisher.height / 4; //Graphics.height;
@@ -6048,10 +6062,6 @@ var BHell = (function (my) {
 
 			y = Graphics.height/4;  
 			x += my.player.wordsList[i][1] / 2; 
-			
-			if (this.credit_y < this.finisher.height) {
-				this.credit_y += 1; 
-			}
 			
 			this.hud.bitmap.blt(this.finisher, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
