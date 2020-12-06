@@ -4663,6 +4663,7 @@ var BHell = (function (my) {
 		this.refute_type = "none"; 
 		this.r_index = 0; 
 		this.r_timer = 0; 
+		this.l_index = 0; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -5981,7 +5982,9 @@ var BHell = (function (my) {
 
 		if (this.start_refute == true) {
 			
-			if (this.refute_image == this.laser_r) {
+			if (this.refute_image == this.minnie_r) {
+				
+				this.refute_count = 23; 
 				
 				if (my.player.r_index < this.refute_count - 1) {
 
@@ -5989,30 +5992,50 @@ var BHell = (function (my) {
 					sy = 0; 
 					w = this.refute_image.width / this.refute_count;
 					h = this.refute_image.height;
-					x = Graphics.width / 2 - this.refute_image.width / this.refute_count / 2;
-					y = -50; 
+					x = 0;
+					y = 0; 
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
 					if (my.player.r_index < this.refute_count - 1) {
 						my.player.r_index += 15/60; 
 					} 
+					
+					if (my.player.r_index == this.refute_count - 1) {
+						my.player.r_index = 8; 
+					}
 									
-				} else {
-					this.start_refute = false; 
 				}
 				
-			} else if (my.player.r_index < this.refute_count - 1) {
+				this.refute_count = 17; 
+				
+				if (my.player.l_index < this.refute_count - 1) {
 
-				sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+					sx = this.laser_r.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
+					sy = 0; 
+					w = this.laser_r.width / this.refute_count;
+					h = this.laser_r.height;
+					x = Graphics.width / 2 - this.laser_r.width / this.refute_count / 2;
+					y = -50; 
+					this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
+						
+					if (my.player.l_index < this.refute_count - 1) {
+						my.player.l_index += 15/60; 
+					} 
+									
+				} 
+				
+			} else if (my.player.l_index < this.refute_count - 1) {
+
+				sx = this.laser_r.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
 				sy = 0; 
-				w = this.refute_image.width / this.refute_count;
-				h = this.refute_image.height;
+				w = this.laser_r.width / this.refute_count;
+				h = this.laser_r.height;
 				x = 0;
 				y = 0; 
-				this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+				this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
 					
-				if (my.player.r_index < this.refute_count - 1) {
-					my.player.r_index += 15/60; 
+				if (my.player.l_index < this.refute_count - 1) {
+					my.player.l_index += 15/60; 
 				} 
 								
 			} else {
@@ -6020,8 +6043,6 @@ var BHell = (function (my) {
 			}
 			
 		}
-
-		
 		
 		// Update bomb image when there's no bomb V.L. 10/20/2020 
 		if (my.player.bombs == 0 && my.player.bombed == false) {
@@ -6035,9 +6056,9 @@ var BHell = (function (my) {
 		}
 		
 		this.r_frame = 17; 
-		if (this.go_refute == true && this.r_index < this.r_frame - 1) {
+		if (this.go_refute == true && this.l_index < this.r_frame - 1) {
 			// Refute image V.L. 11/25/2020 
-			sx = this.refute.width / this.r_frame * (Math.round(this.r_index % this.r_frame)); 
+			sx = this.refute.width / this.r_frame * (Math.round(this.l_index % this.r_frame)); 
 			sy = 0; 
 			w = this.refute.width / this.r_frame;
 			h = this.refute.height;
@@ -6045,8 +6066,8 @@ var BHell = (function (my) {
 			y = 0; 
 			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
-			if (this.r_index < this.r_frame - 1) {
-				this.r_index += 15/60; 
+			if (this.l_index < this.r_frame - 1) {
+				this.l_index += 15/60; 
 			} 
 		}
 		
@@ -6070,7 +6091,7 @@ var BHell = (function (my) {
 		
 		if (my.player.h_index == this.b_frame - 1) {
 			this.go_refute = true; 
-			this.r_index = 0; 
+			this.l_index = 0; 
 			my.player.h_index = this.b_frame; 
 		}
 		
@@ -6088,7 +6109,7 @@ var BHell = (function (my) {
 			x = -120; 
 		}
 		
-
+		// Sentence display
 		for(var i = 0; i < my.player.wordsList.length; i++){
 			var finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
 			this.finisher = new Sprite(finisher);
