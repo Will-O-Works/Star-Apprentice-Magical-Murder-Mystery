@@ -5965,7 +5965,7 @@ var BHell = (function (my) {
 			
 		}
 
-		if (this.r_timer != null){
+		if (this.r_timer != null && !my.controller.paused){
 			if (this.r_timer > 1) {
 				this.r_timer -= 1; 
 			} else {
@@ -5990,11 +5990,11 @@ var BHell = (function (my) {
 					y = 0; 
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
-					if (my.player.r_index < this.refute_count - 1) {
+					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index += 15/60; 
 					} 
 					
-					if (my.player.r_index == this.refute_count - 1) {
+					if (my.player.r_index == this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index = 8; 
 					}
 									
@@ -6012,7 +6012,7 @@ var BHell = (function (my) {
 					y = -50; 
 					this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
 						
-					if (my.player.l_index < this.refute_count - 1) {
+					if (my.player.l_index < this.refute_count - 1 && !my.controller.paused) {
 						my.player.l_index += 15/60; 
 					} 
 									
@@ -6032,11 +6032,11 @@ var BHell = (function (my) {
 					y = 0; 
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
-					if (my.player.r_index < this.refute_count - 1) {
+					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index += 15/60; 
 					} 
 					
-					if (my.player.r_index == this.refute_count - 1) {
+					if (my.player.r_index == this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index = 8; 
 					}
 					
@@ -6054,7 +6054,7 @@ var BHell = (function (my) {
 					y = 0; 
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
-					if (my.player.r_index < this.refute_count - 1) {
+					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index += 15/60; 
 					} 
 					
@@ -6073,7 +6073,7 @@ var BHell = (function (my) {
 					y = 0; 
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
-					if (my.player.l_index < this.refute_count - 1) {
+					if (my.player.l_index < this.refute_count - 1 && !my.controller.paused) {
 						my.player.l_index += 15/60; 
 					} 
 					
@@ -6091,7 +6091,7 @@ var BHell = (function (my) {
 				y = 0; 
 				this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 					
-				if (my.player.r_index < this.refute_count - 1) {
+				if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
 					my.player.r_index += 15/60; 
 				} 
 								
@@ -6123,7 +6123,7 @@ var BHell = (function (my) {
 			y = 0; 
 			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
-			if (this.l_index < this.r_frame - 1) {
+			if (this.l_index < this.r_frame - 1 && !my.controller.paused) {
 				this.l_index += 15/60; 
 			} 
 		}
@@ -6140,7 +6140,7 @@ var BHell = (function (my) {
 			y = 0; //Graphics.height / 2; 
 			this.hud.bitmap.blt(this.heavyattack, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
-			if (my.player.h_index < this.b_frame - 1) {
+			if ((my.player.h_index < this.b_frame - 1) && !my.controller.paused) {
 				my.player.h_index += 15/60; 
 			} 
 			
