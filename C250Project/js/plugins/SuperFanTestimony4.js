@@ -222,11 +222,11 @@ var BHell = (function (my) {
 
 		$gameVariables.setValue(11, this.testimony); 
 		
-		console.log(this.testimony)
+		console.log("this. test: "+this.testimony)
 		
 		if (this.testimony == 3) {
 			my.player.refute_type = "fan"; 
-			my.player.bombed = true; 
+			my.player.bombed = true;
 		} else {
 			my.player.refute_type = "laser"; 
 		}
