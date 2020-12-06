@@ -17,7 +17,7 @@ var charPortrait = [
     'Fan_Portrait[Exp4x4]',
     'Black_Portrait[Exp3x2]',
     'White_Portrait[Exp3x2]',
-    'Tycoon_Portrait[Exp3x2]',
+    'Tycoon_Portrait[Exp3x3]',
     'Jeeves_Portrait'
 ];
 
