@@ -98,7 +98,7 @@ var BHell = (function (my) {1
 	BHell_Enemy_Final_Lines2.prototype.destroy = function() {
 
 		if (this.end == 1) {
-			my.player.bombed = true; 
+			my.player.bombed = false; 
 			
 			//adding these to the correct line allow it to transition to a different phase
 			my.player.PhaseOver = true;
@@ -1102,8 +1102,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 125;
-        params.hitbox_w = 506;
-        params.hitbox_h = 82;
+        params.hitbox_w = 96;
+        params.hitbox_h = 96;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
@@ -1198,6 +1198,9 @@ var BHell = (function (my) {
 		}
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		this.frameCounter++
+		if(this.frameCounter%45==0){
+			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+		}
 	}; 
 	
 	BHell_Enemy_SuperFanTestimony4_p1.prototype.die = function() {
@@ -1245,8 +1248,8 @@ var BHell = (function (my) {
 
 		params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 324;
-        params.hitbox_h = 72;
+        params.hitbox_w = 96;
+        params.hitbox_h = 96;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
@@ -1270,6 +1273,9 @@ var BHell = (function (my) {
 		this.updateCat(this.frameCounter); 
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		this.frameCounter++
+		if(this.frameCounter%45==0){
+			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+		}
 	}; 
 	
 	BHell_Enemy_SuperFanTestimony4_p2.prototype.initializeCat = function () {
@@ -1344,8 +1350,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 100;
         params.speed = 125;
-        params.hitbox_w = 506;
-        params.hitbox_h = 82;
+        params.hitbox_w = 96;
+        params.hitbox_h = 96;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
@@ -1423,9 +1429,10 @@ var BHell = (function (my) {
 		/*this.emitters.forEach(e => {
 			e.shooting = t;
 		});*/
-	};
-	
-	
+		if(this.frameCounter%45==0){
+			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+		}
+	};	
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
@@ -1576,7 +1583,21 @@ var BHell = (function (my) {
     BHell_Enemy_Final_Brick.prototype.update = function() {
         my.BHell_Sprite.prototype.update.call(this);
         this.move();
-        this.frameCounter =(this.frameCounter+1)%1200;
+		this.frameCounter =(this.frameCounter+1)%1200;
+		if(this.hp==5&&this.firstBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.firstBreak=true;
+        }
+        if(this.hp==3&&this.secondBreak==false){
+            //console.log("oof");
+            this.frame+=1;
+            //my.BHell_Sprite.prototype.update.call(this);
+            this.updateCharacterFrame();
+            this.secondBreak=true;
+        }
      }
     return my;
 } (BHell || {}));

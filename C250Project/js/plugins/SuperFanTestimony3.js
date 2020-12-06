@@ -71,7 +71,7 @@ var BHell = (function (my) {
         BHell_Enemy_SuperFanTestimony3_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
             params.hp = 45;//change to adjust Line HP
             params.speed = 3.5; // change to adjust speed of boss moving 
-            params.hitbox_w = 106; // change to adjust hitbox width
+            params.hitbox_w = 412; // change to adjust hitbox width
             params.hitbox_h = 82; // change to adjust hitbox heights
             params.animated = false;
             my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -684,7 +684,7 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 20;//change to adjust Line HP
         params.speed = 3.5; // change to adjust speed of boss moving 
-        params.hitbox_w = 412; // change to adjust hitbox width
+        params.hitbox_w = 106; // change to adjust hitbox width
         params.hitbox_h = 82; // change to adjust hitbox heights
 		params.animated = false;
 		my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
@@ -911,7 +911,7 @@ var BHell = (function (my) {
         if(this.frameCounter==1&&this.count<this.num){
             this.n=2
             for (var k = 0; k < this.n; k++) {
-                this.emitters[11].x=350+300*(k);
+                this.emitters[11].x=330+300*(k);
                 this.emitters[11].y=50;
                 //this.emitters[1].angle=this.a + (this.b - this.a)/ this.n  * (k + 0.5)-Math.PI/2;
                 console.log(this.a + (this.b - this.a)/ this.n  * (k + 0.5));

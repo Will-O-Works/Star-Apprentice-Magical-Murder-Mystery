@@ -6838,8 +6838,8 @@ BHell_Spriteset.prototype.createParallax = function () {
 	/* Say hi to the twins V.L. */
 	this.twins_faces = ImageManager.loadFace("Twins_Portrait", 0);
 	this.twins_buffer = new Sprite(this.twins_faces);
-	this.fan_faces = ImageManager.loadFace("Super_Fan_Portrait", 0);
-	this.fan_buffer = new Sprite(this.fan_faces);
+	// this.fan_faces = ImageManager.loadFace("Super_Fan_Portrait", 0); commented out cause we decided to remove the fan from that map YA
+	// this.fan_buffer = new Sprite(this.fan_faces);
 	/* Say hi to the twins V.L. */
 	
     this._face = new Sprite(my.currentFace);

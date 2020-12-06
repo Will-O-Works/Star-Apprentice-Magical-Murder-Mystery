@@ -573,6 +573,7 @@ var BHell = (function (my) {
 
 		this.initializeDrunk(parent);
 		this.initializeEye(parent);
+		this.initializeCircle(parent);
 
 		// set player.can_bomb to true by V.L.
         my.player.can_bomb = false;
@@ -594,10 +595,10 @@ var BHell = (function (my) {
 		this.emitters[0].aimX=0;
 		this.emitters[0].angle=Math.PI/2;
 		this.emitters.push(new my.BHell_Emitter_Lightning(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters[1].aimX=200;
+		this.emitters[1].aimX=260;
 		this.emitters[1].angle=Math.PI/2;
 		this.emitters.push(new my.BHell_Emitter_Lightning(this.x, this.y, emitterParams, parent, my.enemyBullets)); // initialize the emmiter, check BHell_Emmiter
-		this.emitters[2].aimX=-200;
+		this.emitters[2].aimX=-260;
 		this.emitters[2].angle=Math.PI/2;
     }
     //initalizeing Tracking emitter update, Cirlce emitter update, die and any other extra functions here
@@ -636,8 +637,8 @@ var BHell = (function (my) {
             }
         }
         if ((this.updateCatCounter) % 20 == 0 && this.spawnNumber>=this.spawnCounter) {
-            my.controller.enemies.push(new my.BHell_Enemy_GunnerEye(this.x + 300, this.y - 82, image, params, this.parent, my.controller.enemies));
-            my.controller.enemies.push(new my.BHell_Enemy_GunnerEye(this.x - 300, this.y - 82, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_GunnerEye(this.x + 300, this.y - 100, image, params, this.parent, my.controller.enemies));
+            my.controller.enemies.push(new my.BHell_Enemy_GunnerEye(this.x - 300, this.y - 100, image, params, this.parent, my.controller.enemies));
             this.spawnCounter+=1;
             if(this.spawnCounter==1)
             {
@@ -646,6 +647,21 @@ var BHell = (function (my) {
             }
         }
 	};
+	BHell_Enemy_SuperFanTestimony1_p2.prototype.initializeCircle = function (parent) {
+        var emitterParams = {};
+        emitterParams.bullet = {};
+        emitterParams.bullet.sprite="$FanBullets"
+        emitterParams.bullet.direction = 2;
+        emitterParams.a = 0;
+        emitterParams.b = Math.PI;
+        emitterParams.n = 8;
+        this.emitters.push(new my.BHell_Emitter_Spray(Graphics.width / 2, 125, emitterParams, parent, my.enemyBullets));
+    }
+    BHell_Enemy_SuperFanTestimony1_p2.prototype.updateCircle = function () { 
+        if(this.frameCounter%60==0&&my.player.Timestop==false){
+            this.emitters[3].shoot(true);
+        }
+    };
     BHell_Enemy_SuperFanTestimony1_p2.prototype.die = function() {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
@@ -722,7 +738,8 @@ var BHell = (function (my) {
                 break;
             case "active": // Shoot.
 				this.updateDrunk(); 
-				this.updateEye();  
+				this.updateEye();
+				this.updateCircle();  
                 break;
             case "dying": // die.
                 this.destroy();
