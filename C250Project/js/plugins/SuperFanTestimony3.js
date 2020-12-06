@@ -207,7 +207,7 @@ var BHell = (function (my) {
         BHell_Enemy_SuperFanTestimony3_p1.prototype.updateZaWarudo = function() {
             if(this.frameCounter==180){
                 if(this.firstpause==true){
-                    AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                    AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
                     this.firstpause=false;
                 }
                 else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
@@ -551,10 +551,17 @@ var BHell = (function (my) {
     };
     BHell_Enemy_SuperFanTestimony3_p2.prototype.updateZaWarudo = function() {
         if(this.frameCounter==270){
+            if(this.firstpause==true){
+                AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
+                this.firstpause=false;
+            }
+            else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
             my.player.Timestop=true;
+            this.WspawnCounter = 0;
         }
         if(this.frameCounter==400){
             my.player.Timestop=false;
+            my.player.immortal-true;
         }
     };
     BHell_Enemy_SuperFanTestimony3_p2.prototype.initializeWatcher = function (parent) {
@@ -827,7 +834,7 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p3.prototype.updateZaWarudo = function() {
         if(this.frameCounter==180){
             if(this.firstpause==true){
-                AudioManager.playSe({name: "timestop", volume: 100, pitch: 100, pan: 0});
+                AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});
                 this.firstpause=false;
             }
             else{AudioManager.playSe({name: "timestop2", volume: 100, pitch: 100, pan: 0});}
