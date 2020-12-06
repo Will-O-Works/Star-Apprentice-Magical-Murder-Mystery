@@ -6020,13 +6020,13 @@ var BHell = (function (my) {
 		// draw sentence as it forms (Ohi)
 		var wordsX = 0;
 		if (my.player.finisherImage == "$VagrantSentence") {
-			x = -80; 
+			x = -20; 
 		} else if (my.player.finisherImage == "$TwinsSentence") {
 			x = -120; 
 		} else if (my.player.finisherImage == "$VictoriaSentence") {
 			x = -80; 
 		} else if (my.player.finisherImage == "$TutorialSentence") {
-			x = -80; 
+			x = -20; 
 		} else if (my.player.finisherImage == "$SuperFanSentence") {
 			x = -120; 
 		}

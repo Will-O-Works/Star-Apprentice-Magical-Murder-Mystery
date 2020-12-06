@@ -103,22 +103,22 @@ var BHell = (function (my) {
 		if (image.characterName == "$VagrantSentence") {
 			switch (this.dir) {
 				case 0: 
-					this.hitboxW = 68; // hitbox width
+					this.hitboxW = 72; // hitbox width
 					this.hitboxH = 30; // hitbox height
 				break; 
 				
 				case 1: 
-					this.hitboxW = 86; // hitbox width
+					this.hitboxW = 170; // hitbox width
 					this.hitboxH = 30; // hitbox height
 				break; 
 				
 				case 2: 
-					this.hitboxW = 312; // hitbox width
+					this.hitboxW = 236; // hitbox width
 					this.hitboxH = 30; // hitbox height
 				break; 
 				
 				case 3: 
-					this.hitboxW = 221; // hitbox width
+					this.hitboxW = 222; // hitbox width
 					this.hitboxH = 30; // hitbox height
 				break; 
 			}
@@ -169,23 +169,23 @@ var BHell = (function (my) {
 		} else if (image.characterName == "$TutorialSentence") {
 			switch (this.dir) {
 				case 0: 
-					this.hitboxW = 68; // hitbox width
-					this.hitboxH = 30; // hitbox height
+					this.hitboxW = 174; // hitbox width
+					this.hitboxH = 34; // hitbox height
 				break; 
 				
 				case 1: 
-					this.hitboxW = 86; // hitbox width
-					this.hitboxH = 30; // hitbox height
+					this.hitboxW = 108; // hitbox width
+					this.hitboxH = 34; // hitbox height
 				break; 
 				
 				case 2: 
-					this.hitboxW = 312; // hitbox width
-					this.hitboxH = 30; // hitbox height
+					this.hitboxW = 156; // hitbox width
+					this.hitboxH = 34; // hitbox height
 				break; 
 				
 				case 3: 
-					this.hitboxW = 221; // hitbox width
-					this.hitboxH = 30; // hitbox height
+					this.hitboxW = 242; // hitbox width
+					this.hitboxH = 34; // hitbox height
 				break; 
 			}
 		} else if (image.characterName == "$SuperFanSentence") {
