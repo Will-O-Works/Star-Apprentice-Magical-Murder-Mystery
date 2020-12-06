@@ -141,6 +141,7 @@ var BHell = (function (my) {
 		this.num_waves = 8; // number of waves in a Testimony
 		this.num_bullet = 12; // number of bullets in a Testimony
 		this.attack_between = 150; // time between two major attacks
+		this.space = 100; 
 		
 		if (params != null) {
             this.num_waves = params.num_waves || this.num_waves;
@@ -165,7 +166,7 @@ var BHell = (function (my) {
 
 		// console.log(this.timer);
 
-		if (this.timer > 100) {
+		if (this.timer > this.space) {
 			for (var j = 0; j < this.num_waves; j++) {
 				this.bulletParams.speed = this.baseSpeed + this.count / 4; 
 				var bullet = new my.BHell_Bullet(this.x, this.y, this.angle + this.count * Math.PI / 180 + j * 2 * Math.PI / this.num_waves, this.bulletParams, this.bulletList);
@@ -575,25 +576,23 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
+		my.player.can_bomb = true; 
 		my.player.currentLine = 0;
 		
 		this.emitters.push(new my.BHell_Emitter_Spin(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
-	
-	BHell_Enemy_TwinsTestimony2_p1.prototype.update = function() {
-		
-		if (this.bombedWrong == true) {
-			// Write the bombedWrong penalty in here
-			this.emitters[1].num_bullet = 36; 
-			this.emitters[1].period = 50; 
-		}
-		
-		/* inherit update function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.update.call(this);
-		/* inherit update function from BHell_Enemy_Base by V.L. */
-	} 
+
+	BHell_Enemy_TwinsTestimony2_p1.prototype.destroy = function() {
+
+		//adding these to the correct line allow it to transition to a different phase
+		my.player.PhaseOver = true;
+		my.player.nextMap = Number(20);//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
 	
     return my;
 } (BHell || {}));
@@ -631,7 +630,7 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
+		my.player.can_bomb = false; 
 		my.player.currentLine = 1;
 		
 		this.emitters.push(new my.BHell_Emitter_Spin(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -639,19 +638,27 @@ var BHell = (function (my) {
 		emitterParams.period = 1; 
 		emitterParams.bullet.direction = 2;
 		this.emitters.push(new my.BHell_Emitter_Flower(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		
+		this.created = false; 
+		this.parent = parent; 
 
     };
-	
-	BHell_Enemy_TwinsTestimony2_p2.prototype.destroy = function() {
 
-		//adding these to the correct line allow it to transition to a different phase
-		my.player.PhaseOver = true;
-		my.player.nextMap = Number(20);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-			
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-	};
+	
+	BHell_Enemy_TwinsTestimony2_p2.prototype.update = function() {
+		
+		if (this.bombedWrong == true) {
+			// Write the bombedWrong penalty in here
+			this.emitters[1].num_waves = 16; 
+			this.emitters[1].num_bullet = 12;
+			this.emitters[1].attack_between = 110; 
+			this.emitters[1].baseSpeed = 2; 
+		}
+		
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		/* inherit update function from BHell_Enemy_Base by V.L. */
+	} 
 	
     return my;
 } (BHell || {}));
