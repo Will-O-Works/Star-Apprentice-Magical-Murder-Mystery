@@ -1321,15 +1321,15 @@ var BHell = (function (my) {
         var e;
         var b;
         var m;
-        if (Input.isTriggered("#f7")) {
-            $gameSwitches.setValue(23, true);
-            $gameMap._mapId = $gameVariables.value(12);
-            $gameBHellResult.won = true;
-            $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
-            $gameSelfSwitches.clear();
-            $gamePlayer.requestMapReload();
-            SceneManager.goto(Scene_Map);
-        }
+        // if (Input.isTriggered("#f7")) {
+        //     $gameSwitches.setValue(23, true);
+        //     $gameMap._mapId = $gameVariables.value(12);
+        //     $gameBHellResult.won = true;
+        //     $gamePlayer.reserveTransfer($gameMap.mapId(), $gamePlayer.x, $gamePlayer.y);
+        //     $gameSelfSwitches.clear();
+        //     $gamePlayer.requestMapReload();
+        //     SceneManager.goto(Scene_Map);
+        // }
         if (this.generators.length === 0 && this.activeGenerators.length === 0 && this.enemies.length === 0) {
             // Victory.
             $gameBHellResult.won = true;
