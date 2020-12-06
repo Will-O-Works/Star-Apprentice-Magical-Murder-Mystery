@@ -5523,12 +5523,16 @@ var BHell = (function (my) {
 			my.discussionMap = 45;
 			break; 
 			
+			// Anime moment
+			case 31: 
+			my.currentFace = ImageManager.loadFace("Empty", 0);
+			my.discussionMap = 45;
+			break; 
+			
 			// Tutorial Testimony
 			case 33: 
 			case 35: 
 			case 46: 
-			// Anime moment
-			case 31: 
 			my.currentFace = ImageManager.loadFace("Empty", 0);
 			my.discussionMap = 39;
 			break; 
