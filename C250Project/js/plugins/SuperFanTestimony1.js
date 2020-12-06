@@ -611,10 +611,6 @@ var BHell = (function (my) {
     };
     BHell_Enemy_SuperFanTestimony1_p2.prototype.destroy = function() {
 
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
@@ -788,10 +784,6 @@ var BHell = (function (my) {
     };
     BHell_Enemy_SuperFanTestimony1_p3.prototype.destroy = function() {
 
-        //adding these to the correct line allow it to transition to a different phase
-        my.player.PhaseOver = true;
-        my.player.nextMap = Number(9);//the 3 here is the map number change this to whatever map number u want to transition there on victory
-		
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();

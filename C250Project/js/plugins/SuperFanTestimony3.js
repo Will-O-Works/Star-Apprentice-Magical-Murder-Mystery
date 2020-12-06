@@ -230,9 +230,6 @@ var BHell = (function (my) {
                 my.controller.enemies[1].destroy();
             }	
             my.BHell_Enemy_Base.prototype.destroy.call(this);
-            my.player.PhaseOver = true;
-            //my.player.nextMap = Number(37);
-            my.player.nextMap = Number(52);
         };	
         //main update loop
         BHell_Enemy_SuperFanTestimony3_p1.prototype.update = function () {
