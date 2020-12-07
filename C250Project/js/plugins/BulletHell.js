@@ -4640,7 +4640,7 @@ var BHell = (function (my) {
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 		
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
-		this.win_limit = 120; 
+		this.win_limit = 190; // 120; 
 		this.win_count = this.win_limit; 
 		this.fade_out = 40; 
 		
@@ -5940,7 +5940,7 @@ var BHell = (function (my) {
 					this.refute_count = 23; 
 					
 					this.r_timer = my.player.win_limit + 1; 
-					my.player.win_limit = 220; 
+					my.player.win_limit = 290; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 
