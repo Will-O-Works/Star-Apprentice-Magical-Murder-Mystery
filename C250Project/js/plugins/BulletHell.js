@@ -229,6 +229,7 @@ var currentTextSoundDelay = 0;
 var maxTextSoundDelay = 20;
 var myInterpreter = new Game_Interpreter();
 var callingMsg = false;
+var superFanPortrait = ImageManager.loadFace("Super_Fan_Portrait", 0);
 
 var BHell = (function (my) {
 
@@ -4598,7 +4599,7 @@ var BHell = (function (my) {
         //YA some variables to allow phases
         this.PhaseOver;
         this.nextMap;
-        if ($gameVariables.value(11) >= 4 || my.map == 30) {
+        if ($gameVariables.value(11) >= 4 || my.map === 30 || my.map === 46) {
             this.currentLine = -1;
         } else {
             this.currentLine = 0;
@@ -5525,7 +5526,7 @@ var BHell = (function (my) {
 			// True Fan Testimony
 			case 30: 
 			case 32: 
-			my.currentFace = ImageManager.loadFace("Super_Fan_Portrait", 0);
+			my.currentFace = superFanPortrait;
 			my.discussionMap = 45;
 			break; 
 			

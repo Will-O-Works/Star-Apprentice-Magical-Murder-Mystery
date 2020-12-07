@@ -92,6 +92,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+        my.player.bombs = 0;
 		my.player.currentLine = 0; 
 		
 		this.pressed = [0, 0, 0, 0]; 
