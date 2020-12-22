@@ -34,9 +34,9 @@ var BHell = (function (my) {
         emitterParams.bullet.speed = 4;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
-        emitterParams.bullet.shape="rectangle";
-        emitterParams.bullet.hitboxheight=20;
-        emitterParams.bullet.hitboxwidth=20;
+        emitterParams.bullet.hitboxshape="rectangle";
+        emitterParams.bullet.hitboxheight=5;
+        emitterParams.bullet.hitboxwidth=13;
         this.totalWidth =20;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -53,8 +53,8 @@ var BHell = (function (my) {
         emitterParams.alwaysAim=false;
         emitterParams.angle = 3*Math.PI/2;
         emitterParams.bullet.hitboxshape="rectangle";
-        emitterParams.bullet.hitboxheight=20;
-        emitterParams.bullet.hitboxwidth=20;
+        emitterParams.bullet.hitboxheight=5;
+        emitterParams.bullet.hitboxwidth=13;
         for(var i =this.totalWidth;i<(this.totalWidth*2);i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
             this.emitters[i].offsetX = 280-((i%this.totalWidth)*30);
@@ -301,6 +301,9 @@ var BHell = (function (my) {
         emitterParams.bullet.speed = 5;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
+        emitterParams.bullet.hitboxshape="rectangle";
+        emitterParams.bullet.hitboxheight=5;
+        emitterParams.bullet.hitboxwidth=13;
         this.totalWidth =16;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -480,9 +483,10 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_VictoriaTestimony2_p2.prototype.destroy = function() {
+        my.BHell_Enemy_Base.prototype.destroy.call(this);
         my.player.PhaseOver = true;
         my.player.nextMap = Number(51);
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		
     };
     BHell_Enemy_VictoriaTestimony2_p2.prototype.update = function () {
 		
@@ -535,21 +539,22 @@ var BHell = (function (my) {
 			case "active": // Shoot.
                 this.updateDolla();
                 this.updateZaWarudo();
-				break;
-			case "dying": // die.
-				this.timer = (this.timer + 1) % 1200;
-				this.shoot(false);
-				
-				if (this.timer > 0) {
-					// Clear screen after count down V.L. 10/20/2020
-					my.controller.generators = [];
-					my.controller.activeGenerators = [];
-					
-					this.destroy();
-				}
-				else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-					my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-				}
+                break;
+            case "dying": // die.
+                this.destroy();
+                break;
+            case "bombed":  
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 0) {
+                    // Clear screen after count down V.L. 10/20/2020
+                    my.controller.generators = [];
+                    my.controller.activeGenerators = [];
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
 				break;
 		}; 
 		// Update the emitter's position.
@@ -604,6 +609,9 @@ var BHell = (function (my) {
         emitterParams.bullet.speed = 3;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
+        emitterParams.bullet.hitboxshape="rectangle";
+        emitterParams.bullet.hitboxheight=5;
+        emitterParams.bullet.hitboxwidth=13;
         this.totalWidth =20;
         for(var i =0;i<this.totalWidth;i++){
             this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -619,8 +627,8 @@ var BHell = (function (my) {
     };
     BHell_Enemy_VictoriaTestimony2_p3.prototype.updateDollaV = function() {
         if(my.player.Timestop==false){this.shenanigns==false;
-            for(var wave =0;wave<12;wave++){
-                if (this.frameCounter==(120+(6*wave))) {//change to adjust block spawn rate
+            for(var wave =0;wave<6;wave++){
+                if (this.frameCounter==(150+(6*wave))) {//change to adjust block spawn rate
                     for(var i =6;i<this.totalWidth-6;i++){
                         this.emitters[i].shoot(this.emitters,true);
                     };
@@ -637,12 +645,12 @@ var BHell = (function (my) {
                 }
             }
             //---------------------------------------------------------------------------
-            for(var wave =0;wave<12;wave++){
+            for(var wave =0;wave<5;wave++){
                 if (this.frameCounter==(410+(6*wave))) {//change to adjust block spawn rate
                     for(var i =5;i<this.totalWidth-5;i++){
                         this.emitters[i].shoot(this.emitters,true);
                     };
-                    if(wave==11){this.shenanigns=true;}
+                    if(wave==4){this.shenanigns=true;}
                 };
             };
             if(this.shenanigns==true){console.log("pulling shenanigans");this.frameCounter=0;this.stopCounter=0;this.shenanigns=false;}
@@ -657,6 +665,9 @@ var BHell = (function (my) {
         emitterParams.bullet.speed = 5;
         emitterParams.aim =false;
         emitterParams.alwaysAim=false;
+        emitterParams.bullet.hitboxshape="rectangle";
+        emitterParams.bullet.hitboxheight=5;
+        emitterParams.bullet.hitboxwidth=13;
         this.totalHeight =(this.totalWidth*2)+16;
         this.totalHeight2= this.totalHeight+16;
         for(var i =this.totalWidth*2;i<this.totalHeight;i++){
