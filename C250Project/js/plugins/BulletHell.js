@@ -5940,7 +5940,7 @@ var BHell = (function (my) {
 					this.refute_count = 23; 
 					
 					this.r_timer = my.player.win_limit + 1; 
-					my.player.win_limit = 290; 
+					my.player.win_limit = 280; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 
@@ -5951,7 +5951,7 @@ var BHell = (function (my) {
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 150; 
+					my.player.win_limit = 142; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 

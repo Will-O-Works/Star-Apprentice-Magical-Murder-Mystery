@@ -680,6 +680,27 @@ var BHell = (function (my) {
     };
     //main update loop
     BHell_Enemy_SuperFanTestimony1_p2.prototype.update = function () {
+		
+		// Destroy itself if testimony = 1 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 1) {
+
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
         
        // Update line color V.L. 11/08/2020
 			if (this.flash == true) {
@@ -857,6 +878,27 @@ var BHell = (function (my) {
     };
     //main update loop
     BHell_Enemy_SuperFanTestimony1_p3.prototype.update = function () {
+		
+		// Destroy itself if testimony = 1 by V.L. 11/29/2020
+		if ($gameVariables.value(11) >= 1) {
+
+			
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			my.controller.destroyEnemyBullets();
+	
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			
+			return; 
+		}
         
        // Update line color V.L. 11/08/2020
 			if (this.flash == true) {
