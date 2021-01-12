@@ -4666,6 +4666,9 @@ var BHell = (function (my) {
 		this.r_index = 0; 
 		this.r_timer = 0; 
 		this.l_index = 0; 
+		
+		// V.L. 01/08/2021
+		this.position_move = false; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4885,7 +4888,14 @@ var BHell = (function (my) {
 
         // If the player has just been spawned (outside the screen), move to the starting position.
         this.index = 0;
-        if (this.justSpawned === true) {
+		if (this.position_move == true) {  // move top the center of the screen and cast laser by V.L. 01/08/2021
+			this.tar_x = Graphics.width / 2; 
+			this.tar_y = 500; 
+			this.x += (this.tar_x - this.x) / 5; 
+			this.y += (this.tar_y - this.y) / 5; 
+		}
+        
+		if (this.justSpawned === true) {
             // Wait until the enemy bullets are cleared. If they are not cleared after five seconds, it destroys them.
             // Nope that's a lie. Don't clear the bullets on screen. by V.L. 10/11/2020
             if (true) { // (my.enemyBullets.length === 0) {
@@ -4946,7 +4956,7 @@ var BHell = (function (my) {
             }
                     
         }
-        else if(my.player.Timestop==false){ // Otherwise move towards the destination.
+        else if(my.player.Timestop==false && this.position_move == false){ // Otherwise move towards the destination.
             var angle = Math.atan2(this.dy, this.dx);
 
             if (this.dx > 0) {
@@ -5938,10 +5948,14 @@ var BHell = (function (my) {
 				case "detective":  // detective: you can't do dat to me ;-;
 					this.refute_image = this.detective_r; 
 					this.refute_count = 23; 
+					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
-					this.r_timer = my.player.win_limit + 1; 
-					my.player.win_limit = 280; 
+					this.r_timer = my.player.win_limit / 2; // my.player.win_limit + 1; 
+					my.player.win_limit = 180; // 280; 
 					my.player.win_count = my.player.win_limit; 
+					
+					// move player position by V.L. 01/08/2021
+					my.player.position_move = true; 
 					
 				break; 
 				
@@ -5949,9 +5963,10 @@ var BHell = (function (my) {
 					this.refute_image = this.fan_r;
 					this.refute_count = 6; 
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
+					my.player.r_index = -18; 
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 142; 
+					my.player.win_limit = 300; 
 					my.player.win_count = my.player.win_limit; 
 					
 				break; 
@@ -5964,6 +5979,9 @@ var BHell = (function (my) {
 					this.r_timer = 1; 
 					my.player.win_limit = 300; 
 					my.player.win_count = my.player.win_limit; 
+					
+					// move player position by V.L. 01/08/2021
+					my.player.position_move = true; 
 
 				break; 
 			} 
@@ -5983,7 +6001,7 @@ var BHell = (function (my) {
 
 		if (this.start_refute == true) {
 			
-			if (this.refute_image == this.minnie_r) {
+			if (this.refute_image == this.minnie_r) {  // Final Minnie Refute 
 				
 				this.refute_count = 23; 
 				
@@ -6025,7 +6043,7 @@ var BHell = (function (my) {
 									
 				} 
 				
-			} else if (this.refute_image == this.fan_r) {
+			} else if (this.refute_image == this.fan_r) {  // Fan Eye Opening 
 				
 				this.refute_count = 6; 
 				
@@ -6037,17 +6055,20 @@ var BHell = (function (my) {
 					h = this.refute_image.height;
 					x = 0;
 					y = 0; 
-					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
-						
+					
+					if (my.player.r_index >= 0) {
+						this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+					}
+	
 					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
-						my.player.r_index += 15/60; 
+						my.player.r_index += 10/60; 
 					} 
 					
 					if (my.player.r_index == this.refute_count - 1 && !my.controller.paused) {
 						my.player.r_index = 8; 
 					}
 					
-					this.fan_rtimer = 20; 
+					this.fan_rtimer = 60; 
 									
 				} else if (this.fan_rtimer > 0) {
 					
@@ -6062,12 +6083,13 @@ var BHell = (function (my) {
 					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
 						
 					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
-						my.player.r_index += 15/60; 
+						my.player.r_index += 10/60; 
 					} 
 					
 					this.fan_rtimer -= 1; 
 					
 				} else if (my.player.l_index < this.refute_count - 1) {
+					
 					
 					this.refute_image = this.fan_ra;
 					this.refute_count = 32; 
@@ -6086,9 +6108,9 @@ var BHell = (function (my) {
 					
 				} 
 				
-			}
+			} else if (my.player.r_index < this.refute_count - 1) {  // Detective Refute
 			
-			else if (my.player.r_index < this.refute_count - 1) {
+				my.player.h_index = this.b_frame; 
 
 				sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
 				sy = 0; 
