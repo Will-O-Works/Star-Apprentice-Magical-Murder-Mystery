@@ -4642,7 +4642,7 @@ var BHell = (function (my) {
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
 		this.win_limit = 190; // 120; 
 		this.win_count = this.win_limit; 
-		this.fade_out = 40; 
+		this.fade_out = 80; 
 		
 		// Added player_speed prameter by V.L.
         this.speed = playerParams.speed; 
@@ -6200,10 +6200,13 @@ var BHell = (function (my) {
 			var finisher = ImageManager.loadCharacter(my.player.finisherImage, 0);
 			this.finisher = new Sprite(finisher);
 			
-			if (my.player.fade_out == 40) {
+			if (my.player.fade_out == 80) {
 				this.finisher.setColorTone([-64, -64, -64, 0.6]);
 			} else {
 				this.finisher.setColorTone([0, 0, 0, 0.6]);
+			} 
+			
+			if (my.player.fade_out == 0) {
 				this.fadeOutAll();
 			}
 			
@@ -6214,12 +6217,19 @@ var BHell = (function (my) {
 			var sx = my.player.wordsList[i][0] * this.finisher.width / 3;
 			var sy = 0;
 			
+			var yy = my.player.fade_out; 
+			
 			if (my.player.wordsList[i][0] == 3) {
 				var sx = 0;
 				var sy = this.finisher.height / 4;
 			}
 
-			y = Graphics.height/4;  
+			if (yy > 0) {
+				y = Graphics.height/3 - yy;   // Graphics.height/4;  
+			} else {
+				y = Graphics.height/3;
+			}
+			
 			x += my.player.wordsList[i][1] / 2; 
 			
 			this.hud.bitmap.blt(this.finisher, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
