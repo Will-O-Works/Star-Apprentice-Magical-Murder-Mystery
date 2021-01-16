@@ -4669,6 +4669,9 @@ var BHell = (function (my) {
 		
 		// V.L. 01/08/2021
 		this.position_move = false; 
+		this.eye_index = 0; 
+		this.show_eye = true; 
+		this.final_delay = 300; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -4891,8 +4894,8 @@ var BHell = (function (my) {
 		if (this.position_move == true) {  // move top the center of the screen and cast laser by V.L. 01/08/2021
 			this.tar_x = Graphics.width / 2; 
 			this.tar_y = 500; 
-			this.x += (this.tar_x - this.x) / 5; 
-			this.y += (this.tar_y - this.y) / 5; 
+			this.x += (this.tar_x - this.x) / 10; 
+			this.y += (this.tar_y - this.y) / 10; 
 		}
         
 		if (this.justSpawned === true) {
@@ -5554,6 +5557,7 @@ var BHell = (function (my) {
 			my.discussionMap = 39;
 			break; 
 
+
 			case 36: 
 			my.currentFace = ImageManager.loadFace("Detective_Portrait", 0);
 			my.discussionMap = 39;
@@ -5891,6 +5895,21 @@ var BHell = (function (my) {
 			shakeY = -shake + 2 * shake * Math.random(); 
 		}
 
+		// Final Fan Eyes
+		if (my.map == 32 && my.player.show_eye == true) {
+			this.fan_eye = ImageManager.loadSystem("Eye", 0);
+			
+			var w = Graphics.width;
+			var h = Graphics.height;
+			var sx = my.player.eye_index * Graphics.width;
+			var sy = 0;
+			x = 0; 
+			y = 0;  
+			
+			this.hud.bitmap.blt(this.fan_eye, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
+		} 
+
+
 		// Credits V.L. 11/08/2020 
 		if (my.map == 4) {
 			this.credit = ImageManager.loadSystem("Credits", 0);
@@ -5947,11 +5966,11 @@ var BHell = (function (my) {
 			switch (this.refute_type) {
 				case "detective":  // detective: you can't do dat to me ;-;
 					this.refute_image = this.detective_r; 
-					this.refute_count = 23; 
+					this.refute_count = 30; 
 					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
-					this.r_timer = my.player.win_limit / 2; // my.player.win_limit + 1; 
-					my.player.win_limit = 180; // 280; 
+					this.r_timer = 80; // my.player.win_limit / 2; // my.player.win_limit + 1; 
+					my.player.win_limit = 200; // 180; // 280; 
 					my.player.win_count = my.player.win_limit; 
 					
 					// move player position by V.L. 01/08/2021
@@ -5977,7 +5996,7 @@ var BHell = (function (my) {
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 300; 
+					my.player.win_limit = 600; // 300; 
 					my.player.win_count = my.player.win_limit; 
 					
 					// move player position by V.L. 01/08/2021
@@ -6002,46 +6021,74 @@ var BHell = (function (my) {
 		if (this.start_refute == true) {
 			
 			if (this.refute_image == this.minnie_r) {  // Final Minnie Refute 
-				
-				this.refute_count = 23; 
-				
-				if (my.player.r_index < this.refute_count - 1) {
-
-					sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
-					sy = 0; 
-					w = this.refute_image.width / this.refute_count;
-					h = this.refute_image.height;
-					x = 0;
-					y = 0; 
-					this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+			
+				if (my.player.final_delay > 0) {
+					my.player.final_delay -= 1; 
+					
+					if (my.player.final_delay < 250) {
 						
-					if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
-						my.player.r_index += 15/60; 
+						this.powering = ImageManager.loadSystem("ApprenticeSuperpowered", 0);
+						
+						var w = 320;
+						var h = 320;
+						
+						var n = (300 - my.player.final_delay) % 6; 
+						var sx = w * n;
+						var sy = 0;
+
+						x = Graphics.width / 2 - 160; 
+						y = 500 - 160; 
+						
+						this.hud.bitmap.blt(this.powering, sx, sy, w, h, x, y, w, h);
+						
+					}
+					
+					
+				} else {
+						
+						
+					this.refute_count = 23; 
+					
+					if (my.player.r_index < this.refute_count - 1) {
+
+						sx = this.refute_image.width / this.refute_count * (Math.round(my.player.r_index % this.refute_count)); 
+						sy = 0; 
+						w = this.refute_image.width / this.refute_count;
+						h = this.refute_image.height;
+						x = 0;
+						y = 0; 
+						this.hud.bitmap.blt(this.refute_image, sx, sy, w, h, x, y, w, h);
+							
+						if (my.player.r_index < this.refute_count - 1 && !my.controller.paused) {
+							my.player.r_index += 15/60; 
+						} 
+						
+						if (my.player.r_index == this.refute_count - 1 && !my.controller.paused) {
+							my.player.r_index = 6; 
+						}
+										
+					}
+					
+					this.refute_count = 17; 
+					
+					if (my.player.l_index < this.refute_count - 1) {
+
+						sx = this.laser_r.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
+						sy = 0; 
+						w = this.laser_r.width / this.refute_count;
+						h = this.laser_r.height;
+						x = Graphics.width / 2 - this.laser_r.width / this.refute_count / 2;
+						y = -50; 
+						this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
+							
+						if (my.player.l_index < this.refute_count - 1 && !my.controller.paused) {
+							my.player.l_index += 15/60; 
+						} 
+										
 					} 
 					
-					if (my.player.r_index == this.refute_count - 1 && !my.controller.paused) {
-						my.player.r_index = 8; 
-					}
-									
 				}
 				
-				this.refute_count = 17; 
-				
-				if (my.player.l_index < this.refute_count - 1) {
-
-					sx = this.laser_r.width / this.refute_count * (Math.round(my.player.l_index % this.refute_count)); 
-					sy = 0; 
-					w = this.laser_r.width / this.refute_count;
-					h = this.laser_r.height;
-					x = Graphics.width / 2 - this.laser_r.width / this.refute_count / 2;
-					y = -50; 
-					this.hud.bitmap.blt(this.laser_r, sx, sy, w, h, x, y, w, h);
-						
-					if (my.player.l_index < this.refute_count - 1 && !my.controller.paused) {
-						my.player.l_index += 15/60; 
-					} 
-									
-				} 
 				
 			} else if (this.refute_image == this.fan_r) {  // Fan Eye Opening 
 				

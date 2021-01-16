@@ -450,6 +450,13 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
+		
+		
+		if (this.testimony == 4) {
+			my.player.can_bomb = true; 
+			this.flash = false; 
+		}
+		
 		this.emitters.push(new my.BHell_Emitter_Beat(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
 
@@ -483,6 +490,11 @@ var BHell = (function (my) {
 		
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		
+		if (this.testimony == 4) {
+			this.hp = 999; 
+			my.player.bombs = 1; 
+		}
+		
 		if (this.dying == true) { 
 			this.destroy(); 
 		}
@@ -497,10 +509,18 @@ var BHell = (function (my) {
 			my.player.bombed = true; 
 		} 
 		
-		//adding these to the correct line allow it to transition to a different phase
-		my.player.PhaseOver = true;
-		my.player.nextMap = Number(31);
-		
+		if (this.testimony == 4) {
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.refute_type = "minnie"; 
+			my.player.bombed = true; 
+			my.player.bombs = 0; 
+			my.player.eye_index = 4; 
+		} else {	
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.PhaseOver = true;
+			my.player.nextMap = Number(31);
+		}
+
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
@@ -1102,12 +1122,13 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p1.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 75;
         params.speed = 125;
-        params.hitbox_w = 96;
-        params.hitbox_h = 96;
+        params.hitbox_w = 960;
+        params.hitbox_h = 190;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		my.player.show_eye = false; 
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, 190 / 2, 0, this.hitboxW, this.hitboxH);
 
 		var emitterParams = {};
 		emitterParams.period = 160; 
@@ -1178,7 +1199,7 @@ var BHell = (function (my) {
             params.speed =3;
             params.hp = 8;
             params.posX = this.x+200-(50*((this.spawnCounter-1)%(this.spawnNumber/this.lineNum)));
-            params.posY=this.y+120-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
+            params.posY=this.y+150-(50*Math.floor((this.spawnCounter-1)/(this.spawnNumber/this.lineNum)));
             params.bullet = {};
             params.bullet.sprite="$VictoriaBullets1"
             params.bullet.direction=4;
@@ -1222,6 +1243,8 @@ var BHell = (function (my) {
 		}
 		
 		my.player.Twinsmap = true; 
+		my.player.eye_index += 1; 
+		my.player.show_eye = true; 
 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -1247,13 +1270,14 @@ var BHell = (function (my) {
 
 		params.hp = 75;
         params.speed = 25;
-        params.hitbox_w = 96;
-        params.hitbox_h = 96;
+        params.hitbox_w = 960;
+        params.hitbox_h = 190;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 
 		my.player.bombs = 0; 
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		my.player.show_eye = false; 
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, 190 / 2, 0, this.hitboxW, this.hitboxH);
 
         this.initializeCat(parent); 
 		
@@ -1327,6 +1351,8 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p2.prototype.destroy = function() {
 
 		my.player.Twinsmap = false; 
+		my.player.eye_index += 1; 
+		my.player.show_eye = true; 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
@@ -1349,12 +1375,13 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.initialize = function(x, y, image, params, parent, enemyList) {
         params.hp = 100;
         params.speed = 125;
-        params.hitbox_w = 96;
-        params.hitbox_h = 96;
+        params.hitbox_w = 960;
+        params.hitbox_h = 190;
         params.animated = false;
         my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
 		my.player.bombs = 0; 
-		this.mover = new my.BHell_Mover_Still(Graphics.width / 2, 125, 0, this.hitboxW, this.hitboxH);
+		my.player.show_eye = false; 
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, 190 / 2, 0, this.hitboxW, this.hitboxH);
 
 		var emitterparams = {};
 		emitterparams.period = 1; 
@@ -1433,9 +1460,10 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {
 
 		//adding these to the correct line allow it to transition to a different phase
-		my.player.refute_type = "minnie"; 
-		my.player.bombed = true; 
-
+		// my.player.refute_type = "minnie"; 
+		// my.player.bombed = true; 
+		my.player.eye_index += 1; 
+		my.player.show_eye = true; 
 		my.BHell_Enemy_Base.prototype.destroy.call(this);
 	};
 	
