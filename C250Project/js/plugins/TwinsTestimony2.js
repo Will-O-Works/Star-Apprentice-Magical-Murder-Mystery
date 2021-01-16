@@ -83,6 +83,8 @@ BHell_Timer_Bullet.prototype.update = function () {
 	
     if (this.timer <= 0) {
         this.outsideMap = true;
+		// console.log(1); 
+		this.destroy(); 
     }
 };
 

@@ -1356,6 +1356,15 @@
     }
   },
   {
+	  "name": "End",
+	  "class": "BHell_Enemy_End",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
 	  "name": "Credits",
 	  "class": "BHell_Enemy_Credits",
 	  "params": {

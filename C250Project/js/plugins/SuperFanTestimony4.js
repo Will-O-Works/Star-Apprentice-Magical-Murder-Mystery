@@ -450,8 +450,7 @@ var BHell = (function (my) {
 
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
-		
-		
+
 		if (this.testimony == 4) {
 			my.player.can_bomb = true; 
 			this.flash = false; 
@@ -479,7 +478,6 @@ var BHell = (function (my) {
 			
 			my.controller.destroyEnemyBullets();
 	
-			my.player.bombs = 0;
 			if (this.parent != null) {
 				this.parent.removeChild(this);
 			}
@@ -492,6 +490,7 @@ var BHell = (function (my) {
 		
 		if (this.testimony == 4) {
 			this.hp = 999; 
+			my.player.can_bomb = true; 
 			my.player.bombs = 1; 
 		}
 		
@@ -514,7 +513,8 @@ var BHell = (function (my) {
 			my.player.refute_type = "minnie"; 
 			my.player.bombed = true; 
 			my.player.bombs = 0; 
-			my.player.eye_index = 4; 
+			// my.player.eye_index = 4; 
+			
 		} else {	
 			//adding these to the correct line allow it to transition to a different phase
 			my.player.PhaseOver = true;
@@ -526,6 +526,167 @@ var BHell = (function (my) {
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 	};
 	
+    return my;
+} (BHell || {}));
+
+
+//=============================================================================
+// CHARGE!!!
+//=============================================================================
+
+var BHell = (function (my) {
+	
+	var BHell_Emitter_Charge = my.BHell_Emitter_Charge = function () {
+        this.initialize.apply(this, arguments);
+    };
+	
+	BHell_Emitter_Charge.prototype = Object.create(my.BHell_Emitter_Base.prototype);
+    BHell_Emitter_Charge.prototype.constructor = BHell_Emitter_Charge;
+	
+    BHell_Emitter_Charge.prototype.initialize = function (x, y, params, parent, bulletList) {
+        my.BHell_Emitter_Base.prototype.initialize.call(this, x, y, params, parent, bulletList);
+		
+		this.i = 0;
+        this.parent = parent;
+        this.params = params;
+		
+        this.bulletParams = {};
+        this.bulletParams.sprite = "$Energy";
+        this.bulletParams.index = this.params.index;
+        this.bulletParams.direction = 8; //this.params.direction;
+		this.bulletParams.speed = 12; 
+		
+		this.angle = 0; 
+		this.radius = 1100; 
+		this.center_x = my.player.x; 
+		this.center_y = my.player.y; 
+		this.count = 12; 
+		this.num = 0; 
+
+		this.shooting = false; // Every emitter is a finite-state machine, this parameter switches between shooting and non-shooting states.
+        this.oldShooting = false; // Previous shooting state.
+        this.j = 0; // Frame counter. Used for state switching.
+    };
+
+    BHell_Emitter_Charge.prototype.shoot = function () {
+		
+		var choice = Math.floor(Math.random() * 2); 
+		if (choice == 0) {
+			this.bulletParams.direction = 4;
+		} else {
+			this.bulletParams.direction = 2;
+		}
+
+		this.center_x = my.player.x; 
+		this.center_y = my.player.y; 
+			
+		var dx = - this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num); 
+		var dy = - this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num); 
+		this.aimingAngle = Math.atan2(dy, dx);
+
+		var bx = this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num) + this.center_x; 
+		var by = this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num) + this.center_y; 
+			
+		var bullet = new my.BHell_Timer_Bullet(bx, by, this.aimingAngle, this.bulletParams, this.bulletList);
+            
+		this.parent.addChild(bullet);
+		this.bulletList.push(bullet);
+		
+		this.angle += 2 * Math.PI * Math.random(); 
+		this.num += 1; 
+    };
+	
+    return my;
+} (BHell || {}));
+
+
+
+//=============================================================================
+// Power charging
+//=============================================================================
+var BHell = (function (my) {
+
+    var BHell_Enemy_End = my.BHell_Enemy_End = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_End.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_End.prototype.constructor = BHell_Enemy_End;
+
+	BHell_Enemy_End.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 40;
+        params.speed = 25;
+        params.hitbox_w = 1;
+        params.hitbox_h = 1;
+        params.animated = true;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, Graphics.height / 2, 0, this.hitboxW, this.hitboxH);
+		
+		this.testimony = my.parse(params.t, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+
+		var emitterParams = {};
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 2;
+		emitterParams.bullet.sprite = "$FanBullets";
+        emitterParams.bullet.index = 0;
+		emitterParams.period = 2;
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = true; 
+		
+		this.timer = 300; 
+
+		this.emitters.push(new my.BHell_Emitter_Charge(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_End.prototype.update = function () {
+		this.hp = 999; 
+
+		my.BHell_Sprite.prototype.update.call(this);
+
+		if (this.dying == false) {  
+			this.move();
+		}  
+		
+		if (my.player.bombed == true) {
+			if (this.timer > 0) {
+				this.timer -= 1; 
+				if (this.timer > 100) {
+					this.shoot(true); 
+				} else {
+					this.shoot(false); 
+				}
+			} else {
+				this.destroy(); 
+			}
+		}
+		
+		if(this.violent=="true"){this.emitters.forEach(e => { // If not shooting, change the angle
+			if (this.aim === false && this.rnd === true) {
+				e.angle = Math.random() * 2 * Math.PI;
+			}
+
+			e.update();
+		});}
+		// my.BHell_Enemy_Base.prototype.update.call(this);
+	}; 
+	
+	BHell_Enemy_End.prototype.destroy = function() {
+		
+		this.emitters.forEach(e => { // Destroy the magic circle
+			e.destroy();
+		});
+
+		// my.controller.destroyEnemyBullets();
+
+		if (this.parent != null) {
+			this.parent.removeChild(this);
+		}
+		this.enemyList.splice(this.enemyList.indexOf(this), 1);
+	};
+
     return my;
 } (BHell || {}));
 
@@ -1140,7 +1301,7 @@ var BHell = (function (my) {
         emitterParams.bullet.index = 0;
 
 		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = true; 
+		my.player.can_bomb = false; 
 		this.emitters.push(new my.BHell_Emitter_Leftright(this.x, this.y, emitterParams, parent, my.enemyBullets));		
 		this.initializeWall(parent);
 		this.initializeCrcle(parent);
@@ -1401,9 +1562,6 @@ var BHell = (function (my) {
 		emitterparams.alwaysAim = true;
 		emitterparams.bullet = {};
         emitterparams.bullet.index = 0;
-
-		// set player.can_bomb to true by V.L.
-		my.player.can_bomb = false; 
 
 		this.emitters.push(new my.BHell_Emitter_Yoyuko(this.x, this.y, emitterparams, parent, my.enemyBullets));
 		
