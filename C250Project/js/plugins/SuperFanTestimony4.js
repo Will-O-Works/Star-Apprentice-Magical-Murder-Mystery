@@ -498,6 +498,19 @@ var BHell = (function (my) {
 			this.destroy(); 
 		}
 	}; 
+	
+	BHell_Enemy_Heart.prototype.die = function() {
+
+		this.dying = true; 
+		my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
+		
+		this.emitters.forEach(e => { // Destroy the magic circle
+			e.destroy();
+		});
+		
+		// V.L. 11/07/2020
+		my.player.bombs = 0;
+	};
 
 	BHell_Enemy_Heart.prototype.destroy = function() {
 
@@ -513,16 +526,47 @@ var BHell = (function (my) {
 			my.player.refute_type = "minnie"; 
 			my.player.bombed = true; 
 			my.player.bombs = 0; 
+
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+
+			my.controller.destroyEnemyBullets();
+			
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
 			// my.player.eye_index = 4; 
 			
 		} else {	
+		
+			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
+			my.player.screen_shake = true;  // 11/29/2020
+			
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+			
+			AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0}); 
+
+			my.controller.destroyEnemyBullets();
+			
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+		
+		
 			//adding these to the correct line allow it to transition to a different phase
 			my.player.PhaseOver = true;
 			my.player.nextMap = Number(31);
 		}
 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		// my.BHell_Enemy_Base.prototype.destroy.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 	};
 	
@@ -577,12 +621,14 @@ var BHell = (function (my) {
 			this.bulletParams.direction = 2;
 		}
 
-		this.center_x = my.player.x; 
-		this.center_y = my.player.y; 
+		this.center_x = Graphics.width / 2; // my.player.x; 
+		this.center_y = 500; //my.player.y; 
 			
 		var dx = - this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num); 
 		var dy = - this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num); 
 		this.aimingAngle = Math.atan2(dy, dx);
+		
+		this.bulletParams.timer = 85;
 
 		var bx = this.radius * Math.cos(this.angle + 2 * Math.PI / this.count * this.num) + this.center_x; 
 		var by = this.radius * Math.sin(this.angle + 2 * Math.PI / this.count * this.num) + this.center_y; 
@@ -678,6 +724,8 @@ var BHell = (function (my) {
 		this.emitters.forEach(e => { // Destroy the magic circle
 			e.destroy();
 		});
+		
+		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0});  
 
 		// my.controller.destroyEnemyBullets();
 

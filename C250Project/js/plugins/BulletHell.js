@@ -2795,7 +2795,7 @@ BHell_Enemy_Base.prototype.update = function () {
 		this.timer = (this.timer + 1) % 1200;
 		this.shoot(false);
 		
-		if (this.timer > 0) {//changed to aline sound used to be >70 YA
+		if (this.timer > 70) {//changed to aline sound used to be >70 YA
 			
 			if (my.player.bombed == true) {
 				my.controller.generators = [];
@@ -2923,6 +2923,13 @@ BHell_Enemy_Base.prototype.crash = function() {
 BHell_Enemy_Base.prototype.die = function() {
     //$gameBHellResult.score += this.killScore;
     //my.explosions.push(new my.BHell_Explosion(this.x, this.y, this.parent, my.explosions));
+	if (my.player.bombed == true) {
+		if (my.player.bomb_se == false) {
+			AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+			my.player.bomb_se = true; 
+		}
+	} 
+	
 	this.dying = true; 
 	my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
 	
@@ -2948,10 +2955,10 @@ BHell_Enemy_Base.prototype.destroy = function() {
 	
 	// Explosion sound by V.L. 10/20/2020
 	if (my.player.bombed == true) {
-		if (my.player.bomb_se == false) {
+		/* if (my.player.bomb_se == false) {
 			AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
 			my.player.bomb_se = true; 
-		}
+		} */ 
 	} else {
 		AudioManager.playSe({name: "explosion1", volume: 100, pitch: 100, pan: 0}); 
 	} 
@@ -5969,8 +5976,8 @@ var BHell = (function (my) {
 					this.refute_count = 30; 
 					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
-					this.r_timer = 80; // my.player.win_limit / 2; // my.player.win_limit + 1; 
-					my.player.win_limit = 200; // 180; // 280; 
+					this.r_timer = 80 - 70; // my.player.win_limit / 2; // my.player.win_limit + 1; 
+					my.player.win_limit = 200 - 70; // 180; // 280; 
 					my.player.win_count = my.player.win_limit; 
 					
 					// move player position by V.L. 01/08/2021
@@ -5988,6 +5995,8 @@ var BHell = (function (my) {
 					my.player.win_limit = 300; 
 					my.player.win_count = my.player.win_limit; 
 					
+					my.player.position_move = true; 
+					
 				break; 
 				
 				case "minnie":  // go minnie go!!!
@@ -5996,7 +6005,7 @@ var BHell = (function (my) {
 					my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 600; // 300; 
+					my.player.win_limit = 600 - 70; // 300; 
 					my.player.win_count = my.player.win_limit; 
 					
 					// move player position by V.L. 01/08/2021
