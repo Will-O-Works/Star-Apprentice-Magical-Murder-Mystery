@@ -681,7 +681,7 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
 		
-		this.timer = 300; 
+		this.timer = 500; 
 
 		this.emitters.push(new my.BHell_Emitter_Charge(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
@@ -699,8 +699,11 @@ var BHell = (function (my) {
 		
 		if (my.player.bombed == true) {
 			if (this.timer > 0) {
+				if (this.timer == 500) {
+					AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+				}
 				this.timer -= 1; 
-				if (this.timer > 100) {
+				if (this.timer < 300 && this.timer > 100) {
 					this.shoot(true); 
 				} else {
 					this.shoot(false); 

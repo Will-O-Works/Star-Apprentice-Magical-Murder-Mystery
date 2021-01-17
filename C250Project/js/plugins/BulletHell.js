@@ -4678,7 +4678,7 @@ var BHell = (function (my) {
 		this.position_move = false; 
 		this.eye_index = 0; 
 		this.show_eye = true; 
-		this.final_delay = 300; 
+		this.final_delay = 500; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -6002,14 +6002,11 @@ var BHell = (function (my) {
 				case "minnie":  // go minnie go!!!
 					this.refute_image = this.minnie_r;
 					this.refute_count = 23; 
-					my.player.h_index = this.b_frame;  // Skip normal minnie refute
+					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
 					my.player.win_limit = 600 - 70; // 300; 
 					my.player.win_count = my.player.win_limit; 
-					
-					// move player position by V.L. 01/08/2021
-					my.player.position_move = true; 
 
 				break; 
 			} 
@@ -6034,8 +6031,12 @@ var BHell = (function (my) {
 				if (my.player.final_delay > 0) {
 					my.player.final_delay -= 1; 
 					
+					if (my.player.final_delay == 300) {
+						my.player.position_move = true; 
+					}
+					
 					if (my.player.final_delay < 250) {
-						
+
 						this.powering = ImageManager.loadSystem("ApprenticeSuperpowered", 0);
 						
 						var w = 320;
@@ -6208,9 +6209,15 @@ var BHell = (function (my) {
 			y = 0; 
 			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
-			if (this.l_index < this.r_frame - 1 && !my.controller.paused) {
+			if (this.refute_image == this.minnie_r && this.l_index == this.r_frame - 3) {
+				this.l_index = this.r_frame; 
+				
+			}
+			else if (this.l_index < this.r_frame - 1 && !my.controller.paused) {
 				this.l_index += 15/60; 
 			} 
+			
+			
 		}
 		
 		this.b_frame = 34; 
@@ -6244,6 +6251,10 @@ var BHell = (function (my) {
 				case 3: this.voice_choice = "minnie_not_so_fast";  break; 
 				
 				default: this.voice_choice = "minnie_see_it";  break; 
+			}
+			
+			if (my.map == 32) {
+				this.voice_choice = "minnie_i_wont_look_away"; 
 			}
 
 			AudioManager.playSe({name:this.voice_choice, volume: 100, pitch: 100, pan: 0});  
