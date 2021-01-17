@@ -415,6 +415,10 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
+		// kill the cats V.L.
+		while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_SuperFanTestimony1_p1.prototype.initializeWatcher = function (parent) {
@@ -537,7 +541,16 @@ var BHell = (function (my) {
 				this.updateWatcher(); 
 				break;
 			case "dying": // die.
-				this.destroy();
+			// this.destroy();
+				this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
+				
 				break;
 		}; 
 		// Update the emitter's position.
@@ -666,18 +679,13 @@ var BHell = (function (my) {
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
         this.frameCounter = 0;
-        my.controller.destroyEnemyBullets();
-    };
-    BHell_Enemy_SuperFanTestimony1_p2.prototype.destroy = function() {
-
 		// kill the cats V.L.
 		while (my.controller.enemies[1] != null) {
 			my.controller.enemies[1].destroy();
 		}
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+        my.controller.destroyEnemyBullets();
     };
+
     //main update loop
     BHell_Enemy_SuperFanTestimony1_p2.prototype.update = function () {
 		
@@ -763,7 +771,14 @@ var BHell = (function (my) {
 				this.updateCircle();  
                 break;
             case "dying": // die.
-                this.destroy();
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
                 break;
         }; 
         // Update the emitter's position.
@@ -861,21 +876,16 @@ var BHell = (function (my) {
 		}
 	};
     BHell_Enemy_SuperFanTestimony1_p3.prototype.die = function() {
+		// kill the cats V.L.
+		while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}
         $gameBHellResult.score += this.killScore;
         this.state = "dying";
         this.frameCounter = 0;
         my.controller.destroyEnemyBullets();
     };
-    BHell_Enemy_SuperFanTestimony1_p3.prototype.destroy = function() {
 
-		// kill the cats V.L.
-		while (my.controller.enemies[1] != null) {
-			my.controller.enemies[1].destroy();
-		}
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
-		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-    };
     //main update loop
     BHell_Enemy_SuperFanTestimony1_p3.prototype.update = function () {
 		
@@ -960,7 +970,14 @@ var BHell = (function (my) {
 				this.updateWatcher(); 
                 break;
             case "dying": // die.
-                this.destroy();
+                this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
                 break;
         }; 
         // Update the emitter's position.

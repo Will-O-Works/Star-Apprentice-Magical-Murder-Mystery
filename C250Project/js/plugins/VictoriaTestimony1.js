@@ -472,6 +472,13 @@ var BHell = (function (my) {
     BHell_Enemy_VictoriaTestimony1_p3.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 1;
+		if (my.player.bombed == true) {
+			if (my.player.bomb_se == false) {
+				AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+				my.player.bomb_se = true; 
+			}
+		}
+		
 		my.controller.destroyEnemyBullets();
 	};
 	BHell_Enemy_VictoriaTestimony1_p3.prototype.destroy = function() {
@@ -537,7 +544,7 @@ var BHell = (function (my) {
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
 				
-				if (this.timer > 0) {
+				if (this.timer > 70) {
 					// Clear screen after count down V.L. 10/20/2020
 					my.controller.generators = [];
 					my.controller.activeGenerators = [];

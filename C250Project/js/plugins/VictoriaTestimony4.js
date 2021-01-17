@@ -624,10 +624,18 @@ var BHell = (function (my) {
 			}
 			this.prev_hp = this.hp; 
 			my.BHell_Sprite.prototype.update.call(this);
-			if (my.player.bombed == true) {
-				this.die(); 
+			if (my.player.bombed == true  && this.state !== "dying") {
+				my.controller.destroyEnemyBullets(); 
+				this.timer = 0; 
+				this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+				this.state = "dying";
+
+				if (my.player.bomb_se == false) {
+					AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+					my.player.bomb_se = true; 
+				}
+
 			}
-			
 			if (this.state !== "dying") {
                 this.move();
             }
@@ -646,7 +654,7 @@ var BHell = (function (my) {
 				this.timer = (this.timer + 1) % 1200;
 				this.shoot(false);
 				
-				if (this.timer > 0) {
+				if (this.timer > 70) {
 					// Clear screen after count down V.L. 10/20/2020
 					my.controller.generators = [];
 					my.controller.activeGenerators = [];

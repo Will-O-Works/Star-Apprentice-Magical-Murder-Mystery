@@ -198,11 +198,7 @@ var BHell = (function (my) {
 		my.controller.destroyEnemyBullets();
     };	
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.destroy = function() {
-        //adding these to the correct line allow it to transition to a different phase
-        //the 3 here is the map number change this to whatever map number u want to transition there on victory
-        while (my.controller.enemies[1] != null) {
-			my.controller.enemies[1].destroy();
-		}	
+        
         my.BHell_Enemy_Base.prototype.destroy.call(this);
         my.player.PhaseOver = true;
         //my.player.nextMap = Number(37);
@@ -240,10 +236,25 @@ var BHell = (function (my) {
         if (this.bombedWrong == true) {
             this.punish=20; 
         }
-        if (my.player.bombed == true) {
-            this.destroy(); 
+        if (my.player.bombed == true  && this.state !== "bombed") {
+            my.controller.destroyEnemyBullets(); 
+            this.timer = 0; 
+            this.hp = 999;  // Give the line a large hp so itd doesn't get destroyed when bomb is used 
+            this.state = "bombed";
+
+			if (my.player.bomb_se == false) {
+				AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+				my.player.bomb_se = true; 
+			}
+			
+			//adding these to the correct line allow it to transition to a different phase
+			//the 3 here is the map number change this to whatever map number u want to transition there on victory
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}	
+
         }
-        if (this.state !== "dying") {
+        if (this.state !== "dying" && this.state !== "bombed") {
             this.move();
         }
         switch (this.state) {
@@ -267,7 +278,7 @@ var BHell = (function (my) {
             case "bombed":  
                 this.timer = (this.timer + 1) % 1200;
                 this.shoot(false);
-                if (this.timer > 0) {
+                if (this.timer > 70) {
                     // Clear screen after count down V.L. 10/20/2020
                     my.controller.generators = [];
                     my.controller.activeGenerators = [];

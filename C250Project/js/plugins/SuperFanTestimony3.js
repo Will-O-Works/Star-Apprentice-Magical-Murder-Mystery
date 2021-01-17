@@ -220,6 +220,10 @@ var BHell = (function (my) {
             }
         };
         BHell_Enemy_SuperFanTestimony3_p1.prototype.die = function() {
+			// kill the cats V.L.
+			while (my.controller.enemies[1] != null) {
+				my.controller.enemies[1].destroy();
+			}
             this.state = "dying";
             this.frameCounter = 0;
             my.controller.destroyEnemyBullets();
@@ -321,7 +325,14 @@ var BHell = (function (my) {
                     }
                     break;
                 case "dying": // die.
+                    this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
                     this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
                     break;
                 case "bombed":  
                     this.timer = (this.timer + 1) % 1200;
@@ -598,6 +609,10 @@ var BHell = (function (my) {
     BHell_Enemy_SuperFanTestimony3_p2.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 1;
+		// kill the cats V.L.
+		while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}
 		my.controller.destroyEnemyBullets();
 	};
     BHell_Enemy_SuperFanTestimony3_p2.prototype.update = function () {
@@ -661,7 +676,14 @@ var BHell = (function (my) {
                 }
 				break;
 			case "dying": // die.
-				this.destroy();
+				this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
 				break;
 		}; 
 		// Update the emitter's position.
@@ -877,6 +899,10 @@ var BHell = (function (my) {
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
+		// kill the cats V.L.
+		while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}
 		my.controller.destroyEnemyBullets();
     };	
 	BHell_Enemy_SuperFanTestimony3_p3.prototype.destroy = function() {
@@ -990,7 +1016,14 @@ var BHell = (function (my) {
                 
 				break;
 			case "dying": // die.
-				this.destroy();
+				this.timer = (this.timer + 1) % 1200;
+                this.shoot(false);
+                if (this.timer > 70) {
+                    this.destroy();
+                }
+                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
+                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
+                }
                 break;
 			case "bombed":  
                 this.timer = (this.timer + 1) % 1200;

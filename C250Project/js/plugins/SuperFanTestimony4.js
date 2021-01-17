@@ -39,7 +39,7 @@ var BHell = (function (my) {
 
     };
 	
-	BHell_Enemy_Final_Lines.prototype.destroy = function() {
+	BHell_Enemy_Final_Lines.prototype.die = function() {
 
 		if (this.end == 1) {
 			my.player.bombed = true; 
@@ -50,9 +50,10 @@ var BHell = (function (my) {
 		} 
 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
-		my.BHell_Enemy_Base.prototype.destroy.call(this);
+		my.BHell_Enemy_Base.prototype.die.call(this);
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 	};
+
 	
     return my;
 } (BHell || {}));
@@ -1428,7 +1429,7 @@ var BHell = (function (my) {
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		this.frameCounter++
 		if(this.frameCounter%45==0){
-			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+			// AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
 		}
 	}; 
 	
@@ -1506,7 +1507,7 @@ var BHell = (function (my) {
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		this.frameCounter++
 		if(this.frameCounter%45==0){
-			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+			// AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
 		}
 	}; 
 	
@@ -1660,7 +1661,7 @@ var BHell = (function (my) {
 			e.shooting = t;
 		});*/
 		if(this.frameCounter%45==0){
-			AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
+			// AudioManager.playSe({name: "heartbeat", volume: 60, pitch: 100, pan: 0});
 		}
 	};	
 	BHell_Enemy_SuperFanTestimony4_p3.prototype.destroy = function() {

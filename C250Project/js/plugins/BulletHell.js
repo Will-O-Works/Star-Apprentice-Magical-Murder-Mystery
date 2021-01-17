@@ -4647,7 +4647,7 @@ var BHell = (function (my) {
         this.grazingRadius = my.parse(playerData.grazing_radius, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height);
 		
 		// Added time count down for map transformation, 1.5 seconds to start with by V.L. 10/18/2020
-		this.win_limit = 190; // 120; 
+		this.win_limit = 190 - 70; // 120; 
 		this.win_count = this.win_limit; 
 		this.fade_out = 80; 
 		
@@ -6234,6 +6234,19 @@ var BHell = (function (my) {
 		if (my.player.h_index == this.b_frame - 1) {
 			this.go_refute = true; 
 			this.l_index = 0; 
+			
+			var choice = Math.floor(Math.random() * 4);
+
+			switch (choice) {
+				case 0: this.voice_choice = "minnie_see_it";  break; 
+				case 1: this.voice_choice = "minnie_wait_a_minute";  break; 
+				case 2: this.voice_choice = "minnie_hang_on";  break; 
+				case 3: this.voice_choice = "minnie_not_so_fast";  break; 
+				
+				default: this.voice_choice = "minnie_see_it";  break; 
+			}
+
+			AudioManager.playSe({name:this.voice_choice, volume: 100, pitch: 100, pan: 0});  
 			my.player.h_index = this.b_frame; 
 		}
 		
