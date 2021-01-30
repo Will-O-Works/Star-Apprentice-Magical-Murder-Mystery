@@ -1356,6 +1356,15 @@
     }
   },
   {
+	  "name": "HeartF",
+	  "class": "BHell_Enemy_HeartF",
+	  "params": {
+        "bullet": {
+          "direction": 6
+        }
+    }
+  },
+  {
 	  "name": "End",
 	  "class": "BHell_Enemy_End",
 	  "params": {

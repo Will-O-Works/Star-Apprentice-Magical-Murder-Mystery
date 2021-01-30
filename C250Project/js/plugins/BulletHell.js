@@ -6002,6 +6002,7 @@ var BHell = (function (my) {
 				case "minnie":  // go minnie go!!!
 					this.refute_image = this.minnie_r;
 					this.refute_count = 23; 
+					my.player.h_index = 34 - 1; 
 					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
@@ -6031,18 +6032,18 @@ var BHell = (function (my) {
 				if (my.player.final_delay > 0) {
 					my.player.final_delay -= 1; 
 					
-					if (my.player.final_delay == 300) {
+					if (my.player.final_delay == 400) {
 						my.player.position_move = true; 
 					}
 					
-					if (my.player.final_delay < 250) {
+					if (my.player.final_delay < 350) {
 
 						this.powering = ImageManager.loadSystem("ApprenticeSuperpowered", 0);
 						
 						var w = 320;
 						var h = 320;
 						
-						var n = (300 - my.player.final_delay) % 6; 
+						var n = (400 - my.player.final_delay) % 6; 
 						var sx = w * n;
 						var sy = 0;
 

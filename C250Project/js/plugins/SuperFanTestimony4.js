@@ -484,12 +484,6 @@ var BHell = (function (my) {
 		
 		my.BHell_Enemy_Base.prototype.update.call(this);
 		
-		if (this.testimony == 4) {
-			this.hp = 999; 
-			my.player.can_bomb = true; 
-			my.player.bombs = 1; 
-		}
-		
 		if (this.dying == true) { 
 			this.destroy(); 
 		}
@@ -516,28 +510,6 @@ var BHell = (function (my) {
 			my.player.refute_type = "fan"; 
 			my.player.bombed = true; 
 		} 
-		
-		if (this.testimony == 4) {
-			//adding these to the correct line allow it to transition to a different phase
-			my.player.refute_type = "minnie"; 
-			my.player.bombed = true; 
-			my.player.bombs = 0; 
-
-			this.emitters.forEach(e => { // Destroy the magic circle
-				e.destroy();
-			});
-
-			my.controller.destroyEnemyBullets();
-			
-			my.player.bombs = 0;
-			if (this.parent != null) {
-				this.parent.removeChild(this);
-			}
-			this.enemyList.splice(this.enemyList.indexOf(this), 1);
-			// my.player.eye_index = 4; 
-			
-		} else {	
-		
 			my.player.false_bomb = false; // restore the value of false_bomb to false by V.L. 10/18/2020
 			my.player.screen_shake = true;  // 11/29/2020
 			
@@ -559,7 +531,6 @@ var BHell = (function (my) {
 			//adding these to the correct line allow it to transition to a different phase
 			my.player.PhaseOver = true;
 			my.player.nextMap = Number(31);
-		}
 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
 		// my.BHell_Enemy_Base.prototype.destroy.call(this);
@@ -568,6 +539,106 @@ var BHell = (function (my) {
 	
     return my;
 } (BHell || {}));
+
+
+//=============================================================================
+// Final Boss Heart
+//=============================================================================
+var BHell = (function (my) {
+
+    var BHell_Enemy_HeartF = my.BHell_Enemy_HeartF = function() {
+        this.initialize.apply(this, arguments);
+    };
+
+    BHell_Enemy_HeartF.prototype = Object.create(my.BHell_Enemy_Base.prototype);
+    BHell_Enemy_HeartF.prototype.constructor = BHell_Enemy_HeartF;
+
+	BHell_Enemy_HeartF.prototype.initialize = function(x, y, image, params, parent, enemyList) {
+        params.hp = 40;
+        params.speed = 25;
+        params.hitbox_w = 96;
+        params.hitbox_h = 96;
+        params.animated = true;
+        my.BHell_Enemy_Base.prototype.initialize.call(this, x, y, image, params, parent, enemyList);
+		my.player.bombs = 0; 
+		this.mover = new my.BHell_Mover_Jump(Graphics.width / 2, Graphics.height / 2, 0, this.hitboxW, this.hitboxH);
+		
+		this.testimony = my.parse(params.t, this.x, this.y, this.patternWidth(), this.patternHeight(), Graphics.width, Graphics.height); 
+
+		var emitterParams = {};
+		emitterParams.bullet = {};
+        emitterParams.bullet.direction = 2;
+		emitterParams.bullet.sprite = "$FanBullets";
+        emitterParams.bullet.index = 0;
+		emitterParams.center_x = -1; 
+		emitterParams.center_y = -1;
+		emitterParams.a = 0;
+		emitterParams.b=2*Math.PI;
+		emitterParams.n = 20;
+
+		// set player.can_bomb to true by V.L.
+		my.player.can_bomb = true; 
+
+		this.emitters.push(new my.BHell_Emitter_Beat(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
+
+    };
+	
+	BHell_Enemy_HeartF.prototype.update = function () {
+		// Destroy itself if testimony = 2 by V.L. 11/29/2020
+		
+		my.BHell_Enemy_Base.prototype.update.call(this);
+		
+		this.hp = 999; 
+		my.player.can_bomb = true; 
+		my.player.bombs = 1; 
+		
+		if (this.dying == true) { 
+			this.destroy(); 
+		}
+	}; 
+	
+	BHell_Enemy_HeartF.prototype.die = function() {
+
+		this.dying = true; 
+		my.controller.destroyEnemyBullets(); // Destroy bullet on screen by V.L. 10/11/2020
+		
+		this.emitters.forEach(e => { // Destroy the magic circle
+			e.destroy();
+		});
+		
+		// V.L. 11/07/2020
+		my.player.bombs = 0;
+	};
+
+	BHell_Enemy_HeartF.prototype.destroy = function() {
+
+			//adding these to the correct line allow it to transition to a different phase
+			my.player.refute_type = "minnie"; 
+			my.player.bombed = true; 
+			my.player.bombs = 0; 
+
+			this.emitters.forEach(e => { // Destroy the magic circle
+				e.destroy();
+			});
+
+			my.controller.destroyEnemyBullets();
+			
+			my.player.bombs = 0;
+			if (this.parent != null) {
+				this.parent.removeChild(this);
+			}
+			this.enemyList.splice(this.enemyList.indexOf(this), 1);
+			// my.player.eye_index = 4; 
+
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+		// my.BHell_Enemy_Base.prototype.destroy.call(this);
+		/* inherit destroy function from BHell_Enemy_Base by V.L. */
+	};
+	
+    return my;
+} (BHell || {}));
+
 
 
 //=============================================================================
@@ -695,10 +766,10 @@ var BHell = (function (my) {
 		if (my.player.bombed == true) {
 			if (this.timer > 0) {
 				if (this.timer == 500) {
-					AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
+					// AudioManager.playSe({name: "explosion2", volume: 100, pitch: 100, pan: 0});  
 				}
 				this.timer -= 1; 
-				if (this.timer < 300 && this.timer > 100) {
+				if (this.timer < 400 && this.timer > 100) {
 					this.shoot(true); 
 				} else {
 					this.shoot(false); 
