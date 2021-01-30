@@ -452,11 +452,6 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = false; 
 
-		if (this.testimony == 4) {
-			my.player.can_bomb = true; 
-			this.flash = false; 
-		}
-		
 		this.emitters.push(new my.BHell_Emitter_Beat(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
 

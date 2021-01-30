@@ -6199,7 +6199,13 @@ var BHell = (function (my) {
 		}
 		
 		this.r_frame = 17; 
-		if (this.go_refute == true && this.l_index < this.r_frame - 1) {
+		if (this.refute_image == this.minnie_r) {
+			this.refute = this.final_refute; 
+			this.r_frame = 19; 
+		}
+		
+		if (/*this.refute_image != this.minnie_r && */this.go_refute == true && this.l_index < this.r_frame - 1) {
+
 			// Refute image V.L. 11/25/2020 
 			sx = this.refute.width / this.r_frame * (Math.round(this.l_index % this.r_frame)); 
 			sy = 0; 
@@ -6209,11 +6215,11 @@ var BHell = (function (my) {
 			y = 0; 
 			this.hud.bitmap.blt(this.refute, sx, sy, w, h, x + shakeX, y + shakeY, w, h);
 			
-			if (this.refute_image == this.minnie_r && this.l_index == this.r_frame - 3) {
+			/* if (this.refute_image == this.minnie_r && this.l_index == this.r_frame - 3) {
 				this.l_index = this.r_frame; 
 				
 			}
-			else if (this.l_index < this.r_frame - 1 && !my.controller.paused) {
+			else */ if (this.l_index < this.r_frame - 1 && !my.controller.paused) {
 				this.l_index += 15/60; 
 			} 
 			
@@ -6383,6 +6389,7 @@ var BHell = (function (my) {
 		this.nobomb = ImageManager.loadSystem("NoBomb", 0);
 		this.heavyattack = ImageManager.loadSystem("HeavyAttack", 0);
 		this.refute = ImageManager.loadSystem("Refute", 0);
+		this.final_refute = ImageManager.loadSystem("FinalRefute", 0);
 		this.go_refute = false; 
         this.pauseMenu = ImageManager.loadSystem("BulletHell_BG", 0);
         this.testimonyHUD3 = ImageManager.loadPicture("Testimony3", 0);
