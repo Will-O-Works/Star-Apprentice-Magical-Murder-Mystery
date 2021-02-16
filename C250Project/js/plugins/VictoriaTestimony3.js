@@ -195,6 +195,9 @@ var BHell = (function (my) {
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.die = function() {
 		this.state = "dying";
 		this.frameCounter = 0;
+        while (my.controller.enemies[1] != null) {
+			my.controller.enemies[1].destroy();
+		}
 		my.controller.destroyEnemyBullets();
     };	
 	BHell_Enemy_VictoriaTestimony3_p1.prototype.destroy = function() {

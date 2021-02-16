@@ -528,11 +528,13 @@ var BHell = (function (my) {
 			}
 			if (this.bombedWrong == true) {
 				// Write the bombedWrong penalty in here
+				this.p = 8; 
+				this.emitters[2].bulletParams.speed = 6; 
+				this.emitters[3].bulletParams.speed = 6;
 			}
 			if (my.player.bombed == true) {
 				this.die(); 
 			}
-			
 			if (this.state !== "dying") {
                 this.move();
             }
@@ -543,32 +545,21 @@ var BHell = (function (my) {
 				}
 				break;
 			case "active": // Shoot.
-                this.updateDolla();
+                this.updateDolla(); 
                 this.updateZaWarudo();
-                break;
-            case "dying": // die.
-                this.timer = (this.timer + 1) % 1200;
-                this.shoot(false);
-                if (this.timer > 70) {
-                    // Clear screen after count down V.L. 10/20/2020
-                    my.controller.generators = [];
-                    my.controller.activeGenerators = [];
-                    this.destroy();
-                }
-                else if (this.timer % 10 === 0) {  // Explosion on the line effect 
-                    my.explosions.push(new my.BHell_Explosion(Math.floor(Math.random() * this.hitboxW) + this.x - this.hitboxW / 2, Math.floor(Math.random() * this.hitboxH) + this.y - this.hitboxH / 2, this.parent, my.explosions));
-                }
+				break;
+			case "dying": // die.
+				this.destroy();
 				break;
 		}; 
 		// Update the emitter's position.
 		this.emitters.forEach(e => {e.update()});
         // Update the time counter and reset it every 20 seconds.
-        this.frameCounter++
-        if(this.frameCounter%600==0){
+        this.frameCounter++;
+		if(this.frameCounter%1200==0){
             this.stopCounter=0;
-            this.frameCounter=0
+            this.frameCounter=0;
         }
-		
 	};
     return my;
 } (BHell || {}));
