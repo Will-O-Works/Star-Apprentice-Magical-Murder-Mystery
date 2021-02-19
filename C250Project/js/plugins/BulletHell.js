@@ -5992,7 +5992,7 @@ var BHell = (function (my) {
 					my.player.r_index = -18; 
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 300; 
+					my.player.win_limit = 302; 
 					my.player.win_count = my.player.win_limit; 
 					
 					my.player.position_move = true; 

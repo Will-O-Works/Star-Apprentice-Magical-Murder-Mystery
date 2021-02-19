@@ -49,7 +49,8 @@ var BHell = (function (my) {
 			this.start = 1; 
 			return; 
 		}
-			
+		
+		if (this.type == 2) {
 			for (var n = 0; n < this.num_bullet; n++) {
 				this.aimingAngle = this.angle + 2 * Math.PI / this.num_bullet * n;
 				
@@ -61,7 +62,16 @@ var BHell = (function (my) {
 			}
 			
 			this.angle += Math.PI / (this.num_bullet + 1); 
-		// } 
+		} else {
+			var dx = my.player.x - this.x;
+            var dy = my.player.y - this.y;
+            this.aimingAngle = Math.atan2(dy, dx);
+			
+			this.bulletParams.speed = 3; 
+			var bullet = new my.BHell_Bullet(this.x, this.y, this.aimingAngle, this.bulletParams, this.bulletList);
+			this.parent.addChild(bullet);
+			this.bulletList.push(bullet);
+		}
 
     };
 
@@ -173,8 +183,9 @@ var BHell = (function (my) {
 		emitterParams.aim = true;
 		emitterParams.always_aim = true;
 		emitterParams.period = 100;
+		emitterParams.type = 1;
 
-		this.emitters.push(new my.BHell_Emitter_Angle(this.x, this.y, emitterParams, parent, my.enemyBullets));
+		this.emitters.push(new my.BHell_Emitter_Tutorial(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
 	
 	BHell_Enemy_Tutorial_p2.prototype.update = function() {
@@ -220,6 +231,7 @@ var BHell = (function (my) {
 		
 		var emitterParams = {};
 		emitterParams.period = 100; 
+		emitterParams.type = 2;
 		this.emitters.push(new my.BHell_Emitter_Tutorial(this.x, this.y, emitterParams, parent, my.enemyBullets));
     };
 	

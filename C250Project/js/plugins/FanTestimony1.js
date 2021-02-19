@@ -26,10 +26,10 @@ BHell_Fan_Bullet.prototype.initialize = function (x, y, angle, params, bulletLis
 	var after_speed = 0; 
 
 	//variable added to allow adjustable hitboxs YA 2020/10/26
-    var hitboxshape = "dot";
+    var hitboxshape = "circle";
     var hitboxheight = 0;
     var hitboxwidth = 0;
-    var hitboxradius = 0;
+    var hitboxradius = 2;
 
 
     if (params != null) {
@@ -225,7 +225,7 @@ var BHell = (function (my) {
 				
 			}
 			
-			this.angle += Math.PI / this.num_bullet; 
+			this.angle += Math.PI / (this.num_bullet + 1); 
 			
 		} else if (this.type == 2) {
 			
