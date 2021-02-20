@@ -6006,7 +6006,7 @@ var BHell = (function (my) {
 					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
-					my.player.win_limit = 600 - 70; // 300; 
+					my.player.win_limit = 500 - 70; // 300; 
 					my.player.win_count = my.player.win_limit; 
 
 				break; 
@@ -6036,7 +6036,7 @@ var BHell = (function (my) {
 						my.player.position_move = true; 
 					}
 					
-					if (my.player.final_delay < 350) {
+					if (my.player.final_delay < 250) {
 
 						this.powering = ImageManager.loadSystem("ApprenticeSuperpowered", 0);
 						
