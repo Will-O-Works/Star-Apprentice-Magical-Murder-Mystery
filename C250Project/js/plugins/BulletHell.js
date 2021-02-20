@@ -4678,7 +4678,7 @@ var BHell = (function (my) {
 		this.position_move = false; 
 		this.eye_index = 0; 
 		this.show_eye = true; 
-		this.final_delay = 500; 
+		this.final_delay = 400; 
 
         playerData.emitters.forEach(e => {
             var emitter = my.BHell_Emitter_Factory.parseEmitter(e, this.x, this.y, this.patternWidth(), this.patternHeight(), playerParams.rate, playerParams.power, this.parent, my.friendlyBullets);
@@ -6032,7 +6032,7 @@ var BHell = (function (my) {
 				if (my.player.final_delay > 0) {
 					my.player.final_delay -= 1; 
 					
-					if (my.player.final_delay == 400) {
+					if (my.player.final_delay == 300) {
 						my.player.position_move = true; 
 					}
 					

@@ -747,7 +747,7 @@ var BHell = (function (my) {
 		// set player.can_bomb to true by V.L.
 		my.player.can_bomb = true; 
 		
-		this.timer = 500; 
+		this.timer = 400; 
 
 		this.emitters.push(new my.BHell_Emitter_Charge(this.x, this.y, emitterParams, parent, my.enemyBullets));
 		//this.emitters.push(new my.BHell_Emitter_Heart(this.x, this.y, emitterParams, parent, my.enemyBullets));
