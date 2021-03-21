@@ -6006,6 +6006,8 @@ var BHell = (function (my) {
 					// my.player.h_index = this.b_frame;  // Skip normal minnie refute
 					
 					this.r_timer = 1; 
+					
+					$gameSwitches.setValue(60, true);
 					my.player.win_limit = 500 - 70; // 300; 
 					my.player.win_count = my.player.win_limit; 
 
