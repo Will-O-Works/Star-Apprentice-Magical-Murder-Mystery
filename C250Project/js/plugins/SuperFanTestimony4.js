@@ -328,6 +328,7 @@ var BHell = (function (my) {
 			//adding these to the correct line allow it to transition to a different phase
 			my.player.PhaseOver = true;
 			my.player.nextMap = Number(32);
+            $gameSwitches.setValue(60, true);
 		} 
 
 		/* inherit destroy function from BHell_Enemy_Base by V.L. */
